@@ -124,6 +124,62 @@ GEMINI_API_KEY: 読み込み済み
 
 失敗した場合は、HTTPステータスやネットワークエラーの詳細が表示されます。APIキー本体は表示されません。
 
+## GitHub ActionsでニュースMarkdownを生成する
+
+GitHub Actions上で、ニュース収集からGemini要約、Markdown生成まで通るかを手動で確認できます。
+
+この確認では、まだGitHubへの自動commit、毎朝自動実行、Cloudflare Pages連携はしません。生成されたMarkdownをartifactとしてダウンロードして確認します。
+
+### 1. GitHubリポジトリを用意する
+
+`china-ent-news` フォルダをGitHubリポジトリとしてアップロードします。
+
+### 2. Secretを登録する
+
+Gemini接続テストと同じSecretを使います。未登録の場合は、GitHubのリポジトリ画面で以下を開きます。
+
+```text
+Settings → Secrets and variables → Actions → New repository secret
+```
+
+次のSecretを登録します。
+
+```text
+Name: GEMINI_API_KEY
+Value: GeminiのAPIキー
+```
+
+APIキー本体はGitHub Actionsのログには表示されません。
+
+### 3. Actionsから手動実行する
+
+GitHubのリポジトリ画面で、以下を開きます。
+
+```text
+Actions → generate-news → Run workflow
+```
+
+実行内容は以下です。
+
+```text
+npm install
+npm run start
+```
+
+### 4. artifactをダウンロードする
+
+workflowの実行が完了したら、実行結果ページの `Artifacts` から以下をダウンロードします。
+
+```text
+generated-news-markdown
+```
+
+中に `output/YYYY-MM-DD.md` が入っています。このMarkdownを見て、ニュース収集、Gemini要約、確度ラベル、注意点の分け方を確認してください。
+
+### 5. ログを見る
+
+ログには、取得した記事数、重複除去後の記事数、AI処理した記事数、Markdown出力先が表示されます。APIキー本体は表示されません。
+
 ## 収集元の追加方法
 
 収集元は `config/sources.json` で管理します。
