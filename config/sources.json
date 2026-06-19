@@ -1,0 +1,36 @@
+[
+  {
+    "name": "1905电影网 新闻",
+    "url": "https://www.1905.com/news/",
+    "type": "html",
+    "category": "映画",
+    "reliability": "B",
+    "includeUrlPatterns": ["/news/20", "/video/play/"],
+    "enabled": true
+  },
+  {
+    "name": "澎湃新闻 文娱",
+    "url": "https://www.thepaper.cn/channel_25951",
+    "type": "html",
+    "category": "文娱",
+    "reliability": "B",
+    "includeUrlPatterns": ["newsDetail_forward"],
+    "enabled": true
+  },
+  {
+    "name": "国家电影局",
+    "url": "https://www.chinafilm.gov.cn/",
+    "type": "html",
+    "category": "映画行政",
+    "reliability": "A",
+    "enabled": true
+  },
+  {
+    "name": "国家广播电视总局",
+    "url": "https://www.nrta.gov.cn/",
+    "type": "html",
+    "category": "放送・ドラマ行政",
+    "reliability": "A",
+    "enabled": true
+  }
+]
