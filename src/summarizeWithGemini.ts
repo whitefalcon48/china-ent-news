@@ -1,11 +1,11 @@
-import type { AiProvider, RawArticle, SummarizedArticle } from "./types.js";
+import type { AiProvider, ArticleType, RawArticle, SummarizedArticle } from "./types.js";
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 
 export async function summarizeArticle(article: RawArticle, provider = getAiProvider()): Promise<SummarizedArticle> {
   const text = await generateJson(provider, buildPrompt(article));
-  return normalizeSummary(parseJsonFromModelText(text));
+  return mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article);
 }
 
 export async function summarizeWithGemini(article: RawArticle): Promise<SummarizedArticle> {
@@ -176,47 +176,66 @@ async function generateDeepSeekJson(prompt: string) {
 }
 
 function buildPrompt(article: RawArticle) {
-  return `あなたは中国エンタメニュースを日本語で整理する編集補助AIです。
+  return `あなたは中国エンタメの最新順フィードを作る編集補助AIです。
 
 目的:
-- 元記事に書かれている内容だけを抽出し、それをもとに日本語で整理する。
+- 表に出す文章は、ナルエビちゃんニュース型の軽いニュースメモにする。
+- 裏側では、元記事に書かれている内容だけを抽出し、記事タイプ、確度、ソース状況、topic_keyを整理する。
 - 真偽判定や独自検証はしない。収集済み情報の抽出、分類、再構成だけを行う。
 
 必ず次の順番で考える:
 1. 抽出: 元記事に書かれている人物名、作品名、日付、数字、公式発表、報道内容、SNS反応、未確認表現、出典情報だけを取り出す。
-2. 整理: 抽出結果だけを使い、日本語記事として「何が起きたか」「どこまで確認済みか」「何が報道内容か」「SNS反応や未確認点があるか」を整理する。
+2. 分類: article_type を判定する。分類は news_event / official_announcement / data_report / gossip_rumor / sns_trend / column_opinion / review / interview / static_page / unknown のいずれか。
+3. 整理: 抽出結果だけを使い、軽く読める日本語ニュースメモにする。
 
 禁止事項:
 - 元記事にない情報を補わない。
 - 業界一般論や背景説明で空欄を埋めない。
 - 未確認情報を断定しない。
-- 1ソースだけの場合、無理に複数視点を作らない。
+- 1ソースだけの場合、無理に複数ソース確認済みのように書かない。
 - 出典にない人物評価、作品評価、興行評価を書かない。
 - 中国人名や作品名を勝手に日本語読みへ変換しない。
 - 原文の固有名詞はできるだけ原文表記も残す。
+- コラム、論説、レビュー、インタビュー、静的ページをニュースイベントのように書かない。
 
 出し分けルール:
-- SNS反応が元記事にない場合、sns_reactions は空配列にする。
-- 未確認情報がない場合、unverified_points は空配列にする。
-- 見方が分かれる点が元記事にない場合、multiple_viewpoints は空配列にする。
+- lead は2〜3行程度。何が起きたかが軽く分かる文章にする。
+- what_happened は短く整理する。
+- reaction_view は元記事内にSNS反応、読者反応、複数メディアでの見られ方がある場合だけ書く。なければ空文字。
+- editor_note は注意点や見方の補助が必要な場合だけ書く。なければ空文字。
+- SNS情報が元記事にない場合、has_sns_signal は false、reaction_view は空文字にする。
+- 公式発表が記事内で確認できない場合、has_official_source は false にする。
+- 1ソースのみの場合、has_multiple_sources は false にする。
+- column_opinion / review / interview / static_page は skip_reason を必ず入れる。
 - ゴシップでは「報じられた」「SNS上で話題になっている」など情報源に応じた表現にする。
-- ゴシップや未確認情報がある場合、本人・事務所・公式側の反応有無と出典の弱さを unverified_points または source_notes に明記する。
+- ゴシップや未確認情報がある場合、本人・事務所・公式側の反応有無と出典の弱さを editor_note または verification_status に反映する。
 - 原文を翻訳調でなぞらず、日本語として自然に再構成する。
 - 必ずJSONだけを返す。説明文やMarkdownは返さない。
 
 返すJSON:
 {
   "title_ja": "",
-  "summary_bullets": ["", "", ""],
+  "lead": "",
+  "what_happened": "",
+  "reaction_view": "",
+  "editor_note": "",
   "category": "",
   "confidence": "A/B/C/D",
-  "confirmed_facts": [],
-  "reported_claims": [],
-  "sns_reactions": [],
-  "unverified_points": [],
-  "multiple_viewpoints": [],
-  "body_ja": "",
-  "source_notes": "",
+  "source_count": 1,
+  "source_list": [],
+  "has_official_source": false,
+  "has_multiple_sources": false,
+  "has_sns_signal": false,
+  "article_type": "",
+  "skip_reason": "",
+  "verification_status": "",
+  "topic_key": "",
+  "main_entities": {
+    "people": [],
+    "works": [],
+    "organizations": []
+  },
+  "related_sources": [],
   "tags": []
 }
 
@@ -226,6 +245,9 @@ function buildPrompt(article: RawArticle) {
 - 出典: ${article.sourceName}
 - 出典カテゴリ: ${article.category}
 - 初期確度: ${article.reliability}
+- 事前article_type: ${article.articleType ?? "unknown"}
+- 事前topic_key: ${article.topicKey ?? ""}
+- 関連ソース候補: ${(article.relatedSources ?? [article.sourceName]).join(", ")}
 - 公開日: ${article.publishedAt ?? "不明"}
 - 抜粋: ${article.excerpt ?? "なし"}`;
 }
@@ -258,18 +280,65 @@ function extractJsonText(value: string) {
 function normalizeSummary(value: Partial<SummarizedArticle>): SummarizedArticle {
   return {
     title_ja: value.title_ja || "タイトル未設定",
-    summary_bullets: ensureStringArray(value.summary_bullets),
+    lead: value.lead || "",
+    what_happened: value.what_happened || "",
+    reaction_view: value.reaction_view || "",
+    editor_note: value.editor_note || "",
     category: value.category || "未分類",
     confidence: value.confidence && ["A", "B", "C", "D"].includes(value.confidence) ? value.confidence : "C",
-    confirmed_facts: ensureStringArray(value.confirmed_facts),
-    reported_claims: ensureStringArray(value.reported_claims),
-    sns_reactions: ensureStringArray(value.sns_reactions),
-    unverified_points: ensureStringArray(value.unverified_points),
-    multiple_viewpoints: ensureStringArray(value.multiple_viewpoints),
-    body_ja: value.body_ja || "",
-    source_notes: value.source_notes || "",
+    source_count: typeof value.source_count === "number" ? value.source_count : ensureStringArray(value.source_list).length || 1,
+    source_list: ensureStringArray(value.source_list),
+    has_official_source: Boolean(value.has_official_source),
+    has_multiple_sources: Boolean(value.has_multiple_sources),
+    has_sns_signal: Boolean(value.has_sns_signal),
+    article_type: normalizeArticleType(value.article_type),
+    skip_reason: value.skip_reason || "",
+    verification_status: value.verification_status || "",
+    topic_key: value.topic_key || "",
+    main_entities: {
+      people: ensureStringArray(value.main_entities?.people),
+      works: ensureStringArray(value.main_entities?.works),
+      organizations: ensureStringArray(value.main_entities?.organizations)
+    },
+    related_sources: ensureStringArray(value.related_sources),
     tags: ensureStringArray(value.tags)
   };
+}
+
+function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle): SummarizedArticle {
+  const relatedSources = article.relatedSources?.length ? article.relatedSources : [article.sourceName];
+  return {
+    ...summary,
+    source_count: relatedSources.length,
+    source_list: relatedSources,
+    has_official_source: summary.has_official_source || article.reliability === "A",
+    has_multiple_sources: relatedSources.length > 1,
+    article_type: summary.article_type === "unknown" && article.articleType ? article.articleType : summary.article_type,
+    topic_key: article.topicKey || summary.topic_key,
+    main_entities: {
+      people: summary.main_entities.people,
+      works: summary.main_entities.works.length ? summary.main_entities.works : article.mainEntities?.works ?? [],
+      organizations: summary.main_entities.organizations.length ? summary.main_entities.organizations : article.mainEntities?.organizations ?? []
+    },
+    related_sources: relatedSources
+  };
+}
+
+function normalizeArticleType(value: unknown): ArticleType {
+  const allowed: ArticleType[] = [
+    "news_event",
+    "official_announcement",
+    "data_report",
+    "gossip_rumor",
+    "sns_trend",
+    "column_opinion",
+    "review",
+    "interview",
+    "static_page",
+    "unknown"
+  ];
+
+  return typeof value === "string" && allowed.includes(value as ArticleType) ? (value as ArticleType) : "unknown";
 }
 
 function ensureStringArray(value: unknown) {

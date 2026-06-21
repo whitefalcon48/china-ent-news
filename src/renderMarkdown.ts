@@ -10,8 +10,9 @@ export async function renderMarkdownFile(articles: ProcessedArticle[], provider:
 }
 
 function renderMarkdown(articles: ProcessedArticle[], date: string, provider: AiProvider) {
-  const body = articles.length
-    ? articles.map((article, index) => renderArticle(article, index + 1)).join("\n\n")
+  const publishableArticles = articles.filter((article) => article.summary);
+  const body = publishableArticles.length
+    ? publishableArticles.map((article, index) => renderArticle(article, index + 1)).join("\n\n")
     : "今日は出力できる記事がありませんでした。\n";
 
   return `# 中国エンタメニュース ${date}
@@ -23,61 +24,24 @@ ${body}
 }
 
 function renderArticle(article: ProcessedArticle, index: number) {
-  const { raw, summary, aiError } = article;
-
+  const { raw, summary } = article;
   if (!summary) {
-    return `## ${index}. ${raw.title}
-
-**カテゴリ**：${raw.category}  
-**確度**：${raw.reliability}  
-**出典**：${raw.sourceName}  
-**URL**：${raw.url}
-
-### AI処理失敗
-AI APIでこの記事を整理できませんでした。
-
-### 原因メモ
-- ${aiError ?? "詳細不明"}`;
+    return "";
   }
 
+  const title = summary.title_ja || raw.title;
+  const sources = summary.source_list.length ? summary.source_list : [raw.sourceName];
   const sections = [
-    renderListSection("要点", summary.summary_bullets),
-    summary.body_ja ? `### 本文\n${summary.body_ja}` : "",
-    renderListSection("確認済みの事実", summary.confirmed_facts),
-    renderListSection("報道内容", summary.reported_claims),
-    renderListSection("SNS反応", summary.sns_reactions),
-    renderListSection("未確認情報・注意点", summary.unverified_points),
-    renderListSection("見方が分かれる点", summary.multiple_viewpoints),
-    summary.source_notes ? `### 出典メモ\n${summary.source_notes}` : "",
-    renderTags(summary.tags)
+    summary.lead,
+    summary.what_happened ? `### 何が起きた？\n${summary.what_happened}` : "",
+    summary.reaction_view ? `### 反応・見られ方\n${summary.reaction_view}` : "",
+    summary.editor_note ? `### 編集メモ\n${summary.editor_note}` : "",
+    `ソース：${sources.join("、")}`
   ].filter(Boolean);
 
-  return `## ${index}. ${summary.title_ja}
-
-**カテゴリ**：${summary.category || raw.category}  
-**確度**：${summary.confidence || raw.reliability}  
-**出典**：${raw.sourceName}  
-**URL**：${raw.url}
+  return `## 【${summary.category || raw.category}｜確度${summary.confidence || raw.reliability}】${title}
 
 ${sections.join("\n\n")}`;
-}
-
-function renderListSection(title: string, items: string[]) {
-  if (!items.length) {
-    return "";
-  }
-
-  return `### ${title}
-${items.map((item) => `- ${item}`).join("\n")}`;
-}
-
-function renderTags(tags: string[]) {
-  if (!tags.length) {
-    return "";
-  }
-
-  return `### タグ
-${tags.join(" / ")}`;
 }
 
 function today() {

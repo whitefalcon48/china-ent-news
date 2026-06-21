@@ -6,7 +6,7 @@ on:
       provider:
         description: "AI provider"
         required: true
-        default: "gemini"
+        default: "deepseek"
         type: choice
         options:
           - gemini

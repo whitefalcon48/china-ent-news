@@ -1,6 +1,17 @@
 export type SourceType = "rss" | "html";
 export type Reliability = "A" | "B" | "C" | "D";
 export type AiProvider = "gemini" | "deepseek";
+export type ArticleType =
+  | "news_event"
+  | "official_announcement"
+  | "data_report"
+  | "gossip_rumor"
+  | "sns_trend"
+  | "column_opinion"
+  | "review"
+  | "interview"
+  | "static_page"
+  | "unknown";
 
 export type NewsSource = {
   name: string;
@@ -32,25 +43,55 @@ export type RawArticle = {
   reliability: Reliability;
   publishedAt?: string;
   excerpt?: string;
+  articleType?: ArticleType;
+  skipReason?: string;
+  topicKey?: string;
+  mainEntities?: MainEntities;
+  relatedSources?: string[];
 };
 
 export type SummarizedArticle = {
   title_ja: string;
-  summary_bullets: string[];
+  lead: string;
+  what_happened: string;
+  reaction_view: string;
+  editor_note: string;
   category: string;
   confidence: Reliability;
-  confirmed_facts: string[];
-  reported_claims: string[];
-  sns_reactions: string[];
-  unverified_points: string[];
-  multiple_viewpoints: string[];
-  body_ja: string;
-  source_notes: string;
+  source_count: number;
+  source_list: string[];
+  has_official_source: boolean;
+  has_multiple_sources: boolean;
+  has_sns_signal: boolean;
+  article_type: ArticleType;
+  skip_reason: string;
+  verification_status: string;
+  topic_key: string;
+  main_entities: MainEntities;
+  related_sources: string[];
   tags: string[];
+};
+
+export type MainEntities = {
+  people: string[];
+  works: string[];
+  organizations: string[];
 };
 
 export type ProcessedArticle = {
   raw: RawArticle;
   summary?: SummarizedArticle;
   aiError?: string;
+};
+
+export type ArticleFilterConfig = {
+  excludeArticleTypes: ArticleType[];
+  columnOpinionKeywords: string[];
+  reviewKeywords: string[];
+  interviewKeywords: string[];
+  staticPageKeywords: string[];
+  snsTrendKeywords: string[];
+  gossipRumorKeywords: string[];
+  dataReportKeywords: string[];
+  officialAnnouncementKeywords: string[];
 };
