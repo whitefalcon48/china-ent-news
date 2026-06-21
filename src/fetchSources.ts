@@ -61,6 +61,45 @@ export async function fetchAllSources(sources: NewsSource[]) {
   };
 }
 
+export async function enrichArticleContent(article: RawArticle): Promise<RawArticle> {
+  try {
+    const response = await fetch(article.url, {
+      headers: {
+        "user-agent": "Mozilla/5.0 (compatible; ChinaEntNewsPhase0/0.1)"
+      }
+    });
+
+    if (!response.ok) {
+      return withRawContent(article, article.excerpt ?? "");
+    }
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    $("script, style, nav, header, footer, aside, form").remove();
+    const candidates = [
+      "article",
+      ".article",
+      ".article-content",
+      ".content",
+      ".main-content",
+      ".detail",
+      ".text",
+      ".TRS_Editor",
+      "#artibody",
+      "body"
+    ];
+
+    const texts = candidates
+      .map((selector) => cleanText($(selector).text()))
+      .filter((text) => text.length > 80)
+      .sort((a, b) => b.length - a.length);
+
+    return withRawContent(article, texts[0] ?? article.excerpt ?? "");
+  } catch {
+    return withRawContent(article, article.excerpt ?? "");
+  }
+}
+
 async function fetchSource(source: NewsSource): Promise<{ articles: RawArticle[]; diagnostic: SourceDiagnostic }> {
   if (source.type === "rss") {
     return fetchRssSource(source);
@@ -125,7 +164,7 @@ async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArtic
     const title = cleanText($(element).text());
     const href = $(element).attr("href");
 
-    if (!title || !href || title.length < 8) {
+    if (!title || !href || title.length < 8 || isBadTitle(title)) {
       return;
     }
 
@@ -172,6 +211,15 @@ function cleanText(value: string) {
   return value.replace(/\s+/g, " ").trim();
 }
 
+function withRawContent(article: RawArticle, rawContent: string): RawArticle {
+  const cleaned = cleanText(rawContent);
+  return {
+    ...article,
+    rawContent: cleaned.slice(0, 5000),
+    rawContentLength: cleaned.length
+  };
+}
+
 function toAbsoluteUrl(href: string, baseUrl: string) {
   try {
     return new URL(href, baseUrl).toString();
@@ -183,6 +231,10 @@ function toAbsoluteUrl(href: string, baseUrl: string) {
 function isLikelyEntertainmentArticle(article: RawArticle) {
   const haystack = `${article.title} ${article.excerpt ?? ""}`;
   return ENTERTAINMENT_KEYWORDS.some((keyword) => haystack.includes(keyword));
+}
+
+function isBadTitle(title: string) {
+  return /document\.write|_docTitle|function\s*\(|var\s+|replace\(|window\.|<script/i.test(title);
 }
 
 function matchesIncludePatterns(url: string, patterns?: string[]) {

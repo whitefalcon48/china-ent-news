@@ -1,6 +1,7 @@
 export type SourceType = "rss" | "html";
 export type Reliability = "A" | "B" | "C" | "D";
 export type AiProvider = "gemini" | "deepseek";
+export type FeedCategory = "映画" | "ドラマ・配信" | "芸能・俳優" | "業界動向" | "公式発表" | "海外中国映画祭・文化交流" | "その他";
 export type ArticleType =
   | "news_event"
   | "official_announcement"
@@ -43,11 +44,15 @@ export type RawArticle = {
   reliability: Reliability;
   publishedAt?: string;
   excerpt?: string;
+  rawContent?: string;
+  rawContentLength?: number;
   articleType?: ArticleType;
   skipReason?: string;
   topicKey?: string;
   mainEntities?: MainEntities;
-  relatedSources?: string[];
+  relatedSources?: SourceRef[];
+  feedCategory?: FeedCategory;
+  isLowPriority?: boolean;
 };
 
 export type SummarizedArticle = {
@@ -59,7 +64,7 @@ export type SummarizedArticle = {
   category: string;
   confidence: Reliability;
   source_count: number;
-  source_list: string[];
+  source_list: SourceRef[];
   has_official_source: boolean;
   has_multiple_sources: boolean;
   has_sns_signal: boolean;
@@ -68,8 +73,13 @@ export type SummarizedArticle = {
   verification_status: string;
   topic_key: string;
   main_entities: MainEntities;
-  related_sources: string[];
+  related_sources: SourceRef[];
   tags: string[];
+};
+
+export type SourceRef = {
+  name: string;
+  url?: string;
 };
 
 export type MainEntities = {

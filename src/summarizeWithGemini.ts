@@ -180,6 +180,7 @@ function buildPrompt(article: RawArticle) {
 
 目的:
 - 表に出す文章は、ナルエビちゃんニュース型の軽いニュースメモにする。
+- 1本あたりの日本語本文量は通常400〜700字程度を目安にする。公式発表系は300〜500字でもよい。ゴシップ・騒動系は500〜800字程度まで許容する。
 - 裏側では、元記事に書かれている内容だけを抽出し、記事タイプ、確度、ソース状況、topic_keyを整理する。
 - 真偽判定や独自検証はしない。収集済み情報の抽出、分類、再構成だけを行う。
 
@@ -200,9 +201,10 @@ function buildPrompt(article: RawArticle) {
 
 出し分けルール:
 - lead は2〜3行程度。何が起きたかが軽く分かる文章にする。
-- what_happened は短く整理する。
-- reaction_view は元記事内にSNS反応、読者反応、複数メディアでの見られ方がある場合だけ書く。なければ空文字。
-- editor_note は注意点や見方の補助が必要な場合だけ書く。なければ空文字。
+- what_happened は150〜250字程度で、出来事・数字・日付・関係者を整理する。
+- reaction_view は元記事内にSNS反応、読者反応、複数メディアでの見られ方、話題性、業界的意味がある場合に150〜250字程度で書く。根拠がなければ空文字。
+- editor_note は1〜2文。ニュースチェック用の短い補足にする。無理に一般論を作らない。
+- 各記事は lead とは別に、what_happened と reaction_view または editor_note の最低2つの本文セクションを埋める。ただし根拠がない反応は作らない。
 - SNS情報が元記事にない場合、has_sns_signal は false、reaction_view は空文字にする。
 - 公式発表が記事内で確認できない場合、has_official_source は false にする。
 - 1ソースのみの場合、has_multiple_sources は false にする。
@@ -222,7 +224,7 @@ function buildPrompt(article: RawArticle) {
   "category": "",
   "confidence": "A/B/C/D",
   "source_count": 1,
-  "source_list": [],
+  "source_list": [{"name": "", "url": ""}],
   "has_official_source": false,
   "has_multiple_sources": false,
   "has_sns_signal": false,
@@ -235,7 +237,7 @@ function buildPrompt(article: RawArticle) {
     "works": [],
     "organizations": []
   },
-  "related_sources": [],
+  "related_sources": [{"name": "", "url": ""}],
   "tags": []
 }
 
@@ -247,9 +249,11 @@ function buildPrompt(article: RawArticle) {
 - 初期確度: ${article.reliability}
 - 事前article_type: ${article.articleType ?? "unknown"}
 - 事前topic_key: ${article.topicKey ?? ""}
-- 関連ソース候補: ${(article.relatedSources ?? [article.sourceName]).join(", ")}
+- 関連ソース候補: ${(article.relatedSources ?? [{ name: article.sourceName, url: article.url }]).map((source) => `${source.name} ${source.url ?? ""}`).join(", ")}
 - 公開日: ${article.publishedAt ?? "不明"}
-- 抜粋: ${article.excerpt ?? "なし"}`;
+- rawContentLength: ${article.rawContentLength ?? 0}
+- 抜粋: ${article.excerpt ?? "なし"}
+- 元本文: ${article.rawContent || article.excerpt || "なし"}`;
 }
 
 function parseJsonFromModelText(text: string) {
@@ -286,8 +290,8 @@ function normalizeSummary(value: Partial<SummarizedArticle>): SummarizedArticle 
     editor_note: value.editor_note || "",
     category: value.category || "未分類",
     confidence: value.confidence && ["A", "B", "C", "D"].includes(value.confidence) ? value.confidence : "C",
-    source_count: typeof value.source_count === "number" ? value.source_count : ensureStringArray(value.source_list).length || 1,
-    source_list: ensureStringArray(value.source_list),
+    source_count: typeof value.source_count === "number" ? value.source_count : ensureSourceRefs(value.source_list).length || 1,
+    source_list: ensureSourceRefs(value.source_list),
     has_official_source: Boolean(value.has_official_source),
     has_multiple_sources: Boolean(value.has_multiple_sources),
     has_sns_signal: Boolean(value.has_sns_signal),
@@ -300,13 +304,13 @@ function normalizeSummary(value: Partial<SummarizedArticle>): SummarizedArticle 
       works: ensureStringArray(value.main_entities?.works),
       organizations: ensureStringArray(value.main_entities?.organizations)
     },
-    related_sources: ensureStringArray(value.related_sources),
+    related_sources: ensureSourceRefs(value.related_sources),
     tags: ensureStringArray(value.tags)
   };
 }
 
 function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle): SummarizedArticle {
-  const relatedSources = article.relatedSources?.length ? article.relatedSources : [article.sourceName];
+  const relatedSources = article.relatedSources?.length ? article.relatedSources : [{ name: article.sourceName, url: article.url }];
   return {
     ...summary,
     source_count: relatedSources.length,
@@ -343,6 +347,25 @@ function normalizeArticleType(value: unknown): ArticleType {
 
 function ensureStringArray(value: unknown) {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string" && item.trim().length > 0) : [];
+}
+
+function ensureSourceRefs(value: unknown) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      if (typeof item === "string") {
+        return { name: item };
+      }
+      if (item && typeof item === "object" && "name" in item && typeof item.name === "string") {
+        const url = "url" in item && typeof item.url === "string" ? item.url : undefined;
+        return { name: item.name, url };
+      }
+      return null;
+    })
+    .filter((item): item is { name: string; url?: string } => Boolean(item?.name));
 }
 
 function safePreview(value: string, maxLength = 500) {

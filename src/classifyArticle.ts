@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { ArticleFilterConfig, ArticleType, MainEntities, RawArticle } from "./types.js";
+import type { ArticleFilterConfig, ArticleType, FeedCategory, MainEntities, RawArticle } from "./types.js";
 
 const DEFAULT_FILTER_CONFIG: ArticleFilterConfig = {
   excludeArticleTypes: ["column_opinion", "review", "interview", "static_page"],
@@ -34,7 +34,9 @@ export function classifyArticle(article: RawArticle, config: ArticleFilterConfig
     skipReason: getSkipReason(article, articleType, config),
     topicKey,
     mainEntities: extractEntities(article.title),
-    relatedSources: [article.sourceName]
+    relatedSources: [{ name: article.sourceName, url: article.url }],
+    feedCategory: getFeedCategory(article, articleType),
+    isLowPriority: isLowPriorityArticle(article)
   };
 }
 
@@ -85,6 +87,44 @@ function getSkipReason(article: RawArticle, articleType: ArticleType, config: Ar
     return "unknown_thin_article";
   }
   return "";
+}
+
+function getFeedCategory(article: RawArticle, articleType: ArticleType): FeedCategory {
+  const text = `${article.title} ${article.category} ${article.excerpt ?? ""}`;
+
+  if (isOverseasChinaFilmFestival(text)) {
+    return "海外中国映画祭・文化交流";
+  }
+  if (article.reliability === "A" || articleType === "official_announcement") {
+    return "公式発表";
+  }
+  if (/电视剧|剧集|短剧|网剧|综艺|播出|开播|平台|优酷|腾讯视频|爱奇艺|芒果TV|B站/.test(text)) {
+    return "ドラマ・配信";
+  }
+  if (/演员|艺人|明星|红毯|经纪|出任|悼念|身亡|逝世|回应|热搜/.test(text)) {
+    return "芸能・俳優";
+  }
+  if (/产业|公司|集团|投资|出品|发行|市场|行业|文旅|票房|收视|数据|指数/.test(text)) {
+    return "業界動向";
+  }
+  if (/电影|影片|导演|影院|影节|电影节|电影周|上映|定档|票房/.test(text)) {
+    return "映画";
+  }
+
+  return "その他";
+}
+
+function isLowPriorityArticle(article: RawArticle) {
+  const text = `${article.title} ${article.excerpt ?? ""}`;
+  return (
+    isOverseasChinaFilmFestival(text) ||
+    /文化交流|合作协议|签署合作|友好交流|代表团|座谈会|工作部署|推进会/.test(text) ||
+    /开幕/.test(text) && /中国电影节/.test(text)
+  );
+}
+
+function isOverseasChinaFilmFestival(text: string) {
+  return /(?:俄罗斯|刚果|希腊|海外|莫斯科|雅典|巴黎|伦敦|东京|首尔|曼谷|新加坡|马来西亚).{0,12}中国电影节|中国电影节.{0,12}(?:俄罗斯|刚果|希腊|海外|莫斯科|雅典|巴黎|伦敦|东京|首尔|曼谷|新加坡|马来西亚)/.test(text);
 }
 
 function includesAny(text: string, keywords: string[]) {

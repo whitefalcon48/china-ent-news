@@ -1,12 +1,24 @@
 import "dotenv/config";
 import { classifyArticle, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
 import { dedupeArticles } from "./dedupe.js";
-import { fetchAllSources, loadSources } from "./fetchSources.js";
+import { enrichArticleContent, fetchAllSources, loadSources } from "./fetchSources.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
-import type { ArticleType, ProcessedArticle, RawArticle, SourceDiagnostic } from "./types.js";
+import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic } from "./types.js";
 
 const MAX_ARTICLES_PER_SOURCE = 3;
+const MAX_LOW_PRIORITY_ARTICLES = 1;
+const CATEGORY_LIMITS: Record<FeedCategory, number> = {
+  "映画": 3,
+  "ドラマ・配信": 2,
+  "芸能・俳優": 2,
+  "業界動向": 2,
+  "公式発表": 2,
+  "海外中国映画祭・文化交流": 1,
+  "その他": 1
+};
+const MIN_RAW_CONTENT_LENGTH = 180;
+const MIN_OFFICIAL_RAW_CONTENT_LENGTH = 80;
 
 async function main() {
   const maxArticles = Number(process.env.MAX_ARTICLES || 8);
@@ -31,7 +43,16 @@ async function main() {
       reason: article.skipReason || article.articleType || "not_publishable"
     }));
   const eligibleArticles = classifiedArticles.filter((article) => !article.skipReason && isPublishableType(article.articleType ?? "unknown"));
-  const selectedArticles = selectArticlesForAi(eligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE);
+  const selectedCandidates = selectArticlesForAi(eligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE);
+  const enrichedSelectedCandidates = await Promise.all(selectedCandidates.map((article) => enrichArticleContent(article)));
+  const rawContentExclusions = enrichedSelectedCandidates
+    .filter(isTooThinForPublishing)
+    .map((article) => ({
+      title: article.title,
+      type: article.articleType ?? "unknown",
+      reason: `raw_content_too_short(${article.rawContentLength ?? 0})`
+    }));
+  const selectedArticles = enrichedSelectedCandidates.filter((article) => !isTooThinForPublishing(article));
   const enrichedDiagnostics = enrichDiagnostics(diagnostics, dedupedArticles, selectedArticles);
   const processed: ProcessedArticle[] = [];
   const aiErrors: string[] = [];
@@ -40,12 +61,18 @@ async function main() {
   logSourceDiagnostics(enrichedDiagnostics);
   logArticleTypeCounts(classifiedArticles);
   logExclusions("除外記事", preAiExclusions);
+  logExclusions("本文量不足の除外記事", rawContentExclusions);
   console.log(`topic_key生成件数: ${new Set(classifiedArticles.map((article) => article.topicKey).filter(Boolean)).size}`);
   logFinalSourceDistribution(selectedArticles);
+  logFinalCategoryDistribution(selectedArticles, "最終AI処理対象のカテゴリ配分");
 
   for (const article of selectedArticles) {
     try {
       console.log(`AI処理中: ${article.title}`);
+      console.log(`source: ${article.sourceName}`);
+      console.log(`rawContentLength: ${article.rawContentLength ?? 0}`);
+      console.log(`articleType: ${article.articleType ?? "unknown"}`);
+      console.log(`category: ${article.feedCategory ?? article.category}`);
       const summary = await summarizeArticle(article, provider);
       if (!isPublishableType(summary.article_type)) {
         postAiExclusions.push({
@@ -69,12 +96,16 @@ async function main() {
     processed.map((article) => article.raw),
     "最終出力のsource配分"
   );
+  logFinalCategoryDistribution(
+    processed.map((article) => article.raw),
+    "最終出力のカテゴリ配分"
+  );
 
   console.log("");
   console.log("実行結果");
   console.log(`- 取得した記事数: ${articles.length}`);
   console.log(`- 重複除去後の記事数: ${dedupedArticles.length}`);
-  console.log(`- 除外件数: ${preAiExclusions.length + postAiExclusions.length}`);
+  console.log(`- 除外件数: ${preAiExclusions.length + rawContentExclusions.length + postAiExclusions.length}`);
   console.log(`- AI処理対象の記事数: ${selectedArticles.length}`);
   console.log(`- AI処理した記事数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- 最終出力件数: ${processed.filter((article) => article.summary).length}`);
@@ -94,56 +125,66 @@ async function main() {
 }
 
 function attachRelatedSources(articles: RawArticle[]) {
-  const topicSources = new Map<string, Set<string>>();
+  const topicSources = new Map<string, Map<string, string>>();
   for (const article of articles) {
     if (!article.topicKey) {
       continue;
     }
-    const sources = topicSources.get(article.topicKey) ?? new Set<string>();
-    sources.add(article.sourceName);
+    const sources = topicSources.get(article.topicKey) ?? new Map<string, string>();
+    sources.set(article.sourceName, article.url);
     topicSources.set(article.topicKey, sources);
   }
 
   return articles.map((article) => ({
     ...article,
-    relatedSources: article.topicKey ? [...(topicSources.get(article.topicKey) ?? new Set([article.sourceName]))] : [article.sourceName]
+    relatedSources: article.topicKey
+      ? [...(topicSources.get(article.topicKey) ?? new Map([[article.sourceName, article.url]])).entries()].map(([name, url]) => ({ name, url }))
+      : [{ name: article.sourceName, url: article.url }]
   }));
 }
 
 function selectArticlesForAi(articles: RawArticle[], maxArticles: number, maxPerSource: number) {
   const selected: RawArticle[] = [];
-  const groupedArticles = new Map<string, RawArticle[]>();
+  const groupedArticles = new Map<FeedCategory, RawArticle[]>();
   for (const article of articles) {
-    const group = groupedArticles.get(article.sourceName) ?? [];
+    const category = article.feedCategory ?? "その他";
+    const group = groupedArticles.get(category) ?? [];
     group.push(article);
-    groupedArticles.set(article.sourceName, group);
+    groupedArticles.set(category, group);
   }
 
-  const sourceNames = [...groupedArticles.keys()];
+  const categories: FeedCategory[] = ["映画", "ドラマ・配信", "芸能・俳優", "業界動向", "公式発表", "海外中国映画祭・文化交流", "その他"];
   const sourceCounts = new Map<string, number>();
+  const categoryCounts = new Map<FeedCategory, number>();
+  let lowPriorityCount = 0;
   let cursor = 0;
 
   while (selected.length < maxArticles) {
     let addedInRound = false;
 
-    for (const sourceName of sourceNames) {
+    for (const category of categories) {
       if (selected.length >= maxArticles) {
         break;
       }
 
-      const currentCount = sourceCounts.get(sourceName) ?? 0;
-      if (currentCount >= maxPerSource) {
+      const categoryLimit = CATEGORY_LIMITS[category] ?? 1;
+      const currentCategoryCount = categoryCounts.get(category) ?? 0;
+      if (currentCategoryCount >= categoryLimit) {
         continue;
       }
 
-      const group = groupedArticles.get(sourceName) ?? [];
-      const article = group[cursor];
+      const group = groupedArticles.get(category) ?? [];
+      const article = findNextAllowedArticle(group, cursor, sourceCounts, maxPerSource, lowPriorityCount);
       if (!article) {
         continue;
       }
 
       selected.push(article);
-      sourceCounts.set(sourceName, currentCount + 1);
+      sourceCounts.set(article.sourceName, (sourceCounts.get(article.sourceName) ?? 0) + 1);
+      categoryCounts.set(category, currentCategoryCount + 1);
+      if (article.isLowPriority) {
+        lowPriorityCount += 1;
+      }
       addedInRound = true;
     }
 
@@ -155,6 +196,28 @@ function selectArticlesForAi(articles: RawArticle[], maxArticles: number, maxPer
   }
 
   return selected;
+}
+
+function findNextAllowedArticle(group: RawArticle[], cursor: number, sourceCounts: Map<string, number>, maxPerSource: number, lowPriorityCount: number) {
+  for (let index = cursor; index < group.length; index += 1) {
+    const article = group[index];
+    if ((sourceCounts.get(article.sourceName) ?? 0) >= maxPerSource) {
+      continue;
+    }
+    if (article.isLowPriority && lowPriorityCount >= MAX_LOW_PRIORITY_ARTICLES) {
+      continue;
+    }
+    return article;
+  }
+  return undefined;
+}
+
+function isTooThinForPublishing(article: RawArticle) {
+  const rawContentLength = article.rawContentLength ?? 0;
+  if (article.articleType === "official_announcement" || article.reliability === "A") {
+    return rawContentLength < MIN_OFFICIAL_RAW_CONTENT_LENGTH;
+  }
+  return rawContentLength < MIN_RAW_CONTENT_LENGTH;
 }
 
 function enrichDiagnostics(diagnostics: SourceDiagnostic[], dedupedArticles: RawArticle[], selectedArticles: RawArticle[]) {
@@ -226,6 +289,25 @@ function logFinalSourceDistribution(articles: RawArticle[], heading = "最終AI�
 
   for (const [sourceName, count] of counts) {
     console.log(`- ${sourceName}: ${count}件`);
+  }
+}
+
+function logFinalCategoryDistribution(articles: RawArticle[], heading: string) {
+  const counts = new Map<string, number>();
+  for (const article of articles) {
+    const category = article.feedCategory ?? article.category;
+    counts.set(category, (counts.get(category) ?? 0) + 1);
+  }
+
+  console.log("");
+  console.log(heading);
+  if (!counts.size) {
+    console.log("- なし");
+    return;
+  }
+
+  for (const [category, count] of [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0], "ja"))) {
+    console.log(`- ${category}: ${count}件`);
   }
 }
 

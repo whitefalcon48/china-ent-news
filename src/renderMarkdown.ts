@@ -30,18 +30,22 @@ function renderArticle(article: ProcessedArticle, index: number) {
   }
 
   const title = summary.title_ja || raw.title;
-  const sources = summary.source_list.length ? summary.source_list : [raw.sourceName];
+  const sources = summary.source_list.length ? summary.source_list : [{ name: raw.sourceName, url: raw.url }];
   const sections = [
     summary.lead,
     summary.what_happened ? `### 何が起きた？\n${summary.what_happened}` : "",
     summary.reaction_view ? `### 反応・見られ方\n${summary.reaction_view}` : "",
     summary.editor_note ? `### 編集メモ\n${summary.editor_note}` : "",
-    `ソース：${sources.join("、")}`
+    `ソース：${sources.map(formatSourceLink).join("、")}`
   ].filter(Boolean);
 
   return `## 【${summary.category || raw.category}｜確度${summary.confidence || raw.reliability}】${title}
 
 ${sections.join("\n\n")}`;
+}
+
+function formatSourceLink(source: { name: string; url?: string }) {
+  return source.url ? `[${source.name}](${source.url})` : source.name;
 }
 
 function today() {
