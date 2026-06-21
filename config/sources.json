@@ -5,7 +5,8 @@
     "type": "html",
     "category": "映画",
     "reliability": "B",
-    "includeUrlPatterns": ["/news/20", "/video/play/"],
+    "includeUrlPatterns": ["/news/20"],
+    "excludeUrlPatterns": ["/video/", "video.1905.com"],
     "enabled": true
   },
   {
@@ -31,6 +32,36 @@
     "type": "html",
     "category": "放送・ドラマ行政",
     "reliability": "A",
+    "enabled": true
+  },
+  {
+    "name": "新京报 娱乐",
+    "url": "https://www.bjnews.com.cn/entertainment",
+    "type": "html",
+    "category": "文娱",
+    "reliability": "B",
+    "includeUrlPatterns": ["/detail/"],
+    "excludeUrlPatterns": ["/video/", "/photo/", "/live/", "image", "gallery"],
+    "enabled": true
+  },
+  {
+    "name": "界面新闻 影视产业",
+    "url": "https://www.jiemian.com/lists/63.html",
+    "type": "html",
+    "category": "影视产业",
+    "reliability": "B",
+    "includeUrlPatterns": ["/article/"],
+    "excludeUrlPatterns": ["/video/", "/photo/", "/album/", "image", "gallery"],
+    "enabled": true
+  },
+  {
+    "name": "新浪娱乐",
+    "url": "https://ent.sina.com.cn/",
+    "type": "html",
+    "category": "娱乐",
+    "reliability": "B",
+    "includeUrlPatterns": ["doc-"],
+    "excludeUrlPatterns": ["/slide/", "/video/", "/photo/", "/v/", "/zt_d/", "slide.ent.sina.com.cn", "k.sina.com.cn", "fashion.sina.com.cn"],
     "enabled": true
   }
 ]

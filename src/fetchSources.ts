@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import * as cheerio from "cheerio";
 import Parser from "rss-parser";
-import type { NewsSource, RawArticle } from "./types.js";
+import type { NewsSource, RawArticle, SourceDiagnostic } from "./types.js";
 
 const ENTERTAINMENT_KEYWORDS = [
   "电影",
@@ -30,13 +30,25 @@ export async function loadSources(configPath = "config/sources.json"): Promise<N
 
 export async function fetchAllSources(sources: NewsSource[]) {
   const errors: string[] = [];
+  const diagnostics: SourceDiagnostic[] = [];
   const batches = await Promise.all(
     sources.map(async (source) => {
       try {
-        return await fetchSource(source);
+        const result = await fetchSource(source);
+        diagnostics.push(result.diagnostic);
+        return result.articles;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         errors.push(`${source.name}: ${message}`);
+        diagnostics.push({
+          sourceName: source.name,
+          fetchedCount: 0,
+          excludedByPatternCount: 0,
+          dedupedCount: 0,
+          selectedForAiCount: 0,
+          error: message,
+          sampleTitles: []
+        });
         return [];
       }
     })
@@ -44,22 +56,24 @@ export async function fetchAllSources(sources: NewsSource[]) {
 
   return {
     articles: batches.flat(),
-    errors
+    errors,
+    diagnostics
   };
 }
 
-async function fetchSource(source: NewsSource): Promise<RawArticle[]> {
+async function fetchSource(source: NewsSource): Promise<{ articles: RawArticle[]; diagnostic: SourceDiagnostic }> {
   if (source.type === "rss") {
     return fetchRssSource(source);
   }
   return fetchHtmlSource(source);
 }
 
-async function fetchRssSource(source: NewsSource): Promise<RawArticle[]> {
+async function fetchRssSource(source: NewsSource): Promise<{ articles: RawArticle[]; diagnostic: SourceDiagnostic }> {
   const parser = new Parser();
   const feed = await parser.parseURL(source.url);
+  let excludedByPatternCount = 0;
 
-  return feed.items
+  const articles = feed.items
     .map((item) => ({
       title: cleanText(item.title ?? ""),
       url: item.link ?? "",
@@ -71,11 +85,26 @@ async function fetchRssSource(source: NewsSource): Promise<RawArticle[]> {
       excerpt: cleanText(item.contentSnippet ?? item.summary ?? "")
     }))
     .filter((article) => article.title && article.url)
+    .filter((article) => {
+      if (!matchesIncludePatterns(article.url, source.includeUrlPatterns)) {
+        return false;
+      }
+      if (matchesExcludePatterns(article.url, source.excludeUrlPatterns)) {
+        excludedByPatternCount += 1;
+        return false;
+      }
+      return true;
+    })
     .filter(isLikelyEntertainmentArticle)
     .slice(0, 20);
+
+  return {
+    articles,
+    diagnostic: buildDiagnostic(source.name, articles, excludedByPatternCount)
+  };
 }
 
-async function fetchHtmlSource(source: NewsSource): Promise<RawArticle[]> {
+async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArticle[]; diagnostic: SourceDiagnostic }> {
   const response = await fetch(source.url, {
     headers: {
       "user-agent": "Mozilla/5.0 (compatible; ChinaEntNewsPhase0/0.1)"
@@ -90,6 +119,7 @@ async function fetchHtmlSource(source: NewsSource): Promise<RawArticle[]> {
   const $ = cheerio.load(html);
   const seen = new Set<string>();
   const articles: RawArticle[] = [];
+  let excludedByPatternCount = 0;
 
   $("a").each((_, element) => {
     const title = cleanText($(element).text());
@@ -105,6 +135,11 @@ async function fetchHtmlSource(source: NewsSource): Promise<RawArticle[]> {
     }
 
     if (!matchesIncludePatterns(url, source.includeUrlPatterns)) {
+      return;
+    }
+
+    if (matchesExcludePatterns(url, source.excludeUrlPatterns)) {
+      excludedByPatternCount += 1;
       return;
     }
 
@@ -125,7 +160,12 @@ async function fetchHtmlSource(source: NewsSource): Promise<RawArticle[]> {
     articles.push(article);
   });
 
-  return articles.slice(0, 20);
+  const limitedArticles = articles.slice(0, 20);
+
+  return {
+    articles: limitedArticles,
+    diagnostic: buildDiagnostic(source.name, limitedArticles, excludedByPatternCount)
+  };
 }
 
 function cleanText(value: string) {
@@ -151,4 +191,23 @@ function matchesIncludePatterns(url: string, patterns?: string[]) {
   }
 
   return patterns.some((pattern) => url.includes(pattern));
+}
+
+function matchesExcludePatterns(url: string, patterns?: string[]) {
+  if (!patterns?.length) {
+    return false;
+  }
+
+  return patterns.some((pattern) => url.includes(pattern));
+}
+
+function buildDiagnostic(sourceName: string, articles: RawArticle[], excludedByPatternCount: number): SourceDiagnostic {
+  return {
+    sourceName,
+    fetchedCount: articles.length,
+    excludedByPatternCount,
+    dedupedCount: 0,
+    selectedForAiCount: 0,
+    sampleTitles: articles.slice(0, 3).map((article) => article.title)
+  };
 }

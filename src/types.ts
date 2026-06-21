@@ -1,5 +1,6 @@
 export type SourceType = "rss" | "html";
 export type Reliability = "A" | "B" | "C" | "D";
+export type AiProvider = "gemini" | "deepseek";
 
 export type NewsSource = {
   name: string;
@@ -9,6 +10,17 @@ export type NewsSource = {
   reliability: Reliability;
   enabled?: boolean;
   includeUrlPatterns?: string[];
+  excludeUrlPatterns?: string[];
+};
+
+export type SourceDiagnostic = {
+  sourceName: string;
+  fetchedCount: number;
+  excludedByPatternCount: number;
+  dedupedCount: number;
+  selectedForAiCount: number;
+  error?: string;
+  sampleTitles: string[];
 };
 
 export type RawArticle = {

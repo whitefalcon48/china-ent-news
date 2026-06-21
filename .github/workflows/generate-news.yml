@@ -2,6 +2,15 @@ name: generate-news
 
 on:
   workflow_dispatch:
+    inputs:
+      provider:
+        description: "AI provider"
+        required: true
+        default: "gemini"
+        type: choice
+        options:
+          - gemini
+          - deepseek
 
 jobs:
   generate-news:
@@ -23,12 +32,15 @@ jobs:
       - name: Generate news Markdown
         run: npm run start
         env:
+          AI_PROVIDER: ${{ inputs.provider }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash-lite
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_MODEL: deepseek-chat
 
       - name: Upload generated Markdown
         uses: actions/upload-artifact@v4
         with:
-          name: generated-news-markdown
+          name: generated-news-markdown-${{ inputs.provider }}
           path: output/*.md
           if-no-files-found: error

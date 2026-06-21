@@ -1,20 +1,22 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { ProcessedArticle } from "./types.js";
+import type { AiProvider, ProcessedArticle } from "./types.js";
 
-export async function renderMarkdownFile(articles: ProcessedArticle[], date = today()) {
-  const outputPath = path.resolve("output", `${date}.md`);
+export async function renderMarkdownFile(articles: ProcessedArticle[], provider: AiProvider, date = today()) {
+  const outputPath = path.resolve("output", `${date}-${provider}.md`);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
-  await fs.writeFile(outputPath, renderMarkdown(articles, date), "utf8");
+  await fs.writeFile(outputPath, renderMarkdown(articles, date, provider), "utf8");
   return outputPath;
 }
 
-function renderMarkdown(articles: ProcessedArticle[], date: string) {
+function renderMarkdown(articles: ProcessedArticle[], date: string, provider: AiProvider) {
   const body = articles.length
     ? articles.map((article, index) => renderArticle(article, index + 1)).join("\n\n")
     : "今日は出力できる記事がありませんでした。\n";
 
   return `# 中国エンタメニュース ${date}
+
+AI provider: ${provider}
 
 ${body}
 `;
@@ -32,7 +34,7 @@ function renderArticle(article: ProcessedArticle, index: number) {
 **URL**：${raw.url}
 
 ### AI処理失敗
-Gemini APIでこの記事を整理できませんでした。
+AI APIでこの記事を整理できませんでした。
 
 ### 原因メモ
 - ${aiError ?? "詳細不明"}`;
