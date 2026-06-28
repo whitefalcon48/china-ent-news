@@ -35,6 +35,7 @@ async function main() {
   const { articles, errors, diagnostics } = await fetchAllSources(sources);
   const dedupedArticles = dedupeArticles(articles);
   const classifiedArticles = attachRelatedSources(dedupedArticles.map((article) => classifyArticle(article, filterConfig)));
+  const topicMergeResult = mergeTopicDuplicates(classifiedArticles);
   const preAiExclusions = classifiedArticles
     .filter((article) => article.skipReason || !isPublishableType(article.articleType ?? "unknown"))
     .map((article) => ({
@@ -42,7 +43,7 @@ async function main() {
       type: article.articleType ?? "unknown",
       reason: article.skipReason || article.articleType || "not_publishable"
     }));
-  const eligibleArticles = classifiedArticles.filter((article) => !article.skipReason && isPublishableType(article.articleType ?? "unknown"));
+  const eligibleArticles = topicMergeResult.articles.filter((article) => !article.skipReason && isPublishableType(article.articleType ?? "unknown"));
   const selectedCandidates = selectArticlesForAi(eligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE);
   const enrichedSelectedCandidates = await Promise.all(selectedCandidates.map((article) => enrichArticleContent(article)));
   const rawContentExclusions = enrichedSelectedCandidates
@@ -60,9 +61,13 @@ async function main() {
 
   logSourceDiagnostics(enrichedDiagnostics);
   logArticleTypeCounts(classifiedArticles);
+  logMetadataCounts(classifiedArticles);
   logExclusions("除外記事", preAiExclusions);
   logExclusions("本文量不足の除外記事", rawContentExclusions);
   console.log(`topic_key生成件数: ${new Set(classifiedArticles.map((article) => article.topicKey).filter(Boolean)).size}`);
+  console.log(`topic統合件数: ${topicMergeResult.mergedTopicCount}`);
+  logDuplicateCandidates(topicMergeResult.duplicateCandidates);
+  console.log("HOT SEARCH取得: 未実装のためスキップ（graceful fallback）");
   logFinalSourceDistribution(selectedArticles);
   logFinalCategoryDistribution(selectedArticles, "最終AI処理対象のカテゴリ配分");
 
@@ -73,6 +78,10 @@ async function main() {
       console.log(`rawContentLength: ${article.rawContentLength ?? 0}`);
       console.log(`articleType: ${article.articleType ?? "unknown"}`);
       console.log(`category: ${article.feedCategory ?? article.category}`);
+      console.log(`badge: ${article.badge ?? "NEWS"}`);
+      console.log(`sourceType: ${article.sourceType ?? "media_report"}`);
+      console.log(`freshnessLabel: ${article.freshnessLabel ?? "background"}`);
+      console.log(`newsworthinessScore: ${article.newsworthinessScore ?? 0}`);
       const summary = await summarizeArticle(article, provider);
       if (!isPublishableType(summary.article_type)) {
         postAiExclusions.push({
@@ -143,6 +152,50 @@ function attachRelatedSources(articles: RawArticle[]) {
   }));
 }
 
+function mergeTopicDuplicates(articles: RawArticle[]) {
+  const groups = new Map<string, RawArticle[]>();
+  for (const article of articles) {
+    const key = article.topicKey || article.title;
+    const group = groups.get(key) ?? [];
+    group.push(article);
+    groups.set(key, group);
+  }
+
+  const mergedArticles: RawArticle[] = [];
+  const duplicateCandidates: Array<{ topicKey: string; titles: string[]; sources: string[] }> = [];
+  let mergedTopicCount = 0;
+
+  for (const [topicKey, group] of groups.entries()) {
+    const relatedSources = dedupeSourceRefs(group.flatMap((article) => article.relatedSources ?? [{ name: article.sourceName, url: article.url }]));
+    const representative = [...group].sort((a, b) => (b.newsworthinessScore ?? 0) - (a.newsworthinessScore ?? 0))[0];
+    mergedArticles.push({
+      ...representative,
+      relatedSources
+    });
+
+    if (group.length > 1) {
+      mergedTopicCount += group.length - 1;
+      duplicateCandidates.push({
+        topicKey,
+        titles: group.map((article) => article.title),
+        sources: [...new Set(group.map((article) => article.sourceName))]
+      });
+    }
+  }
+
+  return { articles: mergedArticles, duplicateCandidates, mergedTopicCount };
+}
+
+function dedupeSourceRefs(sources: NonNullable<RawArticle["relatedSources"]>) {
+  const byName = new Map<string, string | undefined>();
+  for (const source of sources) {
+    if (!byName.has(source.name)) {
+      byName.set(source.name, source.url);
+    }
+  }
+  return [...byName.entries()].map(([name, url]) => ({ name, url }));
+}
+
 function selectArticlesForAi(articles: RawArticle[], maxArticles: number, maxPerSource: number) {
   const selected: RawArticle[] = [];
   const groupedArticles = new Map<FeedCategory, RawArticle[]>();
@@ -151,6 +204,13 @@ function selectArticlesForAi(articles: RawArticle[], maxArticles: number, maxPer
     const group = groupedArticles.get(category) ?? [];
     group.push(article);
     groupedArticles.set(category, group);
+  }
+
+  for (const [category, group] of groupedArticles.entries()) {
+    groupedArticles.set(
+      category,
+      [...group].sort((a, b) => (b.newsworthinessScore ?? 0) - (a.newsworthinessScore ?? 0))
+    );
   }
 
   const categories: FeedCategory[] = ["映画", "ドラマ・配信", "芸能・俳優", "業界動向", "公式発表", "海外中国映画祭・文化交流", "その他"];
@@ -266,6 +326,42 @@ function logArticleTypeCounts(articles: RawArticle[]) {
   console.log("articleType別件数");
   for (const [type, count] of [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0], "ja"))) {
     console.log(`- ${type}: ${count}件`);
+  }
+}
+
+function logMetadataCounts(articles: RawArticle[]) {
+  logFieldCounts("badge別件数", articles.map((article) => article.badge ?? "NEWS"));
+  logFieldCounts("source_type別件数", articles.map((article) => article.sourceType ?? "media_report"));
+  logFieldCounts("freshness_label別件数", articles.map((article) => article.freshnessLabel ?? "background"));
+
+  console.log("");
+  console.log("newsworthiness_score 上位記事");
+  for (const article of [...articles].sort((a, b) => (b.newsworthinessScore ?? 0) - (a.newsworthinessScore ?? 0)).slice(0, 8)) {
+    console.log(`- ${article.newsworthinessScore ?? 0}: ${article.title}`);
+  }
+}
+
+function logFieldCounts(title: string, values: string[]) {
+  const counts = new Map<string, number>();
+  for (const value of values) {
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+
+  console.log("");
+  console.log(title);
+  for (const [value, count] of [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0], "ja"))) {
+    console.log(`- ${value}: ${count}件`);
+  }
+}
+
+function logDuplicateCandidates(candidates: Array<{ topicKey: string; titles: string[]; sources: string[] }>) {
+  console.log("");
+  console.log(`重複候補: ${candidates.length}件`);
+  for (const candidate of candidates) {
+    console.log(`- ${candidate.topicKey}: ${candidate.sources.join(" / ")}`);
+    for (const title of candidate.titles.slice(0, 3)) {
+      console.log(`  - ${title}`);
+    }
   }
 }
 

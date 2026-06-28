@@ -31,21 +31,43 @@ function renderArticle(article: ProcessedArticle, index: number) {
 
   const title = summary.title_ja || raw.title;
   const sources = summary.source_list.length ? summary.source_list : [{ name: raw.sourceName, url: raw.url }];
+  const freshness = formatFreshness(summary.event_date || summary.published_date, summary.freshness_label);
   const sections = [
     summary.lead,
+    `情報源タイプ：${summary.source_type}`,
     summary.what_happened ? `### 何が起きた？\n${summary.what_happened}` : "",
+    summary.why_it_matters ? `### なぜ話題？\n${summary.why_it_matters}` : "",
     summary.reaction_view ? `### 反応・見られ方\n${summary.reaction_view}` : "",
-    summary.editor_note ? `### 編集メモ\n${summary.editor_note}` : "",
+    summary.japan_context_note ? `### 日本語圏では見えにくいポイント\n${summary.japan_context_note}` : "",
+    summary.editor_comment ? `### ひとこと\n${summary.editor_comment}` : "",
     `ソース：${sources.map(formatSourceLink).join("、")}`
   ].filter(Boolean);
 
-  return `## 【${summary.category || raw.category}｜確度${summary.confidence || raw.reliability}】${title}
+  return `## 【${summary.badge}｜${summary.category || raw.category}｜確度${summary.confidence || raw.reliability}｜${freshness}】${title}
 
 ${sections.join("\n\n")}`;
 }
 
 function formatSourceLink(source: { name: string; url?: string }) {
   return source.url ? `[${source.name}](${source.url})` : source.name;
+}
+
+function formatFreshness(dateValue: string, label: string) {
+  if (dateValue) {
+    const [, month, day] = dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/) ?? [];
+    if (month && day) {
+      return `${Number(month)}/${Number(day)}`;
+    }
+  }
+
+  const labels: Record<string, string> = {
+    today: "今日",
+    yesterday: "昨日",
+    recent: "近日",
+    old: "旧聞",
+    background: "背景"
+  };
+  return labels[label] ?? "時期不明";
 }
 
 function today() {
