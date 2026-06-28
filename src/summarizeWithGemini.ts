@@ -1,3 +1,5 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import type {
   AiProvider,
   ArticleType,
@@ -14,8 +16,24 @@ import type {
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 
+let editorialCharacterCache: string | undefined;
+
+async function loadEditorialCharacter() {
+  if (editorialCharacterCache !== undefined) {
+    return editorialCharacterCache;
+  }
+
+  try {
+    editorialCharacterCache = await fs.readFile(path.resolve("docs", "editorial-character.md"), "utf8");
+  } catch {
+    editorialCharacterCache = "Read local editorial-character policy if available. Focus on China-local entertainment context, Japan visibility gaps, cautious handling of PR, rumors, and SNS heat.";
+  }
+
+  return editorialCharacterCache;
+}
+
 export async function summarizeArticle(article: RawArticle, provider = getAiProvider()): Promise<SummarizedArticle> {
-  const text = await generateJson(provider, buildPrompt(article));
+  const text = await generateJson(provider, await buildPrompt(article));
   return mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article);
 }
 
@@ -186,8 +204,16 @@ async function generateDeepSeekJson(prompt: string) {
   return text;
 }
 
-function buildPrompt(article: RawArticle) {
+async function buildPrompt(article: RawArticle) {
+  const editorialCharacter = await loadEditorialCharacter();
+
   return `あなたは中国エンタメの最新順フィードを作る編集補助AIです。
+
+Editorial character policy document (docs/editorial-character.md):
+${editorialCharacter}
+
+Use the document above as the highest-priority editorial policy for title angle, hitokoto, Japan-context notes, PR WATCH handling, HOT SEARCH handling, and cautious rumor wording.
+
 
 目的:
 - 表に出す文章は、ナルエビちゃんニュース型の軽いニュースメモにする。
@@ -245,7 +271,7 @@ function buildPrompt(article: RawArticle) {
 - HOT SEARCHは通常ニュースと同じフィードに混ぜるが、断定しない。公式発表や大手報道がない場合、confidence は C または D にする。
 - PR WATCHは官製PRや文化交流記事をそのまま流さず、何を外向きに見せたい記事かをひとことで補足する。
 - ゴシップでは「報じられた」「SNS上で話題になっている」など情報源に応じた表現にする。
-- ゴシップや未確認情報がある場合、本人・事務所・公式側の反応有無と出典の弱さを editor_note または verification_status に反映する。
+- ゴシップや未確認情報がある場合、本人・事務所・公式側の反応有無と出典の弱さを editor_comment または verification_status に反映する。
 - 原文を翻訳調でなぞらず、日本語として自然に再構成する。
 - 必ずJSONだけを返す。説明文やMarkdownは返さない。
 

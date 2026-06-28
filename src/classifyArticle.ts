@@ -45,8 +45,8 @@ export function classifyArticle(article: RawArticle, config: ArticleFilterConfig
   const eventDate = getEventDate(article, publishedDate);
   const freshnessLabel = getFreshnessLabel(publishedDate || eventDate);
   const sourceType = getSourceType(article, articleType);
-  const isLowPriority = isLowPriorityArticle(article);
-  const badge = getBadge(article, articleType, sourceType, isLowPriority);
+  const isLowPriority = isLowPriorityArticle(article, freshnessLabel, sourceType);
+  const badge = getBadge(article, articleType, sourceType, isLowPriority, freshnessLabel);
   const japanVisibility = getJapanVisibility(article);
   const japanGap = getJapanGap(article, feedCategory);
   const contextValue = getContextValue(article, feedCategory);
@@ -147,9 +147,10 @@ function getFeedCategory(article: RawArticle, articleType: ArticleType): FeedCat
   return "その他";
 }
 
-function isLowPriorityArticle(article: RawArticle) {
+function isLowPriorityArticle(article: RawArticle, freshnessLabel: FreshnessLabel, sourceType: SourceTypeLabel) {
   const text = `${article.title} ${article.excerpt ?? ""}`;
   return (
+    ((freshnessLabel === "old" || freshnessLabel === "background") && sourceType === "media_report") ||
     isGenericOverseasChinaFilmFestival(text) ||
     /文化交流|合作协议|签署合作|友好交流|代表团|座谈会|工作部署|推进会/.test(text) ||
     /开幕/.test(text) && /中国电影节/.test(text)
@@ -243,7 +244,7 @@ function getSourceType(article: RawArticle, articleType: ArticleType): SourceTyp
   return "media_report";
 }
 
-function getBadge(article: RawArticle, articleType: ArticleType, sourceType: SourceTypeLabel, isLowPriority: boolean): FeedBadge {
+function getBadge(article: RawArticle, articleType: ArticleType, sourceType: SourceTypeLabel, isLowPriority: boolean, freshnessLabel: FreshnessLabel): FeedBadge {
   if (articleType === "sns_trend") {
     return "HOT SEARCH";
   }
@@ -255,6 +256,9 @@ function getBadge(article: RawArticle, articleType: ArticleType, sourceType: Sou
   }
   if (sourceType === "pr_like" || isPrLike(article)) {
     return "PR WATCH";
+  }
+  if (freshnessLabel === "old" || freshnessLabel === "background") {
+    return "WATCH";
   }
   if (isLowPriority) {
     return "WATCH";

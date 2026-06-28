@@ -34,7 +34,7 @@ function renderArticle(article: ProcessedArticle, index: number) {
   const freshness = formatFreshness(summary.event_date || summary.published_date, summary.freshness_label);
   const sections = [
     summary.lead,
-    `情報源タイプ：${summary.source_type}`,
+    `source_type: ${summary.source_type} / freshness_label: ${summary.freshness_label}`,
     summary.what_happened ? `### 何が起きた？\n${summary.what_happened}` : "",
     summary.why_it_matters ? `### なぜ話題？\n${summary.why_it_matters}` : "",
     summary.reaction_view ? `### 反応・見られ方\n${summary.reaction_view}` : "",
