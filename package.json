@@ -8,7 +8,8 @@
     "start": "tsx src/index.ts",
     "test:gemini": "tsx src/testGemini.ts",
     "test:deepseek": "tsx src/testDeepSeek.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "audit:sources": "tsx src/auditSources.ts"
   },
   "dependencies": {
     "cheerio": "^1.0.0",

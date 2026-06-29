@@ -1,0 +1,680 @@
+{
+  "date": "2026-06-28",
+  "generated_at": "2026-06-28T15:41:41.960Z",
+  "sources": [
+    {
+      "source_name": "1905电影网 新闻",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 93,
+      "after_url_exclude_count": 55,
+      "after_dedupe_count": 12,
+      "valid_date_count": 12,
+      "fresh_count": 4,
+      "stale_count": 2,
+      "old_count": 6,
+      "unknown_date_count": 0,
+      "category_counts": {
+        "業界動向": 1,
+        "映画": 5,
+        "芸能・俳優": 3,
+        "ドラマ・配信": 2,
+        "公式発表": 1
+      },
+      "article_type_counts": {
+        "data_report": 1,
+        "news_event": 6,
+        "unknown": 4,
+        "official_announcement": 1
+      },
+      "ai_candidate_count": 1,
+      "sample_items": [
+        {
+          "title": "2026端午档票房3.97亿!《玩具总动员5》斩获冠军",
+          "url": "https://www.1905.com/news/20260622/1761839.shtml",
+          "published_date": "2026-06-22",
+          "date_source": "url",
+          "age_days": 6,
+          "freshness": "recent",
+          "category": "業界動向",
+          "article_type": "data_report",
+          "exclude_reason": ""
+        },
+        {
+          "title": "第23届电影频道传媒关注单元闭幕，《给阿嬷的情书》斩获三项荣誉",
+          "url": "https://www.1905.com/news/20260620/1761714.shtml",
+          "published_date": "2026-06-20",
+          "date_source": "url",
+          "age_days": 8,
+          "freshness": "stale",
+          "category": "映画",
+          "article_type": "news_event",
+          "exclude_reason": "freshness_stale"
+        },
+        {
+          "title": "恶女除渣！惊悚电影《家弑服务》热映 尺度生猛",
+          "url": "https://www.1905.com/news/20260529/1760525.shtml",
+          "published_date": "2026-05-29",
+          "date_source": "url",
+          "age_days": 30,
+          "freshness": "stale",
+          "category": "映画",
+          "article_type": "news_event",
+          "exclude_reason": "freshness_stale"
+        },
+        {
+          "title": "纪录片《咕咕呱呱》首映 95后导演追寻童年记忆",
+          "url": "https://www.1905.com/news/20260623/1761925.shtml",
+          "published_date": "2026-06-23",
+          "date_source": "url",
+          "age_days": 5,
+          "freshness": "recent",
+          "category": "映画",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "电影《无欲之人》上影节首映 祖峰黄小蕾畅聊创作",
+          "url": "https://www.1905.com/news/20260624/1761955.shtml",
+          "published_date": "2026-06-24",
+          "date_source": "url",
+          "age_days": 4,
+          "freshness": "recent",
+          "category": "映画",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "电影《纸盒藏迷》上影节首映 张颂文再现世纪悬案",
+          "url": "https://www.1905.com/news/20260624/1761952.shtml",
+          "published_date": "2026-06-24",
+          "date_source": "url",
+          "age_days": 4,
+          "freshness": "recent",
+          "category": "映画",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "刘思维：开心麻花功勋演员 竟然演了恐怖片！",
+          "url": "https://www.1905.com/news/20260409/1757725.shtml",
+          "published_date": "2026-04-09",
+          "date_source": "url",
+          "age_days": 80,
+          "freshness": "old",
+          "category": "芸能・俳優",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "马律师回归！剧集《夜魔侠：重生2》定档2026.3.4",
+          "url": "https://www.1905.com/news/20251021/1746942.shtml",
+          "published_date": "2025-10-21",
+          "date_source": "url",
+          "age_days": 250,
+          "freshness": "old",
+          "category": "ドラマ・配信",
+          "article_type": "news_event",
+          "exclude_reason": "before_2026"
+        },
+        {
+          "title": "谢尔比家族回归！《浴血黑帮》宣布推出续集剧集",
+          "url": "https://www.1905.com/news/20251015/1746411.shtml",
+          "published_date": "2025-10-15",
+          "date_source": "url",
+          "age_days": 256,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "before_2026"
+        },
+        {
+          "title": "演员于朦胧坠楼身亡 杨幂、迪丽热巴等发文悼念",
+          "url": "https://www.1905.com/news/20250912/1743174.shtml",
+          "published_date": "2025-09-12",
+          "date_source": "url",
+          "age_days": 289,
+          "freshness": "old",
+          "category": "芸能・俳優",
+          "article_type": "news_event",
+          "exclude_reason": "before_2026"
+        }
+      ]
+    },
+    {
+      "source_name": "界面新闻 影视产业",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 26,
+      "after_url_exclude_count": 24,
+      "after_dedupe_count": 8,
+      "valid_date_count": 0,
+      "fresh_count": 0,
+      "stale_count": 0,
+      "old_count": 0,
+      "unknown_date_count": 8,
+      "category_counts": {
+        "業界動向": 7,
+        "芸能・俳優": 1
+      },
+      "article_type_counts": {
+        "data_report": 5,
+        "unknown": 1,
+        "interview": 1,
+        "news_event": 1
+      },
+      "ai_candidate_count": 0,
+      "sample_items": [
+        {
+          "title": "豆瓣9.2分！《给阿嬷的情书》总票房突破11亿元，投资回报率或达50倍",
+          "url": "https://www.jiemian.com/article/14482729.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "業界動向",
+          "article_type": "data_report",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "即将到来的暑期档，是影视公司避无可避的“斩杀线”",
+          "url": "https://www.jiemian.com/article/14454320.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "業界動向",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "《给阿嬷的情书》票房突破5亿元，猫眼预测将超14亿元",
+          "url": "https://www.jiemian.com/article/14443514.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "業界動向",
+          "article_type": "data_report",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "《给阿嬷的情书》票房破2亿， 小成本方言片书写逆袭传奇",
+          "url": "https://www.jiemian.com/article/14425424.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "業界動向",
+          "article_type": "data_report",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "不怕票房亏损的新消费品公司，和困在爆款里的影视公司",
+          "url": "https://www.jiemian.com/article/14546445.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "業界動向",
+          "article_type": "data_report",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "票房破10亿！全民口碑“托举”《给阿嬷的情书》",
+          "url": "https://www.jiemian.com/article/14474253.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "業界動向",
+          "article_type": "data_report",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "当观众在观影时掏手机，我就会很焦虑 | 专访《森中有林》导演郑执",
+          "url": "https://www.jiemian.com/article/14492918.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "業界動向",
+          "article_type": "interview",
+          "exclude_reason": "interview"
+        },
+        {
+          "title": "香港艺人马浚伟出任上市公司衍生集团高管，年薪252万港元",
+          "url": "https://www.jiemian.com/article/14460878.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "芸能・俳優",
+          "article_type": "news_event",
+          "exclude_reason": "freshness_unknown"
+        }
+      ]
+    },
+    {
+      "source_name": "国家广播电视总局",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 86,
+      "after_url_exclude_count": 86,
+      "after_dedupe_count": 18,
+      "valid_date_count": 18,
+      "fresh_count": 3,
+      "stale_count": 4,
+      "old_count": 11,
+      "unknown_date_count": 0,
+      "category_counts": {
+        "公式発表": 18
+      },
+      "article_type_counts": {
+        "official_announcement": 18
+      },
+      "ai_candidate_count": 3,
+      "sample_items": [
+        {
+          "title": "国家广播电视总局与缅甸宣传部签署合作协议",
+          "url": "https://www.nrta.gov.cn/art/2026/6/16/art_112_73473.html",
+          "published_date": "2026-06-16",
+          "date_source": "url",
+          "age_days": 12,
+          "freshness": "stale",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_stale"
+        },
+        {
+          "title": "国家广播电视总局举办电视剧《主角》创作座谈会",
+          "url": "https://www.nrta.gov.cn/art/2026/6/10/art_112_73449.html",
+          "published_date": "2026-06-10",
+          "date_source": "url",
+          "age_days": 18,
+          "freshness": "stale",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_stale"
+        },
+        {
+          "title": "国家广播电视总局召开“微短剧精品创作传播计划”工作部署推进会",
+          "url": "https://www.nrta.gov.cn/art/2026/5/14/art_112_73305.html",
+          "published_date": "2026-05-14",
+          "date_source": "url",
+          "age_days": 45,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_old"
+        },
+        {
+          "title": "2026年全国广播电视安全传输保障工作会暨应急广播服务防灾减灾救灾工作会在武汉召开",
+          "url": "https://www.nrta.gov.cn/art/2026/5/28/art_112_73383.html",
+          "published_date": "2026-05-28",
+          "date_source": "url",
+          "age_days": 31,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_old"
+        },
+        {
+          "title": "国家广播电视总局办公厅关于调整内地与香港特别行政区、澳门特别行政区合拍电视剧片管理有关规定的通知",
+          "url": "https://www.nrta.gov.cn/art/2025/6/25/art_1588_70990.html",
+          "published_date": "2025-06-25",
+          "date_source": "url",
+          "age_days": 368,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "before_2026"
+        },
+        {
+          "title": "国家广播电视总局令第14号：关于废止《广播电影电视行政复议办法》的决定",
+          "url": "https://www.nrta.gov.cn/art/2024/3/11/art_1588_66920.html",
+          "published_date": "2024-03-11",
+          "date_source": "url",
+          "age_days": 839,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "before_2026"
+        },
+        {
+          "title": "国家广播电视总局令第13号：《广播电视无线传输覆盖网管理办法》",
+          "url": "https://www.nrta.gov.cn/art/2022/9/30/art_1588_61990.html",
+          "published_date": "2022-09-30",
+          "date_source": "url",
+          "age_days": 1367,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "before_2026"
+        },
+        {
+          "title": "国家广播电视总局令第12号：《广播电视节目传送业务管理办法》",
+          "url": "https://www.nrta.gov.cn/art/2022/9/30/art_1588_61988.html",
+          "published_date": "2022-09-30",
+          "date_source": "url",
+          "age_days": 1367,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "before_2026"
+        },
+        {
+          "title": "国家广播电视总局令第11号：《广播电视行政处罚程序规定》",
+          "url": "https://www.nrta.gov.cn/art/2021/12/15/art_1588_58907.html",
+          "published_date": "2021-12-15",
+          "date_source": "url",
+          "age_days": 1656,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "before_2026"
+        },
+        {
+          "title": "国家广播电视总局关于《微短剧发展管理办法（征求意见稿）》公开征求意见的通知",
+          "url": "https://www.nrta.gov.cn/art/2026/6/24/art_113_73514.html",
+          "published_date": "2026-06-24",
+          "date_source": "url",
+          "age_days": 4,
+          "freshness": "recent",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": ""
+        }
+      ]
+    },
+    {
+      "source_name": "国家电影局",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 65,
+      "after_url_exclude_count": 65,
+      "after_dedupe_count": 14,
+      "valid_date_count": 13,
+      "fresh_count": 4,
+      "stale_count": 4,
+      "old_count": 5,
+      "unknown_date_count": 1,
+      "category_counts": {
+        "公式発表": 13,
+        "海外中国映画祭・文化交流": 1
+      },
+      "article_type_counts": {
+        "static_page": 1,
+        "official_announcement": 12,
+        "data_report": 1
+      },
+      "ai_candidate_count": 4,
+      "sample_items": [
+        {
+          "title": "电影电子政务平台",
+          "url": "https://www.chinafilm.gov.cn/bsfw/dydzzwpt/",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "公式発表",
+          "article_type": "static_page",
+          "exclude_reason": "static_page"
+        },
+        {
+          "title": "2026塞浦路斯“中国电影周”圆满落幕",
+          "url": "https://www.chinafilm.gov.cn/xwzx/tp/202606/t20260622_995543.html",
+          "published_date": "2026-06-22",
+          "date_source": "url",
+          "age_days": 6,
+          "freshness": "recent",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": ""
+        },
+        {
+          "title": "2026希腊“中国电影节”在雅典隆重开幕",
+          "url": "https://www.chinafilm.gov.cn/xwzx/tp/202606/t20260623_995703.html",
+          "published_date": "2026-06-23",
+          "date_source": "url",
+          "age_days": 5,
+          "freshness": "recent",
+          "category": "海外中国映画祭・文化交流",
+          "article_type": "official_announcement",
+          "exclude_reason": ""
+        },
+        {
+          "title": "国家电影局关于2026年5月上全国电影剧本（梗概） 备案、立项公示的通知",
+          "url": "https://www.chinafilm.gov.cn/xxgk/gsxx/dybalx/202606/t20260612_994407.html",
+          "published_date": "2026-06-12",
+          "date_source": "url",
+          "age_days": 16,
+          "freshness": "stale",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_stale"
+        },
+        {
+          "title": "国家电影局关于开展2026年度高级职称评审工作的通知",
+          "url": "https://www.chinafilm.gov.cn/xxgk/gztz/202605/t20260529_992297.html",
+          "published_date": "2026-05-29",
+          "date_source": "url",
+          "age_days": 30,
+          "freshness": "stale",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_stale"
+        },
+        {
+          "title": "第二十一届夏衍杯优秀电影剧本征集活动启事",
+          "url": "https://www.chinafilm.gov.cn/xxgk/gztz/202605/t20260526_991272.html",
+          "published_date": "2026-05-26",
+          "date_source": "url",
+          "age_days": 33,
+          "freshness": "old",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_old"
+        },
+        {
+          "title": "上影节“朋友圈”再扩容 阿拉伯语电影集中登场",
+          "url": "https://www.chinafilm.gov.cn/xwzx/gzdt/202606/t20260623_995700.html",
+          "published_date": "2026-06-23",
+          "date_source": "url",
+          "age_days": 5,
+          "freshness": "recent",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": ""
+        },
+        {
+          "title": "第28届上海国际电影节金爵奖名单揭晓",
+          "url": "https://www.chinafilm.gov.cn/xwzx/gzdt/202606/t20260623_995698.html",
+          "published_date": "2026-06-23",
+          "date_source": "url",
+          "age_days": 5,
+          "freshness": "recent",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": ""
+        },
+        {
+          "title": "第28届上海国际电影节金爵主论坛举行",
+          "url": "https://www.chinafilm.gov.cn/xwzx/gzdt/202606/t20260617_995187.html",
+          "published_date": "2026-06-17",
+          "date_source": "url",
+          "age_days": 11,
+          "freshness": "stale",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_stale"
+        },
+        {
+          "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+          "url": "https://www.chinafilm.gov.cn/xxgk/kjybz/202606/t20260615_994714.html",
+          "published_date": "2026-06-15",
+          "date_source": "url",
+          "age_days": 13,
+          "freshness": "stale",
+          "category": "公式発表",
+          "article_type": "data_report",
+          "exclude_reason": "freshness_stale"
+        }
+      ]
+    },
+    {
+      "source_name": "新京报 娱乐",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 28,
+      "after_url_exclude_count": 24,
+      "after_dedupe_count": 7,
+      "valid_date_count": 0,
+      "fresh_count": 0,
+      "stale_count": 0,
+      "old_count": 0,
+      "unknown_date_count": 7,
+      "category_counts": {
+        "芸能・俳優": 1,
+        "映画": 3,
+        "公式発表": 1,
+        "ドラマ・配信": 2
+      },
+      "article_type_counts": {
+        "unknown": 4,
+        "official_announcement": 1,
+        "news_event": 2
+      },
+      "ai_candidate_count": 0,
+      "sample_items": [
+        {
+          "title": "《四渡》刘烨:三次饰演毛主席，是演员的荣幸",
+          "url": "https://www.bjnews.com.cn/detail/1782182576168858.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "芸能・俳優",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "第38届大众电影百花奖线上投票通道开放，20部影片等你来选",
+          "url": "https://www.bjnews.com.cn/detail/1782458014168958.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "映画",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "电影《四渡》今日公映，以智破局绝境逆袭，信仰力量直抵人心",
+          "url": "https://www.bjnews.com.cn/detail/1782444325129340.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "映画",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        },
+        {
+          "title": "2026腾讯视频年度发布剧集超120部，多元品类共筑内容生态",
+          "url": "https://www.bjnews.com.cn/detail/1782378121169539.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "公式発表",
+          "article_type": "official_announcement",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "旅行综艺《快乐老家》定档，孙浩、李静、戴军等探索养老生活",
+          "url": "https://www.bjnews.com.cn/detail/1782378111169538.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "ドラマ・配信",
+          "article_type": "news_event",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "电影《四渡》举办观影交流会，专家学者称匠心赓续红色革命精神",
+          "url": "https://www.bjnews.com.cn/detail/1782273830168900.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "映画",
+          "article_type": "news_event",
+          "exclude_reason": "freshness_unknown"
+        },
+        {
+          "title": "8 卢鹿鹿：不给自己设限，把成长交给时间丨短剧演员说",
+          "url": "https://www.bjnews.com.cn/detail/1782208383168883.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "ドラマ・配信",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        }
+      ]
+    },
+    {
+      "source_name": "新浪娱乐",
+      "fetch_status": "empty",
+      "fetch_error": "",
+      "raw_count": 81,
+      "after_url_exclude_count": 6,
+      "after_dedupe_count": 0,
+      "valid_date_count": 0,
+      "fresh_count": 0,
+      "stale_count": 0,
+      "old_count": 0,
+      "unknown_date_count": 0,
+      "category_counts": {},
+      "article_type_counts": {},
+      "ai_candidate_count": 0,
+      "sample_items": []
+    },
+    {
+      "source_name": "澎湃新闻 文娱",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 20,
+      "after_url_exclude_count": 11,
+      "after_dedupe_count": 1,
+      "valid_date_count": 0,
+      "fresh_count": 0,
+      "stale_count": 0,
+      "old_count": 0,
+      "unknown_date_count": 1,
+      "category_counts": {
+        "芸能・俳優": 1
+      },
+      "article_type_counts": {
+        "unknown": 1
+      },
+      "ai_candidate_count": 0,
+      "sample_items": [
+        {
+          "title": "推荐太合音乐拟港股上市：单一艺人连续两年采购额超三成",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33451502",
+          "published_date": "",
+          "date_source": "unknown",
+          "age_days": null,
+          "freshness": "unknown",
+          "category": "芸能・俳優",
+          "article_type": "unknown",
+          "exclude_reason": "unknown"
+        }
+      ]
+    }
+  ]
+}

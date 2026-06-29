@@ -42,6 +42,8 @@ export async function fetchAllSources(sources: NewsSource[]) {
         errors.push(`${source.name}: ${message}`);
         diagnostics.push({
           sourceName: source.name,
+          rawCount: 0,
+          afterUrlExcludeCount: 0,
           fetchedCount: 0,
           excludedByPatternCount: 0,
           dedupedCount: 0,
@@ -112,7 +114,7 @@ async function fetchRssSource(source: NewsSource): Promise<{ articles: RawArticl
   const feed = await parser.parseURL(source.url);
   let excludedByPatternCount = 0;
 
-  const articles = feed.items
+  const rawArticles = feed.items
     .map((item) => ({
       title: cleanText(item.title ?? ""),
       url: item.link ?? "",
@@ -123,23 +125,24 @@ async function fetchRssSource(source: NewsSource): Promise<{ articles: RawArticl
       publishedAt: item.isoDate ?? item.pubDate,
       excerpt: cleanText(item.contentSnippet ?? item.summary ?? "")
     }))
-    .filter((article) => article.title && article.url)
-    .filter((article) => {
-      if (!matchesIncludePatterns(article.url, source.includeUrlPatterns)) {
-        return false;
-      }
-      if (matchesExcludePatterns(article.url, source.excludeUrlPatterns)) {
-        excludedByPatternCount += 1;
-        return false;
-      }
-      return true;
-    })
-    .filter(isLikelyEntertainmentArticle)
-    .slice(0, 20);
+    .filter((article) => article.title && article.url);
+
+  const afterUrlExcludeArticles = rawArticles.filter((article) => {
+    if (!matchesIncludePatterns(article.url, source.includeUrlPatterns)) {
+      return false;
+    }
+    if (matchesExcludePatterns(article.url, source.excludeUrlPatterns)) {
+      excludedByPatternCount += 1;
+      return false;
+    }
+    return true;
+  });
+
+  const articles = afterUrlExcludeArticles.filter(isLikelyEntertainmentArticle).slice(0, 20);
 
   return {
     articles,
-    diagnostic: buildDiagnostic(source.name, articles, excludedByPatternCount)
+    diagnostic: buildDiagnostic(source.name, articles, excludedByPatternCount, rawArticles.length, afterUrlExcludeArticles.length)
   };
 }
 
@@ -158,6 +161,8 @@ async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArtic
   const $ = cheerio.load(html);
   const seen = new Set<string>();
   const articles: RawArticle[] = [];
+  let rawCount = 0;
+  let afterUrlExcludeCount = 0;
   let excludedByPatternCount = 0;
 
   $("a").each((_, element) => {
@@ -173,6 +178,9 @@ async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArtic
       return;
     }
 
+    seen.add(url);
+    rawCount += 1;
+
     if (!matchesIncludePatterns(url, source.includeUrlPatterns)) {
       return;
     }
@@ -181,6 +189,8 @@ async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArtic
       excludedByPatternCount += 1;
       return;
     }
+
+    afterUrlExcludeCount += 1;
 
     const article: RawArticle = {
       title,
@@ -195,7 +205,6 @@ async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArtic
       return;
     }
 
-    seen.add(url);
     articles.push(article);
   });
 
@@ -203,7 +212,7 @@ async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArtic
 
   return {
     articles: limitedArticles,
-    diagnostic: buildDiagnostic(source.name, limitedArticles, excludedByPatternCount)
+    diagnostic: buildDiagnostic(source.name, limitedArticles, excludedByPatternCount, rawCount, afterUrlExcludeCount)
   };
 }
 
@@ -253,9 +262,11 @@ function matchesExcludePatterns(url: string, patterns?: string[]) {
   return patterns.some((pattern) => url.includes(pattern));
 }
 
-function buildDiagnostic(sourceName: string, articles: RawArticle[], excludedByPatternCount: number): SourceDiagnostic {
+function buildDiagnostic(sourceName: string, articles: RawArticle[], excludedByPatternCount: number, rawCount = articles.length, afterUrlExcludeCount = articles.length): SourceDiagnostic {
   return {
     sourceName,
+    rawCount,
+    afterUrlExcludeCount,
     fetchedCount: articles.length,
     excludedByPatternCount,
     dedupedCount: 0,

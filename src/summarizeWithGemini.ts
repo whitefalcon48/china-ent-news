@@ -324,7 +324,7 @@ Use the document above as the highest-priority editorial policy for title angle,
 - 事前source_type: ${article.sourceType ?? "media_report"}
 - 事前published_date: ${article.publishedDate ?? ""}
 - 事前event_date: ${article.eventDate ?? ""}
-- 事前freshness_label: ${article.freshnessLabel ?? "background"}
+- 事前freshness_label: ${article.freshnessLabel ?? "unknown"}
 - 事前newsworthiness_score: ${article.newsworthinessScore ?? 0}
 - 事前japan_visibility: ${article.japanVisibility ?? "unknown"}
 - 事前japan_gap: ${article.japanGap ?? "unknown"}
@@ -415,7 +415,7 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
         : summary.source_type || article.sourceType || "media_report",
     published_date: summary.published_date || article.publishedDate || "",
     event_date: summary.event_date || article.eventDate || "",
-    freshness_label: summary.freshness_label || article.freshnessLabel || "background",
+    freshness_label: summary.freshness_label || article.freshnessLabel || "unknown",
     newsworthiness_score: summary.newsworthiness_score || article.newsworthinessScore || 0,
     japan_visibility: summary.japan_visibility === "unknown" ? article.japanVisibility ?? "unknown" : summary.japan_visibility,
     japan_gap: summary.japan_gap === "unknown" ? article.japanGap ?? "unknown" : summary.japan_gap,
@@ -464,8 +464,8 @@ function normalizeSourceType(value: unknown): SourceTypeLabel {
 }
 
 function normalizeFreshnessLabel(value: unknown): FreshnessLabel {
-  const allowed: FreshnessLabel[] = ["today", "yesterday", "recent", "old", "background"];
-  return typeof value === "string" && allowed.includes(value as FreshnessLabel) ? (value as FreshnessLabel) : "background";
+  const allowed: FreshnessLabel[] = ["today", "yesterday", "recent", "stale", "old", "unknown", "background"];
+  return typeof value === "string" && allowed.includes(value as FreshnessLabel) ? (value as FreshnessLabel) : "unknown";
 }
 
 function normalizeLevelLabel(value: unknown): LevelLabel {

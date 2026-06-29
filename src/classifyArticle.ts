@@ -7,6 +7,7 @@ import type {
   FeedBadge,
   FeedCategory,
   FreshnessLabel,
+  DateSource,
   LevelLabel,
   MainEntities,
   RawArticle,
@@ -41,9 +42,10 @@ export function classifyArticle(article: RawArticle, config: ArticleFilterConfig
   const articleType = detectArticleType(article, config);
   const topicKey = createTopicKey(article.title);
   const feedCategory = getFeedCategory(article, articleType);
-  const publishedDate = getPublishedDate(article);
+  const dateInfo = getArticleDateInfo(article);
+  const publishedDate = dateInfo.publishedDate;
   const eventDate = getEventDate(article, publishedDate);
-  const freshnessLabel = getFreshnessLabel(publishedDate || eventDate);
+  const freshnessLabel = dateInfo.freshnessLabel;
   const sourceType = getSourceType(article, articleType);
   const isLowPriority = isLowPriorityArticle(article, freshnessLabel, sourceType);
   const badge = getBadge(article, articleType, sourceType, isLowPriority, freshnessLabel);
@@ -65,6 +67,8 @@ export function classifyArticle(article: RawArticle, config: ArticleFilterConfig
     publishedDate,
     eventDate,
     freshnessLabel,
+    dateSource: dateInfo.dateSource,
+    ageDays: dateInfo.ageDays,
     newsworthinessScore: getNewsworthinessScore(article, articleType, feedCategory, sourceType, freshnessLabel, japanGap, contextValue, snsHeat),
     japanVisibility,
     japanGap,
@@ -150,7 +154,7 @@ function getFeedCategory(article: RawArticle, articleType: ArticleType): FeedCat
 function isLowPriorityArticle(article: RawArticle, freshnessLabel: FreshnessLabel, sourceType: SourceTypeLabel) {
   const text = `${article.title} ${article.excerpt ?? ""}`;
   return (
-    ((freshnessLabel === "old" || freshnessLabel === "background") && sourceType === "media_report") ||
+    ((freshnessLabel === "stale" || freshnessLabel === "old" || freshnessLabel === "unknown" || freshnessLabel === "background") && sourceType === "media_report") ||
     isGenericOverseasChinaFilmFestival(text) ||
     /文化交流|合作协议|签署合作|友好交流|代表团|座谈会|工作部署|推进会/.test(text) ||
     /开幕/.test(text) && /中国电影节/.test(text)
@@ -165,39 +169,90 @@ function isGenericOverseasChinaFilmFestival(text: string) {
   return isOverseasChinaFilmFestival(text) && !/片单|展映|上映|获奖|导演|演员|观众|票房|交流周|主竞赛|入围/.test(text);
 }
 
-function getPublishedDate(article: RawArticle) {
+export function getArticleDateInfo(article: RawArticle) {
+  const published = getPublishedDateWithSource(article);
+  const fallbackEventDate = getEventDate(article, published.date);
+  const dateForFreshness = published.date || fallbackEventDate;
+  const freshnessLabel = getFreshnessLabel(dateForFreshness);
+  return {
+    publishedDate: published.date,
+    dateSource: published.source,
+    ageDays: getAgeDays(dateForFreshness),
+    freshnessLabel
+  };
+}
+
+function getPublishedDateWithSource(article: RawArticle): { date: string; source: DateSource } {
   if (article.publishedAt) {
-    return normalizeDate(article.publishedAt);
+    const normalized = normalizeDate(article.publishedAt);
+    if (normalized) {
+      return { date: normalized, source: "rss" };
+    }
   }
 
-  const urlDate = article.url.match(/(20\d{2})[-/]?([01]\d)[-/]?([0-3]\d)/);
+  const urlDate = extractFullDate(article.url);
   if (urlDate) {
-    return `${urlDate[1]}-${urlDate[2]}-${urlDate[3]}`;
+    return { date: urlDate, source: "url" };
   }
 
-  return "";
+  const textDate = extractFullDate(article.title + " " + (article.excerpt ?? "") + " " + (article.rawContent ?? ""));
+  if (textDate) {
+    return { date: textDate, source: "html" };
+  }
+
+  return { date: "", source: "unknown" };
 }
 
 function getEventDate(article: RawArticle, fallbackDate: string) {
-  const text = `${article.title} ${article.excerpt ?? ""}`;
-  const fullDate = text.match(/(20\d{2})年([01]?\d)月([0-3]?\d)日/);
+  const text = article.title + " " + (article.excerpt ?? "") + " " + (article.rawContent ?? "");
+  const fullDate = extractFullDate(text);
   if (fullDate) {
-    return `${fullDate[1]}-${fullDate[2].padStart(2, "0")}-${fullDate[3].padStart(2, "0")}`;
+    return fullDate;
   }
 
-  const monthDay = text.match(/([01]?\d)月([0-3]?\d)日/);
-  if (monthDay) {
-    const year = fallbackDate.slice(0, 4) || today().slice(0, 4);
-    return `${year}-${monthDay[1].padStart(2, "0")}-${monthDay[2].padStart(2, "0")}`;
+  const monthDay = text.match(/([01]?\d)\u6708([0-3]?\d)\u65e5/);
+  if (monthDay && fallbackDate) {
+    const year = fallbackDate.slice(0, 4);
+    return year + "-" + monthDay[1].padStart(2, "0") + "-" + monthDay[2].padStart(2, "0");
   }
 
   return fallbackDate;
 }
 
+function extractFullDate(value: string) {
+  const patterns = [
+    /(20\d{2})(?:[-_/.]|\u5e74)([01]?\d)(?:[-_/.]|\u6708)([0-3]?\d)\u65e5?/,
+    /(20\d{2})([01]\d)([0-3]\d)/
+  ];
+
+  for (const pattern of patterns) {
+    const match = value.match(pattern);
+    if (!match) {
+      continue;
+    }
+    const date = normalizeDateParts(match[1], match[2], match[3]);
+    if (date) {
+      return date;
+    }
+  }
+
+  return "";
+}
+
+function normalizeDateParts(year: string, month: string, day: string) {
+  const monthNumber = Number(month);
+  const dayNumber = Number(day);
+  if (monthNumber < 1 || monthNumber > 12 || dayNumber < 1 || dayNumber > 31) {
+    return "";
+  }
+  const date = year + "-" + String(monthNumber).padStart(2, "0") + "-" + String(dayNumber).padStart(2, "0");
+  return Number.isNaN(Date.parse(date)) ? "" : date;
+}
+
 function normalizeDate(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "";
+    return extractFullDate(value);
   }
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Shanghai",
@@ -207,27 +262,32 @@ function normalizeDate(value: string) {
   }).format(date);
 }
 
-function getFreshnessLabel(dateValue: string): FreshnessLabel {
+function getAgeDays(dateValue: string) {
   if (!dateValue) {
-    return "background";
+    return undefined;
   }
-
-  const diffDays = Math.floor((Date.parse(today()) - Date.parse(dateValue)) / 86400000);
-  if (diffDays <= 0) {
-    return "today";
-  }
-  if (diffDays === 1) {
-    return "yesterday";
-  }
-  if (diffDays <= 7) {
-    return "recent";
-  }
-  if (diffDays <= 30) {
-    return "old";
-  }
-  return "background";
+  return Math.floor((Date.parse(today()) - Date.parse(dateValue)) / 86400000);
 }
 
+function getFreshnessLabel(dateValue: string): FreshnessLabel {
+  const ageDays = getAgeDays(dateValue);
+  if (ageDays === undefined) {
+    return "unknown";
+  }
+  if (ageDays <= 0) {
+    return "today";
+  }
+  if (ageDays === 1) {
+    return "yesterday";
+  }
+  if (ageDays <= 7) {
+    return "recent";
+  }
+  if (ageDays <= 30) {
+    return "stale";
+  }
+  return "old";
+}
 function getSourceType(article: RawArticle, articleType: ArticleType): SourceTypeLabel {
   if (articleType === "sns_trend") {
     return "sns";
@@ -257,7 +317,7 @@ function getBadge(article: RawArticle, articleType: ArticleType, sourceType: Sou
   if (sourceType === "pr_like" || isPrLike(article)) {
     return "PR WATCH";
   }
-  if (freshnessLabel === "old" || freshnessLabel === "background") {
+  if (freshnessLabel === "stale" || freshnessLabel === "old" || freshnessLabel === "unknown" || freshnessLabel === "background") {
     return "WATCH";
   }
   if (isLowPriority) {
@@ -327,8 +387,9 @@ function getNewsworthinessScore(
   if (freshnessLabel === "today") score += 18;
   if (freshnessLabel === "yesterday") score += 14;
   if (freshnessLabel === "recent") score += 8;
-  if (freshnessLabel === "old") score -= 10;
-  if (freshnessLabel === "background") score -= 15;
+  if (freshnessLabel === "stale") score -= 10;
+  if (freshnessLabel === "old") score -= 18;
+  if (freshnessLabel === "unknown" || freshnessLabel === "background") score -= 22;
   if (articleType === "data_report") score += 12;
   if (articleType === "sns_trend") score += 12;
   if (articleType === "official_announcement") score += 4;

@@ -44,7 +44,15 @@ async function main() {
       reason: article.skipReason || article.articleType || "not_publishable"
     }));
   const eligibleArticles = topicMergeResult.articles.filter((article) => !article.skipReason && isPublishableType(article.articleType ?? "unknown"));
-  const selectedCandidates = selectArticlesForAi(eligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE);
+  const freshnessExclusions = eligibleArticles
+    .filter((article) => !isFreshEnoughForNormalFeed(article))
+    .map((article) => ({
+      title: article.title,
+      type: article.articleType ?? "unknown",
+      reason: `freshness_${article.freshnessLabel ?? "unknown"}${article.publishedDate ? `(${article.publishedDate})` : ""}`
+    }));
+  const freshEligibleArticles = eligibleArticles.filter(isFreshEnoughForNormalFeed);
+  const selectedCandidates = selectArticlesForAi(freshEligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE);
   const enrichedSelectedCandidates = await Promise.all(selectedCandidates.map((article) => enrichArticleContent(article)));
   const rawContentExclusions = enrichedSelectedCandidates
     .filter(isTooThinForPublishing)
@@ -80,7 +88,7 @@ async function main() {
       console.log(`category: ${article.feedCategory ?? article.category}`);
       console.log(`badge: ${article.badge ?? "NEWS"}`);
       console.log(`sourceType: ${article.sourceType ?? "media_report"}`);
-      console.log(`freshnessLabel: ${article.freshnessLabel ?? "background"}`);
+      console.log(`freshnessLabel: ${article.freshnessLabel ?? "unknown"}`);
       console.log(`newsworthinessScore: ${article.newsworthinessScore ?? 0}`);
       const summary = await summarizeArticle(article, provider);
       if (!isPublishableType(summary.article_type)) {
@@ -131,6 +139,13 @@ async function main() {
     console.log("- AI処理エラー:");
     aiErrors.forEach((error) => console.log(`  - ${error}`));
   }
+}
+
+function isFreshEnoughForNormalFeed(article: RawArticle) {
+  if (article.publishedDate && article.publishedDate < "2026-01-01") {
+    return false;
+  }
+  return ["today", "yesterday", "recent"].includes(article.freshnessLabel ?? "unknown");
 }
 
 function attachRelatedSources(articles: RawArticle[]) {
@@ -332,7 +347,7 @@ function logArticleTypeCounts(articles: RawArticle[]) {
 function logMetadataCounts(articles: RawArticle[]) {
   logFieldCounts("badge別件数", articles.map((article) => article.badge ?? "NEWS"));
   logFieldCounts("source_type別件数", articles.map((article) => article.sourceType ?? "media_report"));
-  logFieldCounts("freshness_label別件数", articles.map((article) => article.freshnessLabel ?? "background"));
+  logFieldCounts("freshness_label別件数", articles.map((article) => article.freshnessLabel ?? "unknown"));
 
   console.log("");
   console.log("newsworthiness_score 上位記事");

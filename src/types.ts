@@ -4,7 +4,7 @@ export type AiProvider = "gemini" | "deepseek";
 export type FeedCategory = "映画" | "ドラマ・配信" | "芸能・俳優" | "業界動向" | "公式発表" | "海外中国映画祭・文化交流" | "その他";
 export type FeedBadge = "NEWS" | "HOT SEARCH" | "WATCH" | "OFFICIAL" | "DATA" | "PR WATCH";
 export type SourceTypeLabel = "official" | "media_report" | "sns" | "data" | "pr_like" | "rumor" | "mixed";
-export type FreshnessLabel = "today" | "yesterday" | "recent" | "old" | "background";
+export type FreshnessLabel = "today" | "yesterday" | "recent" | "stale" | "old" | "unknown" | "background";
 export type LevelLabel = "high" | "medium" | "low" | "unknown";
 export type ContextValue = "high" | "medium" | "low";
 export type SnsHeat = "high" | "medium" | "low" | "none";
@@ -31,8 +31,12 @@ export type NewsSource = {
   excludeUrlPatterns?: string[];
 };
 
+export type DateSource = "rss" | "url" | "html" | "unknown";
+
 export type SourceDiagnostic = {
   sourceName: string;
+  rawCount?: number;
+  afterUrlExcludeCount?: number;
   fetchedCount: number;
   excludedByPatternCount: number;
   dedupedCount: number;
@@ -64,6 +68,8 @@ export type RawArticle = {
   publishedDate?: string;
   eventDate?: string;
   freshnessLabel?: FreshnessLabel;
+  dateSource?: DateSource;
+  ageDays?: number;
   newsworthinessScore?: number;
   japanVisibility?: LevelLabel;
   japanGap?: LevelLabel;
