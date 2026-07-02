@@ -186,7 +186,7 @@ function getPublishedDateWithSource(article: RawArticle): { date: string; source
   if (article.publishedAt) {
     const normalized = normalizeDate(article.publishedAt);
     if (normalized) {
-      return { date: normalized, source: "rss" };
+      return { date: normalized, source: article.publishedAtSource ?? "rss" };
     }
   }
 

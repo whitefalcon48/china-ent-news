@@ -33,6 +33,23 @@ export type NewsSource = {
 
 export type DateSource = "rss" | "url" | "html" | "unknown";
 
+export type AuditExcludeStage =
+  | ""
+  | "url_exclude"
+  | "dedupe"
+  | "date_unknown"
+  | "freshness_stale"
+  | "freshness_old"
+  | "before_2026"
+  | "article_type_exclude";
+
+export type SourceAuditSample = {
+  title: string;
+  url: string;
+  excludeStage: AuditExcludeStage;
+  excludeReason: string;
+};
+
 export type SourceDiagnostic = {
   sourceName: string;
   rawCount?: number;
@@ -43,6 +60,7 @@ export type SourceDiagnostic = {
   selectedForAiCount: number;
   error?: string;
   sampleTitles: string[];
+  auditSamples?: SourceAuditSample[];
 };
 
 export type RawArticle = {
@@ -53,6 +71,7 @@ export type RawArticle = {
   category: string;
   reliability: Reliability;
   publishedAt?: string;
+  publishedAtSource?: DateSource;
   excerpt?: string;
   rawContent?: string;
   rawContentLength?: number;
@@ -70,6 +89,7 @@ export type RawArticle = {
   freshnessLabel?: FreshnessLabel;
   dateSource?: DateSource;
   ageDays?: number;
+  dateExtractionNote?: string;
   newsworthinessScore?: number;
   japanVisibility?: LevelLabel;
   japanGap?: LevelLabel;
