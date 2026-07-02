@@ -3,6 +3,7 @@ import { classifyArticle, isPublishableType, loadFilterConfig } from "./classify
 import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, fetchAllSources, loadSources } from "./fetchSources.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
+import { buildSelectionTrace, candidateKey, writeSelectionTraceFile } from "./selectionTrace.js";
 import { describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
 import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic } from "./types.js";
 
@@ -36,6 +37,9 @@ async function main() {
   const dedupedArticles = dedupeArticles(articles);
   const classifiedArticles = attachRelatedSources(dedupedArticles.map((article) => classifyArticle(article, filterConfig)));
   const topicMergeResult = mergeTopicDuplicates(classifiedArticles);
+  const generationCandidatePool = topicMergeResult.articles;
+  const droppedReasons = new Map<string, string>();
+  markNonPublishableTraceDrops(generationCandidatePool, droppedReasons);
   const preAiExclusions = classifiedArticles
     .filter((article) => article.skipReason || !isPublishableType(article.articleType ?? "unknown"))
     .map((article) => ({
@@ -51,16 +55,18 @@ async function main() {
       type: article.articleType ?? "unknown",
       reason: `freshness_${article.freshnessLabel ?? "unknown"}${article.publishedDate ? `(${article.publishedDate})` : ""}`
     }));
+  markFreshnessTraceDrops(eligibleArticles, droppedReasons);
   const freshEligibleArticles = eligibleArticles.filter(isFreshEnoughForNormalFeed);
   const selectedCandidates = selectArticlesForAi(freshEligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE);
+  markSelectionLimitTraceDrops(freshEligibleArticles, selectedCandidates, droppedReasons, maxArticles, MAX_ARTICLES_PER_SOURCE);
   const enrichedSelectedCandidates = await Promise.all(selectedCandidates.map((article) => enrichArticleContent(article)));
-  const rawContentExclusions = enrichedSelectedCandidates
-    .filter(isTooThinForPublishing)
-    .map((article) => ({
-      title: article.title,
-      type: article.articleType ?? "unknown",
-      reason: `raw_content_too_short(${article.rawContentLength ?? 0})`
-    }));
+  const thinArticles = enrichedSelectedCandidates.filter(isTooThinForPublishing);
+  markRawContentTraceDrops(thinArticles, droppedReasons);
+  const rawContentExclusions = thinArticles.map((article) => ({
+    title: article.title,
+    type: article.articleType ?? "unknown",
+    reason: `raw_content_too_short(${article.rawContentLength ?? 0})`
+  }));
   const selectedArticles = enrichedSelectedCandidates.filter((article) => !isTooThinForPublishing(article));
   const enrichedDiagnostics = enrichDiagnostics(diagnostics, dedupedArticles, selectedArticles);
   const processed: ProcessedArticle[] = [];
@@ -108,6 +114,15 @@ async function main() {
   }
 
   const outputPath = await renderMarkdownFile(processed, provider);
+  const selectionTrace = buildSelectionTrace({
+    provider,
+    candidatePool: generationCandidatePool,
+    deepseekInput: selectedArticles,
+    processed,
+    droppedReasons,
+    outputCountInstruction: null
+  });
+  const tracePath = await writeSelectionTraceFile(selectionTrace);
   logExclusions("AI処理後の除外記事", postAiExclusions);
   logFinalSourceDistribution(
     processed.map((article) => article.raw),
@@ -127,6 +142,8 @@ async function main() {
   console.log(`- AI処理した記事数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- 最終出力件数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- Markdown出力先: ${outputPath}`);
+  console.log(`- Selection trace: ${tracePath}`);
+  console.log(`candidates: ${selectionTrace.candidate_pool.length} -> deepseek_input: ${selectionTrace.deepseek_input.count} -> output: ${selectionTrace.final_output.length}`);
 
   if (errors.length) {
     console.log("- エラーがあった収集元:");
@@ -138,6 +155,85 @@ async function main() {
   if (aiErrors.length) {
     console.log("- AI処理エラー:");
     aiErrors.forEach((error) => console.log(`  - ${error}`));
+  }
+}
+
+function markNonPublishableTraceDrops(articles: RawArticle[], droppedReasons: Map<string, string>) {
+  for (const article of articles) {
+    if (article.skipReason) {
+      setTraceDropReason(article, droppedReasons, `pre_ai_exclude:${article.skipReason}`);
+      continue;
+    }
+
+    if (!isPublishableType(article.articleType ?? "unknown")) {
+      setTraceDropReason(article, droppedReasons, `article_type_exclude:${article.articleType ?? "unknown"}`);
+    }
+  }
+}
+
+function markFreshnessTraceDrops(articles: RawArticle[], droppedReasons: Map<string, string>) {
+  for (const article of articles) {
+    if (!isFreshEnoughForNormalFeed(article)) {
+      const label = article.freshnessLabel ?? "unknown";
+      const publishedDate = article.publishedDate ? `:${article.publishedDate}` : "";
+      setTraceDropReason(article, droppedReasons, `freshness_${label}${publishedDate}`);
+    }
+  }
+}
+
+function markSelectionLimitTraceDrops(
+  candidateArticles: RawArticle[],
+  selectedArticles: RawArticle[],
+  droppedReasons: Map<string, string>,
+  maxArticles: number,
+  maxPerSource: number
+) {
+  const selectedKeys = new Set(selectedArticles.map(candidateKey));
+  const selectedSourceCounts = countBySource(selectedArticles);
+  const selectedCategoryCounts = new Map<string, number>();
+  let selectedLowPriorityCount = 0;
+
+  for (const article of selectedArticles) {
+    const category = article.feedCategory ?? article.category;
+    selectedCategoryCounts.set(category, (selectedCategoryCounts.get(category) ?? 0) + 1);
+    if (article.isLowPriority) {
+      selectedLowPriorityCount += 1;
+    }
+  }
+
+  for (const article of candidateArticles) {
+    if (selectedKeys.has(candidateKey(article))) {
+      continue;
+    }
+
+    const category = article.feedCategory ?? article.category;
+    const categoryLimit = article.feedCategory ? CATEGORY_LIMITS[article.feedCategory] ?? 1 : 1;
+    let reason = "selection_rotation_or_limit";
+
+    if (selectedArticles.length >= maxArticles) {
+      reason = "count_limit";
+    } else if ((selectedSourceCounts.get(article.sourceName) ?? 0) >= maxPerSource) {
+      reason = "source_limit";
+    } else if ((selectedCategoryCounts.get(category) ?? 0) >= categoryLimit) {
+      reason = "category_limit";
+    } else if (article.isLowPriority && selectedLowPriorityCount >= MAX_LOW_PRIORITY_ARTICLES) {
+      reason = "low_priority_limit";
+    }
+
+    setTraceDropReason(article, droppedReasons, reason);
+  }
+}
+
+function markRawContentTraceDrops(articles: RawArticle[], droppedReasons: Map<string, string>) {
+  for (const article of articles) {
+    setTraceDropReason(article, droppedReasons, `raw_content_too_short:${article.rawContentLength ?? 0}`);
+  }
+}
+
+function setTraceDropReason(article: RawArticle, droppedReasons: Map<string, string>, reason: string) {
+  const key = candidateKey(article);
+  if (!droppedReasons.has(key)) {
+    droppedReasons.set(key, reason);
   }
 }
 

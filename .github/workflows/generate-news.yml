@@ -44,3 +44,10 @@ jobs:
           name: generated-news-markdown-${{ inputs.provider }}
           path: output/*.md
           if-no-files-found: error
+
+      - name: Upload selection trace
+        uses: actions/upload-artifact@v4
+        with:
+          name: selection-trace-${{ inputs.provider }}
+          path: output/selection_trace_*.json
+          if-no-files-found: error
