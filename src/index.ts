@@ -4,11 +4,11 @@ import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, fetchAllSources, loadSources } from "./fetchSources.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile } from "./selectionTrace.js";
-import { describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
+import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
 import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic } from "./types.js";
 
 const MAX_ARTICLES_PER_SOURCE = 3;
-const MAX_LOW_PRIORITY_ARTICLES = 1;
+const MAX_LOW_PRIORITY_ARTICLES = 3;
 const CATEGORY_LIMITS: Record<FeedCategory, number> = {
   "映画": 3,
   "ドラマ・配信": 2,
@@ -22,7 +22,7 @@ const MIN_RAW_CONTENT_LENGTH = 180;
 const MIN_OFFICIAL_RAW_CONTENT_LENGTH = 80;
 
 async function main() {
-  const maxArticles = Number(process.env.MAX_ARTICLES || 8);
+  const maxArticles = Number(process.env.MAX_DEEPSEEK_INPUT_CANDIDATES || process.env.MAX_AI_INPUT_CANDIDATES || process.env.MAX_ARTICLES || 10);
   const sources = await loadSources();
   const filterConfig = await loadFilterConfig();
   const provider = getAiProvider();
@@ -37,17 +37,18 @@ async function main() {
   const dedupedArticles = dedupeArticles(articles);
   const classifiedArticles = attachRelatedSources(dedupedArticles.map((article) => classifyArticle(article, filterConfig)));
   const topicMergeResult = mergeTopicDuplicates(classifiedArticles);
-  const generationCandidatePool = topicMergeResult.articles;
+  const generationCandidatePool = topicMergeResult.articles.map(prepareGenerationCandidate);
   const droppedReasons = new Map<string, string>();
+  const selectionReasons = new Map<string, string>();
   markNonPublishableTraceDrops(generationCandidatePool, droppedReasons);
   const preAiExclusions = classifiedArticles
-    .filter((article) => article.skipReason || !isPublishableType(article.articleType ?? "unknown"))
+    .filter((article) => article.skipReason || !isGenerationEligibleBeforeFreshness(article))
     .map((article) => ({
       title: article.title,
       type: article.articleType ?? "unknown",
-      reason: article.skipReason || article.articleType || "not_publishable"
+      reason: article.skipReason || article.articleType || "not_generation_eligible"
     }));
-  const eligibleArticles = topicMergeResult.articles.filter((article) => !article.skipReason && isPublishableType(article.articleType ?? "unknown"));
+  const eligibleArticles = generationCandidatePool.filter(isGenerationEligibleBeforeFreshness);
   const freshnessExclusions = eligibleArticles
     .filter((article) => !isFreshEnoughForNormalFeed(article))
     .map((article) => ({
@@ -57,7 +58,12 @@ async function main() {
     }));
   markFreshnessTraceDrops(eligibleArticles, droppedReasons);
   const freshEligibleArticles = eligibleArticles.filter(isFreshEnoughForNormalFeed);
-  const selectedCandidates = selectArticlesForAi(freshEligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE);
+  const selectedCandidates = expandSelectionForAi(
+    selectArticlesForAi(freshEligibleArticles, maxArticles, MAX_ARTICLES_PER_SOURCE),
+    freshEligibleArticles,
+    maxArticles,
+    MAX_ARTICLES_PER_SOURCE
+  );
   markSelectionLimitTraceDrops(freshEligibleArticles, selectedCandidates, droppedReasons, maxArticles, MAX_ARTICLES_PER_SOURCE);
   const enrichedSelectedCandidates = await Promise.all(selectedCandidates.map((article) => enrichArticleContent(article)));
   const thinArticles = enrichedSelectedCandidates.filter(isTooThinForPublishing);
@@ -68,6 +74,7 @@ async function main() {
     reason: `raw_content_too_short(${article.rawContentLength ?? 0})`
   }));
   const selectedArticles = enrichedSelectedCandidates.filter((article) => !isTooThinForPublishing(article));
+  markSelectedTraceReasons(selectedArticles, selectionReasons);
   const enrichedDiagnostics = enrichDiagnostics(diagnostics, dedupedArticles, selectedArticles);
   const processed: ProcessedArticle[] = [];
   const aiErrors: string[] = [];
@@ -120,7 +127,8 @@ async function main() {
     deepseekInput: selectedArticles,
     processed,
     droppedReasons,
-    outputCountInstruction: null
+    selectionReasons,
+    outputCountInstruction: OUTPUT_COUNT_INSTRUCTION
   });
   const tracePath = await writeSelectionTraceFile(selectionTrace);
   logExclusions("AI処理後の除外記事", postAiExclusions);
@@ -158,6 +166,43 @@ async function main() {
   }
 }
 
+function prepareGenerationCandidate(article: RawArticle): RawArticle {
+  if (isFreshUnknownGenerationCandidate(article)) {
+    return {
+      ...article,
+      isLowPriority: true
+    };
+  }
+
+  return article;
+}
+
+function isGenerationEligibleBeforeFreshness(article: RawArticle) {
+  if (article.skipReason) {
+    return false;
+  }
+  return isPublishableType(article.articleType ?? "unknown") || isFreshUnknownGenerationCandidate(article);
+}
+
+function isFreshUnknownGenerationCandidate(article: RawArticle) {
+  if ((article.articleType ?? "unknown") !== "unknown") {
+    return false;
+  }
+  if (!isFreshEnoughForNormalFeed(article)) {
+    return false;
+  }
+  if (article.reliability === "A") {
+    return false;
+  }
+
+  return isEntertainmentCandidate(article);
+}
+
+function isEntertainmentCandidate(article: RawArticle) {
+  const text = [article.sourceName, article.category, article.feedCategory, article.title, article.excerpt ?? ""].join(" ");
+  return /1905|sina|ent|bjnews|jiemian|thepaper|movie|film|drama|series|actor|actress|entertainment|cinema|video|stream|\u7535\u5f71|\u5f71\u89c6|\u5a31\u4e50|\u660e\u661f|\u6f14\u5458|\u5267|\u7f51\u5267|\u77ed\u5267|\u7968\u623f|\u6863\u671f|\u9662\u7ebf|\u4ea7\u4e1a/.test(text);
+}
+
 function markNonPublishableTraceDrops(articles: RawArticle[], droppedReasons: Map<string, string>) {
   for (const article of articles) {
     if (article.skipReason) {
@@ -165,7 +210,7 @@ function markNonPublishableTraceDrops(articles: RawArticle[], droppedReasons: Ma
       continue;
     }
 
-    if (!isPublishableType(article.articleType ?? "unknown")) {
+    if (!isGenerationEligibleBeforeFreshness(article)) {
       setTraceDropReason(article, droppedReasons, `article_type_exclude:${article.articleType ?? "unknown"}`);
     }
   }
@@ -278,7 +323,7 @@ function mergeTopicDuplicates(articles: RawArticle[]) {
 
   for (const [topicKey, group] of groups.entries()) {
     const relatedSources = dedupeSourceRefs(group.flatMap((article) => article.relatedSources ?? [{ name: article.sourceName, url: article.url }]));
-    const representative = [...group].sort((a, b) => (b.newsworthinessScore ?? 0) - (a.newsworthinessScore ?? 0))[0];
+    const representative = [...group].sort(compareArticlesForAiInput)[0];
     mergedArticles.push({
       ...representative,
       relatedSources
@@ -307,6 +352,71 @@ function dedupeSourceRefs(sources: NonNullable<RawArticle["relatedSources"]>) {
   return [...byName.entries()].map(([name, url]) => ({ name, url }));
 }
 
+function expandSelectionForAi(selectedArticles: RawArticle[], candidateArticles: RawArticle[], maxArticles: number, maxPerSource: number) {
+  if (selectedArticles.length >= maxArticles) {
+    return selectedArticles;
+  }
+
+  const selectedKeys = new Set(selectedArticles.map(candidateKey));
+  const sourceCounts = countBySource(selectedArticles);
+  let lowPriorityCount = selectedArticles.filter((article) => article.isLowPriority).length;
+  const expanded = [...selectedArticles];
+  const remaining = candidateArticles
+    .filter((article) => !selectedKeys.has(candidateKey(article)))
+    .sort(compareArticlesForAiInput);
+
+  for (const article of remaining) {
+    if (expanded.length >= maxArticles) {
+      break;
+    }
+    if ((sourceCounts.get(article.sourceName) ?? 0) >= maxPerSource) {
+      continue;
+    }
+    if (article.isLowPriority && lowPriorityCount >= MAX_LOW_PRIORITY_ARTICLES) {
+      continue;
+    }
+
+    expanded.push(article);
+    selectedKeys.add(candidateKey(article));
+    sourceCounts.set(article.sourceName, (sourceCounts.get(article.sourceName) ?? 0) + 1);
+    if (article.isLowPriority) {
+      lowPriorityCount += 1;
+    }
+  }
+
+  return expanded;
+}
+
+function compareArticlesForAiInput(a: RawArticle, b: RawArticle) {
+  return getAiInputPriorityScore(b) - getAiInputPriorityScore(a);
+}
+
+function getAiInputPriorityScore(article: RawArticle) {
+  let score = article.newsworthinessScore ?? 0;
+  const text = article.title + " " + (article.excerpt ?? "");
+
+  if (/\u5907\u6848|\u7f51\u7edc\u5267|\u7535\u89c6\u5267|\u5fae\u77ed\u5267|\u7ba1\u7406\u529e\u6cd5|\u884c\u4e1a\u6807\u51c6|\u62a5\u6279\u7a3f|\u7f51\u7edc\u89c6\u542c|\u5236\u4f5c|\u516c\u793a/.test(text)) {
+    score += 18;
+  }
+  if (/\u4e03\u4e00|\u4e3b\u9898\u515a\u65e5|\u515a\u65e5\u6d3b\u52a8|\u515a\u5efa|\u5b66\u4e60\u6559\u80b2/.test(text)) {
+    score -= 28;
+  }
+  if (isFreshUnknownGenerationCandidate(article)) {
+    score -= 6;
+  }
+
+  return score;
+}
+
+function markSelectedTraceReasons(articles: RawArticle[], selectionReasons: Map<string, string>) {
+  articles.forEach((article, index) => {
+    const freshness = article.freshnessLabel ?? "unknown";
+    const priority = article.isLowPriority ? "low_priority" : "normal_priority";
+    const score = getAiInputPriorityScore(article);
+    selectionReasons.set(candidateKey(article), "rank_" + (index + 1) + ":score_" + score + ":freshness_" + freshness + ":" + priority);
+  });
+}
+
 function selectArticlesForAi(articles: RawArticle[], maxArticles: number, maxPerSource: number) {
   const selected: RawArticle[] = [];
   const groupedArticles = new Map<FeedCategory, RawArticle[]>();
@@ -320,7 +430,7 @@ function selectArticlesForAi(articles: RawArticle[], maxArticles: number, maxPer
   for (const [category, group] of groupedArticles.entries()) {
     groupedArticles.set(
       category,
-      [...group].sort((a, b) => (b.newsworthinessScore ?? 0) - (a.newsworthinessScore ?? 0))
+      [...group].sort(compareArticlesForAiInput)
     );
   }
 

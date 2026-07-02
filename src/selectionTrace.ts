@@ -12,6 +12,10 @@ type TraceCandidate = {
   published_at: string;
   freshness: TraceFreshness;
   priority: TracePriority;
+  selection_rank: number | null;
+  selected_for_deepseek: boolean;
+  selection_reason: string;
+  not_selected_reason: string;
 };
 
 type SelectionTrace = {
@@ -44,10 +48,23 @@ export function buildSelectionTrace(args: {
   deepseekInput: RawArticle[];
   processed: ProcessedArticle[];
   droppedReasons: Map<string, string>;
+  selectionReasons: Map<string, string>;
   outputCountInstruction: string | null;
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
-  const candidatePool = args.candidatePool.map(toTraceCandidate);
+  const selectionRanks = new Map<string, number>();
+  args.deepseekInput.forEach((article, index) => {
+    selectionRanks.set(candidateKey(article), index + 1);
+  });
+
+  const candidatePool = args.candidatePool.map((article) =>
+    toTraceCandidate(article, {
+      selected: deepseekInputKeys.has(candidateKey(article)),
+      selectionRank: selectionRanks.get(candidateKey(article)) ?? null,
+      selectionReason: args.selectionReasons.get(candidateKey(article)) ?? "",
+      notSelectedReason: args.droppedReasons.get(candidateKey(article)) ?? ""
+    })
+  );
 
   const trace: SelectionTrace = {
     date: args.date ?? today(),
@@ -55,7 +72,14 @@ export function buildSelectionTrace(args: {
     candidate_pool: candidatePool,
     deepseek_input: {
       count: args.deepseekInput.length,
-      items: args.deepseekInput.map(toTraceCandidate)
+      items: args.deepseekInput.map((article) =>
+        toTraceCandidate(article, {
+          selected: true,
+          selectionRank: selectionRanks.get(candidateKey(article)) ?? null,
+          selectionReason: args.selectionReasons.get(candidateKey(article)) ?? "selected_for_deepseek_input",
+          notSelectedReason: ""
+        })
+      )
     },
     output_count_instruction: args.outputCountInstruction,
     final_output: args.processed
@@ -69,10 +93,18 @@ export function buildSelectionTrace(args: {
       })),
     dropped: args.candidatePool
       .filter((article) => !deepseekInputKeys.has(candidateKey(article)))
-      .map((article) => ({
-        ...toTraceCandidate(article),
-        reason: args.droppedReasons.get(candidateKey(article)) ?? "not_in_deepseek_input"
-      }))
+      .map((article) => {
+        const reason = args.droppedReasons.get(candidateKey(article)) ?? "not_in_deepseek_input";
+        return {
+          ...toTraceCandidate(article, {
+            selected: false,
+            selectionRank: null,
+            selectionReason: "",
+            notSelectedReason: reason
+          }),
+          reason
+        };
+      })
   };
 
   return trace;
@@ -85,14 +117,26 @@ export async function writeSelectionTraceFile(trace: SelectionTrace) {
   return outputPath;
 }
 
-function toTraceCandidate(article: RawArticle): TraceCandidate {
+function toTraceCandidate(
+  article: RawArticle,
+  meta: {
+    selected: boolean;
+    selectionRank: number | null;
+    selectionReason: string;
+    notSelectedReason: string;
+  }
+): TraceCandidate {
   return {
     source: article.sourceName,
     title: article.title,
     url: article.url,
     published_at: article.publishedDate || article.publishedAt || "",
     freshness: toTraceFreshness(article.freshnessLabel),
-    priority: article.isLowPriority ? "低優先" : "通常"
+    priority: article.isLowPriority ? "低優先" : "通常",
+    selection_rank: meta.selectionRank,
+    selected_for_deepseek: meta.selected,
+    selection_reason: meta.selectionReason,
+    not_selected_reason: meta.notSelectedReason
   };
 }
 

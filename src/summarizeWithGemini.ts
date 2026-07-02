@@ -16,6 +16,8 @@ import type {
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 
+export const OUTPUT_COUNT_INSTRUCTION = "Select 3 to 5 high-newsworthiness items from the 8 to 10 candidate inputs for the final feed.";
+
 let editorialCharacterCache: string | undefined;
 
 async function loadEditorialCharacter() {
@@ -213,6 +215,9 @@ Editorial character policy document (docs/editorial-character.md):
 ${editorialCharacter}
 
 Use the document above as the highest-priority editorial policy for title angle, hitokoto, Japan-context notes, PR WATCH handling, HOT SEARCH handling, and cautious rumor wording.
+
+Output count instruction for this generation run:
+${OUTPUT_COUNT_INSTRUCTION}
 
 
 目的:

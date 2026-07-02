@@ -1,6 +1,6 @@
 {
   "date": "2026-07-02",
-  "generated_at": "2026-07-02T10:49:53.484Z",
+  "generated_at": "2026-07-02T14:53:55.638Z",
   "external_sources": [
     {
       "name": "Weibo HOT SEARCH",
@@ -203,15 +203,15 @@
       "article_type_counts": {
         "data_report": 5,
         "unknown": 1,
-        "news_event": 1,
-        "interview": 1
+        "interview": 1,
+        "news_event": 1
       },
       "ai_candidate_count": 0,
       "low_priority_candidate_count": 0,
       "sample_items": [
         {
-          "title": "活力中国调研行｜30秒装一个集装箱，AI比老师傅快5900倍，中国“造家电”龙头企业给出“运家电”最优解",
-          "url": "https://www.jiemian.com/video/AGUCMQhgB28BOVVk.html",
+          "title": "韩红基金会发声明回应购置电脑、相机等设备、工作人员薪酬等八项质疑",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BOFVh.html",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -314,8 +314,8 @@
           "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "李斌北大毕业典礼发言，回顾蔚来持续三年低谷期",
-          "url": "https://www.jiemian.com/video/AGUCMQhgB28BOVVn.html",
+          "title": "西安赛格国际购物中心公告：对商户负责人坠亡震惊悲痛，已与家属共同妥善处理完毕",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BOFVg.html",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -654,8 +654,8 @@
       "source_name": "新京报 娱乐",
       "fetch_status": "success",
       "fetch_error": "",
-      "raw_count": 27,
-      "after_url_exclude_count": 22,
+      "raw_count": 31,
+      "after_url_exclude_count": 26,
       "after_dedupe_count": 1,
       "valid_date_count": 1,
       "fresh_count": 1,
@@ -709,6 +709,19 @@
           "article_type": "",
           "exclude_stage": "article_type_exclude",
           "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "4 电影《四渡》今日公映，以智破局绝境逆袭，信仰力量直抵人心",
+          "url": "https://www.bjnews.com.cn/detail/1782444325129340.html",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "dedupe",
+          "exclude_reason": "dedupe_url_or_similar_title"
         },
         {
           "title": "北京市文联主办坊间对话“古韵新风”，探讨如何用戏曲与时代共鸣",
@@ -787,19 +800,6 @@
           "article_type": "",
           "exclude_stage": "article_type_exclude",
           "exclude_reason": "not_entertainment_keyword"
-        },
-        {
-          "title": "2026精品微短剧夏季点评会在京举行，精品化已成行业共识",
-          "url": "https://www.bjnews.com.cn/detail/1782890255168067.html",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
         }
       ]
     },
@@ -807,7 +807,7 @@
       "source_name": "新浪娱乐",
       "fetch_status": "success",
       "fetch_error": "",
-      "raw_count": 81,
+      "raw_count": 89,
       "after_url_exclude_count": 9,
       "after_dedupe_count": 3,
       "valid_date_count": 3,
@@ -989,7 +989,33 @@
           "exclude_reason": "includeUrlPatterns_no_match"
         },
         {
-          "title": "不止是卖GPU：英伟达扶持新兴云服务商，为初创AI公司算力租赁“兜底”",
+          "title": "“三连跌”将至，国内油价或迎来年内最大单次降幅",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33505606",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "推荐逆变器板块两日大跌、行业一哥市值蒸发近650亿元！公司回应",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33505598",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "推荐不止是卖GPU：英伟达扶持新兴云服务商，为初创AI公司算力租赁“兜底”",
           "url": "https://www.thepaper.cn/newsDetail_forward_33502039",
           "published_date": "",
           "date_source": "unknown",
@@ -1002,8 +1028,8 @@
           "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "推荐商务部：中英服务贸易仍有巨大潜力可挖",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33503143",
+          "title": "特斯拉二季度交付48万辆：同比增25%超市场预期，股价跌超5%",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33506421",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -1015,8 +1041,8 @@
           "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "推荐造车新势力上半年销量分化加剧：零跑超35万辆，“蔚小理”均不及20万辆",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33501276",
+          "title": "民航发布新规，全链条发力便利残疾人航空出行",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33505607",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -1069,32 +1095,6 @@
         {
           "title": "上市在即！证监会批复同意宇树科技科创板IPO注册，募资42亿",
           "url": "https://www.thepaper.cn/newsDetail_forward_33503334",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
-        },
-        {
-          "title": "商务部谈中德经济合作联委会重启：力争2027年初召开合作机制新一次会议",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33502997",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
-        },
-        {
-          "title": "商务部：中方愿与加方继续拉长合作清单、压缩问题清单",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33503130",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
