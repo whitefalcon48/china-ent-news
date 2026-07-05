@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { AiProvider, FreshnessLabel, ProcessedArticle, RawArticle } from "./types.js";
+import type { AiProvider, FreshnessLabel, ProcessedArticle, PublishPriority, RawArticle } from "./types.js";
 
 type TraceFreshness = "fresh" | "stale" | "old" | "unknown";
 type TracePriority = "通常" | "低優先";
@@ -18,6 +18,18 @@ type TraceCandidate = {
   not_selected_reason: string;
 };
 
+type PublishPriorityCounts = Record<PublishPriority, number>;
+
+type TraceFinalOutput = {
+  output_title: string;
+  input_title: string;
+  input_url: string;
+  source: string;
+  matched_by: "raw_article";
+  publish_priority: PublishPriority;
+  publish_reason: string;
+};
+
 type SelectionTrace = {
   date: string;
   provider: AiProvider;
@@ -27,13 +39,9 @@ type SelectionTrace = {
     items: TraceCandidate[];
   };
   output_count_instruction: string | null;
-  final_output: Array<{
-    output_title: string;
-    input_title: string;
-    input_url: string;
-    source: string;
-    matched_by: "raw_article";
-  }>;
+  final_output_count: number;
+  publish_priority_counts: PublishPriorityCounts;
+  final_output: TraceFinalOutput[];
   dropped: Array<TraceCandidate & { reason: string }>;
 };
 
@@ -66,6 +74,18 @@ export function buildSelectionTrace(args: {
     })
   );
 
+  const finalOutput = args.processed
+    .filter((article) => article.summary)
+    .map((article) => ({
+      output_title: article.summary?.title_ja || article.raw.title,
+      input_title: article.raw.title,
+      input_url: article.raw.url,
+      source: article.raw.sourceName,
+      matched_by: "raw_article" as const,
+      publish_priority: article.summary?.publish_priority ?? "medium",
+      publish_reason: article.summary?.publish_reason || inferPublishReason(article)
+    }));
+
   const trace: SelectionTrace = {
     date: args.date ?? today(),
     provider: args.provider,
@@ -82,15 +102,9 @@ export function buildSelectionTrace(args: {
       )
     },
     output_count_instruction: args.outputCountInstruction,
-    final_output: args.processed
-      .filter((article) => article.summary)
-      .map((article) => ({
-        output_title: article.summary?.title_ja || article.raw.title,
-        input_title: article.raw.title,
-        input_url: article.raw.url,
-        source: article.raw.sourceName,
-        matched_by: "raw_article" as const
-      })),
+    final_output_count: finalOutput.length,
+    publish_priority_counts: countPublishPriorities(finalOutput),
+    final_output: finalOutput,
     dropped: args.candidatePool
       .filter((article) => !deepseekInputKeys.has(candidateKey(article)))
       .map((article) => {
@@ -115,6 +129,31 @@ export async function writeSelectionTraceFile(trace: SelectionTrace) {
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(trace, null, 2)}\n`, "utf8");
   return outputPath;
+}
+
+function countPublishPriorities(finalOutput: TraceFinalOutput[]): PublishPriorityCounts {
+  const counts: PublishPriorityCounts = { high: 0, medium: 0, low: 0 };
+  for (const item of finalOutput) {
+    counts[item.publish_priority] += 1;
+  }
+  return counts;
+}
+
+function inferPublishReason(article: ProcessedArticle) {
+  const summary = article.summary;
+  if (!summary) {
+    return "";
+  }
+  if (summary.source_type === "official" || summary.source_type === "pr_like") {
+    return "official source; useful when it shows policy, production, or industry environment changes";
+  }
+  if (summary.article_type === "data_report") {
+    return "data point that helps read market or industry movement";
+  }
+  if (summary.japan_gap === "high" || summary.context_value === "high") {
+    return "strong fit with the project focus on China-local entertainment context";
+  }
+  return "publishable reference item";
 }
 
 function toTraceCandidate(

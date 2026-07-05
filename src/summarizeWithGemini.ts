@@ -10,13 +10,14 @@ import type {
   RawArticle,
   SnsHeat,
   SourceTypeLabel,
+  PublishPriority,
   SummarizedArticle
 } from "./types.js";
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 
-export const OUTPUT_COUNT_INSTRUCTION = "Select 3 to 5 high-newsworthiness items from the 8 to 10 candidate inputs for the final feed.";
+export const OUTPUT_COUNT_INSTRUCTION = "Output every candidate item that is worth publishing; do not force a 3-5 item cap. Add publish_priority (high/medium/low) and publish_reason to every output article.";
 
 let editorialCharacterCache: string | undefined;
 
@@ -219,6 +220,12 @@ Use the document above as the highest-priority editorial policy for title angle,
 Output count instruction for this generation run:
 ${OUTPUT_COUNT_INSTRUCTION}
 
+publish_priority rules:
+- publish_priority: high means strongly aligned with this project and should be prioritized.
+- publish_priority: medium means useful reference value and publishable.
+- publish_priority: low means collectable information but low priority for regular distribution.
+- publish_reason must briefly explain the priority, such as industry lineup visibility, drama/streaming production trend, weak China-entertainment context, or official source with production-environment significance.
+
 
 目的:
 - 表に出す文章は、ナルエビちゃんニュース型の軽いニュースメモにする。
@@ -316,7 +323,9 @@ ${OUTPUT_COUNT_INSTRUCTION}
     "organizations": []
   },
   "related_sources": [{"name": "", "url": ""}],
-  "tags": []
+  "tags": [],
+  "publish_priority": "medium",
+  "publish_reason": ""
 }
 
 入力記事:
@@ -405,7 +414,9 @@ function normalizeSummary(value: Partial<SummarizedArticle>): SummarizedArticle 
       organizations: ensureStringArray(value.main_entities?.organizations)
     },
     related_sources: ensureSourceRefs(value.related_sources),
-    tags: ensureStringArray(value.tags)
+    tags: ensureStringArray(value.tags),
+    publish_priority: normalizePublishPriority(value.publish_priority),
+    publish_reason: typeof value.publish_reason === "string" ? value.publish_reason : ""
   };
 }
 
@@ -439,6 +450,10 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
     },
     related_sources: relatedSources
   };
+}
+
+function normalizePublishPriority(value: unknown): PublishPriority {
+  return value === "high" || value === "medium" || value === "low" ? value : "medium";
 }
 
 function normalizeArticleType(value: unknown): ArticleType {

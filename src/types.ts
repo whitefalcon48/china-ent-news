@@ -8,6 +8,7 @@ export type FreshnessLabel = "today" | "yesterday" | "recent" | "stale" | "old" 
 export type LevelLabel = "high" | "medium" | "low" | "unknown";
 export type ContextValue = "high" | "medium" | "low";
 export type SnsHeat = "high" | "medium" | "low" | "none";
+export type PublishPriority = "high" | "medium" | "low";
 export type ArticleType =
   | "news_event"
   | "official_announcement"
@@ -129,6 +130,8 @@ export type SummarizedArticle = {
   main_entities: MainEntities;
   related_sources: SourceRef[];
   tags: string[];
+  publish_priority: PublishPriority;
+  publish_reason: string;
 };
 
 export type SourceRef = {
