@@ -1,6 +1,6 @@
 {
   "date": "2026-07-05",
-  "generated_at": "2026-07-05T08:40:21.546Z",
+  "generated_at": "2026-07-05T10:12:32.743Z",
   "external_sources": [
     {
       "name": "Weibo HOT SEARCH",
@@ -50,7 +50,72 @@
         "official_announcement": 1
       },
       "ai_candidate_count": 0,
+      "selected_for_deepseek_count": null,
       "low_priority_candidate_count": 0,
+      "main_drop_reason": "no_fresh_articles:old",
+      "url_exclude_samples": [
+        {
+          "title": "CCTV6收视强片",
+          "url": "https://www.1905.com/vod/cctv6/lst/",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "创新手法讲长征！徐展雄 王志飞分享《四渡》幕后创作故事",
+          "url": "https://www.1905.com/video/play/1762380.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "独家观察：IP 长期主义如何炼成？",
+          "url": "https://www.1905.com/video/play/1762208.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "院线上新《四渡》",
+          "url": "https://www.1905.com/video/play/1762183.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "国产原创与国际IP齐聚 暑期档动画电影蓄势待发",
+          "url": "https://www.1905.com/video/play/1762044.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "新片诞生记之《抓特务》博弈记 雷佳音胡歌演绎“猫鼠游戏”",
+          "url": "https://www.1905.com/video/play/1761991.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "光影铸初心|刘劲：扮演周恩来一生荣誉一世责任",
+          "url": "https://www.1905.com/video/play/1762537.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "两部门联合印发通知 促进电影院多样化经营",
+          "url": "https://www.1905.com/video/play/1762540.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "一张《四渡》票根 打开银幕内外的精彩",
+          "url": "https://www.1905.com/video/play/1762535.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "麦天枢：金牌编剧首执导筒 向经典学习",
+          "url": "https://www.1905.com/video/play/1762536.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        }
+      ],
+      "dedupe_drop_reason_counts": {},
       "sample_items": [
         {
           "title": "CCTV6收视强片",
@@ -118,8 +183,8 @@
           "exclude_reason": "before_2026"
         },
         {
-          "title": "创新手法讲长征！徐展雄 王志飞分享《四渡》幕后创作故事",
-          "url": "https://www.1905.com/video/play/1762380.shtml",
+          "title": "布拉德·皮特携战犬荒野求生 《野兽之心》曝预告",
+          "url": "https://www.1905.com/news/20260612/1761374.shtml",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -127,12 +192,12 @@
           "freshness": "",
           "category": "",
           "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "独家观察：IP 长期主义如何炼成？",
-          "url": "https://www.1905.com/video/play/1762208.shtml",
+          "title": "恐龙惊现人类小区!惊悚片《逃出绝命街》定档8.14",
+          "url": "https://www.1905.com/news/20260608/1761132.shtml",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -140,12 +205,12 @@
           "freshness": "",
           "category": "",
           "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "院线上新《四渡》",
-          "url": "https://www.1905.com/video/play/1762183.shtml",
+          "title": "二战尘封秘闻首登银幕!《诺曼底72小时》正在热映",
+          "url": "https://www.1905.com/news/20260606/1761131.shtml",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -153,12 +218,12 @@
           "freshness": "",
           "category": "",
           "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "国产原创与国际IP齐聚 暑期档动画电影蓄势待发",
-          "url": "https://www.1905.com/video/play/1762044.shtml",
+          "title": "《星球大战：曼达洛人与古古》中国首映 点燃冒险",
+          "url": "https://www.1905.com/news/20260518/1759903.shtml",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -166,12 +231,12 @@
           "freshness": "",
           "category": "",
           "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "新片诞生记之《抓特务》博弈记 雷佳音胡歌演绎“猫鼠游戏”",
-          "url": "https://www.1905.com/video/play/1761991.shtml",
+          "title": "《绵羊侦探团》首映 马思纯沙溢土豆分享配音心得",
+          "url": "https://www.1905.com/news/20260511/1759547.shtml",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -179,8 +244,8 @@
           "freshness": "",
           "category": "",
           "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
         }
       ]
     },
@@ -207,11 +272,28 @@
         "news_event": 1
       },
       "ai_candidate_count": 0,
+      "selected_for_deepseek_count": null,
       "low_priority_candidate_count": 0,
+      "main_drop_reason": "no_fresh_articles:old",
+      "url_exclude_samples": [
+        {
+          "title": "活力中国调研行｜国产双摄云台相机卖爆日本，门店排长队、产品被抢空",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVg.html",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "淮南市妇幼保健院发布情况通报",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVj.html",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        }
+      ],
+      "dedupe_drop_reason_counts": {},
       "sample_items": [
         {
-          "title": "泰一科技：打造全域低空数据新底座",
-          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPVVn.html",
+          "title": "活力中国调研行｜国产双摄云台相机卖爆日本，门店排长队、产品被抢空",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVg.html",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -314,8 +396,8 @@
           "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "创新、进取、国际化：他们眼中的静安CAZ",
-          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPVVr.html",
+          "title": "因60万案款未履行成老赖，ST华谊深陷债务泥潭",
+          "url": "https://www.jiemian.com/article/14454508.html",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -323,12 +405,12 @@
           "freshness": "",
           "category": "",
           "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "因60万案款未履行成老赖，ST华谊深陷债务泥潭",
-          "url": "https://www.jiemian.com/article/14454508.html",
+          "title": "因陷入运营困境，星空卫视将于5月8日停播",
+          "url": "https://www.jiemian.com/article/14392647.html",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -360,7 +442,13 @@
         "official_announcement": 18
       },
       "ai_candidate_count": 4,
+      "selected_for_deepseek_count": null,
       "low_priority_candidate_count": 0,
+      "main_drop_reason": "ai_candidates_available",
+      "url_exclude_samples": [],
+      "dedupe_drop_reason_counts": {
+        "title_similarity": 2
+      },
       "sample_items": [
         {
           "title": "国家广播电视总局举行“七一”主题党日活动",
@@ -438,7 +526,7 @@
           "category": "",
           "article_type": "",
           "exclude_stage": "dedupe",
-          "exclude_reason": "dedupe_url_or_similar_title"
+          "exclude_reason": "title_similarity: 国家广播电视总局举行“七一”主题党日活动"
         },
         {
           "title": "国家广播电视总局与缅甸宣传部签署合作协议",
@@ -516,7 +604,13 @@
         "static_page": 1
       },
       "ai_candidate_count": 6,
+      "selected_for_deepseek_count": null,
       "low_priority_candidate_count": 0,
+      "main_drop_reason": "ai_candidates_available",
+      "url_exclude_samples": [],
+      "dedupe_drop_reason_counts": {
+        "title_similarity": 4
+      },
       "sample_items": [
         {
           "title": "2026年电影公映许可证发放公示（国产故事片第二批）",
@@ -620,7 +714,7 @@
           "category": "",
           "article_type": "",
           "exclude_stage": "dedupe",
-          "exclude_reason": "dedupe_url_or_similar_title"
+          "exclude_reason": "title_similarity: 中央宣传部电影局关于转发行业标准化指导性技术文件《虚拟现实 第5部分：场所技术要求和测量方法》并做好相关工作的通知"
         },
         {
           "title": "2026塞浦路斯“中国电影周”圆满落幕",
@@ -669,7 +763,42 @@
         "official_announcement": 1
       },
       "ai_candidate_count": 1,
+      "selected_for_deepseek_count": null,
       "low_priority_candidate_count": 0,
+      "main_drop_reason": "ai_candidates_available",
+      "url_exclude_samples": [
+        {
+          "title": "北京BEIJING",
+          "url": "https://h5.bjnews.com.cn/xjbh5/202309beijing_cn/index.html",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "《爱了！中国式现代化》打造“赛博”公开课",
+          "url": "https://m.bjnews.com.cn/h5special/1782810073129817.html",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "京ICP备18053894号",
+          "url": "http://beian.miit.gov.cn/",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "京公网安备11010102004542号",
+          "url": "http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010102004542/",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "互联网新闻信息服务许可证11120180005号",
+          "url": "https://www.bjnews.com.cn/certificate/p1.html",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        }
+      ],
+      "dedupe_drop_reason_counts": {},
       "sample_items": [
         {
           "title": "电影《四渡》发布“战火中的青春”特辑，解锁长征路上的青春模样",
@@ -818,7 +947,72 @@
       "category_counts": {},
       "article_type_counts": {},
       "ai_candidate_count": 0,
+      "selected_for_deepseek_count": null,
       "low_priority_candidate_count": 0,
+      "main_drop_reason": "fetch_filter_removed_all:not_entertainment_keyword",
+      "url_exclude_samples": [
+        {
+          "title": "第28届上海电视节",
+          "url": "https://ent.sina.com.cn/zt_d/sbaiyulan2023/index.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "第25届上海国际电影节",
+          "url": "https://ent.sina.com.cn/zt_d/subject-1686297817/index.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "2023微博电影之夜",
+          "url": "https://ent.sina.com.cn/zt_d/subject-1685927155/index.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "2023最美表演",
+          "url": "http://ent.sina.com.cn/video/vlist/2023-07-03/doc-imyzmaur1722070.shtml",
+          "excludeStage": "url_exclude",
+          "excludeReason": "excludeUrlPatterns_match"
+        },
+        {
+          "title": "明星制片人V计划",
+          "url": "http://ent.sina.com.cn/zt_d/starproducervplan",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "#idoltube#",
+          "url": "https://s.weibo.com/weibo?q=%23idoltube%23&from=default",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "2026微博电影之夜荣誉揭晓 张艺谋获时代影响力导演",
+          "url": "https://slide.ent.sina.com.cn/film/slide_4_704_389670.html#p=1",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "微博电影之夜现场花絮 杨紫琼吴磊热聊沈腾发传单",
+          "url": "https://slide.ent.sina.com.cn/film/slide_4_704_389671.html#p=1",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "2026微博电影之夜红毯 沈腾黄晓明王俊凯刘昊然等亮相",
+          "url": "https://slide.ent.sina.com.cn/film/slide_4_704_389669.html#p=1",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "还以为她挣了很多钱",
+          "url": "https://k.sina.com.cn/article_1642591402_61e7f4aa01901dr7a.html?from=ent&subch=oent",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        }
+      ],
+      "dedupe_drop_reason_counts": {},
       "sample_items": [
         {
           "title": "第28届上海电视节",
@@ -832,6 +1026,45 @@
           "article_type": "",
           "exclude_stage": "url_exclude",
           "exclude_reason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "《三国第一部：争洛阳》首映抢票",
+          "url": "https://ent.sina.com.cn/m/c/2026-07-01/doc-inifhvwy3107820.shtml",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "影迷评《四渡》：史诗级震撼",
+          "url": "https://ent.sina.com.cn/m/c/2026-06-27/doc-inievzuq4588099.shtml",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "影迷评《魔方小姐》：燃爆赛场",
+          "url": "https://ent.sina.com.cn/m/c/2026-06-27/doc-inievvnu1462601.shtml",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
         },
         {
           "title": "第25届上海国际电影节",
@@ -910,45 +1143,6 @@
           "article_type": "",
           "exclude_stage": "url_exclude",
           "exclude_reason": "includeUrlPatterns_no_match"
-        },
-        {
-          "title": "微博电影之夜现场花絮 杨紫琼吴磊热聊沈腾发传单",
-          "url": "https://slide.ent.sina.com.cn/film/slide_4_704_389671.html#p=1",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
-        },
-        {
-          "title": "2026微博电影之夜红毯 沈腾黄晓明王俊凯刘昊然等亮相",
-          "url": "https://slide.ent.sina.com.cn/film/slide_4_704_389669.html#p=1",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
-        },
-        {
-          "title": "还以为她挣了很多钱",
-          "url": "https://k.sina.com.cn/article_1642591402_61e7f4aa01901dr7a.html?from=ent&subch=oent",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "url_exclude",
-          "exclude_reason": "includeUrlPatterns_no_match"
         }
       ]
     },
@@ -967,7 +1161,60 @@
       "category_counts": {},
       "article_type_counts": {},
       "ai_candidate_count": 0,
+      "selected_for_deepseek_count": null,
       "low_priority_candidate_count": 0,
+      "main_drop_reason": "fetch_filter_removed_all:not_entertainment_keyword",
+      "url_exclude_samples": [
+        {
+          "title": "中国经济面面观｜年中观经济：产业向新、消费提质",
+          "url": "https://h.xinhuaxmt.com/vh512/share/13181158?docid=13181158&newstype=1001&d=1352760",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "Android版",
+          "url": "https://m.thepaper.cn/download?id=2",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "派生万物开放平台",
+          "url": "https://www.pai-tech.net/",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "IP SHANGHAI",
+          "url": "https://www.ipshanghai.cn/",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "SIXTH TONE",
+          "url": "https://www.sixthtone.com/",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "报料邮箱: news@thepaper.cn",
+          "url": "mailto:news@thepaper.cn",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "沪ICP备14003370号",
+          "url": "https://beian.miit.gov.cn/",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        },
+        {
+          "title": "沪公网安备31010602000299号",
+          "url": "https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010602000299",
+          "excludeStage": "url_exclude",
+          "excludeReason": "includeUrlPatterns_no_match"
+        }
+      ],
+      "dedupe_drop_reason_counts": {},
       "sample_items": [
         {
           "title": "中国经济面面观｜年中观经济：产业向新、消费提质",
@@ -983,6 +1230,45 @@
           "exclude_reason": "includeUrlPatterns_no_match"
         },
         {
+          "title": "国际油轮运输市场进入超级景气周期，招商轮船上半年净利预增超两倍",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33522182",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "推荐国际油价震荡，为何外媒称“中国第二次拯救了世界经济”？",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33522175",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "推荐奔图科技：向太盟投资索赔49.5亿元，案件尚未开庭",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33521874",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
           "title": "加速走向全球：今年前5个月我国机器人出口近200亿元",
           "url": "https://www.thepaper.cn/newsDetail_forward_33521882",
           "published_date": "",
@@ -996,34 +1282,21 @@
           "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "推荐上海乐高乐园开业首年：接待游客人次创全球乐高乐园同期纪录，金山文体娱乐收入翻两番",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33520844",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
-        },
-        {
-          "title": "推荐PC及内存硬盘价格持续高位：硬盘一天三个价，经销商喊出“非刚需别买”",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33517465",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
-        },
-        {
           "title": "成立航空冲刺创业板IPO：拟募资12.5亿元布局航发航天赛道，产品尚未大规模量产",
           "url": "https://www.thepaper.cn/newsDetail_forward_33519727",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "上海乐高乐园开业首年：接待游客人次创全球乐高乐园同期纪录，金山文体娱乐收入翻两番",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33520844",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -1061,34 +1334,8 @@
           "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "钱七虎院士：地下空间成为提升城市韧性、拓展发展空间和服务国家战略的重要载体",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33519681",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
-        },
-        {
-          "title": "一文读懂｜证监会优化再融资规则，拟建立的定增储架发行制度是什么？",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33517914",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
-        },
-        {
-          "title": "首份券商半年报预告出炉：国泰海通上半年净利预计超200亿，同比增超27%",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33518157",
+          "title": "PC及内存硬盘价格持续高位：硬盘一天三个价，经销商喊出“非刚需别买”",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33517465",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",

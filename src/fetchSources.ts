@@ -334,12 +334,39 @@ function buildDiagnostic(
     dedupedCount: 0,
     selectedForAiCount: 0,
     sampleTitles: articles.slice(0, 3).map((article) => article.title),
-    auditSamples: auditSamples.slice(0, 30)
+    auditSamples: pickDiagnosticAuditSamples(auditSamples)
   };
 }
 
+function pickDiagnosticAuditSamples(samples: SourceAuditSample[]) {
+  const selected: SourceAuditSample[] = [];
+  const seen = new Set<string>();
+  const add = (sample: SourceAuditSample) => {
+    const key = `${sample.excludeStage}:${sample.excludeReason}:${sample.url}`;
+    if (seen.has(key) || selected.length >= 60) {
+      return;
+    }
+    selected.push(sample);
+    seen.add(key);
+  };
+
+  for (const stage of ["article_type_exclude", "url_exclude"] as AuditExcludeStage[]) {
+    for (const sample of samples.filter((item) => item.excludeStage === stage).slice(0, 30)) {
+      add(sample);
+    }
+  }
+
+  for (const sample of samples) {
+    add(sample);
+  }
+
+  return selected;
+}
+
 function pushAuditSample(samples: SourceAuditSample[], title: string, url: string, excludeStage: AuditExcludeStage, excludeReason: string) {
-  if (samples.length >= 30) {
+  const sameStageCount = samples.filter((sample) => sample.excludeStage === excludeStage).length;
+  const maxPerStage = excludeStage === "url_exclude" ? 30 : 20;
+  if (sameStageCount >= maxPerStage || samples.length >= 80) {
     return;
   }
   samples.push({ title, url, excludeStage, excludeReason });

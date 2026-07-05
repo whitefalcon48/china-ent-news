@@ -1,17 +1,38 @@
 import type { RawArticle } from "./types.js";
 
+export type DedupeDropReason = "canonical_url_duplicate" | "title_similarity" | "empty_content";
+
+export type DedupeDroppedArticle = {
+  article: RawArticle;
+  reason: DedupeDropReason;
+  duplicateOf?: RawArticle;
+};
+
 export function dedupeArticles(articles: RawArticle[]) {
+  return dedupeArticlesWithDiagnostics(articles).articles;
+}
+
+export function dedupeArticlesWithDiagnostics(articles: RawArticle[]) {
   const byUrl = new Map<string, RawArticle>();
   const unique: RawArticle[] = [];
+  const dropped: DedupeDroppedArticle[] = [];
 
   for (const article of articles) {
-    const normalizedUrl = normalizeUrl(article.url);
-    if (byUrl.has(normalizedUrl)) {
+    if (!article.title?.trim() || !article.url?.trim()) {
+      dropped.push({ article, reason: "empty_content" });
       continue;
     }
 
-    const hasSimilarTitle = unique.some((existing) => areTitlesSimilar(existing.title, article.title));
-    if (hasSimilarTitle) {
+    const normalizedUrl = normalizeUrl(article.url);
+    const sameUrlArticle = byUrl.get(normalizedUrl);
+    if (sameUrlArticle) {
+      dropped.push({ article, reason: "canonical_url_duplicate", duplicateOf: sameUrlArticle });
+      continue;
+    }
+
+    const similarTitleArticle = unique.find((existing) => areTitlesSimilar(existing.title, article.title));
+    if (similarTitleArticle) {
+      dropped.push({ article, reason: "title_similarity", duplicateOf: similarTitleArticle });
       continue;
     }
 
@@ -19,7 +40,7 @@ export function dedupeArticles(articles: RawArticle[]) {
     unique.push(article);
   }
 
-  return unique;
+  return { articles: unique, dropped };
 }
 
 function normalizeUrl(url: string) {

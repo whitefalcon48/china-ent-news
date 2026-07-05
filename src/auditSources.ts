@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import "dotenv/config";
 import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
-import { dedupeArticles } from "./dedupe.js";
+import { dedupeArticlesWithDiagnostics, type DedupeDroppedArticle } from "./dedupe.js";
 import { enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
 import type { AuditExcludeStage, FreshnessLabel, NewsSource, RawArticle, SourceAuditSample, SourceDiagnostic } from "./types.js";
 
@@ -38,6 +38,8 @@ type SourceAuditResult = {
   selected_for_deepseek_count: number | null;
   low_priority_candidate_count: number;
   main_drop_reason: string;
+  url_exclude_samples: SourceAuditSample[];
+  dedupe_drop_reason_counts: Record<string, number>;
   sample_items: AuditSampleItem[];
 };
 
@@ -56,9 +58,10 @@ async function main() {
   const filterConfig = await loadFilterConfig();
   const { articles, diagnostics } = await fetchAllSources(sources);
   const enrichedArticles = await enrichMissingDateMetadata(articles);
-  const dedupedArticles = dedupeArticles(enrichedArticles);
+  const dedupeResult = dedupeArticlesWithDiagnostics(enrichedArticles);
+  const dedupedArticles = dedupeResult.articles;
   const classifiedArticles = dedupedArticles.map((article) => classifyArticle(article, filterConfig));
-  const dedupeSamples = buildDedupeSamples(enrichedArticles, dedupedArticles);
+  const dedupeSamples = buildDedupeSamples(dedupeResult.dropped);
   const externalSources = buildExternalSourceStatuses(sources);
   const auditResults = diagnostics
     .sort((a, b) => a.sourceName.localeCompare(b.sourceName, "ja"))
@@ -111,7 +114,8 @@ function buildSourceAudit(diagnostic: SourceDiagnostic, articles: RawArticle[], 
   const aiCandidateCount = sourceArticles.filter(isAiCandidate).length;
   const lowPriorityCandidateCount = sourceArticles.filter(isLowPriorityUnknownCandidate).length;
   const sourceDedupeSamples = dedupeSamples.get(diagnostic.sourceName) ?? [];
-  const mainDropReason = getMainDropReason(diagnostic, sourceArticles, aiCandidateCount);
+  const urlExcludeSamples = (diagnostic.auditSamples ?? []).filter((sample) => sample.excludeStage === "url_exclude");
+  const mainDropReason = getMainDropReason(diagnostic, sourceArticles, aiCandidateCount, sourceDedupeSamples);
 
   return {
     source_name: diagnostic.sourceName,
@@ -131,11 +135,18 @@ function buildSourceAudit(diagnostic: SourceDiagnostic, articles: RawArticle[], 
     selected_for_deepseek_count: null,
     low_priority_candidate_count: lowPriorityCandidateCount,
     main_drop_reason: mainDropReason,
+    url_exclude_samples: urlExcludeSamples.slice(0, 10),
+    dedupe_drop_reason_counts: countValues(sourceDedupeSamples.map((sample) => sample.excludeReason.split(":")[0])),
     sample_items: buildSampleItems(diagnostic.auditSamples ?? [], sourceDedupeSamples, sourceArticles)
   };
 }
 
-function getMainDropReason(diagnostic: SourceDiagnostic, sourceArticles: RawArticle[], aiCandidateCount: number) {
+function getMainDropReason(
+  diagnostic: SourceDiagnostic,
+  sourceArticles: RawArticle[],
+  aiCandidateCount: number,
+  dedupeSamples: SourceAuditSample[]
+) {
   const rawCount = diagnostic.rawCount ?? diagnostic.fetchedCount;
   const afterUrlExcludeCount = diagnostic.afterUrlExcludeCount ?? diagnostic.fetchedCount;
 
@@ -149,7 +160,15 @@ function getMainDropReason(diagnostic: SourceDiagnostic, sourceArticles: RawArti
     return "url_exclude_all";
   }
   if (!sourceArticles.length) {
-    return "dedupe_or_fetch_filter_removed_all";
+    if (dedupeSamples.length) {
+      return "dedupe_removed_all:" + (dedupeSamples[0]?.excludeReason.split(":")[0] ?? "unknown");
+    }
+    const fetchDropReason = mostCommon(
+      (diagnostic.auditSamples ?? [])
+        .filter((sample) => sample.excludeStage === "article_type_exclude")
+        .map((sample) => sample.excludeReason)
+    );
+    return fetchDropReason ? "fetch_filter_removed_all:" + fetchDropReason : "dedupe_or_fetch_filter_removed_all";
   }
   if (!sourceArticles.some((article) => article.publishedDate)) {
     return "date_unknown_all";
@@ -303,27 +322,22 @@ function getExclude(article: RawArticle): { stage: AuditExcludeStage; reason: st
   return { stage: "", reason: "" };
 }
 
-function buildDedupeSamples(articles: RawArticle[], dedupedArticles: RawArticle[]) {
-  const dedupedUrls = new Set(dedupedArticles.map((article) => article.url));
+function buildDedupeSamples(droppedArticles: DedupeDroppedArticle[]) {
   const bySource = new Map<string, SourceAuditSample[]>();
-  for (const article of articles) {
-    if (dedupedUrls.has(article.url)) {
-      continue;
-    }
-    const samples = bySource.get(article.sourceName) ?? [];
-    if (samples.length < 10) {
+  for (const dropped of droppedArticles) {
+    const samples = bySource.get(dropped.article.sourceName) ?? [];
+    if (samples.length < 20) {
       samples.push({
-        title: article.title,
-        url: article.url,
+        title: dropped.article.title,
+        url: dropped.article.url,
         excludeStage: "dedupe",
-        excludeReason: "dedupe_url_or_similar_title"
+        excludeReason: dropped.duplicateOf ? dropped.reason + ": " + dropped.duplicateOf.title : dropped.reason
       });
     }
-    bySource.set(article.sourceName, samples);
+    bySource.set(dropped.article.sourceName, samples);
   }
   return bySource;
 }
-
 function buildExternalSourceStatuses(sources: NewsSource[]): ExternalSourceStatus[] {
   const configuredNames = sources.map((source) => `${source.name} ${source.url}`.toLowerCase());
   return [
@@ -394,6 +408,8 @@ function renderSourceSection(result: SourceAuditResult) {
 - selected for DeepSeek: ${result.selected_for_deepseek_count ?? "not_run_in_audit"}
 - low priority unknown candidates: ${result.low_priority_candidate_count}
 - main drop reason: ${result.main_drop_reason}
+- dedupe drop reasons: ${formatCounts(result.dedupe_drop_reason_counts)}
+- URL exclude samples: ${formatUrlExcludeSamples(result.url_exclude_samples)}
 - category: ${formatCounts(result.category_counts)}
 - article_type: ${formatCounts(result.article_type_counts)}
 
@@ -419,6 +435,10 @@ function countValues(values: string[]) {
     counts[value] = (counts[value] ?? 0) + 1;
     return counts;
   }, {});
+}
+
+function formatUrlExcludeSamples(samples: SourceAuditSample[]) {
+  return samples.length ? samples.map((sample) => `${sample.excludeReason} ${sample.url}`).join(" / ") : "none";
 }
 
 function formatCounts(counts: Record<string, number>) {

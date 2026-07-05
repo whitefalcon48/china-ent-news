@@ -1,7 +1,7 @@
 import "dotenv/config";
-import { classifyArticle, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
+import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
 import { dedupeArticles } from "./dedupe.js";
-import { enrichArticleContent, fetchAllSources, loadSources } from "./fetchSources.js";
+import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
@@ -34,7 +34,8 @@ async function main() {
   console.log(`AI_MODEL: ${aiEnv.model}`);
 
   const { articles, errors, diagnostics } = await fetchAllSources(sources);
-  const dedupedArticles = dedupeArticles(articles);
+  const metadataEnrichedArticles = await enrichMissingDateMetadata(articles);
+  const dedupedArticles = dedupeArticles(metadataEnrichedArticles);
   const classifiedArticles = attachRelatedSources(dedupedArticles.map((article) => classifyArticle(article, filterConfig)));
   const topicMergeResult = mergeTopicDuplicates(classifiedArticles);
   const generationCandidatePool = topicMergeResult.articles.map(prepareGenerationCandidate);
@@ -153,6 +154,7 @@ async function main() {
   console.log("");
   console.log("実行結果");
   console.log(`- 取得した記事数: ${articles.length}`);
+  console.log(`- 日付補完後の記事数: ${metadataEnrichedArticles.length}`);
   console.log(`- 重複除去後の記事数: ${dedupedArticles.length}`);
   console.log(`- 除外件数: ${preAiExclusions.length + rawContentExclusions.length + postAiExclusions.length}`);
   console.log(`- AI処理対象の記事数: ${selectedArticles.length}`);
@@ -173,6 +175,31 @@ async function main() {
     console.log("- AI処理エラー:");
     aiErrors.forEach((error) => console.log(`  - ${error}`));
   }
+}
+
+async function enrichMissingDateMetadata(articles: RawArticle[]) {
+  const results: RawArticle[] = [];
+  const queue = [...articles];
+  const workerCount = Math.min(5, queue.length || 1);
+
+  await Promise.all(
+    Array.from({ length: workerCount }, async () => {
+      while (queue.length) {
+        const article = queue.shift();
+        if (!article) {
+          continue;
+        }
+        const dateInfo = getArticleDateInfo(article);
+        if (dateInfo.dateSource !== "unknown") {
+          results.push(article);
+          continue;
+        }
+        results.push(await enrichArticleMetadata(article));
+      }
+    })
+  );
+
+  return results;
 }
 
 function buildNonOfficialSourceDiagnostics(
