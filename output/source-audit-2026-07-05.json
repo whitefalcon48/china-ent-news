@@ -1,11 +1,11 @@
 {
   "date": "2026-07-05",
-  "generated_at": "2026-07-05T10:12:32.743Z",
+  "generated_at": "2026-07-05T14:32:53.425Z",
   "external_sources": [
     {
       "name": "Weibo HOT SEARCH",
-      "status": "not_configured",
-      "note": "not present in config/sources.json"
+      "status": "failed",
+      "note": "dedicated audit fetcher routes: /weibo/search/hot"
     },
     {
       "name": "Douban",
@@ -19,8 +19,19 @@
     },
     {
       "name": "HOT SEARCH",
-      "status": "not_configured",
-      "note": "not present in config/sources.json"
+      "status": "failed",
+      "note": "dedicated audit fetcher routes: /weibo/search/hot"
+    }
+  ],
+  "hot_search_sources": [
+    {
+      "source_name": "Weibo HOT SEARCH /weibo/search/hot",
+      "route": "/weibo/search/hot",
+      "fetch_status": "failed",
+      "fetch_error": "TimeoutError: The operation was aborted due to timeout",
+      "raw_count": 0,
+      "entertainment_like_count": 0,
+      "sample_items": []
     }
   ],
   "sources": [
@@ -277,14 +288,14 @@
       "main_drop_reason": "no_fresh_articles:old",
       "url_exclude_samples": [
         {
-          "title": "活力中国调研行｜国产双摄云台相机卖爆日本，门店排长队、产品被抢空",
-          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVg.html",
+          "title": "活力中国调研行｜11公里外的奶茶，仅7分钟就能送达！全国日均运输超3万票，“无人机+无人车”配送加速落地",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVn.html",
           "excludeStage": "url_exclude",
           "excludeReason": "includeUrlPatterns_no_match"
         },
         {
-          "title": "淮南市妇幼保健院发布情况通报",
-          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVj.html",
+          "title": "活力中国调研行｜中国消费级外骨骼产品卖到全球第一，救援、户外、养老都在用",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVm.html",
           "excludeStage": "url_exclude",
           "excludeReason": "includeUrlPatterns_no_match"
         }
@@ -292,8 +303,8 @@
       "dedupe_drop_reason_counts": {},
       "sample_items": [
         {
-          "title": "活力中国调研行｜国产双摄云台相机卖爆日本，门店排长队、产品被抢空",
-          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVg.html",
+          "title": "活力中国调研行｜11公里外的奶茶，仅7分钟就能送达！全国日均运输超3万票，“无人机+无人车”配送加速落地",
+          "url": "https://www.jiemian.com/video/AGUCMQhgB28BPFVn.html",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -936,7 +947,7 @@
       "source_name": "新浪娱乐",
       "fetch_status": "empty",
       "fetch_error": "",
-      "raw_count": 80,
+      "raw_count": 79,
       "after_url_exclude_count": 3,
       "after_dedupe_count": 0,
       "valid_date_count": 0,
@@ -1230,8 +1241,8 @@
           "exclude_reason": "includeUrlPatterns_no_match"
         },
         {
-          "title": "国际油轮运输市场进入超级景气周期，招商轮船上半年净利预增超两倍",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33522182",
+          "title": "活力中国调研行｜将老师傅的经验转化为数字模型，酱油酿造有了AI大脑",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33519751",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -1243,8 +1254,8 @@
           "exclude_reason": "not_entertainment_keyword"
         },
         {
-          "title": "推荐国际油价震荡，为何外媒称“中国第二次拯救了世界经济”？",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33522175",
+          "title": "推荐国际油轮运输市场进入超级景气周期，招商轮船上半年净利预增超两倍",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33522182",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -1258,6 +1269,19 @@
         {
           "title": "推荐奔图科技：向太盟投资索赔49.5亿元，案件尚未开庭",
           "url": "https://www.thepaper.cn/newsDetail_forward_33521874",
+          "published_date": "",
+          "date_source": "unknown",
+          "date_extraction_note": "not_checked_after_early_exclude",
+          "age_days": null,
+          "freshness": "",
+          "category": "",
+          "article_type": "",
+          "exclude_stage": "article_type_exclude",
+          "exclude_reason": "not_entertainment_keyword"
+        },
+        {
+          "title": "国际油价震荡，为何外媒称“中国第二次拯救了世界经济”？",
+          "url": "https://www.thepaper.cn/newsDetail_forward_33522175",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",
@@ -1323,19 +1347,6 @@
         {
           "title": "美国国防部启动碳酸锂战略收储，五年拟采购1.62万吨补充国防储备",
           "url": "https://www.thepaper.cn/newsDetail_forward_33519679",
-          "published_date": "",
-          "date_source": "unknown",
-          "date_extraction_note": "not_checked_after_early_exclude",
-          "age_days": null,
-          "freshness": "",
-          "category": "",
-          "article_type": "",
-          "exclude_stage": "article_type_exclude",
-          "exclude_reason": "not_entertainment_keyword"
-        },
-        {
-          "title": "PC及内存硬盘价格持续高位：硬盘一天三个价，经销商喊出“非刚需别买”",
-          "url": "https://www.thepaper.cn/newsDetail_forward_33517465",
           "published_date": "",
           "date_source": "unknown",
           "date_extraction_note": "not_checked_after_early_exclude",

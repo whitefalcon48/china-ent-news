@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import "dotenv/config";
+import { auditHotSearchSources, type HotSearchAuditResult } from "./auditHotSearch.js";
 import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
 import { dedupeArticlesWithDiagnostics, type DedupeDroppedArticle } from "./dedupe.js";
 import { enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
@@ -62,7 +63,8 @@ async function main() {
   const dedupedArticles = dedupeResult.articles;
   const classifiedArticles = dedupedArticles.map((article) => classifyArticle(article, filterConfig));
   const dedupeSamples = buildDedupeSamples(dedupeResult.dropped);
-  const externalSources = buildExternalSourceStatuses(sources);
+  const hotSearchAudits = await auditHotSearchSources();
+  const externalSources = buildExternalSourceStatuses(sources, hotSearchAudits);
   const auditResults = diagnostics
     .sort((a, b) => a.sourceName.localeCompare(b.sourceName, "ja"))
     .map((diagnostic) => buildSourceAudit(diagnostic, classifiedArticles, dedupeSamples));
@@ -70,10 +72,14 @@ async function main() {
   await fs.mkdir(path.resolve("output"), { recursive: true });
   const jsonPath = path.resolve("output", `source-audit-${date}.json`);
   const mdPath = path.resolve("output", `source-audit-${date}.md`);
-  await fs.writeFile(jsonPath, JSON.stringify({ date, generated_at: new Date().toISOString(), external_sources: externalSources, sources: auditResults }, null, 2), "utf8");
-  await fs.writeFile(mdPath, renderMarkdown(date, auditResults, externalSources), "utf8");
+  await fs.writeFile(
+    jsonPath,
+    JSON.stringify({ date, generated_at: new Date().toISOString(), external_sources: externalSources, hot_search_sources: hotSearchAudits, sources: auditResults }, null, 2),
+    "utf8"
+  );
+  await fs.writeFile(mdPath, renderMarkdown(date, auditResults, externalSources, hotSearchAudits), "utf8");
 
-  logSummary(auditResults, externalSources);
+  logSummary(auditResults, externalSources, hotSearchAudits);
   console.log(`JSON: ${jsonPath}`);
   console.log(`Markdown: ${mdPath}`);
 }
@@ -338,14 +344,19 @@ function buildDedupeSamples(droppedArticles: DedupeDroppedArticle[]) {
   }
   return bySource;
 }
-function buildExternalSourceStatuses(sources: NewsSource[]): ExternalSourceStatus[] {
+function buildExternalSourceStatuses(sources: NewsSource[], hotSearchAudits: HotSearchAuditResult[] = []): ExternalSourceStatus[] {
   const configuredNames = sources.map((source) => `${source.name} ${source.url}`.toLowerCase());
+  const hotSearchStatus = summarizeHotSearchStatus(hotSearchAudits);
   return [
     { name: "Weibo HOT SEARCH", tokens: ["weibo", "\u5fae\u535a", "hot search", "\u70ed\u641c"] },
     { name: "Douban", tokens: ["douban", "\u8c46\u74e3"] },
     { name: "Maoyan", tokens: ["maoyan", "\u732b\u773c"] },
     { name: "HOT SEARCH", tokens: ["hot search", "\u70ed\u641c"] }
   ].map((target) => {
+    const isHotSearch = target.name === "Weibo HOT SEARCH" || target.name === "HOT SEARCH";
+    if (isHotSearch && hotSearchStatus) {
+      return { ...hotSearchStatus, name: target.name };
+    }
     const configured = configuredNames.some((name) => target.tokens.some((token) => name.includes(token.toLowerCase())));
     return {
       name: target.name,
@@ -355,7 +366,21 @@ function buildExternalSourceStatuses(sources: NewsSource[]): ExternalSourceStatu
   });
 }
 
-function renderMarkdown(date: string, results: SourceAuditResult[], externalSources: ExternalSourceStatus[]) {
+function summarizeHotSearchStatus(hotSearchAudits: HotSearchAuditResult[]): ExternalSourceStatus | null {
+  if (!hotSearchAudits.length) {
+    return null;
+  }
+  const priority: ExternalSourceStatus["status"][] = ["success", "empty", "failed", "not_configured"];
+  const status = priority.find((candidate) => hotSearchAudits.some((audit) => audit.fetch_status === candidate)) ?? "failed";
+  const routes = hotSearchAudits.map((audit) => audit.route || "not_configured").join(", ");
+  return {
+    name: "Weibo HOT SEARCH",
+    status,
+    note: `dedicated audit fetcher routes: ${routes}`
+  };
+}
+
+function renderMarkdown(date: string, results: SourceAuditResult[], externalSources: ExternalSourceStatus[], hotSearchAudits: HotSearchAuditResult[]) {
   const usable = results.filter((result) => result.ai_candidate_count > 0).map((result) => result.source_name);
   const empty = results.filter((result) => result.fetch_status === "empty").map((result) => result.source_name);
   const failed = results.filter((result) => result.fetch_status === "failed").map((result) => result.source_name);
@@ -367,6 +392,7 @@ function renderMarkdown(date: string, results: SourceAuditResult[], externalSour
     .map((result) => result.source_name);
 
   const externalSection = externalSources.map((source) => `- ${source.name}: ${source.status} (${source.note})`).join("\n");
+  const hotSearchSection = hotSearchAudits.map((result) => renderHotSearchSection(result)).join("\n\n");
   const sections = results.map((result) => renderSourceSection(result)).join("\n\n");
   return `# Source Audit ${date}
 
@@ -380,8 +406,32 @@ function renderMarkdown(date: string, results: SourceAuditResult[], externalSour
 ## Weibo / Douban / Maoyan / HOT SEARCH
 ${externalSection}
 
+## HOT SEARCH Diagnostics
+${hotSearchSection || "none"}
+
 ${sections}
 `;
+}
+
+function renderHotSearchSection(result: HotSearchAuditResult) {
+  const sampleRows = result.sample_items.length
+    ? result.sample_items
+        .map(
+          (item) =>
+            `| ${item.rank ?? ""} | ${escapeCell(item.title)} | ${escapeCell(item.url)} | ${escapeCell(item.description)} | ${item.hot_value ?? ""} | ${item.category ?? ""} | ${escapeCell(item.entertainment_match_reason)} |`
+        )
+        .join("\n")
+    : "|  | none |  |  |  |  |  |";
+
+  return `### ${result.source_name}
+- fetch: ${result.fetch_status}${result.fetch_error ? ` (${escapeCell(result.fetch_error)})` : ""}
+- route: ${result.route || "not_configured"}
+- raw: ${result.raw_count}
+- entertainment_like: ${result.entertainment_like_count}
+
+| rank | title | url | description | hot_value | category | entertainment_match_reason |
+| ---: | --- | --- | --- | --- | --- | --- |
+${sampleRows}`;
 }
 
 function renderSourceSection(result: SourceAuditResult) {
@@ -419,7 +469,7 @@ function renderSourceSection(result: SourceAuditResult) {
 ${sampleRows}`;
 }
 
-function logSummary(results: SourceAuditResult[], externalSources: ExternalSourceStatus[]) {
+function logSummary(results: SourceAuditResult[], externalSources: ExternalSourceStatus[], hotSearchAudits: HotSearchAuditResult[]) {
   console.log("source audit summary");
   for (const result of results) {
     console.log(`${result.source_name}: fetch=${result.fetch_status}, raw=${result.raw_count}, url_ok=${result.after_url_exclude_count}, dedupe=${result.after_dedupe_count}, valid_date=${result.valid_date_count}, fresh=${result.fresh_count}, stale=${result.stale_count}, old=${result.old_count}, unknown=${result.unknown_date_count}, ai_candidates=${result.ai_candidate_count}, selected_for_deepseek=${result.selected_for_deepseek_count ?? "not_run"}, main_drop=${result.main_drop_reason}, low_priority_unknown=${result.low_priority_candidate_count}`);
@@ -427,6 +477,12 @@ function logSummary(results: SourceAuditResult[], externalSources: ExternalSourc
   console.log("external source status");
   for (const source of externalSources) {
     console.log(`${source.name}: ${source.status}`);
+  }
+  console.log("hot search diagnostics");
+  for (const result of hotSearchAudits) {
+    console.log(
+      `${result.source_name}: fetch=${result.fetch_status}, raw=${result.raw_count}, entertainment_like=${result.entertainment_like_count}${result.fetch_error ? `, error=${result.fetch_error}` : ""}`
+    );
   }
 }
 

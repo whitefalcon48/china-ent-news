@@ -9,13 +9,16 @@ Phase 0では、Weibo热搜を本格実装しない。
 
 ```env
 RSSHUB_BASE_URL=https://rsshub.app
-WEIBO_HOT_SEARCH_PATH=/weibo/search/hot
-WEIBO_HOT_SEARCH_ENABLED=false
+WEIBO_HOT_SEARCH_ROUTES=/weibo/search/hot
+WEIBO_HOT_SEARCH_ENABLED=true
 WEIBO_HOT_SEARCH_TIMEOUT_MS=10000
 ```
 
 自前RSSHubやミラーを使う場合は `RSSHUB_BASE_URL` を差し替える。
 公開インスタンスはレート制限、ブロック、経路障害の影響を受ける可能性がある。
+複数ルートを試す場合は `WEIBO_HOT_SEARCH_ROUTES=/weibo/search/hot,/other/route` のようにカンマ区切りで指定する。
+互換用に `WEIBO_HOT_SEARCH_PATH` も読み取れるが、今後は複数候補を扱える `WEIBO_HOT_SEARCH_ROUTES` を優先する。
+`WEIBO_HOT_SEARCH_ENABLED=false` の場合、source audit では `not_configured` として扱う。
 
 ## 取得できる想定項目
 
@@ -32,7 +35,7 @@ RSSHubのRSS/Atomとして取得する場合、最低限は以下を想定する
 
 - RSSHub HTTPエラー、タイムアウト、XML parse失敗は全体処理を止めない
 - source audit では `HOT SEARCH: failed` または `empty` として表示
-- generate-news では候補0として続行
+- 現段階では generate-news の candidate_pool / deepseek_input には混ぜない
 - SNS反応は作らない。取得できた热搜項目だけを `article_type: sns_trend` として扱う
 
 ## Cookie / Puppeteer 前提
@@ -48,11 +51,11 @@ RSSHub公開ルートだけで取れるなら Cookie / Puppeteer は不要。
 
 ## 最小実装案
 
-1. `config/sources.json` には通常ソースとして混ぜず、専用fetcher `fetchHotSearchSource()` を追加
-2. `WEIBO_HOT_SEARCH_ENABLED=true` のときだけ取得
-3. RSS item上位10件を `RawArticle` に変換
-4. `articleType=sns_trend`, `badge=HOT SEARCH`, `sourceType=sns`, `confidence=C/D` 相当で扱う
-5. 公式発表・大手報道がない限り、本文では断定しない
+1. `config/sources.json` には通常ソースとして混ぜず、source audit 専用fetcherで取得する
+2. `WEIBO_HOT_SEARCH_ENABLED=false` で明示停止できる
+3. RSS item上位を診断用サンプルとして出す
+4. エンタメ判定キーワードに一致した場合だけ `entertainment_match_reason` を出す
+5. candidate_pool / deepseek_input にはまだ混ぜない
 6. auditには `not_configured / failed / empty / success` を必ず出す
 
 ## 注意
