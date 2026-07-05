@@ -3,7 +3,7 @@ import { classifyArticle, isPublishableType, loadFilterConfig } from "./classify
 import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, fetchAllSources, loadSources } from "./fetchSources.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
-import { buildSelectionTrace, candidateKey, writeSelectionTraceFile } from "./selectionTrace.js";
+import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
 import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic } from "./types.js";
 
@@ -121,6 +121,14 @@ async function main() {
   }
 
   const outputPath = await renderMarkdownFile(processed, provider);
+  const nonOfficialSourceDiagnostics = buildNonOfficialSourceDiagnostics(
+    sources,
+    diagnostics,
+    classifiedArticles,
+    generationCandidatePool,
+    selectedArticles,
+    droppedReasons
+  );
   const selectionTrace = buildSelectionTrace({
     provider,
     candidatePool: generationCandidatePool,
@@ -128,7 +136,8 @@ async function main() {
     processed,
     droppedReasons,
     selectionReasons,
-    outputCountInstruction: OUTPUT_COUNT_INSTRUCTION
+    outputCountInstruction: OUTPUT_COUNT_INSTRUCTION,
+    nonOfficialSourceDiagnostics
   });
   const tracePath = await writeSelectionTraceFile(selectionTrace);
   logExclusions("AI処理後の除外記事", postAiExclusions);
@@ -164,6 +173,131 @@ async function main() {
     console.log("- AI処理エラー:");
     aiErrors.forEach((error) => console.log(`  - ${error}`));
   }
+}
+
+function buildNonOfficialSourceDiagnostics(
+  sources: Awaited<ReturnType<typeof loadSources>>,
+  diagnostics: SourceDiagnostic[],
+  classifiedArticles: RawArticle[],
+  candidatePool: RawArticle[],
+  selectedArticles: RawArticle[],
+  droppedReasons: Map<string, string>
+): SourceSelectionDiagnostic[] {
+  const diagnosticsBySource = new Map(diagnostics.map((diagnostic) => [diagnostic.sourceName, diagnostic]));
+  const selectedCounts = countBySource(selectedArticles);
+
+  return sources
+    .filter((source) => source.reliability !== "A")
+    .map((source) => {
+      const diagnostic = diagnosticsBySource.get(source.name);
+      const sourceArticles = classifiedArticles.filter((article) => article.sourceName === source.name);
+      const sourceCandidates = candidatePool.filter((article) => article.sourceName === source.name);
+      const freshArticles = sourceArticles.filter(isFreshEnoughForNormalFeed);
+      const aiCandidateCount = sourceCandidates.filter((article) => isGenerationEligibleBeforeFreshness(article) && isFreshEnoughForNormalFeed(article)).length;
+      const validDateCount = sourceArticles.filter((article) => Boolean(article.publishedDate)).length;
+      const freshCount = freshArticles.length;
+
+      return {
+        source: source.name,
+        raw_count: diagnostic?.rawCount ?? diagnostic?.fetchedCount ?? 0,
+        after_url_exclude_count: diagnostic?.afterUrlExcludeCount ?? diagnostic?.fetchedCount ?? 0,
+        after_dedupe_count: sourceArticles.length,
+        valid_date_count: validDateCount,
+        fresh_count: freshCount,
+        ai_candidate_count: aiCandidateCount,
+        selected_for_deepseek_count: selectedCounts.get(source.name) ?? 0,
+        main_drop_reason: getSourceMainDropReason(source.name, diagnostic, sourceArticles, sourceCandidates, selectedArticles, droppedReasons, aiCandidateCount),
+        date_pipeline_note: getDatePipelineNote(sourceArticles)
+      };
+    });
+}
+
+function getDatePipelineNote(sourceArticles: RawArticle[]) {
+  if (!sourceArticles.length) {
+    return "";
+  }
+  const unknownCount = sourceArticles.filter((article) => !article.publishedDate || article.freshnessLabel === "unknown").length;
+  if (!unknownCount) {
+    return "";
+  }
+  return "audit:sources enriches missing dates from article HTML; generation selection uses metadata available before content enrichment, so unknown-date counts can differ";
+}
+
+function getSourceMainDropReason(
+  sourceName: string,
+  diagnostic: SourceDiagnostic | undefined,
+  sourceArticles: RawArticle[],
+  sourceCandidates: RawArticle[],
+  selectedArticles: RawArticle[],
+  droppedReasons: Map<string, string>,
+  aiCandidateCount: number
+) {
+  const rawCount = diagnostic?.rawCount ?? diagnostic?.fetchedCount ?? 0;
+  const afterUrlExcludeCount = diagnostic?.afterUrlExcludeCount ?? diagnostic?.fetchedCount ?? 0;
+
+  if (diagnostic?.error) {
+    return "fetch_failed:" + diagnostic.error;
+  }
+  if (rawCount === 0) {
+    return "fetch_empty";
+  }
+  if (afterUrlExcludeCount === 0) {
+    return "url_exclude_all";
+  }
+  if (!sourceArticles.length) {
+    return "dedupe_or_fetch_filter_removed_all";
+  }
+  if (!sourceArticles.some((article) => article.publishedDate)) {
+    return "date_unknown_all";
+  }
+  if (!sourceArticles.some(isFreshEnoughForNormalFeed)) {
+    return getDominantFreshnessReason(sourceArticles);
+  }
+  if (aiCandidateCount === 0) {
+    return getDominantArticleDropReason(sourceArticles);
+  }
+  if (!selectedArticles.some((article) => article.sourceName === sourceName)) {
+    return getDominantSelectionDropReason(sourceCandidates, droppedReasons) || "not_selected_for_deepseek";
+  }
+  return "selected_for_deepseek";
+}
+
+function getDominantFreshnessReason(articles: RawArticle[]) {
+  const counts = countStrings(articles.map((article) => article.freshnessLabel ?? "unknown"));
+  const dominant = [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "unknown";
+  return "no_fresh_articles:" + dominant;
+}
+
+function getDominantArticleDropReason(articles: RawArticle[]) {
+  const reasons = articles.map((article) => {
+    if (article.skipReason) {
+      return "skip:" + article.skipReason;
+    }
+    if (!isGenerationEligibleBeforeFreshness(article)) {
+      return "article_type:" + (article.articleType ?? "unknown");
+    }
+    if (!isFreshEnoughForNormalFeed(article)) {
+      return "freshness:" + (article.freshnessLabel ?? "unknown");
+    }
+    return "unknown";
+  });
+  return mostCommon(reasons) || "not_ai_candidate";
+}
+
+function getDominantSelectionDropReason(articles: RawArticle[], droppedReasons: Map<string, string>) {
+  return mostCommon(articles.map((article) => droppedReasons.get(candidateKey(article)) ?? "").filter(Boolean));
+}
+
+function countStrings(values: string[]) {
+  const counts = new Map<string, number>();
+  for (const value of values) {
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return counts;
+}
+
+function mostCommon(values: string[]) {
+  return [...countStrings(values).entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
 }
 
 function prepareGenerationCandidate(article: RawArticle): RawArticle {

@@ -35,7 +35,9 @@ type SourceAuditResult = {
   category_counts: Record<string, number>;
   article_type_counts: Record<string, number>;
   ai_candidate_count: number;
+  selected_for_deepseek_count: number | null;
   low_priority_candidate_count: number;
+  main_drop_reason: string;
   sample_items: AuditSampleItem[];
 };
 
@@ -109,6 +111,7 @@ function buildSourceAudit(diagnostic: SourceDiagnostic, articles: RawArticle[], 
   const aiCandidateCount = sourceArticles.filter(isAiCandidate).length;
   const lowPriorityCandidateCount = sourceArticles.filter(isLowPriorityUnknownCandidate).length;
   const sourceDedupeSamples = dedupeSamples.get(diagnostic.sourceName) ?? [];
+  const mainDropReason = getMainDropReason(diagnostic, sourceArticles, aiCandidateCount);
 
   return {
     source_name: diagnostic.sourceName,
@@ -125,11 +128,55 @@ function buildSourceAudit(diagnostic: SourceDiagnostic, articles: RawArticle[], 
     category_counts: countValues(sourceArticles.map((article) => article.feedCategory ?? article.category)),
     article_type_counts: countValues(sourceArticles.map((article) => article.articleType ?? "unknown")),
     ai_candidate_count: aiCandidateCount,
+    selected_for_deepseek_count: null,
     low_priority_candidate_count: lowPriorityCandidateCount,
+    main_drop_reason: mainDropReason,
     sample_items: buildSampleItems(diagnostic.auditSamples ?? [], sourceDedupeSamples, sourceArticles)
   };
 }
 
+function getMainDropReason(diagnostic: SourceDiagnostic, sourceArticles: RawArticle[], aiCandidateCount: number) {
+  const rawCount = diagnostic.rawCount ?? diagnostic.fetchedCount;
+  const afterUrlExcludeCount = diagnostic.afterUrlExcludeCount ?? diagnostic.fetchedCount;
+
+  if (diagnostic.error) {
+    return "fetch_failed:" + diagnostic.error;
+  }
+  if (rawCount === 0) {
+    return "fetch_empty";
+  }
+  if (afterUrlExcludeCount === 0) {
+    return "url_exclude_all";
+  }
+  if (!sourceArticles.length) {
+    return "dedupe_or_fetch_filter_removed_all";
+  }
+  if (!sourceArticles.some((article) => article.publishedDate)) {
+    return "date_unknown_all";
+  }
+  if (!sourceArticles.some((article) => FRESH_LABELS.includes(article.freshnessLabel ?? "unknown"))) {
+    return getDominantAuditFreshnessReason(sourceArticles);
+  }
+  if (aiCandidateCount === 0) {
+    return getDominantAuditExcludeReason(sourceArticles);
+  }
+  return "ai_candidates_available";
+}
+
+function getDominantAuditFreshnessReason(articles: RawArticle[]) {
+  const dominant = mostCommon(articles.map((article) => article.freshnessLabel ?? "unknown"));
+  return "no_fresh_articles:" + (dominant || "unknown");
+}
+
+function getDominantAuditExcludeReason(articles: RawArticle[]) {
+  const reasons = articles.map((article) => getExclude(article).reason || "not_excluded");
+  return mostCommon(reasons) || "not_ai_candidate";
+}
+
+function mostCommon(values: string[]) {
+  const counts = countValues(values.filter(Boolean));
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+}
 function buildSampleItems(fetchSamples: SourceAuditSample[], dedupeSamples: SourceAuditSample[], articles: RawArticle[]) {
   const articleSamples = articles.map(toSampleItem);
   const freshArticleSamples = articleSamples.filter((item) => FRESH_LABELS.includes(item.freshness as FreshnessLabel));
@@ -344,7 +391,9 @@ function renderSourceSection(result: SourceAuditResult) {
 - old: ${result.old_count}
 - unknown: ${result.unknown_date_count}
 - AI candidates: ${result.ai_candidate_count}
+- selected for DeepSeek: ${result.selected_for_deepseek_count ?? "not_run_in_audit"}
 - low priority unknown candidates: ${result.low_priority_candidate_count}
+- main drop reason: ${result.main_drop_reason}
 - category: ${formatCounts(result.category_counts)}
 - article_type: ${formatCounts(result.article_type_counts)}
 
@@ -357,7 +406,7 @@ ${sampleRows}`;
 function logSummary(results: SourceAuditResult[], externalSources: ExternalSourceStatus[]) {
   console.log("source audit summary");
   for (const result of results) {
-    console.log(`${result.source_name}: fetch=${result.fetch_status}, raw=${result.raw_count}, dedupe=${result.after_dedupe_count}, valid_date=${result.valid_date_count}, fresh=${result.fresh_count}, stale=${result.stale_count}, old=${result.old_count}, unknown=${result.unknown_date_count}, ai_candidates=${result.ai_candidate_count}, low_priority_unknown=${result.low_priority_candidate_count}`);
+    console.log(`${result.source_name}: fetch=${result.fetch_status}, raw=${result.raw_count}, url_ok=${result.after_url_exclude_count}, dedupe=${result.after_dedupe_count}, valid_date=${result.valid_date_count}, fresh=${result.fresh_count}, stale=${result.stale_count}, old=${result.old_count}, unknown=${result.unknown_date_count}, ai_candidates=${result.ai_candidate_count}, selected_for_deepseek=${result.selected_for_deepseek_count ?? "not_run"}, main_drop=${result.main_drop_reason}, low_priority_unknown=${result.low_priority_candidate_count}`);
   }
   console.log("external source status");
   for (const source of externalSources) {

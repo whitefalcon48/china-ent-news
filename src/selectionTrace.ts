@@ -20,6 +20,19 @@ type TraceCandidate = {
 
 type PublishPriorityCounts = Record<PublishPriority, number>;
 
+export type SourceSelectionDiagnostic = {
+  source: string;
+  raw_count: number;
+  after_url_exclude_count: number;
+  after_dedupe_count: number;
+  valid_date_count: number;
+  fresh_count: number;
+  ai_candidate_count: number;
+  selected_for_deepseek_count: number;
+  main_drop_reason: string;
+  date_pipeline_note?: string;
+};
+
 type TraceFinalOutput = {
   output_title: string;
   input_title: string;
@@ -41,6 +54,7 @@ type SelectionTrace = {
   output_count_instruction: string | null;
   final_output_count: number;
   publish_priority_counts: PublishPriorityCounts;
+  non_official_source_diagnostics: SourceSelectionDiagnostic[];
   final_output: TraceFinalOutput[];
   dropped: Array<TraceCandidate & { reason: string }>;
 };
@@ -58,6 +72,7 @@ export function buildSelectionTrace(args: {
   droppedReasons: Map<string, string>;
   selectionReasons: Map<string, string>;
   outputCountInstruction: string | null;
+  nonOfficialSourceDiagnostics?: SourceSelectionDiagnostic[];
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -104,6 +119,7 @@ export function buildSelectionTrace(args: {
     output_count_instruction: args.outputCountInstruction,
     final_output_count: finalOutput.length,
     publish_priority_counts: countPublishPriorities(finalOutput),
+    non_official_source_diagnostics: args.nonOfficialSourceDiagnostics ?? [],
     final_output: finalOutput,
     dropped: args.candidatePool
       .filter((article) => !deepseekInputKeys.has(candidateKey(article)))
