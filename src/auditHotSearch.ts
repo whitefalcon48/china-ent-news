@@ -13,6 +13,12 @@ export type HotSearchAuditItem = {
 export type HotSearchAuditResult = {
   source_name: string;
   route: string;
+  rsshub_base_url: string;
+  timeout_ms: number;
+  requires_puppeteer_assumption: string;
+  requires_cookie_assumption: string;
+  failure_stage: string;
+  suggested_next_action: string;
   fetch_status: "success" | "failed" | "empty" | "not_configured";
   fetch_error: string;
   raw_count: number;
@@ -64,6 +70,12 @@ export async function auditHotSearchSources(): Promise<HotSearchAuditResult[]> {
       {
         source_name: "Weibo HOT SEARCH",
         route: "",
+        rsshub_base_url: process.env.RSSHUB_BASE_URL ?? DEFAULT_RSSHUB_BASE_URL,
+        timeout_ms: getTimeoutMs(),
+        requires_puppeteer_assumption: "unknown",
+        requires_cookie_assumption: "unknown",
+        failure_stage: "config_disabled",
+        suggested_next_action: "Set WEIBO_HOT_SEARCH_ENABLED=true to run RSSHub hot search diagnostics.",
         fetch_status: "not_configured",
         fetch_error: "",
         raw_count: 0,
@@ -92,6 +104,7 @@ function parseRoutes(value?: string) {
 async function auditHotSearchRoute(baseUrl: string, route: string): Promise<HotSearchAuditResult> {
   const sourceName = `Weibo HOT SEARCH ${route}`;
   const url = new URL(route, ensureTrailingSlash(baseUrl)).toString();
+  const common = buildCommonRouteFields(baseUrl, route);
   try {
     const xml = await fetchText(url);
     const parser = new Parser();
@@ -101,6 +114,11 @@ async function auditHotSearchRoute(baseUrl: string, route: string): Promise<HotS
     return {
       source_name: sourceName,
       route,
+      ...common,
+      failure_stage: items.length ? "" : "rss_parse_empty",
+      suggested_next_action: items.length
+        ? "Inspect sample_items and entertainment_like_count before deciding whether to connect this source to generation."
+        : "RSS parsed but returned no items; verify the route path or try another RSSHub route/base URL.",
       fetch_status: items.length ? "success" : "empty",
       fetch_error: "",
       raw_count: items.length,
@@ -108,9 +126,13 @@ async function auditHotSearchRoute(baseUrl: string, route: string): Promise<HotS
       sample_items: sampleItems
     };
   } catch (error) {
+    const failureStage = getFailureStage(error);
     return {
       source_name: sourceName,
       route,
+      ...common,
+      failure_stage: failureStage,
+      suggested_next_action: getSuggestedNextAction(failureStage, common.timeout_ms),
       fetch_status: "failed",
       fetch_error: describeFetchError(error),
       raw_count: 0,
@@ -121,7 +143,7 @@ async function auditHotSearchRoute(baseUrl: string, route: string): Promise<HotS
 }
 
 async function fetchText(url: string) {
-  const timeoutMs = Number(process.env.WEIBO_HOT_SEARCH_TIMEOUT_MS ?? DEFAULT_TIMEOUT_MS);
+  const timeoutMs = getTimeoutMs();
   const response = await fetch(url, {
     headers: {
       "user-agent": "Mozilla/5.0 (compatible; ChinaEntNewsPhase0/0.1)"
@@ -133,6 +155,63 @@ async function fetchText(url: string) {
     throw new Error(`HTTP ${response.status} ${response.statusText}`);
   }
   return response.text();
+}
+
+function buildCommonRouteFields(baseUrl: string, route: string) {
+  return {
+    rsshub_base_url: baseUrl,
+    timeout_ms: getTimeoutMs(),
+    requires_puppeteer_assumption: getPuppeteerAssumption(route),
+    requires_cookie_assumption: getCookieAssumption(route)
+  };
+}
+
+function getTimeoutMs() {
+  const timeoutMs = Number(process.env.WEIBO_HOT_SEARCH_TIMEOUT_MS ?? DEFAULT_TIMEOUT_MS);
+  return Number.isFinite(timeoutMs) ? timeoutMs : DEFAULT_TIMEOUT_MS;
+}
+
+function getPuppeteerAssumption(route: string) {
+  if (route.includes("/weibo/search/hot")) {
+    return "possible: RSSHub public route may need dynamic access if Weibo blocks server-side fetches.";
+  }
+  return "unknown";
+}
+
+function getCookieAssumption(route: string) {
+  if (route.includes("/weibo/search/hot")) {
+    return "possible: cookie may be needed if Weibo or RSSHub upstream blocks anonymous access.";
+  }
+  return "unknown";
+}
+
+function getFailureStage(error: unknown) {
+  if (error instanceof DOMException && error.name === "TimeoutError") {
+    return "fetch_timeout";
+  }
+  if (error instanceof Error && error.name === "TimeoutError") {
+    return "fetch_timeout";
+  }
+  if (error instanceof Error && /^HTTP \d+/.test(error.message)) {
+    return "http_error";
+  }
+  if (error instanceof Error && /Invalid|Non-whitespace|XML|parse/i.test(error.message)) {
+    return "rss_parse_error";
+  }
+  return "fetch_error";
+}
+
+function getSuggestedNextAction(failureStage: string, timeoutMs: number) {
+  if (failureStage === "fetch_timeout") {
+    return `Try a longer WEIBO_HOT_SEARCH_TIMEOUT_MS than ${timeoutMs}, or test the same route from GitHub Actions / another RSSHub base URL. If it still times out, assume public RSSHub or the Weibo upstream is blocked/slow.`;
+  }
+  if (failureStage === "http_error") {
+    return "Check whether RSSHUB_BASE_URL is reachable and whether the route exists; try another RSSHub instance or self-hosted RSSHub.";
+  }
+  if (failureStage === "rss_parse_error") {
+    return "The response was not valid RSS/Atom; inspect the route response body outside the normal audit before using it.";
+  }
+  return "Check RSSHUB_BASE_URL connectivity, route path, network restrictions, and whether Cookie/Puppeteer-backed RSSHub is required.";
 }
 
 function toHotSearchItem(item: RssItem, index: number): HotSearchAuditItem {

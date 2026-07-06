@@ -1,0 +1,306 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import type {
+  ArticleType,
+  ContextValue,
+  FeedBadge,
+  FreshnessLabel,
+  LevelLabel,
+  MainEntities,
+  PublishPriority,
+  RawArticle,
+  SourceTypeLabel,
+  TopicCandidate,
+  TopicType
+} from "./types.js";
+
+const FRESHNESS_ORDER: FreshnessLabel[] = ["today", "yesterday", "recent", "stale", "old", "background", "unknown"];
+const SOURCE_TYPES: SourceTypeLabel[] = ["official", "media_report", "sns", "data", "pr_like", "rumor", "mixed"];
+
+export function buildTopicCandidates(articles: RawArticle[]): TopicCandidate[] {
+  const groups = new Map<string, RawArticle[]>();
+
+  for (const article of articles) {
+    const topicKey = createTopicKey(article);
+    const group = groups.get(topicKey) ?? [];
+    group.push(article);
+    groups.set(topicKey, group);
+  }
+
+  return [...groups.entries()]
+    .map(([topicKey, group]) => buildTopicCandidate(topicKey, group))
+    .sort((a, b) => b.newsworthiness_score - a.newsworthiness_score || b.source_count - a.source_count || a.topic_key.localeCompare(b.topic_key, "ja"));
+}
+
+export async function writeTopicCandidatesFile(topicCandidates: TopicCandidate[], date = today()) {
+  const outputPath = path.resolve("output", `topic_candidates_${date}.json`);
+  await fs.mkdir(path.dirname(outputPath), { recursive: true });
+  await fs.writeFile(
+    outputPath,
+    `${JSON.stringify(
+      {
+        date,
+        generated_at: new Date().toISOString(),
+        topic_candidates_count: topicCandidates.length,
+        topic_candidates: topicCandidates
+      },
+      null,
+      2
+    )}\n`,
+    "utf8"
+  );
+  return outputPath;
+}
+
+function buildTopicCandidate(topicKey: string, articles: RawArticle[]): TopicCandidate {
+  const sortedArticles = [...articles].sort(compareEvidenceArticles);
+  const representative = sortedArticles[0];
+  const dates = sortedArticles.map((article) => article.publishedDate).filter(Boolean).sort();
+  const sourceTypes = sortedArticles.map((article) => getSourceType(article));
+  const sourceMix = countSourceTypes(sourceTypes);
+  const topicType = inferTopicType(sortedArticles);
+  const signals = {
+    has_official_source: sourceTypes.includes("official") || sourceTypes.includes("pr_like"),
+    has_media_context: sourceTypes.includes("media_report") || sourceTypes.includes("data"),
+    has_data_signal: sourceTypes.includes("data") || sortedArticles.some((article) => article.articleType === "data_report"),
+    has_hot_search_signal: sourceTypes.includes("sns") || sortedArticles.some((article) => article.badge === "HOT SEARCH" || article.articleType === "sns_trend"),
+    has_multiple_sources: new Set(sortedArticles.map((article) => article.sourceName)).size > 1
+  };
+  const score = getTopicScore(sortedArticles, signals, topicType);
+
+  return {
+    topic_key: topicKey,
+    title_hint: representative?.title ?? topicKey,
+    topic_type: topicType,
+    freshness_label: getTopicFreshness(sortedArticles),
+    published_date_range: {
+      earliest: dates[0] ?? "",
+      latest: dates.at(-1) ?? ""
+    },
+    source_count: new Set(sortedArticles.map((article) => article.sourceName)).size,
+    source_mix: sourceMix,
+    evidence_articles: sortedArticles.map(toEvidenceArticle),
+    main_entities: mergeEntities(sortedArticles, topicKey),
+    signals,
+    newsworthiness_score: score,
+    japan_gap: getMaxLevel(sortedArticles.map((article) => article.japanGap ?? "unknown")),
+    context_value: getMaxContextValue(sortedArticles.map((article) => article.contextValue ?? "low")),
+    publish_priority: getPublishPriority(score),
+    selection_reason: getSelectionReason(sortedArticles, signals, topicType),
+    caution_note: getCautionNote(sortedArticles, signals)
+  };
+}
+
+function createTopicKey(article: RawArticle) {
+  const text = `${article.title} ${article.excerpt ?? ""}`;
+  const work = extractWorkName(text);
+  if (work) {
+    return cleanTopicKey(work);
+  }
+
+  const event = extractEventName(text);
+  if (event) {
+    return cleanTopicKey(event);
+  }
+
+  const policy = extractPolicyKey(text);
+  if (policy) {
+    return cleanTopicKey(policy);
+  }
+
+  const person = extractPersonName(text);
+  if (person) {
+    return cleanTopicKey(person);
+  }
+
+  return cleanTopicKey(article.topicKey || extractTitleKeywords(article.title) || article.title);
+}
+
+function extractWorkName(text: string) {
+  return text.match(/《([^》]{2,40})》/)?.[1] ?? text.match(/『([^』]{2,40})』/)?.[1] ?? "";
+}
+
+function extractEventName(text: string) {
+  const knownEvents = ["上海国际电影节", "北京国际电影节", "白玉兰奖", "华表奖", "金鸡奖", "微博电影之夜", "微博视界大会"];
+  const known = knownEvents.find((event) => text.includes(event));
+  if (known) {
+    return known;
+  }
+  return text.match(/([\p{Script=Han}A-Za-z0-9]{2,24}(?:电影节|电视节|影展|电影周|颁奖礼|电影之夜|视界大会))/u)?.[1] ?? "";
+}
+
+function extractPolicyKey(text: string) {
+  if (/备案|公示|微短剧|网络剧|广播电视|国家电影局|国家广播电视总局|网络视听|管理办法|制作标准/.test(text)) {
+    const match = text.match(/([\p{Script=Han}A-Za-z0-9]{0,18}(?:备案|公示|微短剧|网络剧|广播电视|国家电影局|国家广播电视总局|网络视听|管理办法|制作标准)[\p{Script=Han}A-Za-z0-9]{0,18})/u);
+    return match?.[1] ?? "制度・政策";
+  }
+  return "";
+}
+
+function extractPersonName(text: string) {
+  const match =
+    text.match(/([\p{Script=Han}]{2,4})(?:主演|导演|执导|获奖|官宣|发文|回应|出任|亮相|加盟|献唱|发布)/u) ??
+    text.match(/(?:主演|导演|演员|歌手|艺人)([\p{Script=Han}]{2,4})/u);
+  return match?.[1] ?? "";
+}
+
+function extractTitleKeywords(title: string) {
+  return title
+    .split(/[：:，,。；;！!？?、｜|]/)
+    .map((part) => part.trim())
+    .filter((part) => part.length >= 4)
+    .sort((a, b) => b.length - a.length)[0];
+}
+
+function cleanTopicKey(value: string) {
+  return value.replace(/\s+/g, "").slice(0, 40) || "unknown";
+}
+
+function inferTopicType(articles: RawArticle[]): TopicType {
+  const text = articles.map((article) => `${article.title} ${article.excerpt ?? ""}`).join(" ");
+  if (/备案|公示|管理办法|国家电影局|国家广播电视总局|广播电视|网络视听/.test(text)) return "policy";
+  if (/网络剧|电视剧|微短剧/.test(text)) return "drama_production";
+  if (/票房|猫眼|豆瓣|指数|数据|榜/.test(text)) return "box_office";
+  if (/上映|定档|开播|播出|发布|预告|首映/.test(text)) return "release";
+  if (/获奖|入围|提名|白玉兰|华表|金爵|金鸡/.test(text)) return "award";
+  if (/主演|加盟|官宣|阵容|出任/.test(text)) return "casting";
+  if (/热搜|粉丝|CP|番位|塌房|饭圈/.test(text)) return "fan_culture";
+  if (/网传|疑似|传闻|回应|辟谣/.test(text)) return "gossip_rumor";
+  if (/电影节|影展|文化交流|海外|国际/.test(text)) return "cultural_export";
+  if (/平台|优酷|腾讯视频|爱奇艺|芒果TV|B站|抖音/.test(text)) return "platform_trend";
+  if (/产业|行业|公司|市场|投资|制作/.test(text)) return "industry_context";
+  return "unknown";
+}
+
+function getTopicFreshness(articles: RawArticle[]) {
+  return [...articles]
+    .map((article) => article.freshnessLabel ?? "unknown")
+    .sort((a, b) => FRESHNESS_ORDER.indexOf(a) - FRESHNESS_ORDER.indexOf(b))[0];
+}
+
+function countSourceTypes(sourceTypes: SourceTypeLabel[]) {
+  const counts = Object.fromEntries(SOURCE_TYPES.map((type) => [type, 0])) as Record<SourceTypeLabel, number>;
+  for (const type of sourceTypes) {
+    counts[type] += 1;
+  }
+  return counts;
+}
+
+function getSourceType(article: RawArticle): SourceTypeLabel {
+  return article.sourceType ?? (article.reliability === "A" ? "official" : "media_report");
+}
+
+function toEvidenceArticle(article: RawArticle) {
+  return {
+    title: article.title,
+    url: article.url,
+    source_name: article.sourceName,
+    source_type: getSourceType(article),
+    published_date: article.publishedDate ?? "",
+    freshness_label: article.freshnessLabel ?? "unknown",
+    article_type: article.articleType ?? "unknown",
+    reliability: article.reliability,
+    key_points: buildKeyPoints(article)
+  };
+}
+
+function buildKeyPoints(article: RawArticle) {
+  return [article.title, article.excerpt ?? ""].filter(Boolean).slice(0, 2);
+}
+
+function mergeEntities(articles: RawArticle[], topicKey: string): MainEntities & { events: string[] } {
+  const people = new Set<string>();
+  const works = new Set<string>();
+  const organizations = new Set<string>();
+  const events = new Set<string>();
+
+  for (const article of articles) {
+    for (const person of article.mainEntities?.people ?? []) people.add(person);
+    for (const work of article.mainEntities?.works ?? []) works.add(work);
+    for (const organization of article.mainEntities?.organizations ?? []) organizations.add(organization);
+    const work = extractWorkName(article.title);
+    const event = extractEventName(article.title);
+    const person = extractPersonName(article.title);
+    if (work) works.add(work);
+    if (event) events.add(event);
+    if (person) people.add(person);
+  }
+
+  if (!works.size && /《|『/.test(topicKey)) {
+    works.add(topicKey);
+  }
+  return {
+    people: [...people],
+    works: [...works],
+    organizations: [...organizations],
+    events: [...events]
+  };
+}
+
+function getTopicScore(articles: RawArticle[], signals: TopicCandidate["signals"], topicType: TopicType) {
+  let score = Math.round(articles.reduce((sum, article) => sum + (article.newsworthinessScore ?? 40), 0) / Math.max(articles.length, 1));
+  if (signals.has_multiple_sources) score += 12;
+  if (signals.has_official_source && signals.has_media_context) score += 10;
+  if (signals.has_hot_search_signal) score += 10;
+  if (signals.has_data_signal) score += 6;
+  if (topicType === "policy" || topicType === "drama_production" || topicType === "fan_culture") score += 6;
+  if (articles.some((article) => article.isLowPriority)) score -= 8;
+  return Math.max(0, Math.min(100, score));
+}
+
+function getPublishPriority(score: number): PublishPriority {
+  if (score >= 76) return "high";
+  if (score >= 56) return "medium";
+  return "low";
+}
+
+function getSelectionReason(articles: RawArticle[], signals: TopicCandidate["signals"], topicType: TopicType) {
+  const reasons: string[] = [];
+  if (signals.has_multiple_sources) reasons.push("multiple_sources");
+  if (signals.has_official_source) reasons.push("official_evidence");
+  if (signals.has_media_context) reasons.push("media_context");
+  if (signals.has_data_signal) reasons.push("data_signal");
+  if (signals.has_hot_search_signal) reasons.push("hot_search_signal");
+  reasons.push(`topic_type:${topicType}`);
+  reasons.push(`evidence:${articles.length}`);
+  return reasons.join(", ");
+}
+
+function getCautionNote(articles: RawArticle[], signals: TopicCandidate["signals"]) {
+  if (signals.has_hot_search_signal && !signals.has_official_source && !signals.has_media_context) {
+    return "SNS-derived topic only; do not treat as confirmed news.";
+  }
+  if (!signals.has_multiple_sources) {
+    return "Single-source topic; keep wording cautious until another source appears.";
+  }
+  if (articles.some((article) => article.sourceType === "pr_like")) {
+    return "Contains PR-like or official framing; separate fact from promotion.";
+  }
+  return "";
+}
+
+function getMaxLevel(values: LevelLabel[]): LevelLabel {
+  if (values.includes("high")) return "high";
+  if (values.includes("medium")) return "medium";
+  if (values.includes("low")) return "low";
+  return "unknown";
+}
+
+function getMaxContextValue(values: ContextValue[]): ContextValue {
+  if (values.includes("high")) return "high";
+  if (values.includes("medium")) return "medium";
+  return "low";
+}
+
+function compareEvidenceArticles(a: RawArticle, b: RawArticle) {
+  return (b.newsworthinessScore ?? 0) - (a.newsworthinessScore ?? 0) || (a.publishedDate ?? "").localeCompare(b.publishedDate ?? "");
+}
+
+function today() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+}

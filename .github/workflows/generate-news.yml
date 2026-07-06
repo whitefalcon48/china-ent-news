@@ -51,3 +51,10 @@ jobs:
           name: selection-trace-${{ inputs.provider }}
           path: output/selection_trace_*.json
           if-no-files-found: error
+
+      - name: Upload topic candidates
+        uses: actions/upload-artifact@v4
+        with:
+          name: topic-candidates-${{ inputs.provider }}
+          path: output/topic_candidates_*.json
+          if-no-files-found: error

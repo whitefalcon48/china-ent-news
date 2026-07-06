@@ -426,6 +426,12 @@ function renderHotSearchSection(result: HotSearchAuditResult) {
   return `### ${result.source_name}
 - fetch: ${result.fetch_status}${result.fetch_error ? ` (${escapeCell(result.fetch_error)})` : ""}
 - route: ${result.route || "not_configured"}
+- rsshub_base_url: ${result.rsshub_base_url}
+- timeout_ms: ${result.timeout_ms}
+- failure_stage: ${result.failure_stage || "none"}
+- requires_puppeteer_assumption: ${result.requires_puppeteer_assumption}
+- requires_cookie_assumption: ${result.requires_cookie_assumption}
+- suggested_next_action: ${escapeCell(result.suggested_next_action)}
 - raw: ${result.raw_count}
 - entertainment_like: ${result.entertainment_like_count}
 
@@ -481,7 +487,7 @@ function logSummary(results: SourceAuditResult[], externalSources: ExternalSourc
   console.log("hot search diagnostics");
   for (const result of hotSearchAudits) {
     console.log(
-      `${result.source_name}: fetch=${result.fetch_status}, raw=${result.raw_count}, entertainment_like=${result.entertainment_like_count}${result.fetch_error ? `, error=${result.fetch_error}` : ""}`
+      `${result.source_name}: fetch=${result.fetch_status}, route=${result.route || "not_configured"}, base=${result.rsshub_base_url}, timeout_ms=${result.timeout_ms}, failure_stage=${result.failure_stage || "none"}, raw=${result.raw_count}, entertainment_like=${result.entertainment_like_count}${result.fetch_error ? `, error=${result.fetch_error}` : ""}`
     );
   }
 }

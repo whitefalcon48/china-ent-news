@@ -5,6 +5,7 @@ import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSourc
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
+import { buildTopicCandidates, writeTopicCandidatesFile } from "./topicCandidates.js";
 import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic } from "./types.js";
 
 const MAX_ARTICLES_PER_SOURCE = 3;
@@ -39,6 +40,8 @@ async function main() {
   const classifiedArticles = attachRelatedSources(dedupedArticles.map((article) => classifyArticle(article, filterConfig)));
   const topicMergeResult = mergeTopicDuplicates(classifiedArticles);
   const generationCandidatePool = topicMergeResult.articles.map(prepareGenerationCandidate);
+  const topicCandidates = buildTopicCandidates(generationCandidatePool);
+  const topicCandidatesPath = await writeTopicCandidatesFile(topicCandidates);
   const droppedReasons = new Map<string, string>();
   const selectionReasons = new Map<string, string>();
   markNonPublishableTraceDrops(generationCandidatePool, droppedReasons);
@@ -88,6 +91,8 @@ async function main() {
   logExclusions("本文量不足の除外記事", rawContentExclusions);
   console.log(`topic_key生成件数: ${new Set(classifiedArticles.map((article) => article.topicKey).filter(Boolean)).size}`);
   console.log(`topic統合件数: ${topicMergeResult.mergedTopicCount}`);
+  console.log(`topic_candidates出力先: ${topicCandidatesPath}`);
+  console.log(`topic_candidates件数: ${topicCandidates.length}`);
   logDuplicateCandidates(topicMergeResult.duplicateCandidates);
   console.log("HOT SEARCH取得: 未実装のためスキップ（graceful fallback）");
   logFinalSourceDistribution(selectedArticles);
@@ -138,7 +143,10 @@ async function main() {
     droppedReasons,
     selectionReasons,
     outputCountInstruction: OUTPUT_COUNT_INSTRUCTION,
-    nonOfficialSourceDiagnostics
+    nonOfficialSourceDiagnostics,
+    topicCandidates,
+    droppedTopics: [],
+    topicLayerNote: "MVP topic layer is diagnostic only. DeepSeek input and Markdown output still use article-level candidates."
   });
   const tracePath = await writeSelectionTraceFile(selectionTrace);
   logExclusions("AI処理後の除外記事", postAiExclusions);
@@ -161,6 +169,7 @@ async function main() {
   console.log(`- AI処理した記事数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- 最終出力件数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- Markdown出力先: ${outputPath}`);
+  console.log(`- Topic candidates: ${topicCandidatesPath}`);
   console.log(`- Selection trace: ${tracePath}`);
   console.log(`candidates: ${selectionTrace.candidate_pool.length} -> deepseek_input: ${selectionTrace.deepseek_input.count} -> output: ${selectionTrace.final_output.length}`);
 

@@ -49,6 +49,22 @@ RSSHub公開ルートだけで取れるなら Cookie / Puppeteer は不要。
 3. Cookieが必要なRSSHub設定を検討する
 4. Puppeteer直取得はPhase 0では避ける
 
+## 代替ルート候補の調査メモ
+
+RSSHub公式docsは、この環境からは403で安定参照できなかった。
+そのため、以下は「次に検証する候補リスト」として扱い、実装時は `WEIBO_HOT_SEARCH_ROUTES` のような診断用ルート設定で1つずつ実測する。
+
+| 候補 | 期待できる情報 | 取得難易度 | 必要環境 | 安定性 | Phase 0での扱い |
+| --- | --- | --- | --- | --- | --- |
+| Weibo hot search (`/weibo/search/hot`) | 热搜ワード、順位、現地SNS温度。芸能・噂・炎上系の入口になる | 高 | RSSHub公開インスタンスまたは自前RSSHub。Cookie/Puppeteerが必要になる可能性あり | 低〜中。Weibo側制限とRSSHub側負荷の影響が大きい | まずaudit専用。成功しても本番生成にはまだ混ぜない |
+| Bilibili hot search | 若年層・動画圏の話題、作品名、俳優名、二創/ファン反応の兆候 | 中 | RSSHub公開インスタンスで取れる可能性。Cookieは不要な可能性が比較的高い | 中。Weiboよりは安定する可能性 | 代替SNS温度ソース候補 |
+| Bilibili ranking | 映像・アニメ・综艺関連のランキング、再生/人気傾向 | 中 | RSSHub公開インスタンスで取れる可能性。カテゴリ指定が必要になる可能性 | 中 | 热搜よりニュース性は弱いが、現地消費の温度確認に有用 |
+| Douban movie related | 映画評価、公開作、スコア、コメント傾向の入口 | 中〜高 | RSSHub公開またはDouban側制限に依存。Cookieが必要になる可能性 | 低〜中 | 興行・作品評価の補助。単独ニュース化は避ける |
+| Maoyan movie related | 興行、上映中作品、ランキング、公開予定 | 中 | RSSHub公開または別API/HTML取得。Cookie不要の可能性はあるが仕様変動あり | 中 | 映画興行データの補助。公式/媒体報道と組み合わせる |
+
+優先順は、現地SNS温度を拾うなら Weibo、安定取得を優先するなら Bilibili、映画興行の補助なら Maoyan。
+ただし、どれもPhase 0ではまず `audit:sources` の診断枠にだけ出し、通常候補には混ぜない。
+
 ## 最小実装案
 
 1. `config/sources.json` には通常ソースとして混ぜず、source audit 専用fetcherで取得する

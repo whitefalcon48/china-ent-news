@@ -9,6 +9,19 @@ export type LevelLabel = "high" | "medium" | "low" | "unknown";
 export type ContextValue = "high" | "medium" | "low";
 export type SnsHeat = "high" | "medium" | "low" | "none";
 export type PublishPriority = "high" | "medium" | "low";
+export type TopicType =
+  | "release"
+  | "box_office"
+  | "casting"
+  | "award"
+  | "policy"
+  | "drama_production"
+  | "platform_trend"
+  | "fan_culture"
+  | "gossip_rumor"
+  | "cultural_export"
+  | "industry_context"
+  | "unknown";
 export type ArticleType =
   | "news_event"
   | "official_announcement"
@@ -149,6 +162,46 @@ export type ProcessedArticle = {
   raw: RawArticle;
   summary?: SummarizedArticle;
   aiError?: string;
+};
+
+export type TopicCandidate = {
+  topic_key: string;
+  title_hint: string;
+  topic_type: TopicType;
+  freshness_label: FreshnessLabel;
+  published_date_range: {
+    earliest: string;
+    latest: string;
+  };
+  source_count: number;
+  source_mix: Record<SourceTypeLabel, number>;
+  evidence_articles: Array<{
+    title: string;
+    url: string;
+    source_name: string;
+    source_type: SourceTypeLabel;
+    published_date: string;
+    freshness_label: FreshnessLabel;
+    article_type: ArticleType;
+    reliability: Reliability;
+    key_points: string[];
+  }>;
+  main_entities: MainEntities & {
+    events: string[];
+  };
+  signals: {
+    has_official_source: boolean;
+    has_media_context: boolean;
+    has_data_signal: boolean;
+    has_hot_search_signal: boolean;
+    has_multiple_sources: boolean;
+  };
+  newsworthiness_score: number;
+  japan_gap: LevelLabel;
+  context_value: ContextValue;
+  publish_priority: PublishPriority;
+  selection_reason: string;
+  caution_note: string;
 };
 
 export type ArticleFilterConfig = {

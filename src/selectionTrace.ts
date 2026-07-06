@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { AiProvider, FreshnessLabel, ProcessedArticle, PublishPriority, RawArticle } from "./types.js";
+import type { AiProvider, FreshnessLabel, ProcessedArticle, PublishPriority, RawArticle, TopicCandidate } from "./types.js";
 
 type TraceFreshness = "fresh" | "stale" | "old" | "unknown";
 type TracePriority = "通常" | "低優先";
@@ -47,6 +47,10 @@ type SelectionTrace = {
   date: string;
   provider: AiProvider;
   candidate_pool: TraceCandidate[];
+  topic_candidates_count: number;
+  topic_candidates: TopicCandidate[];
+  dropped_topics: Array<TopicCandidate & { reason: string }>;
+  topic_layer_note: string;
   deepseek_input: {
     count: number;
     items: TraceCandidate[];
@@ -73,6 +77,9 @@ export function buildSelectionTrace(args: {
   selectionReasons: Map<string, string>;
   outputCountInstruction: string | null;
   nonOfficialSourceDiagnostics?: SourceSelectionDiagnostic[];
+  topicCandidates?: TopicCandidate[];
+  droppedTopics?: Array<TopicCandidate & { reason: string }>;
+  topicLayerNote?: string;
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -105,6 +112,12 @@ export function buildSelectionTrace(args: {
     date: args.date ?? today(),
     provider: args.provider,
     candidate_pool: candidatePool,
+    topic_candidates_count: args.topicCandidates?.length ?? 0,
+    topic_candidates: args.topicCandidates ?? [],
+    dropped_topics: args.droppedTopics ?? [],
+    topic_layer_note:
+      args.topicLayerNote ??
+      "MVP topic layer is diagnostic only. DeepSeek input and Markdown output still use article-level candidates.",
     deepseek_input: {
       count: args.deepseekInput.length,
       items: args.deepseekInput.map((article) =>
