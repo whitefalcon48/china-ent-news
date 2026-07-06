@@ -211,6 +211,40 @@ export type TopicCandidate = {
   caution_note: string;
 };
 
+export type SourceExpansionEvidence = {
+  title: string;
+  url: string;
+  source_name: string;
+  source_type: SourceTypeLabel;
+  route_id: string;
+  route: string;
+  query: string;
+  key_points: string[];
+};
+
+export type SourceExpansionAttempt = {
+  topic_key: string;
+  query: string;
+  route_id: string;
+  route: string;
+  rsshub_base_url: string;
+  fetch_status: "success" | "failed" | "empty" | "skipped";
+  fetch_error: string;
+  raw_count: number;
+  matched_count: number;
+  failure_stage: string;
+  source_type: SourceTypeLabel;
+};
+
+export type SourceExpansionResult = {
+  attempted_topic_count: number;
+  attempted_route_count: number;
+  success_route_count: number;
+  evidence_count: number;
+  attempts: SourceExpansionAttempt[];
+  evidence: SourceExpansionEvidence[];
+};
+
 export type TopicSeed = {
   article_url: string;
   article_title: string;

@@ -11,6 +11,7 @@ import type {
   PublishPriority,
   RawArticle,
   SourceTypeLabel,
+  SourceExpansionResult,
   TopicCandidate,
   TopicSeed,
   TopicSeedExtractionResult,
@@ -45,7 +46,7 @@ export function buildTopicCandidates(articles: RawArticle[], seeds: TopicSeed[] 
 export async function writeTopicCandidatesFile(
   topicCandidates: TopicCandidate[],
   date = today(),
-  meta: { topic_seed_extraction?: TopicSeedExtractionResult } = {}
+  meta: { topic_seed_extraction?: TopicSeedExtractionResult; source_expansion?: SourceExpansionResult } = {}
 ) {
   const outputPath = path.resolve("output", `topic_candidates_${date}.json`);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
@@ -56,6 +57,7 @@ export async function writeTopicCandidatesFile(
         date,
         generated_at: new Date().toISOString(),
         topic_seed_extraction: meta.topic_seed_extraction,
+        source_expansion: meta.source_expansion,
         topic_candidates_count: topicCandidates.length,
         topic_candidates: topicCandidates
       },

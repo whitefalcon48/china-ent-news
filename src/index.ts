@@ -3,6 +3,7 @@ import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfi
 import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
 import { fetchHotSearchArticles } from "./fetchHotSearch.js";
+import { expandTopicSources } from "./expandSources.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
@@ -46,8 +47,13 @@ async function main() {
   const generationCandidatePool = topicMergeResult.articles.map(prepareGenerationCandidate);
   const topicCandidateArticlePool = classifiedArticles.map(prepareGenerationCandidate);
   const topicSeedExtraction = await extractTopicSeeds(topicCandidateArticlePool, provider);
-  const topicCandidates = buildTopicCandidates(topicCandidateArticlePool, topicSeedExtraction.seeds);
-  const topicCandidatesPath = await writeTopicCandidatesFile(topicCandidates, undefined, { topic_seed_extraction: topicSeedExtraction });
+  const baseTopicCandidates = buildTopicCandidates(topicCandidateArticlePool, topicSeedExtraction.seeds);
+  const topicExpansion = await expandTopicSources(baseTopicCandidates);
+  const topicCandidates = topicExpansion.topicCandidates;
+  const topicCandidatesPath = await writeTopicCandidatesFile(topicCandidates, undefined, {
+    topic_seed_extraction: topicSeedExtraction,
+    source_expansion: topicExpansion.expansion
+  });
   const droppedReasons = new Map<string, string>();
   const selectionReasons = new Map<string, string>();
   markNonPublishableTraceDrops(generationCandidatePool, droppedReasons);
@@ -105,6 +111,7 @@ async function main() {
   }
   console.log(`topic_candidates出力先: ${topicCandidatesPath}`);
   console.log(`topic_candidates件数: ${topicCandidates.length}`);
+  logSourceExpansion(topicExpansion.expansion);
   logDuplicateCandidates(topicMergeResult.duplicateCandidates);
   console.log(`HOT SEARCH取得: ${hotSearch.articles.length}件`);
   hotSearch.statusLines.forEach((line) => console.log(`- ${line}`));
@@ -159,7 +166,8 @@ async function main() {
     nonOfficialSourceDiagnostics,
     topicCandidates,
     droppedTopics: [],
-    topicLayerNote: "MVP topic layer is diagnostic only. DeepSeek input and Markdown output still use article-level candidates."
+    topicLayerNote: "MVP topic layer is diagnostic only. DeepSeek input and Markdown output still use article-level candidates.",
+    sourceExpansion: topicExpansion.expansion
   });
   const tracePath = await writeSelectionTraceFile(selectionTrace);
   logExclusions("AI処理後の除外記事", postAiExclusions);
@@ -763,6 +771,20 @@ function logDuplicateCandidates(candidates: Array<{ topicKey: string; titles: st
     for (const title of candidate.titles.slice(0, 3)) {
       console.log(`  - ${title}`);
     }
+  }
+}
+
+function logSourceExpansion(expansion: Awaited<ReturnType<typeof expandTopicSources>>["expansion"]) {
+  console.log("");
+  console.log("source expansion");
+  console.log(`- attempted topics: ${expansion.attempted_topic_count}`);
+  console.log(`- attempted routes: ${expansion.attempted_route_count}`);
+  console.log(`- success routes: ${expansion.success_route_count}`);
+  console.log(`- evidence: ${expansion.evidence_count}`);
+  for (const attempt of expansion.attempts.slice(0, 12)) {
+    console.log(
+      `- ${attempt.route_id} ${attempt.fetch_status}: topic=${attempt.topic_key} query=${attempt.query} raw=${attempt.raw_count} matched=${attempt.matched_count}${attempt.failure_stage ? ` stage=${attempt.failure_stage}` : ""}`
+    );
   }
 }
 
