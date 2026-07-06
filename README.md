@@ -148,9 +148,11 @@ Normal feed candidates should be `today`, `yesterday`, or `recent`. `stale`, `ol
 
 ## HOT SEARCH / 热搜メモ
 
-Weibo热搜の芸能・ファン文化・噂・炎上系は、将来的に `HOT SEARCH` として通常フィード内に混ぜます。
+Weibo热搜の芸能・ファン文化・噂・炎上系は、`HOT SEARCH` バッジ付きで通常フィード内に混ぜます。
 
-現時点では本格取得は未実装です。取得できない場合は graceful fallback としてログに出し、存在しないSNS反応は作りません。
+RSSHub経由（`RSSHUB_BASE_URL` + `WEIBO_HOT_SEARCH_ROUTES`、既定は `https://rsshub.app` の `/weibo/search/hot`）で取得し、エンタメ判定キーワードに一致した項目だけを `article_type: sns_trend` / `source_type: sns` の候補として合流させます。`WEIBO_HOT_SEARCH_ENABLED=false` で停止できます。
+
+取得できない場合は graceful fallback としてログにルート別status（failed/empty/timeout）を出し、存在しないSNS反応は作りません。公開RSSHubインスタンスはローカル環境からタイムアウトすることがあります（GitHub Actions上では成功する場合があります）。
 
 ## セットアップ
 
@@ -442,11 +444,17 @@ generated-news-markdown-deepseek
   "type": "rss",
   "category": "映画",
   "reliability": "B",
+  "sourceType": "media_report",
   "includeUrlPatterns": ["/news/"],
   "excludeUrlPatterns": ["/video/", "/photo/", "gallery"],
+  "requireEntertainmentKeywords": false,
   "enabled": true
 }
 ```
+
+`sourceType` はソースの種類の宣言です（`official` / `media_report` / `sns` / `data`）。source_mix集計とバッジ判定は、キーワード推定よりこの宣言を優先します。
+
+エンタメ判定キーワードのゲートは、`reliability: "A"`（行政・エンタメ以外が混ざるサイト）にだけ適用します。キュレーション済みエンタメ媒体（B/C/D）は、芸能人名やゴシップ見出しがキーワードに一致しないため、原則スキップします。ページがサイト全体の記事を配信してしまうソース（例: JSレンダリングでチャンネル抽出できない澎湃）は `requireEntertainmentKeywords: true` でゲートを強制できます。
 
 `type` は `rss` または `html` です。最初はRSSを優先してください。HTMLはページ構造が変わると取得できなくなることがあります。
 
@@ -497,6 +505,7 @@ AIには、次の方針で整理するよう指示しています。
 
 以下は優先度を下げます。
 
+- 公式ソースだけで完結し、媒体報道・SNS反応・データの裏付けがないトピック（topic scoreで減点）
 - 単なる受賞一覧
 - 単なるノミネート羅列
 - 式典が開催された、来賓が挨拶しただけの記事

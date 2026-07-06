@@ -2,6 +2,7 @@ import "dotenv/config";
 import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
 import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
+import { fetchHotSearchArticles } from "./fetchHotSearch.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
@@ -34,7 +35,9 @@ async function main() {
   console.log(`${provider === "gemini" ? "GEMINI_API_KEY" : "DEEPSEEK_API_KEY"}: ${aiEnv.hasApiKey ? "読み込み済み" : "未設定"}`);
   console.log(`AI_MODEL: ${aiEnv.model}`);
 
-  const { articles, errors, diagnostics } = await fetchAllSources(sources);
+  const { articles: sourceArticles, errors, diagnostics } = await fetchAllSources(sources);
+  const hotSearch = await fetchHotSearchArticles();
+  const articles = [...sourceArticles, ...hotSearch.articles];
   const metadataEnrichedArticles = await enrichMissingDateMetadata(articles);
   const dedupedArticles = dedupeArticles(metadataEnrichedArticles);
   const classifiedArticles = attachRelatedSources(dedupedArticles.map((article) => classifyArticle(article, filterConfig)));
@@ -94,7 +97,8 @@ async function main() {
   console.log(`topic_candidates出力先: ${topicCandidatesPath}`);
   console.log(`topic_candidates件数: ${topicCandidates.length}`);
   logDuplicateCandidates(topicMergeResult.duplicateCandidates);
-  console.log("HOT SEARCH取得: 未実装のためスキップ（graceful fallback）");
+  console.log(`HOT SEARCH取得: ${hotSearch.articles.length}件`);
+  hotSearch.statusLines.forEach((line) => console.log(`- ${line}`));
   logFinalSourceDistribution(selectedArticles);
   logFinalCategoryDistribution(selectedArticles, "最終AI処理対象のカテゴリ配分");
 
@@ -565,9 +569,6 @@ function getAiInputPriorityScore(article: RawArticle) {
   let score = article.newsworthinessScore ?? 0;
   const text = article.title + " " + (article.excerpt ?? "");
 
-  if (/\u5907\u6848|\u7f51\u7edc\u5267|\u7535\u89c6\u5267|\u5fae\u77ed\u5267|\u7ba1\u7406\u529e\u6cd5|\u884c\u4e1a\u6807\u51c6|\u62a5\u6279\u7a3f|\u7f51\u7edc\u89c6\u542c|\u5236\u4f5c|\u516c\u793a/.test(text)) {
-    score += 18;
-  }
   if (/\u4e03\u4e00|\u4e3b\u9898\u515a\u65e5|\u515a\u65e5\u6d3b\u52a8|\u515a\u5efa|\u5b66\u4e60\u6559\u80b2/.test(text)) {
     score -= 28;
   }

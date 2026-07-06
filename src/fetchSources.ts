@@ -18,7 +18,25 @@ const ENTERTAINMENT_KEYWORDS = [
   "\u5f71\u89c6",
   "\u660e\u661f",
   "\u827a\u4eba",
-  "\u5e7f\u64ad\u7535\u89c6"
+  "\u5e7f\u64ad\u7535\u89c6",
+  "\u7f51\u5267",
+  "\u77ed\u5267",
+  "\u7f51\u7edc\u5267",
+  "\u5b9a\u6863",
+  "\u4e0a\u6620",
+  "\u5f00\u64ad",
+  "\u64ad\u51fa",
+  "\u5b98\u5ba3",
+  "\u604b\u60c5",
+  "\u584c\u623f",
+  "\u70ed\u641c",
+  "\u7c89\u4e1d",
+  "\u8c46\u74e3",
+  "\u7231\u8c46",
+  "\u756a\u4f4d",
+  "\u6b4c\u624b",
+  "\u6f14\u5531\u4f1a",
+  "\u7f51\u7edc\u89c6\u542c"
 ];
 
 const PAGE_DATE_META_KEYS = [
@@ -164,6 +182,7 @@ async function fetchRssSource(source: NewsSource): Promise<{ articles: RawArticl
       sourceUrl: source.url,
       category: source.category,
       reliability: source.reliability,
+      declaredSourceType: source.sourceType,
       publishedAt: item.isoDate ?? item.pubDate,
       publishedAtSource: item.isoDate || item.pubDate ? ("rss" as const) : undefined,
       excerpt: cleanText(item.contentSnippet ?? item.summary ?? "")
@@ -184,7 +203,7 @@ async function fetchRssSource(source: NewsSource): Promise<{ articles: RawArticl
   });
 
   const articles = afterUrlExcludeArticles.filter((article) => {
-    if (!isLikelyEntertainmentArticle(article)) {
+    if (needsEntertainmentKeywordGate(source) && !isLikelyEntertainmentArticle(article)) {
       pushAuditSample(auditSamples, article.title, article.url, "article_type_exclude", "not_entertainment_keyword");
       return false;
     }
@@ -252,10 +271,11 @@ async function fetchHtmlSource(source: NewsSource): Promise<{ articles: RawArtic
       sourceName: source.name,
       sourceUrl: source.url,
       category: source.category,
-      reliability: source.reliability
+      reliability: source.reliability,
+      declaredSourceType: source.sourceType
     };
 
-    if (!isLikelyEntertainmentArticle(article)) {
+    if (needsEntertainmentKeywordGate(source) && !isLikelyEntertainmentArticle(article)) {
       pushAuditSample(auditSamples, title, url, "article_type_exclude", "not_entertainment_keyword");
       return;
     }
@@ -290,6 +310,14 @@ function toAbsoluteUrl(href: string, baseUrl: string) {
   } catch {
     return "";
   }
+}
+
+// Curated entertainment feeds (reliability B/C/D) publish celebrity/gossip headlines
+// that rarely contain industry keywords, so the keyword gate only applies to
+// reliability-A sources whose sites mix administrative and entertainment content,
+// plus sources that opt in because their pages serve site-wide (non-entertainment) links.
+function needsEntertainmentKeywordGate(source: NewsSource) {
+  return source.reliability === "A" || source.requireEntertainmentKeywords === true;
 }
 
 function isLikelyEntertainmentArticle(article: RawArticle) {

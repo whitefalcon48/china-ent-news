@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { createTopicKey as createSharedTopicKey, extractEventName, extractPersonName, extractWorkName } from "./topicKey.js";
 import type {
   ArticleType,
   ContextValue,
@@ -92,68 +93,7 @@ function buildTopicCandidate(topicKey: string, articles: RawArticle[]): TopicCan
 }
 
 function createTopicKey(article: RawArticle) {
-  const text = `${article.title} ${article.excerpt ?? ""}`;
-  const work = extractWorkName(text);
-  if (work) {
-    return cleanTopicKey(work);
-  }
-
-  const event = extractEventName(text);
-  if (event) {
-    return cleanTopicKey(event);
-  }
-
-  const policy = extractPolicyKey(text);
-  if (policy) {
-    return cleanTopicKey(policy);
-  }
-
-  const person = extractPersonName(text);
-  if (person) {
-    return cleanTopicKey(person);
-  }
-
-  return cleanTopicKey(article.topicKey || extractTitleKeywords(article.title) || article.title);
-}
-
-function extractWorkName(text: string) {
-  return text.match(/《([^》]{2,40})》/)?.[1] ?? text.match(/『([^』]{2,40})』/)?.[1] ?? "";
-}
-
-function extractEventName(text: string) {
-  const knownEvents = ["上海国际电影节", "北京国际电影节", "白玉兰奖", "华表奖", "金鸡奖", "微博电影之夜", "微博视界大会"];
-  const known = knownEvents.find((event) => text.includes(event));
-  if (known) {
-    return known;
-  }
-  return text.match(/([\p{Script=Han}A-Za-z0-9]{2,24}(?:电影节|电视节|影展|电影周|颁奖礼|电影之夜|视界大会))/u)?.[1] ?? "";
-}
-
-function extractPolicyKey(text: string) {
-  if (/备案|公示|微短剧|网络剧|广播电视|国家电影局|国家广播电视总局|网络视听|管理办法|制作标准/.test(text)) {
-    const match = text.match(/([\p{Script=Han}A-Za-z0-9]{0,18}(?:备案|公示|微短剧|网络剧|广播电视|国家电影局|国家广播电视总局|网络视听|管理办法|制作标准)[\p{Script=Han}A-Za-z0-9]{0,18})/u);
-    return match?.[1] ?? "制度・政策";
-  }
-  return "";
-}
-
-function extractPersonName(text: string) {
-  const match =
-    text.match(/([\p{Script=Han}]{2,4})(?:主演|导演|执导|获奖|官宣|发文|回应|出任|亮相|加盟|献唱|发布)/u) ??
-    text.match(/(?:主演|导演|演员|歌手|艺人)([\p{Script=Han}]{2,4})/u);
-  return match?.[1] ?? "";
-}
-
-function extractTitleKeywords(title: string) {
-  return title
-    .split(/[：:，,。；;！!？?、｜|]/)
-    .map((part) => part.trim())
-    .filter((part) => part.length >= 4)
-    .sort((a, b) => b.length - a.length)[0];
-}
-
-function cleanTopicKey(value: string) {
-  return value.replace(/\s+/g, "").slice(0, 40) || "unknown";
+  return article.topicKey || createSharedTopicKey(article.title, article.excerpt ?? "");
 }
 
 function inferTopicType(articles: RawArticle[]): TopicType {
@@ -239,11 +179,16 @@ function mergeEntities(articles: RawArticle[], topicKey: string): MainEntities &
 
 function getTopicScore(articles: RawArticle[], signals: TopicCandidate["signals"], topicType: TopicType) {
   let score = Math.round(articles.reduce((sum, article) => sum + (article.newsworthinessScore ?? 40), 0) / Math.max(articles.length, 1));
+  const hasNonOfficialContext = signals.has_media_context || signals.has_hot_search_signal || signals.has_data_signal;
   if (signals.has_multiple_sources) score += 12;
   if (signals.has_official_source && signals.has_media_context) score += 10;
   if (signals.has_hot_search_signal) score += 10;
   if (signals.has_data_signal) score += 6;
-  if (topicType === "policy" || topicType === "drama_production" || topicType === "fan_culture") score += 6;
+  // Official-only topics are collectable but low value for this project:
+  // without media/SNS/data reaction there is no "local temperature" to report.
+  if (signals.has_official_source && !hasNonOfficialContext) score -= 15;
+  if ((topicType === "policy" || topicType === "drama_production") && hasNonOfficialContext) score += 6;
+  if (topicType === "fan_culture") score += 6;
   if (articles.some((article) => article.isLowPriority)) score -= 8;
   return Math.max(0, Math.min(100, score));
 }
@@ -269,6 +214,9 @@ function getSelectionReason(articles: RawArticle[], signals: TopicCandidate["sig
 function getCautionNote(articles: RawArticle[], signals: TopicCandidate["signals"]) {
   if (signals.has_hot_search_signal && !signals.has_official_source && !signals.has_media_context) {
     return "SNS-derived topic only; do not treat as confirmed news.";
+  }
+  if (signals.has_official_source && !signals.has_media_context && !signals.has_hot_search_signal && !signals.has_data_signal) {
+    return "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.";
   }
   if (!signals.has_multiple_sources) {
     return "Single-source topic; keep wording cautious until another source appears.";

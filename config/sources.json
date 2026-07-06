@@ -5,6 +5,7 @@
     "type": "html",
     "category": "映画",
     "reliability": "B",
+    "sourceType": "media_report",
     "includeUrlPatterns": ["/news/20"],
     "excludeUrlPatterns": ["/video/", "video.1905.com"],
     "enabled": true
@@ -15,7 +16,9 @@
     "type": "html",
     "category": "文娱",
     "reliability": "B",
+    "sourceType": "media_report",
     "includeUrlPatterns": ["newsDetail_forward"],
+    "requireEntertainmentKeywords": true,
     "enabled": true
   },
   {
@@ -24,6 +27,7 @@
     "type": "html",
     "category": "映画行政",
     "reliability": "A",
+    "sourceType": "official",
     "enabled": true
   },
   {
@@ -32,6 +36,7 @@
     "type": "html",
     "category": "放送・ドラマ行政",
     "reliability": "A",
+    "sourceType": "official",
     "enabled": true
   },
   {
@@ -40,6 +45,7 @@
     "type": "html",
     "category": "文娱",
     "reliability": "B",
+    "sourceType": "media_report",
     "includeUrlPatterns": ["/detail/"],
     "excludeUrlPatterns": ["/video/", "/photo/", "/live/", "image", "gallery"],
     "enabled": true
@@ -50,6 +56,7 @@
     "type": "html",
     "category": "影视产业",
     "reliability": "B",
+    "sourceType": "media_report",
     "includeUrlPatterns": ["/article/"],
     "excludeUrlPatterns": ["/video/", "/photo/", "/album/", "image", "gallery"],
     "enabled": true
@@ -60,8 +67,27 @@
     "type": "html",
     "category": "娱乐",
     "reliability": "B",
-    "includeUrlPatterns": ["doc-"],
-    "excludeUrlPatterns": ["/slide/", "/video/", "/photo/", "/v/", "/zt_d/", "slide.ent.sina.com.cn", "k.sina.com.cn", "fashion.sina.com.cn"],
+    "sourceType": "media_report",
+    "includeUrlPatterns": ["doc-", "k.sina.com.cn/article_"],
+    "excludeUrlPatterns": ["/slide/", "/video/", "/photo/", "/v/", "/zt_d/", "slide.ent.sina.com.cn", "video.sina.com.cn", "fashion.sina.com.cn"],
     "enabled": true
+  },
+  {
+    "name": "豆瓣 正在热映 (RSSHub候補)",
+    "url": "https://rsshub.app/douban/movie/playing",
+    "type": "rss",
+    "category": "映画データ",
+    "reliability": "C",
+    "sourceType": "data",
+    "enabled": false
+  },
+  {
+    "name": "猫眼 票房 (RSSHub候補)",
+    "url": "https://rsshub.app/maoyan/hot",
+    "type": "rss",
+    "category": "映画データ",
+    "reliability": "C",
+    "sourceType": "data",
+    "enabled": false
   }
 ]

@@ -40,9 +40,11 @@ export type NewsSource = {
   type: SourceType;
   category: string;
   reliability: Reliability;
+  sourceType?: SourceTypeLabel;
   enabled?: boolean;
   includeUrlPatterns?: string[];
   excludeUrlPatterns?: string[];
+  requireEntertainmentKeywords?: boolean;
 };
 
 export type DateSource = "rss" | "url" | "html" | "unknown";
@@ -84,6 +86,7 @@ export type RawArticle = {
   sourceUrl: string;
   category: string;
   reliability: Reliability;
+  declaredSourceType?: SourceTypeLabel;
   publishedAt?: string;
   publishedAtSource?: DateSource;
   excerpt?: string;

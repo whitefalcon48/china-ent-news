@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { createTopicKey } from "./topicKey.js";
 import type {
   ArticleFilterConfig,
   ArticleType,
@@ -40,7 +41,7 @@ export async function loadFilterConfig(configPath = "config/filters.json"): Prom
 
 export function classifyArticle(article: RawArticle, config: ArticleFilterConfig): RawArticle {
   const articleType = detectArticleType(article, config);
-  const topicKey = createTopicKey(article.title);
+  const topicKey = createTopicKey(article.title, article.excerpt ?? "");
   const feedCategory = getFeedCategory(article, articleType);
   const dateInfo = getArticleDateInfo(article);
   const publishedDate = dateInfo.publishedDate;
@@ -85,6 +86,9 @@ function detectArticleType(article: RawArticle, config: ArticleFilterConfig): Ar
   const text = `${article.title} ${article.excerpt ?? ""}`;
   const url = article.url.toLowerCase();
 
+  if (article.declaredSourceType === "sns") {
+    return "sns_trend";
+  }
   if (includesAny(text, config.staticPageKeywords) || /\/(zt|topic|subject|special|index)\b/.test(url)) {
     return "static_page";
   }
@@ -138,13 +142,13 @@ function getFeedCategory(article: RawArticle, articleType: ArticleType): FeedCat
   if (/电视剧|剧集|短剧|网剧|综艺|播出|开播|平台|优酷|腾讯视频|爱奇艺|芒果TV|B站/.test(text)) {
     return "ドラマ・配信";
   }
-  if (/演员|艺人|明星|红毯|经纪|出任|悼念|身亡|逝世|回应|热搜/.test(text)) {
+  if (/演员|艺人|明星|红毯|经纪|出任|悼念|身亡|逝世|回应|热搜|恋情|结婚|离婚|绯闻|出轨|官宣/.test(text)) {
     return "芸能・俳優";
   }
   if (/产业|公司|集团|投资|出品|发行|市场|行业|文旅|票房|收视|数据|指数/.test(text)) {
     return "業界動向";
   }
-  if (/电影|影片|导演|影院|影节|电影节|电影周|上映|定档|票房/.test(text)) {
+  if (/电影|影片|导演|影院|影节|电影节|电影周|上映|定档|票房|预告|首映|路演|新片|影迷/.test(text)) {
     return "映画";
   }
 
@@ -289,13 +293,16 @@ function getFreshnessLabel(dateValue: string): FreshnessLabel {
   return "old";
 }
 function getSourceType(article: RawArticle, articleType: ArticleType): SourceTypeLabel {
-  if (articleType === "sns_trend") {
+  if (article.declaredSourceType === "sns" || articleType === "sns_trend") {
     return "sns";
+  }
+  if (article.declaredSourceType === "data") {
+    return "data";
   }
   if (articleType === "gossip_rumor") {
     return "rumor";
   }
-  if (article.reliability === "A" || /国家|总局|电影局|官方|政府/.test(article.sourceName)) {
+  if (article.declaredSourceType === "official" || article.reliability === "A" || /国家|总局|电影局|官方|政府/.test(article.sourceName)) {
     return isPrLike(article) ? "pr_like" : "official";
   }
   if (articleType === "data_report") {
@@ -413,39 +420,6 @@ function isPrLike(article: RawArticle) {
 
 function includesAny(text: string, keywords: string[]) {
   return keywords.some((keyword) => text.includes(keyword));
-}
-
-function createTopicKey(title: string) {
-  if (/上海国际电影节|上影节|金爵奖/.test(title)) {
-    return "上海国际电影节";
-  }
-  if (/给阿嬷的情书/.test(title)) {
-    return "给阿嬷的情书";
-  }
-  if (/百花奖|大众电影百花奖/.test(title)) {
-    return "大众电影百花奖";
-  }
-
-  const work = title.match(/《([^》]+)》/)?.[1];
-  if (work) {
-    return cleanTopicKey(work);
-  }
-
-  const quoted = title.match(/[“「『]([^”」』]+)[”」』]/)?.[1];
-  if (quoted) {
-    return cleanTopicKey(quoted);
-  }
-
-  const festival = title.match(/第?\d*届?[^，。！!？?、\s]*(?:电影节|电影周|电影展|传媒关注单元|金爵奖|百花奖)/)?.[0];
-  if (festival) {
-    return cleanTopicKey(festival);
-  }
-
-  return cleanTopicKey(title.split(/[，。！!？?：:、|]/)[0] ?? title);
-}
-
-function cleanTopicKey(value: string) {
-  return value.replace(/\s+/g, "").slice(0, 30) || "unknown";
 }
 
 function today() {
