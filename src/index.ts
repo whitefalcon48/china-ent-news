@@ -7,6 +7,7 @@ import { renderMarkdownFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle } from "./summarizeWithGemini.js";
 import { buildTopicCandidates, writeTopicCandidatesFile } from "./topicCandidates.js";
+import { extractTopicSeeds } from "./topicSeeds.js";
 import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic } from "./types.js";
 
 const MAX_ARTICLES_PER_SOURCE = 3;
@@ -43,8 +44,10 @@ async function main() {
   const classifiedArticles = attachRelatedSources(dedupedArticles.map((article) => classifyArticle(article, filterConfig)));
   const topicMergeResult = mergeTopicDuplicates(classifiedArticles);
   const generationCandidatePool = topicMergeResult.articles.map(prepareGenerationCandidate);
-  const topicCandidates = buildTopicCandidates(generationCandidatePool);
-  const topicCandidatesPath = await writeTopicCandidatesFile(topicCandidates);
+  const topicCandidateArticlePool = classifiedArticles.map(prepareGenerationCandidate);
+  const topicSeedExtraction = await extractTopicSeeds(topicCandidateArticlePool, provider);
+  const topicCandidates = buildTopicCandidates(topicCandidateArticlePool, topicSeedExtraction.seeds);
+  const topicCandidatesPath = await writeTopicCandidatesFile(topicCandidates, undefined, { topic_seed_extraction: topicSeedExtraction });
   const droppedReasons = new Map<string, string>();
   const selectionReasons = new Map<string, string>();
   markNonPublishableTraceDrops(generationCandidatePool, droppedReasons);
@@ -94,6 +97,12 @@ async function main() {
   logExclusions("本文量不足の除外記事", rawContentExclusions);
   console.log(`topic_key生成件数: ${new Set(classifiedArticles.map((article) => article.topicKey).filter(Boolean)).size}`);
   console.log(`topic統合件数: ${topicMergeResult.mergedTopicCount}`);
+  console.log(
+    `topic_seed抽出: ${topicSeedExtraction.succeeded ? "LLM成功" : topicSeedExtraction.attempted ? "LLM失敗・regex fallback" : "未実行・regex fallback"}`
+  );
+  if (topicSeedExtraction.error) {
+    console.log(`topic_seed抽出エラー: ${topicSeedExtraction.error}`);
+  }
   console.log(`topic_candidates出力先: ${topicCandidatesPath}`);
   console.log(`topic_candidates件数: ${topicCandidates.length}`);
   logDuplicateCandidates(topicMergeResult.duplicateCandidates);

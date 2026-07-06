@@ -170,6 +170,10 @@ export type ProcessedArticle = {
 export type TopicCandidate = {
   topic_key: string;
   title_hint: string;
+  event_sentence: string;
+  search_queries: string[];
+  seed_source: "llm" | "regex_fallback";
+  seed_confidence: number;
   topic_type: TopicType;
   freshness_label: FreshnessLabel;
   published_date_range: {
@@ -205,6 +209,29 @@ export type TopicCandidate = {
   publish_priority: PublishPriority;
   selection_reason: string;
   caution_note: string;
+};
+
+export type TopicSeed = {
+  article_url: string;
+  article_title: string;
+  fallback_topic_key: string;
+  topic_key: string;
+  event_sentence: string;
+  entities: MainEntities & {
+    events: string[];
+  };
+  search_queries: string[];
+  confidence: number;
+  source: "llm" | "regex_fallback";
+  error?: string;
+};
+
+export type TopicSeedExtractionResult = {
+  provider: AiProvider;
+  attempted: boolean;
+  succeeded: boolean;
+  error: string;
+  seeds: TopicSeed[];
 };
 
 export type ArticleFilterConfig = {

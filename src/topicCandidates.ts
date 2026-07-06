@@ -12,19 +12,28 @@ import type {
   RawArticle,
   SourceTypeLabel,
   TopicCandidate,
+  TopicSeed,
+  TopicSeedExtractionResult,
   TopicType
 } from "./types.js";
 
 const FRESHNESS_ORDER: FreshnessLabel[] = ["today", "yesterday", "recent", "stale", "old", "background", "unknown"];
 const SOURCE_TYPES: SourceTypeLabel[] = ["official", "media_report", "sns", "data", "pr_like", "rumor", "mixed"];
 
-export function buildTopicCandidates(articles: RawArticle[]): TopicCandidate[] {
-  const groups = new Map<string, RawArticle[]>();
+type TopicEntry = {
+  article: RawArticle;
+  seed?: TopicSeed;
+};
+
+export function buildTopicCandidates(articles: RawArticle[], seeds: TopicSeed[] = []): TopicCandidate[] {
+  const groups = new Map<string, TopicEntry[]>();
+  const seedByUrl = new Map(seeds.map((seed) => [seed.article_url, seed]));
 
   for (const article of articles) {
-    const topicKey = createTopicKey(article);
+    const seed = seedByUrl.get(article.url);
+    const topicKey = seed?.topic_key || createTopicKey(article);
     const group = groups.get(topicKey) ?? [];
-    group.push(article);
+    group.push({ article, seed });
     groups.set(topicKey, group);
   }
 
@@ -33,7 +42,11 @@ export function buildTopicCandidates(articles: RawArticle[]): TopicCandidate[] {
     .sort((a, b) => b.newsworthiness_score - a.newsworthiness_score || b.source_count - a.source_count || a.topic_key.localeCompare(b.topic_key, "ja"));
 }
 
-export async function writeTopicCandidatesFile(topicCandidates: TopicCandidate[], date = today()) {
+export async function writeTopicCandidatesFile(
+  topicCandidates: TopicCandidate[],
+  date = today(),
+  meta: { topic_seed_extraction?: TopicSeedExtractionResult } = {}
+) {
   const outputPath = path.resolve("output", `topic_candidates_${date}.json`);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(
@@ -42,6 +55,7 @@ export async function writeTopicCandidatesFile(topicCandidates: TopicCandidate[]
       {
         date,
         generated_at: new Date().toISOString(),
+        topic_seed_extraction: meta.topic_seed_extraction,
         topic_candidates_count: topicCandidates.length,
         topic_candidates: topicCandidates
       },
@@ -53,7 +67,10 @@ export async function writeTopicCandidatesFile(topicCandidates: TopicCandidate[]
   return outputPath;
 }
 
-function buildTopicCandidate(topicKey: string, articles: RawArticle[]): TopicCandidate {
+function buildTopicCandidate(topicKey: string, entries: TopicEntry[]): TopicCandidate {
+  const articles = entries.map((entry) => entry.article);
+  const seeds = entries.map((entry) => entry.seed).filter((seed): seed is TopicSeed => Boolean(seed));
+  const representativeSeed = chooseRepresentativeSeed(seeds);
   const sortedArticles = [...articles].sort(compareEvidenceArticles);
   const representative = sortedArticles[0];
   const dates = sortedArticles.map((article) => article.publishedDate).filter(Boolean).sort();
@@ -72,6 +89,10 @@ function buildTopicCandidate(topicKey: string, articles: RawArticle[]): TopicCan
   return {
     topic_key: topicKey,
     title_hint: representative?.title ?? topicKey,
+    event_sentence: representativeSeed?.event_sentence ?? "",
+    search_queries: mergeSearchQueries(seeds, topicKey),
+    seed_source: seeds.some((seed) => seed.source === "llm") ? "llm" : "regex_fallback",
+    seed_confidence: representativeSeed?.confidence ?? 0,
     topic_type: topicType,
     freshness_label: getTopicFreshness(sortedArticles),
     published_date_range: {
@@ -81,7 +102,7 @@ function buildTopicCandidate(topicKey: string, articles: RawArticle[]): TopicCan
     source_count: new Set(sortedArticles.map((article) => article.sourceName)).size,
     source_mix: sourceMix,
     evidence_articles: sortedArticles.map(toEvidenceArticle),
-    main_entities: mergeEntities(sortedArticles, topicKey),
+    main_entities: mergeEntities(sortedArticles, topicKey, seeds),
     signals,
     newsworthiness_score: score,
     japan_gap: getMaxLevel(sortedArticles.map((article) => article.japanGap ?? "unknown")),
@@ -94,6 +115,20 @@ function buildTopicCandidate(topicKey: string, articles: RawArticle[]): TopicCan
 
 function createTopicKey(article: RawArticle) {
   return article.topicKey || createSharedTopicKey(article.title, article.excerpt ?? "");
+}
+
+function chooseRepresentativeSeed(seeds: TopicSeed[]) {
+  return [...seeds].sort((a, b) => {
+    if (a.source !== b.source) {
+      return a.source === "llm" ? -1 : 1;
+    }
+    return b.confidence - a.confidence;
+  })[0];
+}
+
+function mergeSearchQueries(seeds: TopicSeed[], topicKey: string) {
+  const queries = seeds.flatMap((seed) => seed.search_queries);
+  return [...new Set([topicKey, ...queries].filter(Boolean))].slice(0, 5);
 }
 
 function inferTopicType(articles: RawArticle[]): TopicType {
@@ -148,11 +183,18 @@ function buildKeyPoints(article: RawArticle) {
   return [article.title, article.excerpt ?? ""].filter(Boolean).slice(0, 2);
 }
 
-function mergeEntities(articles: RawArticle[], topicKey: string): MainEntities & { events: string[] } {
+function mergeEntities(articles: RawArticle[], topicKey: string, seeds: TopicSeed[] = []): MainEntities & { events: string[] } {
   const people = new Set<string>();
   const works = new Set<string>();
   const organizations = new Set<string>();
   const events = new Set<string>();
+
+  for (const seed of seeds) {
+    for (const person of seed.entities.people) people.add(person);
+    for (const work of seed.entities.works) works.add(work);
+    for (const organization of seed.entities.organizations) organizations.add(organization);
+    for (const event of seed.entities.events) events.add(event);
+  }
 
   for (const article of articles) {
     for (const person of article.mainEntities?.people ?? []) people.add(person);

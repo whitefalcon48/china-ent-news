@@ -72,7 +72,12 @@ export function extractPersonName(text: string) {
   const match =
     text.match(/([\p{Script=Han}]{2,4})(?:主演|导演|执导|获奖|官宣|发文|回应|出任|亮相|加盟|献唱|发布)/u) ??
     text.match(/(?:主演|导演|演员|歌手|艺人)([\p{Script=Han}]{2,4})/u);
-  return match?.[1] ?? "";
+  const candidate = match?.[1] ?? "";
+  return isLikelyInvalidPersonName(candidate) ? "" : candidate;
+}
+
+function isLikelyInvalidPersonName(value: string) {
+  return !value || /电影|电视|网剧|短剧|综艺|艺人|明星|演唱|唱会|版权|票房|发布|预告|首映|观众|粉丝|角色|合作/.test(value);
 }
 
 function extractTitleKeywords(title: string) {
@@ -84,5 +89,6 @@ function extractTitleKeywords(title: string) {
 }
 
 export function cleanTopicKey(value: string) {
-  return value.replace(/\s+/g, "").slice(0, 40) || "unknown";
+  const cleaned = value.replace(/\s+/g, "").replace(/演唱会高翻唱率/g, "演唱会翻唱版权").replace(/高翻唱率/g, "翻唱率");
+  return cleaned.slice(0, 40) || "unknown";
 }
