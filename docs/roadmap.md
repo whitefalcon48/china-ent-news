@@ -1,0 +1,134 @@
+# ロードマップ & 引継ぎ指針
+
+最終更新: 2026-07-06（Phase 1 完了時点）
+
+## ゴール像
+
+参考イメージ: https://news.nullevi.app/
+
+- 「記事の羅列」ではなく「出来事・論点」単位のトピックが並ぶ
+- 1トピックに 公式 / 媒体 / SNS / データ の複数ソースタイプが紐づく
+- 公式だけで完結するトピックは低評価、クロスソースのトピックが高評価
+- 最終出力は人間が見る「今日確認すべきトピック候補」リスト
+- 「なぜ今この話題か」「日本語圏で見えにくい理由」が拾えている
+
+編集方針の正本は `docs/editorial-character.md`。
+
+## フェーズ状況
+
+### Phase 1: 供給の修理 + スコア反転 — ✅ 完了（2026-07-06）
+
+実測結果（selection_trace / source-audit 2026-07-06）:
+
+- 候補プールの官庁比率: 70% → 31%
+- 媒体ソースの fresh 記事: 1件 → 34件（新浪8・新京报19・1905 6・界面1）
+- official-only topic の priority: 26/32件が low に反転
+- 最終出力（DeepSeek/Actions）: 媒体6本＋公式4本の混合、ゴシップ・業界・文化の幅が出た
+
+主な変更: エンタメキーワードゲートを reliability A + オプトインのみに限定、
+新浪の `k.sina.com.cn/article_` 解禁、微博热搜 fetcher（`src/fetchHotSearch.ts`）、
+official-only 減点(-15)と备案ボーナス削除、`src/topicKey.ts` への一本化。
+
+### Phase 2: topic-first 化 + source expansion — 🔜 次
+
+決定済みの技術方針（2026-07-06 ユーザー確認済み）:
+
+- 検索手段は **RSSHub 先行 → 限界が見えたら検索 API（Serper 等）追加** の二段構え
+- topic seed 抽出は **LLM バッチを採用**（DeepSeek、1実行あたり呼び出し1〜2回増）
+- 日本語圏可視性は **当面ヒューリスティック改良のみ**（実測は検索 API 導入後）
+
+タスクは番号順に実施。各タスクは独立に完結し、受け入れ基準を満たしてから次へ。
+
+#### 2-1. LLM topic seed 抽出（新規 `src/topicSeeds.ts`）
+
+- 収集記事の title+excerpt を LLM バッチ1回で変換:
+  出来事文（例:「国家广电总局から今季の电视剧・网络剧备案が公示された」）+ entities + 検索クエリ案(中国語2〜3個)
+- regex `createTopicKey`（`src/topicKey.ts`）はフォールバックとして残す
+- LLM 失敗時は全体を止めず regex キーで続行（graceful fallback）
+- **受け入れ基準**: topic_candidates の topic_key から「达再合作」「演唱会高」型の壊れたキーが消える。
+  同一出来事の別タイトル記事（あれば）が同一 seed に束なる
+- ⚠️ **プロンプト初版の設計は Fable に依頼推奨**（後述の振り分け指針）
+
+#### 2-2. source expansion 骨格（新規 `src/expandSources.ts`）
+
+- topic seed の検索クエリで追加ソースを収集する fetcher インターフェースを定義
+- 第1実装: RSSHub ルート（微博検索 `/weibo/search/…`・豆瓣・B站）。全ルート graceful fallback
+- 取得結果は sourceType 別に topic の evidence_articles へ紐付け
+- 上位 seed（スコア順 N 件）だけ expansion して呼び出し数を制御
+- **受け入れ基準**: selection_trace に expansion の試行/成功/失敗がルート別に出る。
+  成功時に source_count>=2 の topic が発生する
+- 未解決課題: 公開 rsshub.app はローカル/Actions 双方でタイムアウト実績あり。
+  ミラー・自前 RSSHub・`RSSHUB_BASE_URL` 差し替えを最初に実測すること
+
+#### 2-3. topic-first 生成（選定単位を記事 → topic へ）
+
+- `src/index.ts` の選定を topic 単位に切替、`summarizeArticle` → `summarizeTopic`
+  （topic の evidence 束＝公式+媒体+SNS+データを1プロンプトに渡し1本のメモを生成）
+- カテゴリ/ソース上限ロジックは topic 属性ベースに移植
+- **受け入れ基準**: 出力 Markdown の1記事に複数ソースリンクが並ぶ。
+  1ソース topic では複数視点を捏造しない（既存の禁止事項を prompt に維持）
+- ⚠️ **summarizeTopic プロンプト初版と選定ロジックの設計レビューは Fable に依頼推奨**
+
+#### 2-4. 出力の再定義「今日確認すべきトピック候補」
+
+- 最終出力を publish_priority 順 + source_mix 表示 + official-only は低評価明示のリストに
+- **受け入れ基準**: Markdown を見て「今日どの話題を確認すべきか」が1分で判断できる
+
+#### 2-5. 検索 API 導入（RSSHub の限界が見えたら）
+
+- Serper / Brave Search 等を `expandSources.ts` の同一インターフェースの別 fetcher として追加
+- API キーは `.env` / GitHub Secrets（コードに書かない）
+- **受け入れ基準**: RSSHub 失敗時も expansion が成立する
+
+#### 2-6. 日本語圏可視性の実測（2-5 の後）
+
+- 上位 topic のみ日本語検索し japan_visibility を実測に置換
+
+### 継続課題（フェーズ外・随時）
+
+- 澎湃新闻: channel ページが JS レンダリングで実質死んでいる（現在は誤混入防止で空）。
+  RSSHub `/thepaper/channel/25951` などの代替 URL を実測して差し替え
+- 豆瓣・猫眼: sources.json に `enabled: false` の候補あり。RSSHub 実測後に有効化
+- 微博热搜: `fetchHotSearch.ts` は実装済みだが公開 RSSHub が不安定。ベースURL差し替えで解決を図る
+
+## モデル振り分け指針（コスト管理）
+
+日常の実装は Codex や下位モデル（Sonnet/Haiku 等）、**要所だけ Fable** に依頼する。
+
+### Codex / 下位モデルに任せてよい作業（日常）
+
+- 上記タスクの実装作業そのもの（設計が本ドキュメントに書いてある範囲）
+- ソース追加・URL パターン調整・キーワード辞書の増減
+- バグ修正、型エラー解消、ログ/診断の追加
+- audit / trace の実行と数値確認
+
+### Fable に依頼すべき要所（1タスク=1セッションで完結させる）
+
+1. **LLM プロンプトの初版設計**（2-1 の topic seed 抽出、2-3 の summarizeTopic）
+   — 出力品質を決める一番のレバー。初版を Fable で作り、微調整は下位モデルで
+2. **フェーズ完了時の設計レビュー**（Phase 2 完了時に実出力を添えて依頼）
+3. **出力品質が狙いとずれた時の原因分析**
+   — 「また公式に偏った」「topic が壊れた」等。trace/audit の JSON を添えて依頼
+4. **アーキテクチャの分岐点**（検索 API 選定、topic-first 切替の設計判断）
+
+### Fable への依頼テンプレート
+
+```
+docs/roadmap.md のタスク 2-x をやりたい。
+前提: AGENTS.md と docs/roadmap.md を読んでから始めて。
+現状の実出力: output/selection_trace_YYYY-MM-DD.json（または Actions artifact を添付）
+依頼内容: <設計/レビュー/原因分析のどれか + 具体的に>
+```
+
+## 引継ぎ運用ルール（どのモデルでも共通）
+
+1. **セッション開始時**: `AGENTS.md`（Codex は自動読込）→ 本ドキュメントの順に読む
+2. **1タスク = 1受け入れ基準**。受け入れ基準を満たすまで完了にしない
+3. **検証は必ず実測**:
+   - `npm run check`（型）
+   - `npm run audit:sources`（ソース健全性。媒体 fresh>0 を維持）
+   - `npm run start`（ローカルは Gemini 不達で AI 要約は失敗するが、selection_trace までは検証可能）
+   - AI 要約込みの検証は GitHub Actions の generate-news（provider: deepseek）
+4. **変更前後で trace/audit を比較**: 官庁比率・媒体 fresh 件数・multi-source topic 数が後退していないこと
+5. **タスク完了時**: 本ドキュメントのフェーズ状況を更新し（✅ + 実測値1行）、コミットする
+6. **編集方針に関わる変更**（プロンプト、スコア、選定）は `docs/editorial-character.md` と矛盾しないか確認
