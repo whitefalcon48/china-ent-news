@@ -1,7 +1,7 @@
 export type SourceType = "rss" | "html";
 export type Reliability = "A" | "B" | "C" | "D";
 export type AiProvider = "gemini" | "deepseek";
-export type FeedCategory = "映画" | "ドラマ・配信" | "芸能・俳優" | "業界動向" | "公式発表" | "海外中国映画祭・文化交流" | "その他";
+export type FeedCategory = "映画" | "ドラマ・配信" | "芸能・俳優" | "業界動向" | "公式発表" | "その他";
 export type FeedBadge = "NEWS" | "HOT SEARCH" | "WATCH" | "OFFICIAL" | "DATA" | "PR WATCH";
 export type SourceTypeLabel = "official" | "media_report" | "sns" | "data" | "pr_like" | "rumor" | "mixed";
 export type FreshnessLabel = "today" | "yesterday" | "recent" | "stale" | "old" | "unknown" | "background";
@@ -266,6 +266,8 @@ export type TopicSeedExtractionResult = {
   attempted: boolean;
   succeeded: boolean;
   error: string;
+  chunk_count: number;
+  failed_chunk_count: number;
   seeds: TopicSeed[];
 };
 

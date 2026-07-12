@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import type {
   AiProvider,
+  FeedBadge,
   FreshnessLabel,
   ProcessedArticle,
   PublishPriority,
@@ -42,11 +43,14 @@ export type SourceSelectionDiagnostic = {
 };
 
 type TraceFinalOutput = {
+  title_ja: string;
+  badge: FeedBadge;
+  topic_key: string;
   output_title: string;
   input_title: string;
   input_url: string;
   source: string;
-  matched_by: "raw_article";
+  matched_by: "raw_article" | "topic";
   publish_priority: PublishPriority;
   publish_reason: string;
 };
@@ -70,6 +74,8 @@ type SelectionTrace = {
       selection_reason: string;
     }>;
     dropped: Array<{ topic_key: string; reason: string }>;
+    failed: Array<{ topic_key: string; stage: "ai_error" | "post_ai_exclude"; reason: string }>;
+    backfilled: string[];
   };
   source_expansion: SourceExpansionResult | null;
   deepseek_input: {
@@ -122,11 +128,14 @@ export function buildSelectionTrace(args: {
   const finalOutput = args.processed
     .filter((article) => article.summary)
     .map((article) => ({
+      title_ja: article.summary?.title_ja || article.raw.title,
+      badge: article.summary?.badge ?? article.raw.badge ?? "NEWS",
+      topic_key: article.topic?.topic_key ?? article.summary?.topic_key ?? article.raw.topicKey ?? "",
       output_title: article.summary?.title_ja || article.raw.title,
       input_title: article.raw.title,
       input_url: article.raw.url,
       source: article.raw.sourceName,
-      matched_by: "raw_article" as const,
+      matched_by: article.topic ? ("topic" as const) : ("raw_article" as const),
       publish_priority: article.summary?.publish_priority ?? "medium",
       publish_reason: article.summary?.publish_reason || inferPublishReason(article)
     }));
@@ -141,7 +150,7 @@ export function buildSelectionTrace(args: {
     topic_layer_note:
       args.topicLayerNote ??
       "MVP topic layer is diagnostic only. DeepSeek input and Markdown output still use article-level candidates.",
-    topic_selection: args.topicSelection ?? { enabled: false, selected: [], dropped: [] },
+    topic_selection: args.topicSelection ?? { enabled: false, selected: [], dropped: [], failed: [], backfilled: [] },
     source_expansion: args.sourceExpansion ?? null,
     deepseek_input: {
       count: args.deepseekInput.length,

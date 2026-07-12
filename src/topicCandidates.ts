@@ -241,7 +241,14 @@ function getTopicScore(articles: RawArticle[], signals: TopicCandidate["signals"
     !signals.has_media_context &&
     !signals.has_data_signal;
   if (snsOnlySingleEvidence) score = Math.min(score, 55);
+  if (articles.some(isOfficialCulturalEventWithoutPopSignal)) score = Math.min(score, 55);
   return Math.max(0, Math.min(100, score));
+}
+
+function isOfficialCulturalEventWithoutPopSignal(article: RawArticle) {
+  const text = `${article.title} ${article.excerpt ?? ""}`;
+  return /展演|文联|文化馆|群艺馆|交响|管乐|民乐|合唱|戏曲|京剧|越剧|昆曲|书法|美术展/.test(text) &&
+    !/歌手|演唱会|巡演|专辑|单曲|音综|打歌|榜单|音乐节|MV/.test(text);
 }
 
 function getPublishPriority(score: number): PublishPriority {

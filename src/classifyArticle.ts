@@ -29,6 +29,8 @@ const DEFAULT_FILTER_CONFIG: ArticleFilterConfig = {
 };
 
 const OFFICIAL_ONLY_KEYWORDS = ["发布", "宣布", "公告", "公示", "通知", "签署", "召开", "启动"];
+const OFFICIAL_CULTURAL_EVENT_PATTERN = /展演|文联|文化馆|群艺馆|交响|管乐|民乐|合唱|戏曲|京剧|越剧|昆曲|书法|美术展/;
+const POP_MUSIC_PATTERN = /歌手|演唱会|巡演|专辑|单曲|音综|打歌|榜单|音乐节|MV/;
 
 export async function loadFilterConfig(configPath = "config/filters.json"): Promise<ArticleFilterConfig> {
   try {
@@ -133,8 +135,8 @@ function getSkipReason(article: RawArticle, articleType: ArticleType, config: Ar
 function getFeedCategory(article: RawArticle, articleType: ArticleType): FeedCategory {
   const text = `${article.title} ${article.category} ${article.excerpt ?? ""}`;
 
-  if (isOverseasChinaFilmFestival(text)) {
-    return "海外中国映画祭・文化交流";
+  if (POP_MUSIC_PATTERN.test(text)) {
+    return "芸能・俳優";
   }
   if (article.reliability === "A" || articleType === "official_announcement") {
     return "公式発表";
@@ -142,14 +144,14 @@ function getFeedCategory(article: RawArticle, articleType: ArticleType): FeedCat
   if (/电视剧|剧集|短剧|网剧|综艺|播出|开播|平台|优酷|腾讯视频|爱奇艺|芒果TV|B站/.test(text)) {
     return "ドラマ・配信";
   }
-  if (/演员|艺人|明星|红毯|经纪|出任|悼念|身亡|逝世|回应|热搜|恋情|结婚|离婚|绯闻|出轨|官宣/.test(text)) {
+  if (/电影|影片|导演|影院|影节|电影节|电影周|上映|定档|票房|预告|首映|路演|新片|影迷/.test(text)) {
+    return "映画";
+  }
+  if (/演员|艺人|明星|红毯|经纪|出任|悼念|身亡|逝世|回应|热搜|恋情|结婚|离婚|绯闻|出轨|官宣|歌手|演唱会|巡演|专辑|单曲|音综|打歌|MV|音乐节/.test(text)) {
     return "芸能・俳優";
   }
   if (/产业|公司|集团|投资|出品|发行|市场|行业|文旅|票房|收视|数据|指数/.test(text)) {
     return "業界動向";
-  }
-  if (/电影|影片|导演|影院|影节|电影节|电影周|上映|定档|票房|预告|首映|路演|新片|影迷/.test(text)) {
-    return "映画";
   }
 
   return "その他";
@@ -160,6 +162,7 @@ function isLowPriorityArticle(article: RawArticle, freshnessLabel: FreshnessLabe
   return (
     ((freshnessLabel === "stale" || freshnessLabel === "old" || freshnessLabel === "unknown" || freshnessLabel === "background") && sourceType === "media_report") ||
     isGenericOverseasChinaFilmFestival(text) ||
+    OFFICIAL_CULTURAL_EVENT_PATTERN.test(text) && !POP_MUSIC_PATTERN.test(text) ||
     /文化交流|合作协议|签署合作|友好交流|代表团|座谈会|工作部署|推进会/.test(text) ||
     /开幕/.test(text) && /中国电影节/.test(text)
   );
@@ -352,7 +355,7 @@ function getJapanGap(article: RawArticle, feedCategory: FeedCategory): LevelLabe
   if (/豆瓣|方言|地方|女性|饭圈|流量|控评|番位|CP|营销号|塌房|短剧|海外中国电影节|中国电影节/.test(text)) {
     return "high";
   }
-  if (feedCategory === "海外中国映画祭・文化交流" || feedCategory === "業界動向") {
+  if (isOverseasChinaFilmFestival(text) || feedCategory === "業界動向") {
     return "medium";
   }
   return "unknown";
@@ -363,7 +366,7 @@ function getContextValue(article: RawArticle, feedCategory: FeedCategory): Conte
   if (/国家|文化交流|海外|中国电影节|产业|票房|豆瓣|短剧|饭圈|流量|女性|方言|地方|字幕|日本/.test(text)) {
     return "high";
   }
-  if (feedCategory === "業界動向" || feedCategory === "海外中国映画祭・文化交流") {
+  if (feedCategory === "業界動向" || isOverseasChinaFilmFestival(text)) {
     return "medium";
   }
   return "low";
@@ -408,7 +411,7 @@ function getNewsworthinessScore(
   if (contextValue === "medium") score += 6;
   if (snsHeat === "high") score += 10;
   if (snsHeat === "medium") score += 5;
-  if (feedCategory === "海外中国映画祭・文化交流" && !isGenericOverseasChinaFilmFestival(`${article.title} ${article.excerpt ?? ""}`)) score += 6;
+  if (isOverseasChinaFilmFestival(`${article.title} ${article.excerpt ?? ""}`) && !isGenericOverseasChinaFilmFestival(`${article.title} ${article.excerpt ?? ""}`)) score += 6;
   if (article.isLowPriority) score -= 12;
   return Math.max(0, Math.min(100, score));
 }

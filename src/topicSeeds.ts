@@ -4,7 +4,7 @@ import type { AiProvider, MainEntities, RawArticle, TopicSeed, TopicSeedExtracti
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
-const MAX_ARTICLES_PER_BATCH = 80;
+const MAX_ARTICLES_PER_BATCH = 25;
 
 type LlmSeedItem = {
   id?: number;
@@ -22,6 +22,7 @@ type LlmSeedResponse = {
 export async function extractTopicSeeds(articles: RawArticle[], provider: AiProvider = getAiProvider()): Promise<TopicSeedExtractionResult> {
   const fallbackSeeds = articles.map(toFallbackSeed);
   const env = getProviderEnvStatus(provider);
+  const chunks = chunkArticles(articles, fallbackSeeds);
 
   if (!env.hasApiKey) {
     return {
@@ -29,31 +30,46 @@ export async function extractTopicSeeds(articles: RawArticle[], provider: AiProv
       attempted: false,
       succeeded: false,
       error: `${provider} API key is not set`,
+      chunk_count: chunks.length,
+      failed_chunk_count: chunks.length,
       seeds: fallbackSeeds
     };
   }
 
-  try {
-    const text = await generateTopicSeedJson(provider, buildTopicSeedPrompt(articles.slice(0, MAX_ARTICLES_PER_BATCH), fallbackSeeds));
-    const parsed = parseJsonFromModelText(text) as LlmSeedResponse;
-    const llmSeeds = mergeLlmSeeds(articles, fallbackSeeds, parsed.items ?? []);
-    return {
-      provider,
-      attempted: true,
-      succeeded: true,
-      error: "",
-      seeds: llmSeeds
-    };
-  } catch (error) {
-    const message = describeError(error);
-    return {
-      provider,
-      attempted: true,
-      succeeded: false,
-      error: message,
-      seeds: fallbackSeeds.map((seed) => ({ ...seed, error: message }))
-    };
+  const seeds: TopicSeed[] = [];
+  const errors: string[] = [];
+  for (const [chunkIndex, chunk] of chunks.entries()) {
+    try {
+      const text = await generateTopicSeedJson(provider, buildTopicSeedPrompt(chunk.articles, chunk.fallbackSeeds));
+      const parsed = parseJsonFromModelText(text) as LlmSeedResponse;
+      seeds.push(...mergeLlmSeeds(chunk.articles, chunk.fallbackSeeds, parsed.items ?? []));
+    } catch (error) {
+      const message = describeError(error);
+      errors.push(`chunk_${chunkIndex + 1}: ${message}`);
+      seeds.push(...chunk.fallbackSeeds.map((seed) => ({ ...seed, error: message })));
+    }
   }
+
+  return {
+    provider,
+    attempted: chunks.length > 0,
+    succeeded: chunks.length > 0 && errors.length === 0,
+    error: errors.join(" | "),
+    chunk_count: chunks.length,
+    failed_chunk_count: errors.length,
+    seeds
+  };
+}
+
+function chunkArticles(articles: RawArticle[], fallbackSeeds: TopicSeed[]) {
+  const chunks: Array<{ articles: RawArticle[]; fallbackSeeds: TopicSeed[] }> = [];
+  for (let index = 0; index < articles.length; index += MAX_ARTICLES_PER_BATCH) {
+    chunks.push({
+      articles: articles.slice(index, index + MAX_ARTICLES_PER_BATCH),
+      fallbackSeeds: fallbackSeeds.slice(index, index + MAX_ARTICLES_PER_BATCH)
+    });
+  }
+  return chunks;
 }
 
 function toFallbackSeed(article: RawArticle): TopicSeed {
@@ -198,7 +214,8 @@ async function generateGeminiJson(prompt: string) {
       body: JSON.stringify({
         generationConfig: {
           temperature: 0,
-          responseMimeType: "application/json"
+          responseMimeType: "application/json",
+          maxOutputTokens: 8192
         },
         contents: [
           {
@@ -242,6 +259,7 @@ async function generateDeepSeekJson(prompt: string) {
       body: JSON.stringify({
         model,
         temperature: 0,
+        max_tokens: 8000,
         response_format: { type: "json_object" },
         messages: [
           {

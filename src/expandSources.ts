@@ -12,6 +12,7 @@ const DEFAULT_TIMEOUT_MS = 6000;
 const DEFAULT_MAX_TOPICS = 3;
 const DEFAULT_QUERIES_PER_TOPIC = 1;
 const MAX_ITEMS_PER_ROUTE = 8;
+const SERPER_ENDPOINT = "https://api.serper.dev/search";
 
 type ExpansionRoute = {
   id: string;
@@ -26,6 +27,12 @@ type RssItem = {
   content?: string;
   contentSnippet?: string;
   summary?: string;
+};
+
+type SerperOrganicItem = {
+  title?: string;
+  link?: string;
+  snippet?: string;
 };
 
 const DEFAULT_ROUTES: ExpansionRoute[] = [
@@ -72,11 +79,20 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
   for (const topic of topics) {
     const queries = getTopicQueries(topic).slice(0, getQueriesPerTopic());
     for (const query of queries) {
+      const rssAttempts: SourceExpansionAttempt[] = [];
       for (const route of routes) {
         const attempt = await fetchExpansionRoute(topic, query, route);
         attempts.push(attempt.attempt);
+        rssAttempts.push(attempt.attempt);
         if (attempt.evidence.length) {
           evidenceByTopic.set(topic.topic_key, [...(evidenceByTopic.get(topic.topic_key) ?? []), ...attempt.evidence]);
+        }
+      }
+      if (rssAttempts.length && rssAttempts.every((attempt) => attempt.fetch_status === "failed")) {
+        const serperAttempt = await fetchSerperSearch(topic, query);
+        attempts.push(serperAttempt.attempt);
+        if (serperAttempt.evidence.length) {
+          evidenceByTopic.set(topic.topic_key, [...(evidenceByTopic.get(topic.topic_key) ?? []), ...serperAttempt.evidence]);
         }
       }
     }
@@ -94,6 +110,99 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
   };
 
   return { topicCandidates: expandedTopics, expansion };
+}
+
+async function fetchSerperSearch(topic: TopicCandidate, query: string) {
+  const common = {
+    topic_key: topic.topic_key,
+    query,
+    route_id: "serper-search",
+    route: SERPER_ENDPOINT,
+    rsshub_base_url: "",
+    source_type: "media_report" as const
+  };
+  const apiKey = process.env.SERPER_API_KEY;
+  if (!apiKey?.trim()) {
+    return {
+      attempt: {
+        ...common,
+        fetch_status: "skipped",
+        fetch_error: "SERPER_API_KEY is not set",
+        raw_count: 0,
+        matched_count: 0,
+        failure_stage: "not_configured"
+      } satisfies SourceExpansionAttempt,
+      evidence: []
+    };
+  }
+
+  try {
+    const response = await fetch(SERPER_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "X-API-KEY": apiKey
+      },
+      body: JSON.stringify({ q: query, gl: "cn", hl: "zh-cn", num: 10 }),
+      signal: AbortSignal.timeout(getTimeoutMs())
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+    const payload = (await response.json()) as { organic?: SerperOrganicItem[] };
+    const items = (payload.organic ?? []).slice(0, 10);
+    const evidence = items.map((item) => toSerperEvidence(item, query)).filter((item) => isUsefulEvidence(topic, query, item));
+    return {
+      attempt: {
+        ...common,
+        fetch_status: items.length ? "success" : "empty",
+        fetch_error: "",
+        raw_count: items.length,
+        matched_count: evidence.length,
+        failure_stage: items.length ? "" : "serper_empty"
+      } satisfies SourceExpansionAttempt,
+      evidence
+    };
+  } catch (error) {
+    return {
+      attempt: {
+        ...common,
+        fetch_status: "failed",
+        fetch_error: describeFetchError(error),
+        raw_count: 0,
+        matched_count: 0,
+        failure_stage: getFailureStage(error)
+      } satisfies SourceExpansionAttempt,
+      evidence: []
+    };
+  }
+}
+
+function toSerperEvidence(item: SerperOrganicItem, query: string): SourceExpansionEvidence {
+  const url = item.link ?? "";
+  const hostname = getHostname(url);
+  return {
+    title: cleanText(item.title ?? ""),
+    url,
+    source_name: hostname || "Serper検索",
+    source_type: getSerperSourceType(hostname),
+    route_id: "serper-search",
+    route: SERPER_ENDPOINT,
+    query,
+    key_points: [cleanText(item.title ?? ""), cleanText(item.snippet ?? "")].filter(Boolean)
+  };
+}
+
+function getSerperSourceType(hostname: string): SourceTypeLabel {
+  if (/(^|\.)weibo\.com$/.test(hostname) || /(^|\.)bilibili\.com$/.test(hostname)) return "sns";
+  if (/(^|\.)douban\.com$/.test(hostname) || /(^|\.)maoyan\.com$/.test(hostname) || /piaofang/.test(hostname)) return "data";
+  return "media_report";
+}
+
+function getHostname(url: string) {
+  try {
+    return new URL(url).hostname.toLowerCase().replace(/^www\./, "");
+  } catch {
+    return "";
+  }
 }
 
 async function fetchExpansionRoute(topic: TopicCandidate, query: string, route: ExpansionRoute) {
