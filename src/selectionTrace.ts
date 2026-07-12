@@ -59,6 +59,18 @@ type SelectionTrace = {
   topic_candidates: TopicCandidate[];
   dropped_topics: Array<TopicCandidate & { reason: string }>;
   topic_layer_note: string;
+  topic_selection: {
+    enabled: boolean;
+    selected: Array<{
+      topic_key: string;
+      category: string;
+      primary_source: string;
+      score: number;
+      evidence_urls: string[];
+      selection_reason: string;
+    }>;
+    dropped: Array<{ topic_key: string; reason: string }>;
+  };
   source_expansion: SourceExpansionResult | null;
   deepseek_input: {
     count: number;
@@ -90,6 +102,7 @@ export function buildSelectionTrace(args: {
   droppedTopics?: Array<TopicCandidate & { reason: string }>;
   topicLayerNote?: string;
   sourceExpansion?: SourceExpansionResult;
+  topicSelection?: SelectionTrace["topic_selection"];
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -128,6 +141,7 @@ export function buildSelectionTrace(args: {
     topic_layer_note:
       args.topicLayerNote ??
       "MVP topic layer is diagnostic only. DeepSeek input and Markdown output still use article-level candidates.",
+    topic_selection: args.topicSelection ?? { enabled: false, selected: [], dropped: [] },
     source_expansion: args.sourceExpansion ?? null,
     deepseek_input: {
       count: args.deepseekInput.length,

@@ -165,6 +165,7 @@ export type ProcessedArticle = {
   raw: RawArticle;
   summary?: SummarizedArticle;
   aiError?: string;
+  topic?: TopicCandidate;
 };
 
 export type TopicCandidate = {

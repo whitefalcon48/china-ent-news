@@ -234,6 +234,13 @@ function getTopicScore(articles: RawArticle[], signals: TopicCandidate["signals"
   if ((topicType === "policy" || topicType === "drama_production") && hasNonOfficialContext) score += 6;
   if (topicType === "fan_culture") score += 6;
   if (articles.some((article) => article.isLowPriority)) score -= 8;
+  const snsOnlySingleEvidence =
+    articles.length === 1 &&
+    (articles[0]?.sourceType === "sns" || articles[0]?.articleType === "sns_trend") &&
+    !signals.has_official_source &&
+    !signals.has_media_context &&
+    !signals.has_data_signal;
+  if (snsOnlySingleEvidence) score = Math.min(score, 55);
   return Math.max(0, Math.min(100, score));
 }
 

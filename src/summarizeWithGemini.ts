@@ -11,7 +11,8 @@ import type {
   SnsHeat,
   SourceTypeLabel,
   PublishPriority,
-  SummarizedArticle
+  SummarizedArticle,
+  TopicCandidate
 } from "./types.js";
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
@@ -38,6 +39,11 @@ async function loadEditorialCharacter() {
 export async function summarizeArticle(article: RawArticle, provider = getAiProvider()): Promise<SummarizedArticle> {
   const text = await generateJson(provider, await buildPrompt(article));
   return mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article);
+}
+
+export async function summarizeTopic(topic: TopicCandidate, evidence: RawArticle[], provider = getAiProvider()): Promise<SummarizedArticle> {
+  const text = await generateJson(provider, await buildTopicPrompt(topic, evidence));
+  return mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence);
 }
 
 export async function summarizeWithGemini(article: RawArticle): Promise<SummarizedArticle> {
@@ -353,6 +359,74 @@ publish_priority rules:
 - 元本文: ${article.rawContent || article.excerpt || "なし"}`;
 }
 
+async function buildTopicPrompt(topic: TopicCandidate, evidence: RawArticle[]) {
+  const editorialCharacter = await loadEditorialCharacter();
+  const evidenceText = evidence
+    .map((article, index) => {
+      const content = index === 0 ? (article.rawContent || article.excerpt || "なし").slice(0, 5000) : (article.rawContent || article.excerpt || "なし").slice(0, 1500);
+      return `[E${index + 1}]${index === 0 ? "（代表）" : ""} source: ${article.sourceName} / type: ${article.sourceType ?? "media_report"} / 確度: ${article.reliability} / 日付: ${article.publishedDate ?? "不明"}\nタイトル: ${article.title}\nURL: ${article.url}\n本文: ${content}`;
+    })
+    .join("\n\n");
+
+  return `あなたは中国エンタメの topic-first フィードを作る編集補助AIです。複数の情報源（evidence）を束ねた「ひとつのトピック」を、1本の日本語ニュースメモに整理します。
+
+Editorial character policy document (docs/editorial-character.md):
+${editorialCharacter}
+
+Use the document above as the highest-priority editorial policy.
+
+目的:
+- 入力は1つのトピックと、その根拠となる複数のevidence（公式発表・媒体記事・データ・SNS反応）。
+- 表に出す文章は、ナルエビちゃんニュース型の軽いニュースメモにする。
+- 1本あたりの日本語本文量は通常400〜700字程度。公式発表系は300〜500字、ゴシップ・騒動系は500〜800字まで。
+- 真偽判定や独自検証はしない。evidenceにある情報の抽出・分類・再構成だけを行う。
+
+evidenceの扱い方:
+- [E1] が代表記事。出来事の骨格は代表記事と official evidence から組み立てる。
+- official は事実の骨格に使うが、官製PR・文化輸出の文脈は一歩引いて見る。
+- media_report は文脈・詳細・業界的な見られ方に使う。
+- data の数字は data/official evidence にあるものだけ使う。
+- sns は現地温度の観測メモであり、確定資料にしない。「SNS上では〜という反応が出ている」程度に留める。
+- evidence間で数字・日付・事実が食い違う場合は、どちらかに寄せず「E1では○○、E2では△△」と併記する。捏造して整合させない。
+- 出典の弱い evidence の情報を、出来事の確定パートに昇格させない。
+
+禁止事項（最優先）:
+- evidenceにない情報を補わない。業界一般論や背景説明で空欄を埋めない。
+- 単一ソースの場合、複数視点があるかのように書かない。reaction_view は空文字、has_multiple_sources は false。
+- SNS evidenceがないのにSNS反応を書かない。has_sns_signal は false、reaction_view は空文字。
+- 未確認情報を断定しない。出典にない人物評価、作品評価、興行評価を書かない。
+- 中国人名や作品名を勝手に日本語読みへ変換しない。原文表記を基本にする。
+- 実際に本文の根拠にしたevidenceだけを source_list に入れる。
+
+構成ルール:
+- lead: 2〜3行。トピック全体として何が起きたか。
+- what_happened: 150〜250字。official/media evidenceの事実だけで、出来事・数字・日付・関係者を整理。
+- reaction_view: SNS evidenceまたは複数媒体の見られ方がある場合のみ150〜250字。根拠がなければ空文字。
+- why_it_matters: なぜ今このトピックが出てきたのか、現地でどういう位置づけかをevidenceの範囲で。
+- japan_context_note: 日本語圏では見えにくい文脈がevidenceにある場合だけ。なければ空文字。
+- editor_comment: 読者向けの短い見方。内部メモにしない。
+- confidence: officialを含む複数ソース整合=A/B、媒体単独=B/C、SNS単独=C/Dを目安にする。
+- badge: OFFICIAL / HOT SEARCH / DATA / PR WATCH / NEWS のいずれか。
+- topic_key は入力値をそのまま返す。
+- 必ずJSONだけを返す。説明文やMarkdownは返さない。
+
+返すJSON:
+${JSON.stringify(normalizeSummary({}), null, 2)}
+
+入力トピック:
+- topic_key: ${topic.topic_key}
+- 出来事: ${topic.event_sentence}
+- topic_type: ${topic.topic_type}
+- freshness: ${topic.freshness_label} (${topic.published_date_range.earliest}〜${topic.published_date_range.latest})
+- source_count: ${topic.source_count}
+- source_mix: ${JSON.stringify(topic.source_mix)}
+- 事前japan_gap: ${topic.japan_gap} / 事前context_value: ${topic.context_value}
+- caution_note: ${topic.caution_note}
+
+evidence一覧:
+${evidenceText}`;
+}
+
 function parseJsonFromModelText(text: string) {
   const jsonText = extractJsonText(text);
   try {
@@ -450,6 +524,56 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
     },
     related_sources: relatedSources
   };
+}
+
+function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCandidate, evidence: RawArticle[]): SummarizedArticle {
+  const availableSources = dedupeEvidenceSources(evidence);
+  const requestedSources = summary.source_list.filter((source) =>
+    availableSources.some((available) => available.name === source.name && (!source.url || source.url === available.url))
+  );
+  const sourceList = requestedSources.length === summary.source_list.length && requestedSources.length
+    ? requestedSources
+    : availableSources;
+  const representative = evidence[0];
+  const usedEvidence = evidence.filter((article) => sourceList.some((source) => source.name === article.sourceName));
+  const hasSnsSignal = usedEvidence.some((article) => article.sourceType === "sns" || article.articleType === "sns_trend");
+  const hasOfficialSource = usedEvidence.some((article) => article.sourceType === "official" || article.sourceType === "pr_like" || article.reliability === "A");
+  const sourceType = summary.source_type === "media_report" && representative?.sourceType && representative.sourceType !== "media_report"
+    ? representative.sourceType
+    : summary.source_type;
+  return {
+    ...summary,
+    badge: summary.badge === "NEWS" && representative?.badge && representative.badge !== "NEWS" ? representative.badge : summary.badge,
+    source_type: sourceType,
+    published_date: summary.published_date || representative?.publishedDate || topic.published_date_range.latest,
+    event_date: summary.event_date || representative?.eventDate || "",
+    freshness_label: topic.freshness_label,
+    newsworthiness_score: topic.newsworthiness_score,
+    japan_gap: summary.japan_gap === "unknown" ? topic.japan_gap : summary.japan_gap,
+    context_value: summary.context_value === "low" ? topic.context_value : summary.context_value,
+    source_count: sourceList.length,
+    source_list: sourceList,
+    has_official_source: hasOfficialSource,
+    has_multiple_sources: sourceList.length > 1,
+    has_sns_signal: hasSnsSignal,
+    reaction_view: hasSnsSignal || sourceList.length > 1 ? summary.reaction_view : "",
+    article_type: summary.article_type === "unknown" && representative?.articleType ? representative.articleType : summary.article_type,
+    topic_key: topic.topic_key,
+    main_entities: {
+      people: summary.main_entities.people.length ? summary.main_entities.people : topic.main_entities.people,
+      works: summary.main_entities.works.length ? summary.main_entities.works : topic.main_entities.works,
+      organizations: summary.main_entities.organizations.length ? summary.main_entities.organizations : topic.main_entities.organizations
+    },
+    related_sources: sourceList
+  };
+}
+
+function dedupeEvidenceSources(evidence: RawArticle[]) {
+  const sources = new Map<string, string | undefined>();
+  for (const article of evidence) {
+    if (!sources.has(article.sourceName)) sources.set(article.sourceName, article.url);
+  }
+  return [...sources.entries()].map(([name, url]) => ({ name, url }));
 }
 
 function normalizePublishPriority(value: unknown): PublishPriority {
