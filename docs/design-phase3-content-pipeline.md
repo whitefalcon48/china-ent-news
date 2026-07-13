@@ -111,22 +111,30 @@ evidence にない日本の Inter BEE との比較。
 各段で AGENTS.md の実測ライン（官庁比率 ≦ 50% / 媒体 fresh > 0 / 最終本数・複数ソース topic 数の
 維持）の後退がないことを確認してから次へ進む。
 
-## 次の Fable 設計セッションで確定する残項目
+## 残項目の確定（Fable 設計セッション 2026-07-13 完了）
 
-方向は本文書で確定済み。設計セッションは以下に絞って1回で完結させる:
+残項目1〜5はすべて確定した。詳細設計と Codex 実装指示は **`docs/design-phase3a-fact-ledger.md`** に記載。
 
-1. 事実台帳の JSON スキーマ（claim ID 体系、4分類の表現、粒度上限、max_tokens 値）
-2. 禁止語リスト初版と、硬いゲート/警告の線引き詳細
-3. 劣化ポリシーの詳細と呼び出し総数上限の具体値
-4. editorial-character.md の改訂文面（秘書人格定義 + analysis_feature 条件）と
-   analysis_feature の出力フィールド構造
-5. roadmap 2-4（出力の再定義）を Phase 3a/3b へ吸収するか、完了後に残差だけやるかの判断
+1. **事実台帳 JSON スキーマ**: claims（C1〜最大20件、verified_fact / source_analysis / unsupported、
+   evidence_refs・entities・numbers・quote_zh 付き）+ terms（用語解説、最大8件）+
+   japan_availability（verified / not_in_evidence）+ unresolved。max_tokens 8000/8192。
+   `secretary_inference` は 3b のコメント工程が追記する（台帳抽出では作らない）
+2. **禁止語リストと線引き**: 3a の即時ゲートは「日本未公開断定」（全面禁止）と
+   「予測断定（確実系）」の2種のみ。数字・固有名詞の台帳照合、無根拠一般論、日本比較、
+   帰属なし分析、汎用コメントは warning（trace 記録のみ）→ 3b で観察後にゲート化判断
+3. **劣化ポリシーと上限**: 違反文削除→再検査 → 執筆のみ再生成1回 → 棄却して backfill。
+   LLM 呼び出しは 1実行45回（`LLM_CALL_BUDGET`）。超過時は新規 backfill / fallback を停止
+4. **editorial-character.md 改訂文面**: 秘書人格・口調規定（少女口調は「秘書の注目ポイント」
+   「秘書からのひとこと」の2セクションのみ）・用語初出解説・日本公開情報規定・帰属規定を
+   3a で追記（文面は design-phase3a に確定記載）。analysis_feature 条件の追記は 3c で実施
+5. **2-4（出力の再定義）は 3a に吸収**: publish_priority 順ソート + source_mix 表示 +
+   official-only 低評価注記を renderMarkdown 改修に含める
 
-## 依頼テンプレート（設計セッション用）
+追加で確定したユーザー要件（2026-07-13）:
 
-```
-docs/design-phase3-content-pipeline.md の「次の Fable 設計セッションで確定する残項目」をやりたい。
-前提: AGENTS.md → docs/roadmap.md → docs/design-phase3-content-pipeline.md の順に読んでから始めて。
-現状の実出力: 直近の Actions artifact（selection_trace / topic_candidates / 出力 Markdown）を添付
-依頼内容: 残項目1〜5の設計確定。確定後、Phase 3a の Codex 実装指示書を作成して。
-```
+- why_it_matters は「秘書の注目ポイント」へ改組（何を見るべきか・確認ポイント・追うべき数字）。
+  「ひとこと」との重複削減を兼ねる
+- 実害事例の再発防止: 给阿嬷的情书を「日本では未公開」と誤記（実際は面白映画配給で日本公開中）。
+  日本公開・配信・字幕は台帳 japan_availability で確認できた場合のみ記載、否定断定は全面禁止
+- 帰属の書き換え実例: 「過去の古偶一強から多様化へのシフトが鮮明」→
+  「新浪エンタメは、古偶一強から多ジャンル化へ動いていると見ているみたいだよ！」
