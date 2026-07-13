@@ -517,6 +517,7 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
     japan_gap: summary.japan_gap === "unknown" ? article.japanGap ?? "unknown" : summary.japan_gap,
     context_value: summary.context_value === "low" && article.contextValue ? article.contextValue : summary.context_value,
     sns_heat: summary.sns_heat === "none" && article.snsHeat ? article.snsHeat : summary.sns_heat,
+    publish_priority: article.isLowPriority ? "low" : summary.publish_priority,
     source_count: relatedSources.length,
     source_list: relatedSources,
     has_official_source: summary.has_official_source || article.reliability === "A",
@@ -537,9 +538,13 @@ function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCand
   const requestedSources = summary.source_list.filter((source) =>
     availableSources.some((available) => available.name === source.name && (!source.url || source.url === available.url))
   );
-  const sourceList = requestedSources.length === summary.source_list.length && requestedSources.length
+  const selectedSources = requestedSources.length === summary.source_list.length && requestedSources.length
     ? requestedSources
     : availableSources;
+  const sourceList = selectedSources.map((source) => ({
+    ...source,
+    url: source.url || availableSources.find((available) => available.name === source.name)?.url
+  }));
   const representative = evidence[0];
   const usedEvidence = evidence.filter((article) => sourceList.some((source) => source.name === article.sourceName));
   const hasSnsSignal = usedEvidence.some((article) => article.sourceType === "sns" || article.articleType === "sns_trend");
@@ -557,6 +562,7 @@ function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCand
     newsworthiness_score: topic.newsworthiness_score,
     japan_gap: summary.japan_gap === "unknown" ? topic.japan_gap : summary.japan_gap,
     context_value: summary.context_value === "low" ? topic.context_value : summary.context_value,
+    publish_priority: topic.publish_priority === "low" ? "low" : summary.publish_priority,
     source_count: sourceList.length,
     source_list: sourceList,
     has_official_source: hasOfficialSource,

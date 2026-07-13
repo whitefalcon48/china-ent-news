@@ -152,6 +152,7 @@ async function main() {
     : selectedArticles.map((article) => ({ article, topic: undefined, evidence: [article] }));
   const attemptedTopicKeys = new Set(generationItems.map((item) => item.topic?.topic_key).filter((key): key is string => Boolean(key)));
   let backfillCount = 0;
+  let backfillLowPriorityCount = topicSelection.selected.filter((item) => item.representative.isLowPriority).length;
 
   for (let generationIndex = 0; generationIndex < generationItems.length && processed.length < maxArticles; generationIndex++) {
     const item = generationItems[generationIndex];
@@ -166,9 +167,12 @@ async function main() {
       console.log(`sourceType: ${article.sourceType ?? "media_report"}`);
       console.log(`freshnessLabel: ${article.freshnessLabel ?? "unknown"}`);
       console.log(`newsworthinessScore: ${article.newsworthinessScore ?? 0}`);
-      const summary = topic ? await summarizeTopic(topic, evidence, provider) : await summarizeArticle(article, provider);
+      let summary = topic ? await summarizeTopic(topic, evidence, provider) : await summarizeArticle(article, provider);
+      if (topic && summary.article_type === "unknown" && !summary.skip_reason) {
+        summary = { ...summary, article_type: getRescuedTopicArticleType(topic, article) };
+      }
       if (!isPublishableType(summary.article_type)) {
-        const reason = summary.skip_reason || summary.article_type;
+        const reason = summary.skip_reason || (summary.article_type === "unknown" ? "article_type_unknown_llm" : summary.article_type);
         postAiExclusions.push({
           title: article.title,
           type: summary.article_type,
@@ -192,12 +196,25 @@ async function main() {
     }
   }
 
+  function getRescuedTopicArticleType(topic: TopicCandidate, representative: RawArticle): ArticleType {
+    const representativeType = representative.articleType ?? "unknown";
+    if (isPublishableType(representativeType)) return representativeType;
+    if (topic.topic_type === "gossip_rumor") return "gossip_rumor";
+    if (topic.topic_type === "box_office") return "data_report";
+    if (topic.topic_type === "policy") return "official_announcement";
+    return "news_event";
+  }
+
   async function enqueueTopicBackfill(failedItem: SelectedTopic | undefined, stage: "ai_error" | "post_ai_exclude") {
     if (!topicFirstEnabled || !failedItem || backfillCount >= maxArticles) return;
     while (backfillCount < maxArticles) {
-      const replacement = topicSelection.backfillCandidates.find(
+      const sameCategoryCandidates = topicSelection.backfillCandidates.filter(
         (candidate) => candidate.category === failedItem.category && !attemptedTopicKeys.has(candidate.topic.topic_key)
       );
+      const replacement = sameCategoryCandidates.find((candidate) => !candidate.representative.isLowPriority) ??
+        (backfillLowPriorityCount < MAX_LOW_PRIORITY_ARTICLES
+          ? sameCategoryCandidates.find((candidate) => candidate.representative.isLowPriority)
+          : undefined);
       if (!replacement) return;
       attemptedTopicKeys.add(replacement.topic.topic_key);
       backfillCount++;
@@ -208,6 +225,7 @@ async function main() {
         continue;
       }
       replacement.selectionReason = `backfill_after_${stage}`;
+      if (replacement.representative.isLowPriority) backfillLowPriorityCount++;
       topicSelection.dropped = topicSelection.dropped.filter((item) => item.topic.topic_key !== replacement.topic.topic_key);
       topicSelection.selected.push(replacement);
       generationItems.push({
