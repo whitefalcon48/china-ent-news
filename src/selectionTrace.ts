@@ -1,7 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import type { LlmCallBudget } from "./llmCallBudget.js";
 import type {
   AiProvider,
+  ClaimCheckResult,
+  ClaimCheckViolation,
   FeedBadge,
   FreshnessLabel,
   ProcessedArticle,
@@ -74,8 +77,19 @@ type SelectionTrace = {
       selection_reason: string;
     }>;
     dropped: Array<{ topic_key: string; reason: string }>;
-    failed: Array<{ topic_key: string; stage: "ai_error" | "post_ai_exclude"; reason: string }>;
+    failed: Array<{ topic_key: string; stage: "ai_error" | "post_ai_exclude" | "claim_check_gate"; reason: string }>;
     backfilled: string[];
+  };
+  claim_check: Array<{
+    topic_key: string;
+    ledger_used: boolean;
+    ledger_fallback_reason: string;
+    violations: ClaimCheckViolation[];
+    action: ClaimCheckResult["action"];
+  }>;
+  llm_call_budget: {
+    limit: number;
+    used: number;
   };
   source_expansion: SourceExpansionResult | null;
   deepseek_input: {
@@ -109,6 +123,7 @@ export function buildSelectionTrace(args: {
   topicLayerNote?: string;
   sourceExpansion?: SourceExpansionResult;
   topicSelection?: SelectionTrace["topic_selection"];
+  llmCallBudget?: LlmCallBudget;
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -151,6 +166,19 @@ export function buildSelectionTrace(args: {
       args.topicLayerNote ??
       "MVP topic layer is diagnostic only. DeepSeek input and Markdown output still use article-level candidates.",
     topic_selection: args.topicSelection ?? { enabled: false, selected: [], dropped: [], failed: [], backfilled: [] },
+    claim_check: args.processed
+      .filter((article) => article.generationMeta)
+      .map((article) => ({
+        topic_key: article.generationMeta?.topic_key ?? article.topic?.topic_key ?? "",
+        ledger_used: article.generationMeta?.ledger_used ?? false,
+        ledger_fallback_reason: article.generationMeta?.ledger_fallback_reason ?? "",
+        violations: article.generationMeta?.claim_check?.violations ?? [],
+        action: article.generationMeta?.claim_check?.action ?? "none"
+      })),
+    llm_call_budget: {
+      limit: args.llmCallBudget?.limit ?? 0,
+      used: args.llmCallBudget?.used ?? 0
+    },
     source_expansion: args.sourceExpansion ?? null,
     deepseek_input: {
       count: args.deepseekInput.length,

@@ -1,4 +1,5 @@
 import { createTopicKey, extractEventName, extractPersonName, extractPolicyKey, extractWorkName } from "./topicKey.js";
+import { consumeLlmCall, hasLlmBudgetRemaining, type LlmCallBudget } from "./llmCallBudget.js";
 import { describeError, getAiProvider, getProviderEnvStatus } from "./summarizeWithGemini.js";
 import type { AiProvider, MainEntities, RawArticle, TopicSeed, TopicSeedExtractionResult } from "./types.js";
 
@@ -19,7 +20,11 @@ type LlmSeedResponse = {
   items?: LlmSeedItem[];
 };
 
-export async function extractTopicSeeds(articles: RawArticle[], provider: AiProvider = getAiProvider()): Promise<TopicSeedExtractionResult> {
+export async function extractTopicSeeds(
+  articles: RawArticle[],
+  provider: AiProvider = getAiProvider(),
+  budget?: LlmCallBudget
+): Promise<TopicSeedExtractionResult> {
   const fallbackSeeds = articles.map(toFallbackSeed);
   const env = getProviderEnvStatus(provider);
   const chunks = chunkArticles(articles, fallbackSeeds);
@@ -39,7 +44,14 @@ export async function extractTopicSeeds(articles: RawArticle[], provider: AiProv
   const seeds: TopicSeed[] = [];
   const errors: string[] = [];
   for (const [chunkIndex, chunk] of chunks.entries()) {
+    if (budget && !hasLlmBudgetRemaining(budget)) {
+      const message = "llm_call_budget_exceeded";
+      errors.push(`chunk_${chunkIndex + 1}: ${message}`);
+      seeds.push(...chunk.fallbackSeeds.map((seed) => ({ ...seed, error: message })));
+      continue;
+    }
     try {
+      if (budget) consumeLlmCall(budget);
       const text = await generateTopicSeedJson(provider, buildTopicSeedPrompt(chunk.articles, chunk.fallbackSeeds));
       const parsed = parseJsonFromModelText(text) as LlmSeedResponse;
       seeds.push(...mergeLlmSeeds(chunk.articles, chunk.fallbackSeeds, parsed.items ?? []));

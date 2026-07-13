@@ -148,6 +148,7 @@ export type SummarizedArticle = {
   tags: string[];
   publish_priority: PublishPriority;
   publish_reason: string;
+  claim_refs: ClaimRefs;
 };
 
 export type SourceRef = {
@@ -161,11 +162,81 @@ export type MainEntities = {
   organizations: string[];
 };
 
+export type ClaimType = "verified_fact" | "source_analysis" | "unsupported";
+
+export type FactLedgerClaim = {
+  id: string;
+  type: ClaimType;
+  text: string;
+  evidence_refs: string[];
+  source_name?: string;
+  entities: string[];
+  numbers: string[];
+  quote_zh?: string;
+};
+
+export type FactLedgerTerm = { term: string; gloss_ja: string };
+
+export type JapanAvailability = {
+  status: "verified" | "not_in_evidence";
+  detail: string;
+  evidence_refs: string[];
+};
+
+export type FactLedger = {
+  topic_key: string;
+  claims: FactLedgerClaim[];
+  terms: FactLedgerTerm[];
+  japan_availability: JapanAvailability;
+  unresolved: string[];
+};
+
+export type ClaimRefs = {
+  what_happened: string[];
+  why_it_matters: string[];
+  reaction_view: string[];
+  japan_context_note: string[];
+};
+
+export type ClaimCheckRule =
+  | "japan_availability_unverified"
+  | "predictive_assertion_certain"
+  | "number_not_in_ledger"
+  | "entity_not_in_ledger"
+  | "unsupported_generalization"
+  | "japan_comparison_no_claim"
+  | "unattributed_analysis"
+  | "generic_comment"
+  | "banned_phrase_other";
+
+export type ClaimCheckViolation = {
+  section: string;
+  rule: ClaimCheckRule;
+  severity: "gate" | "warning";
+  detail: string;
+};
+
+export type ClaimCheckResult = {
+  topic_key: string;
+  violations: ClaimCheckViolation[];
+  gated_violation_count: number;
+  action: "none" | "text_removed" | "regenerated" | "discarded";
+};
+
+export type TopicGenerationMeta = {
+  topic_key: string;
+  ledger_used: boolean;
+  ledger_fallback_reason: string;
+  ledger?: FactLedger;
+  claim_check?: ClaimCheckResult;
+};
+
 export type ProcessedArticle = {
   raw: RawArticle;
   summary?: SummarizedArticle;
   aiError?: string;
   topic?: TopicCandidate;
+  generationMeta?: TopicGenerationMeta;
 };
 
 export type TopicCandidate = {

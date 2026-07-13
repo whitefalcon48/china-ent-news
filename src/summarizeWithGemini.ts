@@ -1,5 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { ClaimCheckDiscardError, removeGatedViolationSentences, runClaimCheck } from "./claimCheck.js";
+import { extractFactLedger } from "./factLedger.js";
+import { consumeLlmCall, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import type {
   AiProvider,
   ArticleType,
@@ -12,7 +15,10 @@ import type {
   SourceTypeLabel,
   PublishPriority,
   SummarizedArticle,
-  TopicCandidate
+  TopicCandidate,
+  FactLedger,
+  ClaimCheckViolation,
+  TopicGenerationMeta
 } from "./types.js";
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
@@ -36,14 +42,75 @@ async function loadEditorialCharacter() {
   return editorialCharacterCache;
 }
 
-export async function summarizeArticle(article: RawArticle, provider = getAiProvider()): Promise<SummarizedArticle> {
-  const text = await generateJson(provider, await buildPrompt(article));
+export async function summarizeArticle(article: RawArticle, provider = getAiProvider(), budget?: LlmCallBudget): Promise<SummarizedArticle> {
+  const text = await generateJson(provider, await buildPrompt(article), budget);
   return mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article);
 }
 
-export async function summarizeTopic(topic: TopicCandidate, evidence: RawArticle[], provider = getAiProvider()): Promise<SummarizedArticle> {
-  const text = await generateJson(provider, await buildTopicPrompt(topic, evidence));
-  return mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence);
+export async function summarizeTopic(
+  topic: TopicCandidate,
+  evidence: RawArticle[],
+  provider: AiProvider = getAiProvider(),
+  budget?: LlmCallBudget
+): Promise<{ summary: SummarizedArticle; meta: TopicGenerationMeta }> {
+  if (process.env.FACT_LEDGER === "false") {
+    const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
+    return {
+      summary: mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence),
+      meta: {
+        topic_key: topic.topic_key,
+        ledger_used: false,
+        ledger_fallback_reason: "fact_ledger_disabled_env"
+      }
+    };
+  }
+
+  const extraction = await extractFactLedger(topic, evidence, provider, budget);
+  if (!extraction.succeeded || !extraction.ledger) {
+    if (extraction.error.includes("llm_call_budget_exceeded")) {
+      throw new LlmCallBudgetExceededError();
+    }
+    const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
+    return {
+      summary: mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence),
+      meta: {
+        topic_key: topic.topic_key,
+        ledger_used: false,
+        ledger_fallback_reason: `ledger_extraction_failed:${extraction.error}`
+      }
+    };
+  }
+
+  const ledger = extraction.ledger;
+  let text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger), budget);
+  let summary = normalizeSummary(parseJsonFromModelText(text));
+  let claimCheck = runClaimCheck(summary, ledger);
+
+  if (claimCheck.gated_violation_count > 0) {
+    summary = removeGatedViolationSentences(summary, claimCheck.violations);
+    claimCheck = { ...runClaimCheck(summary, ledger), action: "text_removed" };
+    if (claimCheck.gated_violation_count > 0) {
+      const gatedViolations = claimCheck.violations.filter((violation) => violation.severity === "gate");
+      text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, gatedViolations), budget);
+      summary = normalizeSummary(parseJsonFromModelText(text));
+      claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
+      if (claimCheck.gated_violation_count > 0) {
+        claimCheck = { ...claimCheck, action: "discarded" };
+        throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
+      }
+    }
+  }
+
+  return {
+    summary: mergeTopicInternalMetadata(summary, topic, evidence),
+    meta: {
+      topic_key: topic.topic_key,
+      ledger_used: true,
+      ledger_fallback_reason: "",
+      ledger,
+      claim_check: claimCheck
+    }
+  };
 }
 
 export async function summarizeWithGemini(article: RawArticle): Promise<SummarizedArticle> {
@@ -111,21 +178,23 @@ export function describeError(error: unknown) {
   return cause ? `${error.message} / cause: ${cause}` : error.message;
 }
 
-async function generateJson(provider: AiProvider, prompt: string) {
+async function generateJson(provider: AiProvider, prompt: string, budget?: LlmCallBudget) {
   if (provider === "deepseek") {
-    return generateDeepSeekJson(prompt);
+    return generateDeepSeekJson(prompt, budget);
   }
 
-  return generateGeminiJson(prompt);
+  return generateGeminiJson(prompt, budget);
 }
 
-async function generateGeminiJson(prompt: string) {
+async function generateGeminiJson(prompt: string, budget?: LlmCallBudget) {
   const apiKey = process.env.GEMINI_API_KEY;
   const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 
   if (!apiKey?.trim()) {
     throw new Error("GEMINI_API_KEY is not set. .envまたはGitHub SecretsにAPIキーを設定してください。");
   }
+
+  if (budget) consumeLlmCall(budget);
 
   let response: Response;
   try {
@@ -166,13 +235,15 @@ async function generateGeminiJson(prompt: string) {
   return text;
 }
 
-async function generateDeepSeekJson(prompt: string) {
+async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget) {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   const model = process.env.DEEPSEEK_MODEL || "deepseek-chat";
 
   if (!apiKey?.trim()) {
     throw new Error("DEEPSEEK_API_KEY is not set. .envまたはGitHub SecretsにAPIキーを設定してください。");
   }
+
+  if (budget) consumeLlmCall(budget);
 
   let response: Response;
   try {
@@ -361,12 +432,8 @@ publish_priority rules:
 
 async function buildTopicPrompt(topic: TopicCandidate, evidence: RawArticle[]) {
   const editorialCharacter = await loadEditorialCharacter();
-  const evidenceText = evidence
-    .map((article, index) => {
-      const content = index === 0 ? (article.rawContent || article.excerpt || "なし").slice(0, 5000) : (article.rawContent || article.excerpt || "なし").slice(0, 1500);
-      return `[E${index + 1}]${index === 0 ? "（代表）" : ""} source: ${article.sourceName} / type: ${article.sourceType ?? "media_report"} / 確度: ${article.reliability} / 日付: ${article.publishedDate ?? "不明"}\nタイトル: ${article.title}\nURL: ${article.url}\n本文: ${content}`;
-    })
-    .join("\n\n");
+  const evidenceText = formatEvidenceForPrompt(evidence);
+  const { claim_refs, ...fallbackTemplate } = normalizeSummary({});
 
   return `あなたは中国エンタメの topic-first フィードを作る編集補助AIです。複数の情報源（evidence）を束ねた「ひとつのトピック」を、1本の日本語ニュースメモに整理します。
 
@@ -417,7 +484,7 @@ evidenceの扱い方:
 - 必ずJSONだけを返す。説明文やMarkdownは返さない。
 
 返すJSON:
-${JSON.stringify(normalizeSummary({}), null, 2)}
+${JSON.stringify(fallbackTemplate, null, 2)}
 
 入力トピック:
 - topic_key: ${topic.topic_key}
@@ -431,6 +498,70 @@ ${JSON.stringify(normalizeSummary({}), null, 2)}
 
 evidence一覧:
 ${evidenceText}`;
+}
+
+export function formatEvidenceForPrompt(evidence: RawArticle[]): string {
+  return evidence
+    .map((article, index) => {
+      const content = index === 0 ? (article.rawContent || article.excerpt || "なし").slice(0, 5000) : (article.rawContent || article.excerpt || "なし").slice(0, 1500);
+      return `[E${index + 1}]${index === 0 ? "（代表）" : ""} source: ${article.sourceName} / type: ${article.sourceType ?? "media_report"} / 確度: ${article.reliability} / 日付: ${article.publishedDate ?? "不明"}\nタイトル: ${article.title}\nURL: ${article.url}\n本文: ${content}`;
+    })
+    .join("\n\n");
+}
+
+async function buildLedgerWritingPrompt(
+  topic: TopicCandidate,
+  ledger: FactLedger,
+  violations: ClaimCheckViolation[] = []
+) {
+  const editorialCharacter = await loadEditorialCharacter();
+  const violationInstruction = violations.length
+    ? `\n\n前回の出力に次の禁止表現が含まれていました。該当の内容を含めずに書き直してください:\n${violations.map((violation) => `${violation.rule}: ${violation.detail}`).join("\n")}`
+    : "";
+
+  return `あなたは中国エンタメの日本語ニュースメモを書く編集AIです。入力は「事実台帳」だけです。元記事の原文はもう見られません。
+
+Editorial character policy document (docs/editorial-character.md):
+${editorialCharacter}
+
+Use the document above as the highest-priority editorial policy.
+
+最重要ルール:
+- 台帳のclaimsにある情報だけで書く。台帳に無い数字・日付・人物・作品・出来事・背景説明を足さない。
+- type: unsupported のclaimは本文に使わない。
+- type: source_analysis のclaimを使う文は、必ずsource_nameの媒体名を主語または出典として明示し、断定しない（「〜みたい」「〜と見ている」）。業界全体の事実のように書かない。
+- 日本での公開・配信・字幕は、japan_availability.status が "verified" の場合だけ、detailの範囲で書く。"not_in_evidence" の場合は「日本では未公開」と書かず、触れないか「日本での公開情報は今回の情報源からは確認できていない」とする。
+- termsにある用語を本文で使う場合、初出時に「用語（gloss_ja）」の形で短い解説を付ける。
+- unresolvedにある食い違いは、どちらかへ寄せず「E1では○○、E2では△△」と併記するか、触れない。
+- 予測を「確実」と断定しない。
+
+文体:
+- lead / what_happened / reaction_view / japan_context_note は通常の報道文体。
+- why_it_matters（見出し「秘書の注目ポイント」）と editor_comment（見出し「秘書からのひとこと」）だけは、秘書キャラクターの声で、基本的な少女口調（「〜だね！」「〜みたいだよ！」）で書く。
+- 秘書の口調でも、内容は editorial 文書の秘書の役割（何を見るべきか・確認ポイント・追うべき数字）に沿わせる。感想や煽りだけのコメントにしない。
+
+構成ルール:
+- lead: 2〜3行。トピック全体として何が起きたか。
+- what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
+- why_it_matters: 100〜200字。秘書の注目ポイント。「何が確認できれば評価が変わるか」「今後追うべき数字・発表」を秘書口調で。what_happenedの言い換えをしない。
+- reaction_view: SNS由来または複数媒体のclaimがある場合のみ100〜200字。無ければ空文字。
+- japan_context_note: 日本語圏で見えにくい文脈のclaimがある場合だけ。無ければ空文字。
+- editor_comment: 1〜2文の短い秘書のひとこと。why_it_mattersと同じ内容を繰り返さない。
+- 本文合計はおおむね400〜700字。
+- claim_refs に、各セクションで根拠にしたclaimのidを入れる（例: {"what_happened": ["C1","C2"], ...}）。
+- 必ずJSONだけを返す。
+
+返すJSON:
+${JSON.stringify(normalizeSummary({}), null, 2)}
+
+入力トピック:
+- topic_key: ${topic.topic_key}
+- event_sentence: ${topic.event_sentence}
+- source_mix: ${JSON.stringify(topic.source_mix)}
+- freshness: ${topic.freshness_label} (${topic.published_date_range.earliest}〜${topic.published_date_range.latest})
+
+事実台帳:
+${JSON.stringify(ledger, null, 2)}${violationInstruction}`;
 }
 
 function parseJsonFromModelText(text: string) {
@@ -496,7 +627,18 @@ function normalizeSummary(value: Partial<SummarizedArticle>): SummarizedArticle 
     related_sources: ensureSourceRefs(value.related_sources),
     tags: ensureStringArray(value.tags),
     publish_priority: normalizePublishPriority(value.publish_priority),
-    publish_reason: typeof value.publish_reason === "string" ? value.publish_reason : ""
+    publish_reason: typeof value.publish_reason === "string" ? value.publish_reason : "",
+    claim_refs: normalizeClaimRefs(value.claim_refs)
+  };
+}
+
+function normalizeClaimRefs(value: unknown) {
+  const refs = value && typeof value === "object" ? (value as Partial<SummarizedArticle["claim_refs"]>) : {};
+  return {
+    what_happened: ensureStringArray(refs.what_happened),
+    why_it_matters: ensureStringArray(refs.why_it_matters),
+    reaction_view: ensureStringArray(refs.reaction_view),
+    japan_context_note: ensureStringArray(refs.japan_context_note)
   };
 }
 

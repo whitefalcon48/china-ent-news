@@ -4,12 +4,15 @@ import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
 import { fetchHotSearchArticles } from "./fetchHotSearch.js";
 import { expandTopicSources } from "./expandSources.js";
+import { ClaimCheckDiscardError } from "./claimCheck.js";
+import { writeFactLedgerFile } from "./factLedger.js";
+import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError } from "./llmCallBudget.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle, summarizeTopic } from "./summarizeWithGemini.js";
 import { buildTopicCandidates, writeTopicCandidatesFile } from "./topicCandidates.js";
 import { extractTopicSeeds } from "./topicSeeds.js";
-import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic, SourceTypeLabel, TopicCandidate } from "./types.js";
+import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic, SourceTypeLabel, SummarizedArticle, TopicCandidate, TopicGenerationMeta } from "./types.js";
 
 const MAX_ARTICLES_PER_SOURCE = 3;
 const MAX_TOPICS_PER_PRIMARY_SOURCE = 2;
@@ -27,6 +30,7 @@ const MIN_RAW_CONTENT_LENGTH = 180;
 const MIN_OFFICIAL_RAW_CONTENT_LENGTH = 80;
 
 async function main() {
+  const llmCallBudget = createLlmCallBudget();
   const maxArticles = Number(process.env.MAX_DEEPSEEK_INPUT_CANDIDATES || process.env.MAX_AI_INPUT_CANDIDATES || process.env.MAX_ARTICLES || 10);
   const sources = await loadSources();
   const filterConfig = await loadFilterConfig();
@@ -49,7 +53,7 @@ async function main() {
   const topicMergeResult = mergeTopicDuplicates(classifiedArticles);
   const generationCandidatePool = topicMergeResult.articles.map(prepareGenerationCandidate);
   const topicCandidateArticlePool = classifiedArticles.map(prepareGenerationCandidate);
-  const topicSeedExtraction = await extractTopicSeeds(topicCandidateArticlePool, provider);
+  const topicSeedExtraction = await extractTopicSeeds(topicCandidateArticlePool, provider, llmCallBudget);
   const baseTopicCandidates = buildTopicCandidates(topicCandidateArticlePool, topicSeedExtraction.seeds);
   const topicExpansion = await expandTopicSources(baseTopicCandidates);
   const topicCandidates = topicExpansion.topicCandidates;
@@ -115,7 +119,7 @@ async function main() {
   const processed: ProcessedArticle[] = [];
   const aiErrors: string[] = [];
   const postAiExclusions: Array<{ title: string; type: ArticleType; reason: string }> = [];
-  const topicFailures: Array<{ topic_key: string; stage: "ai_error" | "post_ai_exclude"; reason: string }> = [];
+  const topicFailures: Array<{ topic_key: string; stage: "ai_error" | "post_ai_exclude" | "claim_check_gate"; reason: string }> = [];
   const backfilledTopicKeys: string[] = [];
   const deepseekInputArticles = [...selectedArticles];
 
@@ -167,7 +171,15 @@ async function main() {
       console.log(`sourceType: ${article.sourceType ?? "media_report"}`);
       console.log(`freshnessLabel: ${article.freshnessLabel ?? "unknown"}`);
       console.log(`newsworthinessScore: ${article.newsworthinessScore ?? 0}`);
-      let summary = topic ? await summarizeTopic(topic, evidence, provider) : await summarizeArticle(article, provider);
+      let summary: SummarizedArticle;
+      let generationMeta: TopicGenerationMeta | undefined;
+      if (topic) {
+        const result = await summarizeTopic(topic, evidence, provider, llmCallBudget);
+        summary = result.summary;
+        generationMeta = result.meta;
+      } else {
+        summary = await summarizeArticle(article, provider, llmCallBudget);
+      }
       if (topic && summary.article_type === "unknown" && !summary.skip_reason) {
         summary = { ...summary, article_type: getRescuedTopicArticleType(topic, article) };
       }
@@ -184,14 +196,21 @@ async function main() {
         }
         continue;
       }
-      processed.push({ raw: article, summary, topic });
+      processed.push({ raw: article, summary, topic, generationMeta });
     } catch (error) {
       const message = describeError(error);
       aiErrors.push(`${article.title}: ${message}`);
       console.error(`AI処理エラー: ${article.title}: ${message}`);
       if (topic) {
-        topicFailures.push({ topic_key: topic.topic_key, stage: "ai_error", reason: message });
-        await enqueueTopicBackfill(item.selectedTopic, "ai_error");
+        if (error instanceof ClaimCheckDiscardError) {
+          const reason = error.violations.map((violation) => `${violation.rule}:${violation.detail}`).join(" | ");
+          topicFailures.push({ topic_key: topic.topic_key, stage: "claim_check_gate", reason });
+          await enqueueTopicBackfill(item.selectedTopic, "claim_check_gate");
+        } else {
+          const reason = error instanceof LlmCallBudgetExceededError ? "llm_call_budget_exceeded" : message;
+          topicFailures.push({ topic_key: topic.topic_key, stage: "ai_error", reason });
+          await enqueueTopicBackfill(item.selectedTopic, "ai_error");
+        }
       }
     }
   }
@@ -205,7 +224,11 @@ async function main() {
     return "news_event";
   }
 
-  async function enqueueTopicBackfill(failedItem: SelectedTopic | undefined, stage: "ai_error" | "post_ai_exclude") {
+  async function enqueueTopicBackfill(
+    failedItem: SelectedTopic | undefined,
+    stage: "ai_error" | "post_ai_exclude" | "claim_check_gate"
+  ) {
+    if (!hasLlmBudgetRemaining(llmCallBudget)) return;
     if (!topicFirstEnabled || !failedItem || backfillCount >= maxArticles) return;
     while (backfillCount < maxArticles) {
       const sameCategoryCandidates = topicSelection.backfillCandidates.filter(
@@ -240,6 +263,15 @@ async function main() {
     }
   }
 
+  const factLedgerPath = await writeFactLedgerFile(
+    processed
+      .filter((article) => article.topic && article.generationMeta)
+      .map((article) => ({
+        topic_key: article.topic?.topic_key ?? article.generationMeta?.topic_key ?? "",
+        ledger: article.generationMeta?.ledger ?? null,
+        fallback_reason: article.generationMeta?.ledger_fallback_reason ?? ""
+      }))
+  );
   const outputPath = await renderMarkdownFile(processed, provider);
   const nonOfficialSourceDiagnostics = buildNonOfficialSourceDiagnostics(
     sources,
@@ -277,7 +309,8 @@ async function main() {
     topicLayerNote: topicFirstEnabled
       ? "Topic-first generation enabled. DeepSeek input contains one representative article per selected topic."
       : "Topic-first generation disabled. Legacy article-level selection and generation enabled.",
-    sourceExpansion: topicExpansion.expansion
+    sourceExpansion: topicExpansion.expansion,
+    llmCallBudget
   });
   const tracePath = await writeSelectionTraceFile(selectionTrace);
   logExclusions("AI処理後の除外記事", postAiExclusions);
@@ -301,6 +334,7 @@ async function main() {
   console.log(`- 最終出力件数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- Markdown出力先: ${outputPath}`);
   console.log(`- Topic candidates: ${topicCandidatesPath}`);
+  console.log(`- Fact ledger: ${factLedgerPath}`);
   console.log(`- Selection trace: ${tracePath}`);
   console.log(`candidates: ${selectionTrace.candidate_pool.length} -> deepseek_input: ${selectionTrace.deepseek_input.count} -> output: ${selectionTrace.final_output.length}`);
 
