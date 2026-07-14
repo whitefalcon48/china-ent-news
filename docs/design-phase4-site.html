@@ -1,0 +1,1100 @@
+<!-- Phase 4 設計ドキュメント。Artifact互換形式（スケルトンなし） -->
+<title>Phase 4 設計 — サイト化＋Xbot化</title>
+<style>
+/* ============================================================
+   ドキュメント本体（企画書＝紙の提案書。ライトテーマ固定）
+   ============================================================ */
+.p4doc{
+  background:#FCFAF7;
+  color:#26211E;
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;
+  font-size:16px;
+  line-height:1.85;
+  padding:48px 20px 96px;
+  overflow-x:hidden;
+}
+.p4doc *{box-sizing:border-box;}
+.p4doc .doc-inner{max-width:54em;margin:0 auto;}
+.p4doc p,.p4doc ul,.p4doc ol,.p4doc dl{max-width:42em;}
+.p4doc h1{font-size:1.65rem;line-height:1.45;margin:0 0 10px;letter-spacing:.02em;}
+.p4doc h1 .h1-lead{color:#C8352B;}
+.p4doc .doc-meta{color:#8A817A;font-size:.85rem;margin:0 0 28px;}
+.p4doc .doc-meta b{color:#26211E;font-weight:700;}
+.p4doc h2{font-size:1.28rem;line-height:1.5;margin:60px 0 18px;padding:2px 0 2px 14px;border-left:6px solid #C8352B;}
+.p4doc h3{font-size:1.02rem;margin:34px 0 10px;}
+.p4doc h3::before{content:"◆ ";color:#C8352B;font-size:.8em;}
+.p4doc a{color:#C8352B;}
+.p4doc code{font-family:ui-monospace,Consolas,"Courier New",monospace;background:#F3EDE3;padding:1px 6px;border-radius:4px;font-size:.85em;}
+.p4doc pre{font-family:ui-monospace,Consolas,"Courier New",monospace;background:#F6F1E8;border:1px solid #E8E0D4;border-radius:8px;padding:14px 18px;overflow-x:auto;font-size:.85rem;line-height:1.75;max-width:42em;}
+.p4doc pre code{background:none;padding:0;font-size:1em;}
+.p4doc .tldr{border:1px solid #E8E0D4;border-left:6px solid #C8352B;background:#FFFFFF;border-radius:0 10px 10px 0;padding:16px 22px;margin:22px 0;}
+.p4doc .tldr .tldr-label{font-weight:800;color:#C8352B;font-size:.85rem;letter-spacing:.12em;}
+.p4doc .tldr ul{margin:8px 0 0;padding-left:1.35em;}
+.p4doc .tldr li{margin:4px 0;}
+.p4doc .toc{background:#FFFFFF;border:1px solid #E8E0D4;border-radius:10px;padding:18px 26px;margin:30px 0;font-size:.92rem;}
+.p4doc .toc .toc-label{font-weight:800;font-size:.82rem;color:#8A817A;letter-spacing:.15em;margin-bottom:6px;}
+.p4doc .toc ol{margin:0;padding-left:1.4em;columns:2;column-gap:2.5em;}
+.p4doc .toc li{margin:3px 0;break-inside:avoid;}
+.p4doc .toc a{text-decoration:none;color:#26211E;}
+.p4doc .toc a:hover{color:#C8352B;text-decoration:underline;}
+.p4doc .tablewrap{overflow-x:auto;margin:16px 0;}
+.p4doc table{border-collapse:collapse;font-size:.88rem;background:#FFFFFF;min-width:600px;}
+.p4doc th,.p4doc td{border:1px solid #E8E0D4;padding:8px 13px;text-align:left;vertical-align:top;line-height:1.75;}
+.p4doc th{background:#F6F1E8;font-weight:700;white-space:nowrap;}
+.p4doc .rec-chip{display:inline-block;background:#C8352B;color:#FFFFFF;font-size:.72rem;font-weight:700;border-radius:999px;padding:1px 10px;margin-left:6px;vertical-align:middle;}
+.p4doc .gold-chip{display:inline-block;border:1.5px solid #B8860B;color:#8A6410;background:#FFFFFF;font-size:.72rem;font-weight:700;border-radius:999px;padding:1px 10px;vertical-align:middle;}
+.p4doc .todo-box{background:#FBF3E0;color:#8A6410;border:1px solid #E7CE96;border-radius:8px;padding:10px 16px;font-size:.9rem;max-width:42em;margin:14px 0;}
+.p4doc .figwrap{overflow-x:auto;background:#FFFFFF;border:1px solid #E8E0D4;border-radius:10px;padding:14px;margin:18px 0;}
+.p4doc .figwrap svg{display:block;}
+.p4doc .figcap{font-size:.78rem;color:#8A817A;margin:6px 2px 0;}
+.p4doc svg text{font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;}
+.p4doc svg .mono{font-family:ui-monospace,Consolas,"Courier New",monospace;}
+.p4doc .steps{counter-reset:none;}
+.p4doc .steps li{margin:6px 0;}
+.p4doc .muted{color:#8A817A;}
+.p4doc .checklist{list-style:none;padding-left:.2em;}
+.p4doc .checklist li{margin:5px 0;}
+.p4doc .checklist li::before{content:"☐ ";color:#C8352B;font-weight:700;}
+.p4doc .nameplates{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0;max-width:none;}
+.p4doc .plate{flex:1 1 240px;min-width:220px;max-width:320px;background:#FFFFFF;border:1px solid #E8E0D4;border-radius:12px;padding:16px;position:relative;}
+.p4doc .plate.plate-rec{border-color:#C8352B;box-shadow:0 2px 8px rgba(200,53,43,.10);}
+.p4doc .plate .plate-rec-badge{position:absolute;top:-11px;right:12px;background:#C8352B;color:#fff;font-size:.7rem;font-weight:800;border-radius:999px;padding:1px 12px;}
+.p4doc .plate .plate-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.p4doc .plate .plate-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid;flex:0 0 46px;}
+.p4doc .plate .plate-title{font-weight:800;font-size:1rem;line-height:1.4;}
+.p4doc .plate .plate-char{font-size:.78rem;color:#8A817A;}
+.p4doc .plate .plate-colors{display:flex;gap:6px;margin:8px 0;}
+.p4doc .plate .cchip{flex:1;border-radius:6px;border:1px solid #E8E0D4;padding:3px 0;text-align:center;font-size:.62rem;font-family:ui-monospace,Consolas,monospace;}
+.p4doc .plate .plate-desc{font-size:.8rem;line-height:1.75;color:#26211E;margin:0;}
+.p4doc .doc-foot{margin-top:70px;border-top:1px solid #E8E0D4;padding-top:14px;color:#8A817A;font-size:.8rem;}
+
+/* ============================================================
+   §9 実寸モック（ビューポート風フレーム）
+   ============================================================ */
+.p4doc .mockframe{border:1px solid #D9CDBB;border-radius:12px;overflow:hidden;margin:22px 0;box-shadow:0 3px 12px rgba(90,70,50,.10);background:#FAF7F2;}
+.p4doc .mockbar{background:#EFE7D8;color:#6B5E4E;font-size:.74rem;font-weight:700;padding:7px 14px;letter-spacing:.06em;display:flex;gap:10px;align-items:center;font-family:ui-monospace,Consolas,monospace;border-bottom:1px solid #D9CDBB;}
+.p4doc .mockbar .mdots{display:inline-flex;gap:5px;}
+.p4doc .mockbar .mdots i{width:10px;height:10px;border-radius:50%;background:#D9CDBB;display:inline-block;}
+
+/* ---- モック本体（すべて .site-mock スコープ） ---- */
+.site-mock{background:#FAF7F2;color:#2A2422;padding:30px 16px 44px;font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;font-size:16px;line-height:1.85;}
+.site-mock *{box-sizing:border-box;}
+.site-mock a{color:#C8352B;text-decoration:none;}
+.site-mock a:hover{text-decoration:underline;}
+.site-mock .m-header{max-width:720px;margin:0 auto 6px;text-align:center;}
+.site-mock .m-avatar{width:58px;height:58px;border-radius:50%;background:#FFFFFF;border:2px solid #C8352B;display:inline-flex;align-items:center;justify-content:center;font-size:32px;}
+.site-mock .m-sitename{font-size:1.45rem;font-weight:800;margin:10px 0 2px;letter-spacing:.04em;color:#2A2422;}
+.site-mock .m-sitename .m-accent{color:#C8352B;}
+.site-mock .m-tagline{color:#8F857C;font-size:.82rem;margin:0 0 6px;}
+.site-mock .m-day{display:inline-block;font-size:.8rem;font-weight:700;color:#C8352B;border-top:1px solid #EBE0D2;border-bottom:1px solid #EBE0D2;padding:3px 18px;margin:4px 0 2px;}
+.site-mock .m-provisional{font-size:.7rem;color:#8F857C;margin:6px 0 0;}
+.site-mock .card{max-width:720px;margin:18px auto;background:#FFFFFF;border:1px solid #EBE0D2;border-radius:12px;padding:20px 22px 16px;box-shadow:0 1px 3px rgba(90,70,50,.07);}
+.site-mock .card-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;}
+.site-mock .chip{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:999px;line-height:1.6;}
+.site-mock .t-official{background:#3A5A78;color:#FFFFFF;}
+.site-mock .t-news{background:#C8352B;color:#FFFFFF;}
+.site-mock .t-data{background:#2E7D6B;color:#FFFFFF;}
+.site-mock .cat{background:#F3EAD9;color:#6B5E4E;}
+.site-mock .conf{background:#FFFFFF;border:1.5px solid;}
+.site-mock .conf-a{border-color:#B8860B;color:#8A6410;}
+.site-mock .conf-b{border-color:#A6ADB4;color:#5F666D;}
+.site-mock .conf-c{border-color:#C9C2BA;color:#8F857C;}
+.site-mock .fresh{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:5px;line-height:1.6;}
+.site-mock .fresh-today{background:#C8352B;color:#FFFFFF;}
+.site-mock .fresh-recent{background:#FFFFFF;border:1px solid #C8352B;color:#C8352B;}
+.site-mock .cdate{margin-left:auto;color:#8F857C;font-size:.76rem;font-family:ui-monospace,Consolas,monospace;}
+.site-mock h2.ctitle{font-size:1.13rem;line-height:1.65;margin:2px 0 8px;font-weight:800;}
+.site-mock h2.ctitle a{color:#2A2422;}
+.site-mock h2.ctitle a:hover{color:#C8352B;}
+.site-mock .clead{margin:0 0 12px;font-size:.92rem;line-height:1.95;}
+.site-mock .srcmix{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.75rem;color:#6B5E4E;background:#FAF7F2;border-radius:8px;padding:7px 13px;margin:0 0 12px;}
+.site-mock .srcmix .mixlabel{font-weight:700;color:#8F857C;}
+.site-mock .pip{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;}
+.site-mock .pip.zero{opacity:.42;}
+.site-mock .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.site-mock .d-of{background:#3A5A78;}
+.site-mock .d-md{background:#C8352B;}
+.site-mock .d-sn{background:#7A4FA0;}
+.site-mock .d-dt{background:#2E7D6B;}
+.site-mock .warnbadge{display:inline-block;background:#FBF3E0;color:#8A6410;border:1px solid #E7CE96;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:6px;line-height:1.6;}
+.site-mock details.deep{border:1px solid #EBE0D2;border-radius:8px;margin:0 0 14px;background:#FCFAF6;}
+.site-mock details.deep summary{cursor:pointer;padding:8px 15px;font-size:.82rem;font-weight:700;color:#C8352B;list-style:none;user-select:none;}
+.site-mock details.deep summary::-webkit-details-marker{display:none;}
+.site-mock details.deep summary::after{content:" ▾";}
+.site-mock details.deep[open] summary::after{content:" ▴";}
+.site-mock details.deep .deep-body{padding:0 16px 14px;}
+.site-mock details.deep h3{font-size:.85rem;color:#6B5E4E;margin:2px 0 8px;border-bottom:1px dashed #EBE0D2;padding-bottom:5px;font-weight:700;}
+.site-mock details.deep p{font-size:.88rem;line-height:2.0;margin:0;}
+.site-mock .bubble{display:flex;gap:10px;margin:0 0 12px;}
+.site-mock .b-avatar{flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#FFFFFF;border:1.5px solid #C8352B;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.site-mock .b-body{background:#FDF0EC;border:1px solid #F2D8D0;border-radius:4px 14px 14px 14px;padding:10px 15px;flex:1;min-width:0;}
+.site-mock .b-name{font-size:.72rem;font-weight:800;color:#C8352B;margin-bottom:3px;}
+.site-mock .b-name .b-role{color:#8F857C;font-weight:400;margin-left:7px;}
+.site-mock .b-body p{margin:0;font-size:.88rem;line-height:1.95;}
+.site-mock .bubble-mini .b-avatar{flex:0 0 30px;width:30px;height:30px;font-size:16px;border-width:1px;}
+.site-mock .bubble-mini .b-body{background:#FBF7F0;border-color:#EBE0D2;border-radius:4px 12px 12px 12px;}
+.site-mock .bubble-mini .b-body p{font-size:.82rem;line-height:1.9;}
+.site-mock .card-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid #EBE0D2;padding-top:10px;margin-top:2px;}
+.site-mock .csources{font-size:.78rem;color:#8F857C;margin:0;word-break:break-all;flex:1 1 auto;min-width:0;}
+.site-mock .csources a{text-decoration:underline;text-underline-offset:2px;}
+.site-mock .share-x{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;border:1px solid #2A2422;color:#2A2422;border-radius:999px;padding:4px 13px;white-space:nowrap;}
+.site-mock .share-x svg{width:13px;height:13px;fill:currentColor;}
+.site-mock .share-x:hover{background:#2A2422;color:#FFFFFF;text-decoration:none;}
+.site-mock .m-legend{max-width:720px;margin:24px auto 0;font-size:.72rem;color:#8F857C;border-top:1px dashed #D9CDBB;padding-top:12px;line-height:2.1;}
+.site-mock .m-legend .chip,.site-mock .m-legend .fresh,.site-mock .m-legend .warnbadge{margin-right:2px;}
+.site-mock .m-legend .pip{margin-right:6px;}
+@media (max-width:560px){
+  .site-mock{padding:22px 10px 32px;}
+  .site-mock .card{padding:16px 14px 12px;}
+  .site-mock .cdate{margin-left:0;flex-basis:100%;}
+  .p4doc{padding:32px 14px 72px;}
+  .p4doc .toc ol{columns:1;}
+}
+</style>
+
+<div class="p4doc">
+<div class="doc-inner">
+
+<!-- ================= §0 ヘッダ＋TL;DR ================= -->
+<h1><span class="h1-lead">中国エンタメニュース Phase 4 設計</span><br>— サイト化＋X bot化</h1>
+<p class="doc-meta">日付 <b>2026-07-14</b> ／ ステータス: <b>設計案（実装前）</b> ／ 前提: <b>Phase 3a 記事品質が合格ライン到達</b></p>
+
+<div class="tldr">
+  <div class="tldr-label">TL;DR</div>
+  <ul>
+    <li>目的は <strong>X bot 化（スピード優先）</strong>。サイトは X ポストのリンク先（ランディング）</li>
+    <li>参考モデルは ナルエビちゃんニュース（news.nullevi.app）のトピックカード型フィード</li>
+    <li>最速構成 = 既存 GitHub Actions を1本に拡張: パイプライン → data/コミット → 静的ビルド → GitHub Pages → X投稿</li>
+    <li>X API は2026年2月から従量課金。<strong>URL入りポストは$0.20/本</strong>のため「リンクは日次ダイジェスト1本に集約」が基本戦略（月額目安 $6）</li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-label">目次</div>
+  <ol>
+    <li><a href="#sec1">ゴール像と導線</a></li>
+    <li><a href="#sec2">アーキテクチャ（最速案）</a></li>
+    <li><a href="#sec3">X bot 仕様</a></li>
+    <li><a href="#sec4">情報設計（サイトマップ）</a></li>
+    <li><a href="#sec5">カード解剖図（パイプライン項目 → UI 対応表）</a></li>
+    <li><a href="#sec6">キャラ・ブランディング候補（4案）</a></li>
+    <li><a href="#sec7">ガードレールの UI 反映</a></li>
+    <li><a href="#sec8">段階導入ロードマップ</a></li>
+    <li><a href="#sec9">実寸モック（ライトテーマのみ）</a></li>
+    <li><a href="#sec10">未決事項・TODO</a></li>
+  </ol>
+</nav>
+
+<!-- ================= §1 ゴール像と導線 ================= -->
+<h2 id="sec1">1. ゴール像と導線</h2>
+
+<p>ナルエビ方式の導線。X が集客し、サイトが本文を受け持つ。</p>
+
+<div class="figwrap">
+<svg viewBox="0 0 780 250" width="780" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="X ポストからサイトへの導線図">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#C8352B"/>
+    </marker>
+  </defs>
+  <!-- X 日次ダイジェスト -->
+  <rect x="14" y="22" width="250" height="52" rx="8" fill="#FFFFFF" stroke="#C8352B" stroke-width="2"/>
+  <text x="139" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#26211E">X 日次ダイジェストポスト</text>
+  <text x="139" y="64" text-anchor="middle" font-size="11" fill="#8A817A">URL付き・1本/日</text>
+  <!-- arrow 1 -->
+  <line x1="264" y1="48" x2="486" y2="48" stroke="#C8352B" stroke-width="2" marker-end="url(#arw)"/>
+  <text x="375" y="40" text-anchor="middle" font-size="11" fill="#C8352B" font-weight="bold">URL</text>
+  <!-- 日次アーカイブページ -->
+  <rect x="492" y="22" width="272" height="52" rx="8" fill="#FFFFFF" stroke="#8A817A" stroke-width="1.5"/>
+  <text x="628" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#26211E">日次アーカイブページ</text>
+  <text x="628" y="64" text-anchor="middle" font-size="12" fill="#8A817A" class="mono">/archive/{date}/</text>
+  <!-- X 個別トピック -->
+  <rect x="14" y="128" width="250" height="52" rx="8" fill="#FFFFFF" stroke="#C8352B" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="139" y="151" text-anchor="middle" font-size="14" font-weight="bold" fill="#26211E">X 個別トピックポスト</text>
+  <text x="139" y="170" text-anchor="middle" font-size="11" fill="#8A817A">4b〜・テキストのみ</text>
+  <!-- arrow 2 -->
+  <line x1="264" y1="154" x2="486" y2="154" stroke="#C8352B" stroke-width="2" marker-end="url(#arw)"/>
+  <text x="375" y="146" text-anchor="middle" font-size="10.5" fill="#8A817A">テキストのみ・リンクはプロフ/ダイジェスト</text>
+  <!-- トピック個別ページ -->
+  <rect x="492" y="128" width="272" height="52" rx="8" fill="#FFFFFF" stroke="#8A817A" stroke-width="1.5"/>
+  <text x="628" y="151" text-anchor="middle" font-size="14" font-weight="bold" fill="#26211E">トピック個別ページ</text>
+  <text x="628" y="170" text-anchor="middle" font-size="12" fill="#8A817A" class="mono">/t/{date}/{n}/</text>
+  <!-- elbow to top feed -->
+  <path d="M 375 154 L 375 228 L 486 228" fill="none" stroke="#C8352B" stroke-width="2" marker-end="url(#arw)"/>
+  <!-- トップ / 最新フィード -->
+  <rect x="492" y="202" width="272" height="42" rx="8" fill="#FFFFFF" stroke="#8A817A" stroke-width="1.5"/>
+  <text x="628" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="#26211E">トップ / 最新フィード</text>
+</svg>
+<p class="figcap">図1: X ポスト → サイトの導線（ナルエビ方式）。実線=4a、破線=4b 以降。</p>
+</div>
+
+<ul>
+  <li>X が集客、サイトが本文。ポスト単体でも意味が通る文面にする（リンク踏まなくても価値がある＝フォロー維持）</li>
+  <li>ナルエビちゃんニュースから<strong>借りる型</strong>: トピックカード最新順フィード / キャラ視点セクション / 個別ページ＋OGP / RSS。<strong>借りない型</strong>: 難易度4段階は3段階に簡素化、既読ボタン等は後回し（4c）</li>
+</ul>
+
+<!-- ================= §2 アーキテクチャ ================= -->
+<h2 id="sec2">2. アーキテクチャ（最速案）</h2>
+
+<p>現状: <code>.github/workflows/generate-news.yml</code> は workflow_dispatch のみ、成果物は CI artifact 止まり（コミットもデプロイもなし）。サイト層はゼロから。</p>
+<p>推奨: <strong>1本のワークフローに直列で追加</strong>（新サービス契約ゼロ、リポジトリ完結）</p>
+
+<div class="figwrap">
+<svg viewBox="0 0 1000 168" width="1000" height="168" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="毎日のワークフロー パイプライン図">
+  <defs>
+    <marker id="arw2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#C8352B"/>
+    </marker>
+  </defs>
+  <!-- trigger -->
+  <rect x="10" y="46" width="150" height="76" rx="10" fill="#F6F1E8" stroke="#B8860B" stroke-width="1.5"/>
+  <text x="85" y="72" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#26211E">cron 毎日 10:00 JST</text>
+  <text x="85" y="90" text-anchor="middle" font-size="10.5" fill="#8A817A" class="mono">0 1 * * * (UTC)</text>
+  <text x="85" y="108" text-anchor="middle" font-size="10.5" fill="#8A817A">+ workflow_dispatch</text>
+  <line x1="160" y1="84" x2="182" y2="84" stroke="#C8352B" stroke-width="2" marker-end="url(#arw2)"/>
+  <!-- step1 -->
+  <rect x="186" y="46" width="140" height="76" rx="10" fill="#FFFFFF" stroke="#C8352B" stroke-width="2"/>
+  <circle cx="204" cy="62" r="10" fill="#C8352B"/><text x="204" y="66.5" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">1</text>
+  <text x="256" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#26211E" class="mono">npm run start</text>
+  <text x="256" y="100" text-anchor="middle" font-size="10.5" fill="#8A817A">既存パイプライン</text>
+  <line x1="326" y1="84" x2="348" y2="84" stroke="#C8352B" stroke-width="2" marker-end="url(#arw2)"/>
+  <!-- step2 -->
+  <rect x="352" y="46" width="140" height="76" rx="10" fill="#FFFFFF" stroke="#C8352B" stroke-width="2"/>
+  <circle cx="370" cy="62" r="10" fill="#C8352B"/><text x="370" y="66.5" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">2</text>
+  <text x="422" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#26211E">データ永続化</text>
+  <text x="422" y="100" text-anchor="middle" font-size="10.5" fill="#8A817A" class="mono">→ data/{date}/</text>
+  <line x1="492" y1="84" x2="514" y2="84" stroke="#C8352B" stroke-width="2" marker-end="url(#arw2)"/>
+  <!-- step3 -->
+  <rect x="518" y="46" width="150" height="76" rx="10" fill="#FFFFFF" stroke="#C8352B" stroke-width="2"/>
+  <circle cx="536" cy="62" r="10" fill="#C8352B"/><text x="536" y="66.5" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">3</text>
+  <text x="593" y="80" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#26211E" class="mono">npm run build:site</text>
+  <text x="593" y="100" text-anchor="middle" font-size="10.5" fill="#8A817A">静的HTML生成</text>
+  <line x1="668" y1="84" x2="690" y2="84" stroke="#C8352B" stroke-width="2" marker-end="url(#arw2)"/>
+  <!-- step4 -->
+  <rect x="694" y="46" width="140" height="76" rx="10" fill="#FFFFFF" stroke="#C8352B" stroke-width="2"/>
+  <circle cx="712" cy="62" r="10" fill="#C8352B"/><text x="712" y="66.5" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">4</text>
+  <text x="764" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#26211E">Pages デプロイ</text>
+  <text x="764" y="100" text-anchor="middle" font-size="10.5" fill="#8A817A">GitHub Pages</text>
+  <line x1="834" y1="84" x2="856" y2="84" stroke="#C8352B" stroke-width="2" marker-end="url(#arw2)"/>
+  <!-- step5 -->
+  <rect x="860" y="46" width="130" height="76" rx="10" fill="#FFFFFF" stroke="#C8352B" stroke-width="2"/>
+  <circle cx="878" cy="62" r="10" fill="#C8352B"/><text x="878" y="66.5" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">5</text>
+  <text x="925" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#26211E" class="mono">npm run post:x</text>
+  <text x="925" y="100" text-anchor="middle" font-size="10.5" fill="#8A817A">X 投稿（最後）</text>
+</svg>
+<p class="figcap">図2: 1本の GitHub Actions ワークフローに直列で追加する5ステップ。</p>
+</div>
+
+<ol class="steps">
+  <li><code>npm run start</code> … 既存パイプライン（deepseek）</li>
+  <li>データ永続化 … output/ の md・topic_candidates・selection_trace・fact_ledger ＋ 新規 <code>articles_{date}.json</code> を <code>data/{date}/</code> にコミット</li>
+  <li><code>npm run build:site</code> … 新規 <code>src/site/build.ts</code>（zero-dep TS）が data/ 全日分 → <code>dist/site/</code> に静的HTML生成</li>
+  <li>Pages デプロイ … <code>actions/upload-pages-artifact</code> + <code>actions/deploy-pages</code></li>
+  <li><code>npm run post:x</code> … 新規 <code>src/site/postToX.ts</code> が日次ダイジェストを1本投稿</li>
+</ol>
+
+<h3>設計上の要点</h3>
+<ul>
+  <li><strong>articles_{date}.json（新規・小改修）</strong>: <code>renderMarkdown.ts</code> が受け取るのと同じ構造化データ（SummarizedArticle[]）を JSON でも書き出す。サイトビルダーが Markdown をパースし直すのを避け、スキーマ正本を <code>src/types.ts</code> に一本化するため。パイプライン側の唯一の改修点</li>
+  <li><strong>data/ ディレクトリ</strong>: 現在 output/*.md,*.json は .gitignore 対象。日次成果物は <code>data/YYYY-MM-DD/</code> にコミットして履歴＝アーカイブにする（サイトの全日分ビルドの源泉）</li>
+  <li><strong>zero-dep 原則の維持</strong>: サイトビルダーも X 投稿も Node 標準＋TS のみ。X の OAuth 1.0a 署名は <code>node:crypto</code> の HMAC-SHA1 で自前実装可能（外部SDK不要）</li>
+  <li><strong>X 投稿は最後</strong>: ビルド/デプロイ失敗時に投稿だけ先行する事故を防ぐ。投稿失敗はワークフロー失敗にする（無言の取りこぼし防止）</li>
+  <li>Secrets 追加: <code>X_API_KEY</code> / <code>X_API_SECRET</code> / <code>X_ACCESS_TOKEN</code> / <code>X_ACCESS_SECRET</code></li>
+</ul>
+
+<h3>ホスティング比較</h3>
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>項目</th><th>GitHub Pages<span class="rec-chip">推奨</span></th><th>Cloudflare Pages</th><th>Vercel</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>費用</th><td>無料</td><td>無料枠あり</td><td>無料枠あり</td></tr>
+    <tr><th>追加契約</th><td>不要（リポジトリ完結）</td><td>要アカウント連携</td><td>要アカウント連携</td></tr>
+    <tr><th>独自ドメイン</th><td>可</td><td>可（DNSも一括なら楽）</td><td>可</td></tr>
+    <tr><th>デプロイ</th><td>同一Actions内で完結</td><td>別トリガー管理</td><td>別トリガー管理</td></tr>
+    <tr><th>向き</th><td>今回のMVP</td><td>独自ドメイン+高速配信を重視し始めたら</td><td>同左</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ================= §3 X bot 仕様 ================= -->
+<h2 id="sec3">3. X bot 仕様</h2>
+
+<h3>課金前提（要一次確認・重要）</h3>
+<p>X API は 2026年2月に無料枠廃止・従量課金化（第三者情報）。設計はこの前提:</p>
+<ul>
+  <li>テキスト/メディアのみのポスト: <strong>$0.015/本</strong></li>
+  <li><strong>URLを含むポスト: $0.20/本</strong> ← リンク戦略がコストを支配する</li>
+  <li>読み取りは使わない（投稿のみ）</li>
+</ul>
+<div class="todo-box">⚠ TODO: 実装前に X Developer Console で単価・課金条件を一次確認（この表は第三者まとめ由来）</div>
+
+<h3>投稿戦略とコスト試算</h3>
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>戦略</th><th>内容</th><th>月額目安</th><th>フェーズ</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>A. 日次ダイジェスト（基本）<span class="rec-chip">採用</span></th><td>URL付き1本/日。その日の見出し3本＋「ほか全N本」＋日次ページURL</td><td>約$6</td><td>4a</td></tr>
+    <tr><th>B. A＋個別テキスト投稿</th><td>優先度highのトピックをテキストのみで最大10本/日追加（URLなし、誘導はプロフィール固定リンク）</td><td>約$10</td><td>4b</td></tr>
+    <tr><th>C. 全部URL付き</th><td>10本/日全てにURL</td><td>約$60</td><td>採用しない</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>投稿テンプレート</h3>
+<p>日次ダイジェスト（全角140字以内厳守・CJKは2字換算で280上限）:</p>
+<pre><code>🐼 今日の中国エンタメ｜7/13
+・『功夫女足』公開半日で興収1億元突破
+・「微短劇の夜」AI活用と出海が焦点
+・林志炫、60歳で新ツアー「耳順」発表
+ほか全10本👇
+https://{site}/archive/2026-07-13/</code></pre>
+
+<p>個別トピック（4b・テキストのみ・見出し＋リード圧縮＋カテゴリタグ）:</p>
+<pre><code>【映画】『群星闪耀时』が新予告公開。黄渤×呉磊、2035年の宇宙船と1970年の基地が交錯する二つの時間軸SF。8/1全国公開、7/17から先行上映。</code></pre>
+
+<h3>文面ルール</h3>
+<ul>
+  <li>記事の見出し・リードから機械的に組み立てる（新規生成しない＝捏造リスクゼロ）</li>
+  <li>ハッシュタグは付けない（bot臭・コスト対効果なし）。絵文字はキャラ絵文字1つまで</li>
+  <li>投稿時刻は生成完了直後（毎朝10時台 JST）</li>
+</ul>
+
+<!-- ================= §4 情報設計 ================= -->
+<h2 id="sec4">4. 情報設計（サイトマップ）</h2>
+
+<div class="figwrap">
+<svg viewBox="0 0 740 300" width="740" height="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="サイトマップ">
+  <!-- trunk -->
+  <line x1="34" y1="46" x2="34" y2="266" stroke="#E8E0D4" stroke-width="2"/>
+  <!-- root -->
+  <rect x="14" y="10" width="176" height="30" rx="6" fill="#C8352B"/>
+  <text x="26" y="30" font-size="13" font-weight="bold" fill="#FFFFFF" class="mono">/</text>
+  <text x="44" y="30" font-size="12" fill="#FFFFFF">最新フィード</text>
+  <text x="200" y="30" font-size="11.5" fill="#8A817A">直近30トピック、日付見出しで区切る</text>
+  <!-- /t/{date}/{n}/ -->
+  <line x1="34" y1="66" x2="54" y2="66" stroke="#E8E0D4" stroke-width="2"/>
+  <rect x="56" y="50" width="190" height="30" rx="6" fill="#FFFFFF" stroke="#8A817A"/>
+  <text x="66" y="70" font-size="12.5" fill="#26211E" class="mono">/t/{date}/{n}/</text>
+  <text x="256" y="70" font-size="11.5" fill="#8A817A">トピック個別ページ（Xリンク先・OGP完備）※n=その日の掲載順(1..N)</text>
+  <!-- /archive/ -->
+  <line x1="34" y1="116" x2="54" y2="116" stroke="#E8E0D4" stroke-width="2"/>
+  <rect x="56" y="100" width="190" height="30" rx="6" fill="#FFFFFF" stroke="#8A817A"/>
+  <text x="66" y="120" font-size="12.5" fill="#26211E" class="mono">/archive/</text>
+  <text x="256" y="120" font-size="11.5" fill="#8A817A">日付一覧</text>
+  <!-- /archive/{date}/ -->
+  <line x1="102" y1="130" x2="102" y2="166" stroke="#E8E0D4" stroke-width="2"/>
+  <line x1="102" y1="166" x2="118" y2="166" stroke="#E8E0D4" stroke-width="2"/>
+  <rect x="120" y="150" width="190" height="30" rx="6" fill="#FFFFFF" stroke="#C8352B" stroke-width="1.5"/>
+  <text x="130" y="170" font-size="12.5" fill="#26211E" class="mono">/archive/{date}/</text>
+  <text x="320" y="170" font-size="11.5" fill="#8A817A">日次ページ（ダイジェストポストのリンク先）</text>
+  <!-- /about/ -->
+  <line x1="34" y1="216" x2="54" y2="216" stroke="#E8E0D4" stroke-width="2"/>
+  <rect x="56" y="200" width="190" height="30" rx="6" fill="#FFFFFF" stroke="#8A817A"/>
+  <text x="66" y="220" font-size="12.5" fill="#26211E" class="mono">/about/</text>
+  <text x="256" y="220" font-size="11.5" fill="#8A817A">編集方針・出典ポリシー・キャラ紹介（editorial-character.md 準拠）</text>
+  <!-- /feed.xml -->
+  <line x1="34" y1="266" x2="54" y2="266" stroke="#E8E0D4" stroke-width="2"/>
+  <rect x="56" y="250" width="190" height="30" rx="6" fill="#FFFFFF" stroke="#8A817A" stroke-dasharray="6 3"/>
+  <text x="66" y="270" font-size="12.5" fill="#26211E" class="mono">/feed.xml</text>
+  <text x="256" y="270" font-size="11.5" fill="#8A817A">RSS（4b）</text>
+</svg>
+<p class="figcap">図3: サイトマップ。朱枠=X ポストの主要リンク先、破線=4b で追加。</p>
+</div>
+
+<ul>
+  <li>フィード並び順: 日付降順 → 日内は publish_priority（high→low）→ newsworthiness_score。<code>renderMarkdown.ts</code> と同一ロジック</li>
+  <li>パーマリンクに連番 n を使う理由: topic_key は中国語でURLに不向き、ローマ字化は依存が増える。日付＋掲載順は決定的で短く、X の字数も食わない（トレードオフ: 過去日の再生成で順序が変わると URL が壊れるため、<strong>data/ にコミットした articles JSON を正とし再生成しない</strong>運用で担保）</li>
+  <li>カテゴリ絞込は 4c（クライアントJS）。4a はタグ表示のみ</li>
+</ul>
+
+<!-- ================= §5 カード解剖図 ================= -->
+<h2 id="sec5">5. カード解剖図（パイプライン項目 → UI 対応表）</h2>
+
+<p>§9 の実寸モックの各カードは、パイプラインの構造化データ（正本: <code>src/types.ts</code>, <code>renderMarkdown.ts</code>）から次の対応で組み立てる。</p>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>パイプライン項目</th><th>UI要素</th><th>備考</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>badge</code>（OFFICIAL/NEWS/DATA）</td><td>種別チップ（色分け: OFFICIAL=藍 <code>#3A5A78</code> / NEWS=朱 <code>#C8352B</code> / DATA=青磁 <code>#2E7D6B</code>）</td><td>カード左上</td></tr>
+    <tr><td><code>category</code>（映画/音楽/イベント…）</td><td>カテゴリタグ</td><td>4cで絞込ボタン化</td></tr>
+    <tr><td><code>confidence</code>（A/B/C）</td><td>確度チップ（A=金縁/B=銀縁/C=グレー）</td><td>フッターに凡例</td></tr>
+    <tr><td><code>freshness_label</code>（today/recent）</td><td>鮮度バッジ（today=「本日」朱塗り/recent=「数日内」白抜き）</td><td>日付と併記</td></tr>
+    <tr><td><code>title</code></td><td>カード見出し（h2）→ 個別ページへのリンク</td><td></td></tr>
+    <tr><td><code>lead</code></td><td>要約段落（常時表示）</td><td></td></tr>
+    <tr><td><code>source_mix</code>（公式n/媒体n/SNSn/データn）</td><td>ソース構成ピップ（4色の点＋数字）</td><td><strong>公式のみの場合は琥珀色の警告バッジ「⚠ 公式発表のみ・裏付けなし」を必ず表示</strong></td></tr>
+    <tr><td>何が起きた？</td><td>本文セクション</td><td>くわしく(展開)側</td></tr>
+    <tr><td>秘書の注目ポイント</td><td><strong>キャラ吹き出し</strong>（アバター丸＋名前ラベル＋薄色地）</td><td>キャラのトーンはこの枠内のみ</td></tr>
+    <tr><td>反応・見られ方 / 日本語圏では見えにくいポイント</td><td>本文セクション（データに存在する時のみ）</td><td>捏造禁止：無い日は出さない</td></tr>
+    <tr><td>秘書からのひとこと</td><td>小さめ吹き出し（カード末尾）</td><td></td></tr>
+    <tr><td><code>source_list</code></td><td>ソース行「ソース: <a href="#">媒体名</a> …」</td><td><strong>ビルド時検証: ソース行が空のカードはビルド失敗にする</strong></td></tr>
+    <tr><td>—</td><td>Xシェアリンク（intent/tweet）</td><td>カード右下</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>表示量3段階（4c で切替UI、4a は「標準」固定）</h3>
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>段階</th><th>表示</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>かるく</th><td>見出し＋リード＋秘書からのひとこと</td></tr>
+    <tr><th>標準（デフォルト・モックはこれ）</th><td>＋秘書の注目ポイント＋ソース構成＋ソース行</td></tr>
+    <tr><th>しっかり</th><td>＋何が起きた？＋反応・見られ方＋日本語圏では見えにくいポイント</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ================= §6 キャラ・ブランディング候補 ================= -->
+<h2 id="sec6">6. キャラ・ブランディング候補（4案・ユーザーが後日選定）</h2>
+
+<div class="nameplates">
+  <div class="plate plate-rec">
+    <span class="plate-rec-badge">A案・推奨</span>
+    <div class="plate-head">
+      <div class="plate-avatar" style="border-color:#C8352B;background:#FAF7F2;">🐼</div>
+      <div>
+        <div class="plate-title" style="color:#C8352B;">ミーシュちゃんニュース</div>
+        <div class="plate-char">キャラ名: ミーシュ</div>
+      </div>
+    </div>
+    <div class="plate-colors">
+      <div class="cchip" style="background:#C8352B;color:#FFFFFF;">#C8352B</div>
+      <div class="cchip" style="background:#FAF7F2;color:#6B5E4E;">#FAF7F2</div>
+      <div class="cchip" style="background:#B8860B;color:#FFFFFF;">#B8860B</div>
+    </div>
+    <p class="plate-desc">秘書=中国語「秘書（mìshū）」。editorial-character の「運営者の秘書」設定と完全一致。ナルエビ（役割→キャラ名）と同じ命名文法。</p>
+  </div>
+  <div class="plate">
+    <div class="plate-head">
+      <div class="plate-avatar" style="border-color:#D9364C;background:#FBFBF8;">🍉</div>
+      <div>
+        <div class="plate-title" style="color:#D9364C;">吃瓜ちゃんニュース</div>
+        <div class="plate-char">キャラ名: グァちゃん</div>
+      </div>
+    </div>
+    <div class="plate-colors">
+      <div class="cchip" style="background:#D9364C;color:#FFFFFF;">#D9364C</div>
+      <div class="cchip" style="background:#FBFBF8;color:#6B5E4E;">#FBFBF8</div>
+      <div class="cchip" style="background:#2F7D4F;color:#FFFFFF;">#2F7D4F</div>
+    </div>
+    <p class="plate-desc">「吃瓜群衆」＝ゴシップを見物する野次馬ミーム。中国エンタメ読者の体験そのもの。強いが「野次馬」の含意あり。</p>
+  </div>
+  <div class="plate">
+    <div class="plate-head">
+      <div class="plate-avatar" style="border-color:#B9382E;background:#F7F3EC;">🏮</div>
+      <div>
+        <div class="plate-title" style="color:#B9382E;">朝陽通信</div>
+        <div class="plate-char">キャラ名: チャオちゃん</div>
+      </div>
+    </div>
+    <div class="plate-colors">
+      <div class="cchip" style="background:#B9382E;color:#FFFFFF;">#B9382E</div>
+      <div class="cchip" style="background:#F7F3EC;color:#6B5E4E;">#F7F3EC</div>
+      <div class="cchip" style="background:#33506B;color:#FFFFFF;">#33506B</div>
+    </div>
+    <p class="plate-desc">芸能スキャンダル通報で有名な「朝陽群衆」ミーム。通好みで新聞らしい落ち着き。</p>
+  </div>
+  <div class="plate">
+    <div class="plate-head">
+      <div class="plate-avatar" style="border-color:#D75A6E;background:#FCFAFA;">🍬</div>
+      <div>
+        <div class="plate-title" style="color:#D75A6E;">タンタン日報</div>
+        <div class="plate-char">キャラ名: 糖糖（タンタン）</div>
+      </div>
+    </div>
+    <div class="plate-colors">
+      <div class="cchip" style="background:#D75A6E;color:#FFFFFF;">#D75A6E</div>
+      <div class="cchip" style="background:#FCFAFA;color:#6B5E4E;">#FCFAFA</div>
+      <div class="cchip" style="background:#C9932B;color:#FFFFFF;">#C9932B</div>
+    </div>
+    <p class="plate-desc">「甘いおやつ＋日報」。意味の含みが最少で炎上リスクゼロ、音がかわいい。</p>
+  </div>
+</div>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>案</th><th>サイト名</th><th>キャラ名</th><th>絵文字</th><th>由来</th><th>配色（アクセント/地/チップ）</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>A（推奨）</th><td>ミーシュちゃんニュース</td><td>ミーシュ</td><td>🐼</td><td>秘書=中国語「秘書（mìshū）」。editorial-character の「運営者の秘書」設定と完全一致。ナルエビ（役割→キャラ名）と同じ命名文法</td><td>朱紅 <code>#C8352B</code> / 生成り <code>#FAF7F2</code> / 金 <code>#B8860B</code></td></tr>
+    <tr><th>B</th><td>吃瓜ちゃんニュース</td><td>グァちゃん</td><td>🍉</td><td>「吃瓜群衆」＝ゴシップを見物する野次馬ミーム。中国エンタメ読者の体験そのもの。強いが「野次馬」の含意あり</td><td>西瓜紅 <code>#D9364C</code> / 白 <code>#FBFBF8</code> / 瓜皮緑 <code>#2F7D4F</code></td></tr>
+    <tr><th>C</th><td>朝陽通信</td><td>チャオちゃん</td><td>🏮</td><td>芸能スキャンダル通報で有名な「朝陽群衆」ミーム。通好みで新聞らしい落ち着き</td><td>灯籠紅 <code>#B9382E</code> / 象牙 <code>#F7F3EC</code> / 藍 <code>#33506B</code></td></tr>
+    <tr><th>D</th><td>タンタン日報</td><td>糖糖（タンタン）</td><td>🍬</td><td>「甘いおやつ＋日報」。意味の含みが最少で炎上リスクゼロ、音がかわいい</td><td>桃紅 <code>#D75A6E</code> / 白 <code>#FCFAFA</code> / 飴金 <code>#C9932B</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>推奨理由（A）</strong>: 既存の編集方針ドキュメントが定義済みの「秘書」キャラをそのまま名前にでき、サイト・記事文体・X文面の一人称が一本化される。</p>
+<p class="muted">注: モックは A 案の仮ブランドで組む（最終決定までプレースホルダである旨を明記）。</p>
+
+<!-- ================= §7 ガードレールの UI 反映 ================= -->
+<h2 id="sec7">7. ガードレールの UI 反映（AGENTS.md の守るライン → サイト仕様）</h2>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>守るライン</th><th>サイトでの担保</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>出典必須</th><td>全カードにソース行。空ならビルド失敗（build.ts のバリデーション）</td></tr>
+    <tr><th>公式のみ topic は low</th><td>「⚠ 公式発表のみ・裏付けなし」警告バッジを必ず表示＋フィード下位に並ぶ（priority順ソートで自然に実現）</td></tr>
+    <tr><th>SNS 反応を捏造しない</th><td>反応セクションはデータに存在する時のみレンダリング。サイト層でテキストを生成・加筆しない</td></tr>
+    <tr><th>単独媒体の分析は帰属表示</th><td>本文は生成時点で担保済み（claim check）。サイト層は本文を一切改変しない</td></tr>
+    <tr><th>官庁比率 ≦ 50%</th><td>サイトは表示のみだが、/about に編集方針として明記し読者にも開示</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>公開前チェックリスト（4a の exit 条件に含める）</h3>
+<ul class="checklist">
+  <li>LICENSE / 引用・転載ポリシーの整備（現状リポジトリに無し）</li>
+  <li>/about に編集方針・出典ポリシー・「AI生成である」旨の明記</li>
+  <li>OGP（サイト名・説明・仮ロゴ画像）</li>
+  <li>robots.txt / sitemap.xml</li>
+  <li>X アカウント作成・自動化ラベル（X の automated account 設定）の付与</li>
+</ul>
+
+<!-- ================= §8 段階導入ロードマップ ================= -->
+<h2 id="sec8">8. 段階導入ロードマップ</h2>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>フェーズ</th><th>内容</th><th>主な新規物</th><th>exit 条件</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>4a MVP</th><td>articles JSON 書き出し（唯一のパイプライン改修）/ data/ コミット / 静的ビルド（トップ・日次・個別・about）/ Pages / 日次ダイジェスト投稿 / cron 化</td><td><code>src/site/build.ts</code>, <code>src/site/postToX.ts</code>, <code>data/</code>, workflows 拡張</td><td>毎朝自動で「サイト更新＋X投稿1本」が人手ゼロで回る</td></tr>
+    <tr><th>4b</th><td>個別トピック投稿（テキストのみ・priority high のみ）/ OGP画像自動生成 / RSS</td><td>og画像生成, <code>feed.xml</code></td><td>個別ポスト経由の流入が観測できる</td></tr>
+    <tr><th>4c</th><td>表示量3段階切替 / カテゴリ絞込 / 検索 / 既読</td><td>クライアントJS（静的のまま）</td><td>—</td></tr>
+    <tr><th>4d</th><td>WebMCP 公開 / 計測 / シェア導線強化</td><td>—</td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>4a の見積り目安: 実装2〜3セッション（build.ts が中心）。<strong>サイトの見た目はモックの HTML/CSS をほぼそのまま build.ts のテンプレートに転用できる</strong>ように作る（このドキュメントのモックが実装の種になる）。</p>
+
+<!-- ================= §9 実寸モック ================= -->
+<h2 id="sec9">9. 実寸モック（ライトテーマのみ）</h2>
+
+<ul>
+  <li>データ: <strong>2026-07-13 の deepseek 実生成記事を全10本</strong>流し込み（本文・見出し・ソースURLは一字も変えていない）</li>
+  <li>表示は「標準」段階。「何が起きた？」は各カードの「しっかり読む ▾」で開閉（JS不要の <code>&lt;details&gt;</code>）</li>
+  <li>並び順は md の掲載順のまま（publish_priority 順で出力済み）</li>
+  <li>ブランドは A 案（🐼 ミーシュちゃんニュース）の仮置き</li>
+</ul>
+
+<div class="mockframe">
+<div class="mockbar"><span class="mdots"><i></i><i></i><i></i></span>MOCK — 実データ 2026-07-13</div>
+<div class="site-mock">
+
+  <header class="m-header">
+    <span class="m-avatar">🐼</span>
+    <div class="m-sitename">ミーシュちゃん<span class="m-accent">ニュース</span></div>
+    <p class="m-tagline">中国で実際に観られている・語られているエンタメを、日本語で毎朝。</p>
+    <span class="m-day">2026年7月13日（月）</span>
+    <p class="m-provisional">※サイト名は仮（§6で選定）</p>
+  </header>
+
+  <!-- card 1 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-data">DATA</span>
+      <span class="chip cat">映画</span>
+      <span class="chip conf conf-a">確度A</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">周星馳監督『功夫女足』公開半日で興収1億元突破、夏休みシーズンを牽引</a></h2>
+    <p class="clead">周星馳監督の最新作『功夫女足』が7月11日に中国で公開され、公開半日で興行収入1億元を突破。夏休みシーズンの興行をけん引している。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip zero"><i class="dot d-of"></i>公式 0</span>
+      <span class="pip zero"><i class="dot d-md"></i>媒体 0</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip"><i class="dot d-dt"></i>データ 1</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>2026年7月11日、周星馳監督・脚本の映画『功夫女足』が中国で全国公開された。公開半日（11時32分時点）で予約販売を含む累計興行収入が1億元を突破し、累計観客動員数は284万人に達した。本作は2001年公開の『少林足球』の25周年記念続編で、全編深圳で撮影。主演は張小斐、迪麗熱巴（ディリラバ）、張芸興（チャン・イーシン）で、劉嘉玲、佐藤健が特別出演。総製作費は3.8億元、うち特殊効果に約1.9億元を投じ、1200以上の特殊効果カットがある。公開初日の上映シェア（排片）は47.4%、上映回数は22.6万回を超え、中国映画史の夏休みシーズン初日上映回数記録などを更新した。本作は星輝海外有限公司が主導し、中影集団が配給を担当。ストーリーは草根女子サッカーチーム「峨眉隊」の逆転劇で、元中国女子サッカー代表ゴールキーパーの趙麗娜が出演・アクション指導を担当している。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>『功夫女足』は公開半日で1億元突破という好スタートを切ったけど、今後の鍵は口コミ次第だね！猫眼専門版は最終興収14億元以上、灯塔専門版は10億元以上と予測しているけど、実際の数字がどう動くかが注目ポイント。特に、周星馳本人が出演しないことや、『少林足球』との類似性がネガティブに働くかどうか。また、2026年W杯と連動した公開タイミングがプラスに作用するかも見ものだよ！</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>周星馳監督の久々の新作が、公開初日から記録的な数字を叩き出しているね。でも、予測はあくまで予測。実際の観客の反応や週末の数字を追いかけたいところだよ！</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.jiemian.com/article/14745259.html" target="_blank" rel="noopener">界面新闻 影视产业</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 2 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-news">NEWS</span>
+      <span class="chip cat">イベント</span>
+      <span class="chip conf conf-c">確度C</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">「微短劇の夜」開催、AI活用と海外展開が焦点に</a></h2>
+    <p class="clead">2026年7月9日、北京で「微短劇の夜」イベントが開催され、微短劇（ショートドラマ）業界の高品質化とグローバル化に向けた議論が行われた。AI技術の活用や海外市場への展開が主要テーマとなった。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip zero"><i class="dot d-of"></i>公式 0</span>
+      <span class="pip"><i class="dot d-md"></i>媒体 1</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>2026年7月9日夜、北京で2026貝殻財経年会の一環として「微短劇の夜」が開幕した。テーマは「縦画面新本拠地、高品質化は今まさに」。俳優の管雲鵬が司会を務め、彼は「歪んだ口の戦神」シリーズで知られ、初回動画は1ヶ月で895万回再生を記録した。北京市門頭溝区はAI微短劇特区「京西劇谷」と人材政策「金鉤八条」を発表。通州区や朝陽区も産業振興策を紹介した。配信プラットフォーム「紅果短劇」は、クリエイター支援プログラムや「果燃計画」による120本以上の作品投資実績を報告。制作会社「聴花島」の海外プラットフォーム「FlickReels」は米国App Storeでダウンロード数トップに。AI技術によりコストを実写の10分の1に削減可能との発言もあった。俳優の葉璇は脚本の重要性を強調し、AIに代替されないと述べた。円卓討論では、中国短劇の海外展開について、内容と技術の両面でのシステム構築が競争力の鍵との見解が示された。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>今回のイベントで特に気になるのは、AI技術が微短劇の制作コストを大幅に下げ、制作期間を短縮するという点だね！でも、AIが生成する脚本には限界があるという声もあって、どこまで人間のクリエイティビティを代替できるかが今後のポイントになりそう。また、中国の微短劇が海外でダウンロード数を伸ばしている事例が出てきて、本格的な「出海（海外進出）」のフェーズに入ったのかどうか、追いかけたい数字だよ！</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>AIと人間の役割分担がどう進むか、そして海外での実際の収益やユーザー定着率が気になるところだね！</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.bjnews.com.cn/detail/1783666044168218.html" target="_blank" rel="noopener">新京报 娱乐</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 3 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-news">NEWS</span>
+      <span class="chip cat">音楽</span>
+      <span class="chip conf conf-c">確度C</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">林志炫、60歳誕生日に新ツアー「耳順」発表 初公演は9月30日北京</a></h2>
+    <p class="clead">林志炫が2026年7月6日、北京で新ツアー「ONEtake3.0『耳順』世界巡回演唱会」の発表会を開催。初公演は9月30日に北京で行われる。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip zero"><i class="dot d-of"></i>公式 0</span>
+      <span class="pip"><i class="dot d-md"></i>媒体 1</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>林志炫の新ツアー「ONEtake3.0『耳順』世界巡回演唱会」の発表会が2026年7月6日、北京の正乙祠戏楼で行われた。この日は林志炫の60歳の誕生日でもある。初公演は同年9月30日に北京で開催。ツアー名「耳順」は英語で「Golden Years」と表記され、聴衆を意味する「You」を込めた造語。ステージは少年、騎士、浪子、隠士、知音、王者の6つのキャラクターをテーマに構成。歌単には王勃『滕王閣序』や李白『長相思』の古典詩詞改编曲、クイーンの「Somebody to Love」、エア・サプライの「Making Love Out of Nothing at All」、世界的ヒット曲「Golden」などが含まれ、さらに「優客李林」時代の隠し曲も予定されている。林志炫は「伝唱金曲」と「隠れた名曲」のバランスを取り、デビュー35年の集大成を披露すると語った。会場には音楽歴程を振り返る特別展も設置された。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>林志炫が還暦を迎えての新ツアー、しかもタイトルに「耳順」と孔子の言葉を掲げるのが渋いね！歌単が古典詩詞から洋楽カバーまで幅広くて、単なるベスト盤ツアーじゃないのが伝わるよ。海外公演も予定されているから、日本での開催があるかどうかは今後の発表を追いたいところ。</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>60歳の誕生日に発表会を開くなんて、林志炫らしい粋な計らいだね！「耳順」のコンセプトも、年齢を重ねたアーティストの余裕を感じさせるよ。</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.bjnews.com.cn/detail/1783408751168161.html" target="_blank" rel="noopener">新京报 娱乐</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 4 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-news">NEWS</span>
+      <span class="chip cat">映画</span>
+      <span class="chip conf conf-a">確度A</span>
+      <span class="fresh fresh-today">本日</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">映画「群星闪耀时」新予告編公開、黄渤×呉磊が二つの時間軸を駆ける</a></h2>
+    <p class="clead">中国SF映画「群星闪耀时」が新予告編「找答案」版を公開。2035年の宇宙船と1970年の地上基地が交錯する二つの時間軸の物語が明らかになった。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip zero"><i class="dot d-of"></i>公式 0</span>
+      <span class="pip"><i class="dot d-md"></i>媒体 1</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>映画「群星闪耀时」が「找答案」版予告編を公開した。主演は黄渤、呉磊、高叶、孫陽。黄建新が監修、章笛沙が監督を務める。2026年8月1日に全国公開予定で、7月10日から16日まで全国20都市で特別上映、7月17日から30都市で先行上映（点映）が行われる。予告編では、2035年の宇宙船「星舟二号」が重力場に巻き込まれ、1970年の中国地上基地と通信する二つの時間軸が描かれる。黄渤演じる宇宙飛行士・鄭同舟と、呉磊演じる1970年の研究員・趙吉虎がそれぞれの時代で奮闘する。IMAX、HDR LED、CINITY、中国巨幕の4フォーマットのポスターも公開された。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>この作品は「過去が未来を救う」という二つの時間軸を交錯させるSFで、中国SF映画の新たな可能性を示すものとして注目されているみたいだよ！特に黄渤と呉磊という実力派俳優の共演、そして黄建新監修という布陣が気になるね。公開前の先行上映の反応や、最終的な興行成績が、中国SF映画の現在地を測る一つの指標になりそう。</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>予告編の1分15秒という尺に、どれだけの情報が詰まっているか気になるね！特に二つの時間軸の切り替えがどう見えるか、実際の映像を確認したいところだよ。</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.1905.com/news/20260713/1762831.shtml" target="_blank" rel="noopener">1905电影网 新闻</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 5 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-official">OFFICIAL</span>
+      <span class="chip cat">産業・政策</span>
+      <span class="chip conf conf-a">確度A</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">2026年6月の国産テレビアニメ备案、童話が過半数を占める</a></h2>
+    <p class="clead">国家ラジオテレビ総局が2026年6月の全国国産テレビアニメ制作备案を公示。59作品、総尺15,341分が备案され、童話が半数以上を占めた。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip"><i class="dot d-of"></i>公式 1</span>
+      <span class="pip zero"><i class="dot d-md"></i>媒体 0</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+      <span class="warnbadge">⚠ 公式発表のみ・裏付けなし</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>国家ラジオテレビ総局は2026年7月6日、2026年6月の全国国産テレビアニメ制作备案（制作許可申請の届出）を公示した。备案された作品は59部、総尺15,341分。内訳は童話31部（52.5%）、科幻8部（13.6%）、文化7部（11.9%）、教育7部（11.9%）、現実3部（5.1%）、その他3部（5.1%）。時間ベースでは童話が9,849分（64.2%）と圧倒的。通知文号は广电办発〔2026〕163号。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>毎月の备案データは、中国アニメ業界の制作動向を把握する貴重な指標だね。今月は童話が部数・時間ともに過半数を占めていて、やはり低年齢層向けが安定した供給源になっているみたい。ただ、科幻が8部と2番手に来ているのはちょっと気になるポイント。今後、実際に放送・配信された時の反応や、日本での公開情報が出てくるかどうかを追いたいね。</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>备案データだけでは作品の質や話題性はわからないけど、業界の「今作られているもの」の傾向が見えるのは面白いね。特に科幻が増えているなら、中国アニメのジャンル多様化の兆しかも？</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.nrta.gov.cn/art/2026/7/6/art_113_73584.html" target="_blank" rel="noopener">国家广播电视总局</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 6 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-official">OFFICIAL</span>
+      <span class="chip cat">業界動向</span>
+      <span class="chip conf conf-a">確度A</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">广电総局、2026年度科技計画プロジェクトの公募を開始</a></h2>
+    <p class="clead">国家ラジオテレビ総局が2026年度のラジオテレビ・ネット視聴中長期科技計画プロジェクトの公募を発表。7月8日から31日までオンラインで受付。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip"><i class="dot d-of"></i>公式 1</span>
+      <span class="pip zero"><i class="dot d-md"></i>媒体 0</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+      <span class="warnbadge">⚠ 公式発表のみ・裏付けなし</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>国家ラジオテレビ総局（广电総局）は2026年7月8日、2026年度のラジオテレビ・ネット視聴中長期科技計画プロジェクトの公募を開始した。通知文番号は广电办発〔2026〕165号。公募期間は7月8日12時から7月31日12時までで、广电総局科技项目管理系统（https://kjxm.nrta.gov.cn）からオンラインで申請する。プロジェクトは1つの機関が主導し、最大4つのサブ課題を設定可能。各省の广电局が推薦する場合、一定の資金支援が行われ、採択されれば中央・地方共同プロジェクト（部省合作项目）となる。申請にはプロジェクトリーダーに高級職称または博士号が必要で、年間1件まで。審査は形式審査と専門家による答辩審査を経て、優れたものが選ばれる。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>广电総局が毎年実施する科技計画プロジェクトの公募は、業界の技術開発の方向性を示す重要な指標だね。今年は「産学官連携（产学研用）」を特に推奨している点が気になる。どのようなテーマが設定されているのか、具体的なガイドラインが公開されれば、今後の放送・配信技術のトレンドが見えてくるはず。また、部省合作项目の枠組みがどの程度活用されるかも注目ポイントだよ。</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>今回の公募は、广电総局が科技イノベーションをどれだけ重視しているかのバロメーターでもあるね。採択結果やプロジェクト内容が後日公開されるかどうかも、追ってみたいところ。</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.nrta.gov.cn/art/2026/7/8/art_113_73658.html" target="_blank" rel="noopener">国家广播电视总局</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 7 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-news">NEWS</span>
+      <span class="chip cat">映画</span>
+      <span class="chip conf conf-c">確度C</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">映画『手捧繁星』、北京で専門家検討会—深圳の新疆支援物語を描く</a></h2>
+    <p class="clead">深圳による新疆支援の実話を基にした映画『手捧繁星』の専門家観賞・検討会が2026年7月3日に北京で開催された。監督は寧敬武。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip zero"><i class="dot d-of"></i>公式 0</span>
+      <span class="pip"><i class="dot d-md"></i>媒体 1</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>映画『手捧繁星』の専門家観賞・検討会が2026年7月3日に北京で開催された。本作は寧敬武が脚本・監督を務め、深圳の新疆支援（援疆）の実話を基にしている。10年にわたる教師と生徒の相互成長物語を通じて、内陸部による新疆支援15年の成果を描く。中宣部映画局副局長の秦振貴は「真情から深情へ」など3つの転換を実現したと評価。中国電影資料館副館長の陸亮は、喀什古城やパミール高原での撮影や二重の物語線（双线叙事）の手法を紹介した。監督は、新疆の美しい風景を描き、『私の阿勒泰』に続く癒し系新疆題材の指標を目指すと述べた。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>この作品、深圳発の新疆支援物語ってところがポイントだね！しかもソーシャルワーカー（社工）を題材にした映画は珍しいみたい。ただ、検討会の出席者は官製の関係者が中心で、一般のSNSでの反応はまだ見えない。今後、公開後の観客の口コミや興行成績が、この手の政策テーマ作品がどれだけ大衆に届くかの指標になりそう。</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>新疆を舞台にした癒し系映画として『私の阿勒泰』の流れを汲むらしいけど、あっちはドラマで話題になったからね。映画としての勝負どころは、美しい映像だけじゃなく、物語がちゃんと響くかどうかだと思うよ！</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.1905.com/news/20260706/1762558.shtml" target="_blank" rel="noopener">1905电影网 新闻</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 8 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-news">NEWS</span>
+      <span class="chip cat">配信・プラットフォーム</span>
+      <span class="chip conf conf-c">確度C</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">2026年夏、中国配信市場で現偶と古偶が拮抗</a></h2>
+    <p class="clead">2026年夏の中国配信市場で、現代偶像劇（現偶）と古装偶像劇（古偶）が同時期に投入され、市場の反応が試されている。新浪娯楽の分析によれば、今年の夏は「分散型」の番組編成が特徴で、従来の古偶一辺倒から変化が見られる。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip zero"><i class="dot d-of"></i>公式 0</span>
+      <span class="pip"><i class="dot d-md"></i>媒体 1</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>2026年夏の中国配信市場では、現代偶像劇（現偶）と古装偶像劇（古偶）が同時期に投入され、市場の反応が試されている。7月第1週に放送されたのは古偶『百花殺』のみで、7月11日には古偶『雀骨』が公開日決定。7月末には古偶『江山為聘』、8月には現偶『来戦』の放送が予定されている。また、民国時代劇『這一秒過火』が2プラットフォーム同時放送される。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>今年の夏は、前年まで古偶が独占していた夏の配信枠に、現偶や民国劇など多ジャンルが混ざる「分散態」が特徴だね！新浪娯楽は、業界の緊縮で古偶の高コストリスクが顕在化し、視聴者のマンネリ化も進んでいるから、現偶で夏を開けるのは新しい試みだと見ているよ。どの作品が数字を残すか、特に現偶『来戦』の反応が注目ポイントだね！</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>古偶のテンプレート化に視聴者が飽きているという指摘は、中国エンタメのトレンド変化を感じさせるね。現偶が夏の主役になれるか、今後の数字を追いたいところだよ！</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://k.sina.com.cn/article_5737990122_15602c7ea04001az1s.html?from=ent&amp;subch=oent" target="_blank" rel="noopener">新浪娱乐</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 9 -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-official">OFFICIAL</span>
+      <span class="chip cat">映画</span>
+      <span class="chip conf conf-a">確度A</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/6</span>
+    </div>
+    <h2 class="ctitle"><a href="#">第28回上海国際映画祭閉幕、420作品超上映で「文明の相互参照」を体現</a></h2>
+    <p class="clead">第28回上海国際映画祭が6月28日に閉幕。17日間の会期で420作品以上が上映され、観客動員45万人超、経済波及効果は53億元に上った。国際的な作品交流と「文明の相互参照」がテーマとなった。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip"><i class="dot d-of"></i>公式 1</span>
+      <span class="pip zero"><i class="dot d-md"></i>媒体 0</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+      <span class="warnbadge">⚠ 公式発表のみ・裏付けなし</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>第28回上海国際映画祭（SIFF）は6月28日深夜、17日間の展映を終了した。全球125の国・地域から約4100作品が応募。展映では420作品以上が1600回以上上映され、観客動員は45万人超、開票15分で25万枚が売れた。金爵賞（上海国際映画祭の最高賞）には49作品がノミネートされ、うち41作品が全球首映（ワールドプレミア）。中国作品『大西洋』が最優秀作品賞、モロッコ作品『ハリーマ』が監督賞・女優賞を受賞した。今年は「中巴文化年」（中国とブラジルの文化交流年）にあたり、ブラジル政府は過去最大の映画産業代表団を派遣。また、上海ディズニー開園10周年と『トイ・ストーリー5』全球公開が重なった。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>今回の上影節、数字だけ見ても規模が大きいね。特に全球首映率82%ってのは、単なる上映会じゃなくて新作発表の場としての存在感が増してる証拠。あと、ブラジル代表団の規模拡大や「一带一路」映画週のテーマ「万里同屏」からも、中国が映画を通じてどう国際関係を築こうとしているかが透けて見える。今後は、こうした映画祭が実際に作品の国際流通や合作にどれだけ結びつくか、数字を追いたいところ。</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>上影節が単なる映画祭じゃなくて、文化外交のプラットフォームになってるのがよくわかる回だったね。特にブラジルとの連携強化は、今後の合作映画増加の布石かもしれない。</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.chinafilm.gov.cn/xwzx/hyzx/202607/t20260707_998015.html" target="_blank" rel="noopener">国家电影局</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <!-- card 10（既知課題: タイトル未設定） -->
+  <article class="card">
+    <div class="card-top">
+      <span class="chip t-official">OFFICIAL</span>
+      <span class="chip cat">映画</span>
+      <span class="chip conf conf-a">確度A</span>
+      <span class="fresh fresh-recent">数日内</span>
+      <span class="cdate">2026/7</span>
+    </div>
+    <h2 class="ctitle"><a href="#">タイトル未設定</a></h2>
+    <p class="clead">2026年7月6日、中国外交部が74の駐中国大使館と8つの地域・国際組織の外交官約150人を招待し、映画『给阿嬷的情书』を鑑賞するイベントを開催した。</p>
+    <div class="srcmix">
+      <span class="mixlabel">ソース構成</span>
+      <span class="pip"><i class="dot d-of"></i>公式 1</span>
+      <span class="pip zero"><i class="dot d-md"></i>媒体 0</span>
+      <span class="pip zero"><i class="dot d-sn"></i>SNS 0</span>
+      <span class="pip zero"><i class="dot d-dt"></i>データ 0</span>
+      <span class="warnbadge">⚠ 公式発表のみ・裏付けなし</span>
+    </div>
+    <details class="deep">
+      <summary>しっかり読む</summary>
+      <div class="deep-body">
+        <h3>何が起きた？</h3>
+        <p>2026年7月6日、外交部は74の駐中国大使館と8つの地域・国際組織の駐中国使節・外交官約150人を招待し、映画『给阿嬷的情书』を鑑賞した。外交部部长助理洪磊が出席し挨拶、国家电影局常务副局长毛羽も出席した。招待された国にはインドネシア、タイ、エジプト、アラブ首長国連邦、カメルーン、セルビア、アイルランド、ペルー、ニュージーランドなどが含まれる。駐中国使節らは映画の主創チームと記念撮影を行った。この情報は2026年7月10日に国家电影局のウェブサイトで公開された。</p>
+      </div>
+    </details>
+    <div class="bubble">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">ミーシュ<span class="b-role">秘書の注目ポイント</span></div>
+        <p>外交部がこれだけ大規模に駐中国外交官を映画鑑賞に招待するのは、この作品を文化外交のツールとして位置づけている証拠だね！今後、この映画が海外配信や国際映画祭でどう扱われるか、また他の国での上映イベントが続くかどうかを追うと、中国のソフトパワー戦略の一端が見えてくるかも。</p>
+      </div>
+    </div>
+    <div class="bubble bubble-mini">
+      <div class="b-avatar">🐼</div>
+      <div class="b-body">
+        <div class="b-name">秘書からのひとこと</div>
+        <p>国家电影局が公式に発表しているから、かなり正式なイベントだったみたいだよ。招待国に東南アジアや中東、アフリカが含まれているのも気になるね。</p>
+      </div>
+    </div>
+    <div class="card-foot">
+      <p class="csources">ソース: <a href="https://www.chinafilm.gov.cn/xwzx/gzdt/202607/t20260710_998385.html" target="_blank" rel="noopener">国家电影局</a></p>
+      <a class="share-x" href="#" aria-label="Xでシェア"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Xでシェア</a>
+    </div>
+  </article>
+
+  <footer class="m-legend">
+    <div>凡例:
+      <span class="chip t-official">OFFICIAL</span><span class="chip t-news">NEWS</span><span class="chip t-data">DATA</span> 種別 ／
+      <span class="chip conf conf-a">確度A</span> 金縁 <span class="chip conf conf-b">確度B</span> 銀縁 <span class="chip conf conf-c">確度C</span> グレー ／
+      <span class="fresh fresh-today">本日</span><span class="fresh fresh-recent">数日内</span> 鮮度
+    </div>
+    <div>ソース構成:
+      <span class="pip"><i class="dot d-of"></i>公式</span>
+      <span class="pip"><i class="dot d-md"></i>媒体</span>
+      <span class="pip"><i class="dot d-sn"></i>SNS</span>
+      <span class="pip"><i class="dot d-dt"></i>データ</span> ／
+      <span class="warnbadge">⚠ 公式発表のみ・裏付けなし</span> は公式1・媒体0・SNS0・データ0 のカードに必ず付与
+    </div>
+  </footer>
+
+</div>
+</div>
+
+<div class="todo-box">⚠ モックの既知課題: 最後のカードの見出し「タイトル未設定」は実データそのままの表示（加工していない）。タイトル未設定が出る生成バグはパイプライン側の既知課題で、<strong>4a 前に修正</strong>する（§10 未決事項参照）。</div>
+
+<p class="muted">補足: この日の実データに「反応・見られ方」「日本語圏では見えにくいポイント」セクションは存在しないため、モックにも表示していない（存在する日のみレンダリング＝捏造しない、§7 のガードレール準拠）。公式のみ（公式1・媒体0・SNS0・データ0）のカード4本には琥珀の警告バッジを表示している。Xシェアリンクはモックのためダミー（<code>href="#"</code>）。</p>
+
+<!-- ================= §10 未決事項・TODO ================= -->
+<h2 id="sec10">10. 未決事項・TODO</h2>
+
+<ul>
+  <li>サイト名・キャラ名の最終決定（§6 の4案から）</li>
+  <li>X API 従量課金の単価・URL付き投稿の課金条件を Developer Console で一次確認</li>
+  <li>「タイトル未設定」記事が出る生成バグの修正（4a 前・パイプライン側）</li>
+  <li>独自ドメインの要否（MVP は <code>*.github.io</code> で開始可）</li>
+  <li>OGP画像の生成方式（4b。SVGテンプレ→PNG化にはツール依存が発生する点に注意）</li>
+  <li>秘書アバターの絵（当面は絵文字で代用）</li>
+  <li>fact_ledger JSON が Actions の artifact アップロード対象外になっている件（data/ コミット化で同時に解消）</li>
+</ul>
+
+<div class="doc-foot">中国エンタメニュース Phase 4 設計 — サイト化＋X bot化 ／ 2026-07-14 ／ 設計案（実装前）。§9 のモックは 2026-07-13 の deepseek 実生成データを一字も変えずに使用。ブランドは A 案の仮置き。</div>
+
+</div>
+</div>
