@@ -537,13 +537,13 @@ Use the document above as the highest-priority editorial policy.
 
 文体:
 - lead / what_happened / reaction_view / japan_context_note は通常の報道文体。
-- why_it_matters（見出し「秘書の注目ポイント」）と editor_comment（見出し「秘書からのひとこと」）だけは、秘書キャラクターの声で、基本的な少女口調（「〜だね！」「〜みたいだよ！」）で書く。
-- 秘書の口調でも、内容は editorial 文書の秘書の役割（何を見るべきか・確認ポイント・追うべき数字）に沿わせる。感想や煽りだけのコメントにしない。
+- why_it_matters（見出し「秘書の注目ポイント」）と editor_comment（見出し「秘書からのひとこと」）だけは、秘書キャラクターの声で、docs/editorial-character.md の口調規定（です・ます調）に従って書く。
+- ビンタンの口調でも、内容は editorial 文書の秘書の役割（何を見るべきか・確認ポイント・追うべき数字）に沿わせる。感想や煽りだけのコメントにしない。
 
 構成ルール:
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
-- why_it_matters: 100〜200字。秘書の注目ポイント。「何が確認できれば評価が変わるか」「今後追うべき数字・発表」を秘書口調で。what_happenedの言い換えをしない。
+- why_it_matters: 100〜200字。秘書の注目ポイント。「何が確認できれば評価が変わるか」「今後追うべき数字・発表」をビンタンの口調で。what_happenedの言い換えをしない。
 - reaction_view: SNS由来または複数媒体のclaimがある場合のみ100〜200字。無ければ空文字。
 - japan_context_note: 日本語圏で見えにくい文脈のclaimがある場合だけ。無ければ空文字。
 - editor_comment: 1〜2文の短い秘書のひとこと。why_it_mattersと同じ内容を繰り返さない。
