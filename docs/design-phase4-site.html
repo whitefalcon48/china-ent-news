@@ -159,6 +159,8 @@
 <h1><span class="h1-lead">中国エンタメニュース Phase 4 設計</span><br>— サイト化＋X bot化</h1>
 <p class="doc-meta">日付 <b>2026-07-14</b> ／ ステータス: <b>設計案（実装前）</b> ／ 前提: <b>Phase 3a 記事品質が合格ライン到達</b></p>
 
+<div class="todo-box">2026-07-16 更新: キャラクター・サイト名は確定（冰糖（ビンタン）／冰糖日报）。<strong>UI実装の正本は docs/design-phase4a-bingtang-ui.md</strong>。本書はアーキテクチャ・データ対応・X bot・段階導入の正本として引き続き有効。</div>
+
 <div class="tldr">
   <div class="tldr-label">TL;DR</div>
   <ul>
@@ -346,7 +348,7 @@
 
 <h3>投稿テンプレート</h3>
 <p>日次ダイジェスト（全角140字以内厳守・CJKは2字換算で280上限）:</p>
-<pre><code>🐼 今日の中国エンタメ｜7/13
+<pre><code>🧊 今日の中国エンタメ｜7/13
 ・『功夫女足』公開半日で興収1億元突破
 ・「微短劇の夜」AI活用と出海が焦点
 ・林志炫、60歳で新ツアー「耳順」発表
@@ -455,6 +457,8 @@ https://{site}/archive/2026-07-13/</code></pre>
 
 <!-- ================= §6 キャラ・ブランディング候補 ================= -->
 <h2 id="sec6">6. キャラ・ブランディング候補（4案・ユーザーが後日選定）</h2>
+
+<div class="todo-box">確定済み（2026-07-15/16）: キャラ=冰糖（ビンタン）／サイト名=冰糖日报（ビンタンちゃんデイリー）／外見= docs/assets/bingtang-character-final-reference.png（氷青×山査子レッド）。以下の4案と「A案推奨」は<strong>検討履歴</strong>。確定内容の正本は docs/design-phase4-character.md、UI展開は docs/design-phase4a-bingtang-ui.md。</div>
 
 <div class="nameplates">
   <div class="plate plate-rec">
@@ -591,6 +595,7 @@ https://{site}/archive/2026-07-13/</code></pre>
   <li>表示は「標準」段階。「何が起きた？」は各カードの「しっかり読む ▾」で開閉（JS不要の <code>&lt;details&gt;</code>）</li>
   <li>並び順は md の掲載順のまま（publish_priority 順で出力済み）</li>
   <li>ブランドは A 案（🐼 ミーシュちゃんニュース）の仮置き</li>
+  <li><strong>2026-07-16 注記</strong>: 本モックは旧A案（ミーシュ／パンダ／朱紅×生成り／1列・カード内展開）時点の<strong>歴史的記録</strong>。確定ブランド（冰糖日报／氷青×紅／写真なし2列カード→個別ページ）の実装仕様は docs/design-phase4a-bingtang-ui.md を正とする</li>
 </ul>
 
 <div class="mockframe">
@@ -1085,12 +1090,12 @@ https://{site}/archive/2026-07-13/</code></pre>
 <h2 id="sec10">10. 未決事項・TODO</h2>
 
 <ul>
-  <li>サイト名・キャラ名の最終決定（§6 の4案から）</li>
+  <li><s>サイト名・キャラ名の最終決定</s> → 確定済み（冰糖日报／冰糖（ビンタン）。docs/design-phase4-character.md）。残: Xハンドル・商標・ドメインの一次確認</li>
   <li>X API 従量課金の単価・URL付き投稿の課金条件を Developer Console で一次確認</li>
   <li><s>「タイトル未設定」記事が出る生成バグの修正（4a 前・パイプライン側）</s> — 2026-07-16 修正済み</li>
   <li>独自ドメインの要否（MVP は <code>*.github.io</code> で開始可）</li>
   <li>OGP画像の生成方式（4b。SVGテンプレ→PNG化にはツール依存が発生する点に注意）</li>
-  <li>秘書アバターの絵（当面は絵文字で代用）</li>
+  <li><s>秘書アバターの絵</s> → 確定（docs/assets/bingtang-character-final-reference.png）。公開用素材化は docs/design-phase4a-bingtang-ui.md §7 の仕様で実施</li>
   <li>fact_ledger JSON が Actions の artifact アップロード対象外になっている件（data/ コミット化で同時に解消）</li>
 </ul>
 
