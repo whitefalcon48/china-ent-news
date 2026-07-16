@@ -3,6 +3,7 @@ import path from "node:path";
 import { ClaimCheckDiscardError, removeGatedViolationSentences, runClaimCheck } from "./claimCheck.js";
 import { extractFactLedger } from "./factLedger.js";
 import { consumeLlmCall, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
+import { resolveSummaryTitle } from "./summaryTitle.js";
 import type {
   AiProvider,
   ArticleType,
@@ -591,7 +592,7 @@ function extractJsonText(value: string) {
 
 function normalizeSummary(value: Partial<SummarizedArticle>): SummarizedArticle {
   return {
-    title_ja: value.title_ja || "タイトル未設定",
+    title_ja: resolveSummaryTitle(value.title_ja),
     badge: normalizeBadge(value.badge),
     lead: value.lead || "",
     what_happened: value.what_happened || "",
@@ -646,6 +647,7 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
   const relatedSources = article.relatedSources?.length ? article.relatedSources : [{ name: article.sourceName, url: article.url }];
   return {
     ...summary,
+    title_ja: resolveSummaryTitle(summary.title_ja, article.title),
     badge: summary.badge === "NEWS" && article.badge && article.badge !== "NEWS" ? article.badge : summary.badge || article.badge || "NEWS",
     source_type:
       summary.source_type === "media_report" && article.sourceType && article.sourceType !== "media_report"
@@ -696,6 +698,7 @@ function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCand
     : summary.source_type;
   return {
     ...summary,
+    title_ja: resolveSummaryTitle(summary.title_ja, topic.title_hint, representative?.title, topic.event_sentence),
     badge: summary.badge === "NEWS" && representative?.badge && representative.badge !== "NEWS" ? representative.badge : summary.badge,
     source_type: sourceType,
     published_date: summary.published_date || representative?.publishedDate || topic.published_date_range.latest,

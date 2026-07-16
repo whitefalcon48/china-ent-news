@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { resolveSummaryTitle } from "./summaryTitle.js";
 import type { AiProvider, ProcessedArticle } from "./types.js";
 
 export async function renderMarkdownFile(articles: ProcessedArticle[], provider: AiProvider, date = today()) {
@@ -35,7 +36,7 @@ function renderArticle(article: ProcessedArticle, index: number) {
     return "";
   }
 
-  const title = summary.title_ja || raw.title;
+  const title = resolveSummaryTitle(summary.title_ja, raw.title);
   const sources = summary.source_list.length ? summary.source_list : [{ name: raw.sourceName, url: raw.url }];
   const freshness = formatFreshness(summary.event_date || summary.published_date, summary.freshness_label);
   const sections = [

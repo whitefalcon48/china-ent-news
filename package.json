@@ -8,6 +8,7 @@
     "start": "tsx src/index.ts",
     "test:gemini": "tsx src/testGemini.ts",
     "test:deepseek": "tsx src/testDeepSeek.ts",
+    "test:title": "tsx src/testSummaryTitle.ts",
     "check": "tsc --noEmit",
     "audit:sources": "tsx src/auditSources.ts"
   },
