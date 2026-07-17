@@ -1,6 +1,8 @@
 name: generate-news
 
 on:
+  schedule:
+    - cron: "0 1 * * *"
   workflow_dispatch:
     inputs:
       provider:
@@ -12,9 +14,21 @@ on:
           - gemini
           - deepseek
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   generate-news:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
@@ -32,7 +46,7 @@ jobs:
       - name: Generate news Markdown
         run: npm run start
         env:
-          AI_PROVIDER: ${{ inputs.provider }}
+          AI_PROVIDER: ${{ inputs.provider || 'deepseek' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash-lite
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -41,20 +55,81 @@ jobs:
       - name: Upload generated Markdown
         uses: actions/upload-artifact@v4
         with:
-          name: generated-news-markdown-${{ inputs.provider }}
+          name: generated-news-markdown-${{ inputs.provider || 'deepseek' }}
           path: output/*.md
           if-no-files-found: error
 
       - name: Upload selection trace
         uses: actions/upload-artifact@v4
         with:
-          name: selection-trace-${{ inputs.provider }}
+          name: selection-trace-${{ inputs.provider || 'deepseek' }}
           path: output/selection_trace_*.json
           if-no-files-found: error
 
       - name: Upload topic candidates
         uses: actions/upload-artifact@v4
         with:
-          name: topic-candidates-${{ inputs.provider }}
+          name: topic-candidates-${{ inputs.provider || 'deepseek' }}
           path: output/topic_candidates_*.json
           if-no-files-found: error
+
+      - name: Persist daily data
+        id: persist
+        run: npm run persist:data
+
+      - name: Commit daily data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "Daily data is already committed."
+          else
+            git commit -m "Archive news data ${{ steps.persist.outputs.date }}"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
+
+      - name: Build static site
+        run: npm run build:site
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+          SITE_BASE_PATH: /${{ github.event.repository.name }}
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Check X daily digest
+        run: npm run post:x
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+          SITE_BASE_PATH: /${{ github.event.repository.name }}
+          POST_DATE: ${{ steps.persist.outputs.date }}
+
+      - name: Upload X post texts
+        uses: actions/upload-artifact@v4
+        with:
+          name: x-post-texts
+          path: output/x_posts_*.md
+          if-no-files-found: error
+
+      - name: Post X daily digest
+        if: ${{ vars.X_POSTING_ENABLED == 'true' }}
+        run: npm run post:x
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+          SITE_BASE_PATH: /${{ github.event.repository.name }}
+          POST_DATE: ${{ steps.persist.outputs.date }}
+          X_POST_LIVE: "true"
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}

@@ -3,3 +3,5 @@ node_modules/
 *.log
 output/*.md
 output/*.json
+dist/
+scratchpad/phase4a-*/

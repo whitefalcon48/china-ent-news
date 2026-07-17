@@ -10,7 +10,10 @@
     "test:deepseek": "tsx src/testDeepSeek.ts",
     "test:title": "tsx src/testSummaryTitle.ts",
     "check": "tsc --noEmit",
-    "audit:sources": "tsx src/auditSources.ts"
+    "audit:sources": "tsx src/auditSources.ts",
+    "build:site": "tsx src/site/build.ts",
+    "persist:data": "tsx src/site/persistData.ts",
+    "post:x": "tsx src/site/postToX.ts"
   },
   "dependencies": {
     "cheerio": "^1.0.0",

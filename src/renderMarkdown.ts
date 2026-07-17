@@ -10,14 +10,25 @@ export async function renderMarkdownFile(articles: ProcessedArticle[], provider:
   return outputPath;
 }
 
-function renderMarkdown(articles: ProcessedArticle[], date: string, provider: AiProvider) {
+export async function writeArticlesJsonFile(articles: ProcessedArticle[], date = today()) {
+  const outputPath = path.resolve("output", `articles_${date}.json`);
+  await fs.mkdir(path.dirname(outputPath), { recursive: true });
+  await fs.writeFile(outputPath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
+  return outputPath;
+}
+
+export function getPublishableArticles(articles: ProcessedArticle[]) {
   const priorityRank = { high: 0, medium: 1, low: 2 } as const;
-  const publishableArticles = articles
+  return articles
     .filter((article) => article.summary)
     .sort((left, right) => {
       const priorityDifference = priorityRank[left.summary?.publish_priority ?? "medium"] - priorityRank[right.summary?.publish_priority ?? "medium"];
       return priorityDifference || (right.summary?.newsworthiness_score ?? 0) - (left.summary?.newsworthiness_score ?? 0);
     });
+}
+
+function renderMarkdown(articles: ProcessedArticle[], date: string, provider: AiProvider) {
+  const publishableArticles = getPublishableArticles(articles);
   const body = publishableArticles.length
     ? publishableArticles.map((article, index) => renderArticle(article, index + 1)).join("\n\n")
     : "今日は出力できる記事がありませんでした。\n";

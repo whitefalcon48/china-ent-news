@@ -7,7 +7,7 @@ import { expandTopicSources } from "./expandSources.js";
 import { ClaimCheckDiscardError } from "./claimCheck.js";
 import { writeFactLedgerFile } from "./factLedger.js";
 import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError } from "./llmCallBudget.js";
-import { renderMarkdownFile } from "./renderMarkdown.js";
+import { renderMarkdownFile, writeArticlesJsonFile } from "./renderMarkdown.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle, summarizeTopic } from "./summarizeWithGemini.js";
 import { buildTopicCandidates, writeTopicCandidatesFile } from "./topicCandidates.js";
@@ -273,6 +273,7 @@ async function main() {
       }))
   );
   const outputPath = await renderMarkdownFile(processed, provider);
+  const articlesJsonPath = await writeArticlesJsonFile(processed);
   const nonOfficialSourceDiagnostics = buildNonOfficialSourceDiagnostics(
     sources,
     diagnostics,
@@ -333,6 +334,7 @@ async function main() {
   console.log(`- AI処理した記事数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- 最終出力件数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- Markdown出力先: ${outputPath}`);
+  console.log(`- Articles JSON: ${articlesJsonPath}`);
   console.log(`- Topic candidates: ${topicCandidatesPath}`);
   console.log(`- Fact ledger: ${factLedgerPath}`);
   console.log(`- Selection trace: ${tracePath}`);
