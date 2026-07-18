@@ -1,7 +1,8 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { readReviewState, writeReviewState } from "./reviewState.js";
+import { pathToFileURL } from "node:url";
+import { readOrCreateStoredReviewState, writeReviewState } from "./reviewState.js";
 import type { ProcessedArticle, ReviewState, SourceRef } from "../types.js";
 
 export function buildReviewIssueBody(state: ReviewState, articles: ProcessedArticle[]) {
@@ -47,14 +48,15 @@ async function main() {
   const date = process.env.REVIEW_DATE || await latestDate(dataDir);
   const directory = path.join(dataDir, date);
   const reviewPath = path.join(directory, "review.json");
-  const state = await readReviewState(reviewPath);
+  const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
+  if (!articleFile) throw new Error(`articles JSON not found: ${directory}`);
+  const articles = JSON.parse(await fs.readFile(path.join(directory, articleFile), "utf8")) as ProcessedArticle[];
+  const { state, created } = await readOrCreateStoredReviewState(reviewPath, articles, date);
+  if (created) console.log(`review state bootstrap: ${reviewPath} (${state.articles.length} articles)`);
   if (state.issue_number > 0 && process.env.RECREATE_REVIEW_ISSUE !== "true") {
     console.log(`review issue: #${state.issue_number} already exists`);
     return;
   }
-  const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
-  if (!articleFile) throw new Error(`articles JSON not found: ${directory}`);
-  const articles = JSON.parse(await fs.readFile(path.join(directory, articleFile), "utf8")) as ProcessedArticle[];
   const body = buildReviewIssueBody(state, articles);
   const scratch = path.join(directory, ".review-issue-body.md");
   await fs.writeFile(scratch, body, "utf8");
@@ -82,7 +84,7 @@ function formatSource(source: SourceRef) {
   return source.url ? `[${source.name}](${source.url})` : source.name;
 }
 
-if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1].replace(/\\/g, "/")}`).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   main().catch((error) => {
     console.warn(`review issue warning: ${error instanceof Error ? error.message : String(error)}`);
   });

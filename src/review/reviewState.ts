@@ -6,11 +6,22 @@ import type { ProcessedArticle, ReviewState } from "../types.js";
 
 export function createReviewState(articles: ProcessedArticle[], date = today()): ReviewState {
   const publishable = getPublishableArticles(articles);
+  return createReviewStateFromOrderedArticles(publishable, date);
+}
+
+export function createReviewStateFromStoredArticles(articles: ProcessedArticle[], date: string): ReviewState {
+  if (articles.some((article) => !article.summary)) {
+    throw new Error(`Cannot bootstrap review.json: stored articles for ${date} contain unpublished entries`);
+  }
+  return createReviewStateFromOrderedArticles(articles, date);
+}
+
+function createReviewStateFromOrderedArticles(articles: ProcessedArticle[], date: string): ReviewState {
   return {
     date,
     status: "pending",
     issue_number: 0,
-    articles: publishable.map((article, position) => ({
+    articles: articles.map((article, position) => ({
       index: position + 1,
       topic_key: article.summary?.topic_key || article.topic?.topic_key || article.raw.topicKey || "",
       title: resolveSummaryTitle(article.summary?.title_ja || "", article.raw.title),
@@ -20,6 +31,17 @@ export function createReviewState(articles: ProcessedArticle[], date = today()):
       revision_count: 0
     }))
   };
+}
+
+export async function readOrCreateStoredReviewState(filePath: string, articles: ProcessedArticle[], date: string) {
+  try {
+    return { state: await readReviewState(filePath), created: false };
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    const state = createReviewStateFromStoredArticles(articles, date);
+    await writeReviewState(filePath, state);
+    return { state, created: true };
+  }
 }
 
 export async function writeInitialReviewState(articles: ProcessedArticle[], date = today(), outputDir = "output") {
