@@ -1,9 +1,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { ClaimCheckDiscardError, removeGatedViolationSentences, runClaimCheck } from "./claimCheck.js";
+import { ClaimCheckDiscardError, removeGatedViolationSentences, runClaimCheck, runCommentCheck, sanitizeExclamations } from "./claimCheck.js";
 import { extractFactLedger } from "./factLedger.js";
-import { consumeLlmCall, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
+import { consumeLlmCall, hasLlmBudgetRemaining, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { resolveSummaryTitle } from "./summaryTitle.js";
+import { applyTerminology, formatTerminologyForPrompt } from "./terminology.js";
+import { getToneMode } from "./toneMode.js";
 import type {
   AiProvider,
   ArticleType,
@@ -45,7 +47,7 @@ async function loadEditorialCharacter() {
 
 export async function summarizeArticle(article: RawArticle, provider = getAiProvider(), budget?: LlmCallBudget): Promise<SummarizedArticle> {
   const text = await generateJson(provider, await buildPrompt(article), budget);
-  return mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article);
+  return applyTerminology(mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article));
 }
 
 export async function summarizeTopic(
@@ -57,7 +59,7 @@ export async function summarizeTopic(
   if (process.env.FACT_LEDGER === "false") {
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
     return {
-      summary: mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence),
+      summary: await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)),
       meta: {
         topic_key: topic.topic_key,
         ledger_used: false,
@@ -73,7 +75,7 @@ export async function summarizeTopic(
     }
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
     return {
-      summary: mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence),
+      summary: await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)),
       meta: {
         topic_key: topic.topic_key,
         ledger_used: false,
@@ -84,7 +86,7 @@ export async function summarizeTopic(
 
   const ledger = extraction.ledger;
   let text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger), budget);
-  let summary = normalizeSummary(parseJsonFromModelText(text));
+  let summary = await applyTerminology(normalizeSummary(parseJsonFromModelText(text)));
   let claimCheck = runClaimCheck(summary, ledger);
 
   if (claimCheck.gated_violation_count > 0) {
@@ -93,7 +95,7 @@ export async function summarizeTopic(
     if (claimCheck.gated_violation_count > 0) {
       const gatedViolations = claimCheck.violations.filter((violation) => violation.severity === "gate");
       text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, gatedViolations), budget);
-      summary = normalizeSummary(parseJsonFromModelText(text));
+      summary = await applyTerminology(normalizeSummary(parseJsonFromModelText(text)));
       claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
       if (claimCheck.gated_violation_count > 0) {
         claimCheck = { ...claimCheck, action: "discarded" };
@@ -102,15 +104,123 @@ export async function summarizeTopic(
     }
   }
 
+  const toneMode = getToneMode(topic, ledger);
+  const originalComments = { why_it_matters: summary.why_it_matters, editor_comment: summary.editor_comment, refs: summary.claim_refs.why_it_matters };
+  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters + summary.editor_comment) };
+  if (process.env.COMMENT_STAGE === "false") {
+    commentStage.fallback_reason = "comment_stage_disabled_env";
+  } else if (budget && !hasLlmBudgetRemaining(budget)) {
+    commentStage.fallback_reason = "llm_call_budget_exhausted";
+  } else {
+    commentStage.attempted = true;
+    try {
+      let comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget);
+      let commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
+      if (commentViolations.some((violation) => violation.severity === "gate" || violation.rule === "tone_exclamation")) {
+        commentStage.regenerated = true;
+        comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, commentViolations);
+        commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
+      }
+      const gated = commentViolations.filter((violation) => violation.severity === "gate");
+      if (gated.length) {
+        comments.why_it_matters = removeCommentViolationSentences(comments.why_it_matters, gated);
+        comments.editor_comment = removeCommentViolationSentences(comments.editor_comment, gated);
+      }
+      if (!comments.why_it_matters.trim()) {
+        Object.assign(comments, originalComments);
+        commentStage.fallback_reason = "comment_gate_removed_why_it_matters";
+      } else {
+        commentStage.used = true;
+      }
+      summary.why_it_matters = sanitizeExclamations(comments.why_it_matters, toneMode);
+      summary.editor_comment = sanitizeExclamations(comments.editor_comment, toneMode);
+      summary.claim_refs.why_it_matters = comments.refs;
+      const finalCommentViolations = runCommentCheck(summary.why_it_matters, summary.editor_comment, ledger, topic, toneMode);
+      claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
+      commentStage.exclamation_count = countExclamations(summary.why_it_matters + summary.editor_comment);
+    } catch (error) {
+      summary.why_it_matters = originalComments.why_it_matters;
+      summary.editor_comment = originalComments.editor_comment;
+      summary.claim_refs.why_it_matters = originalComments.refs;
+      commentStage.fallback_reason = error instanceof LlmCallBudgetExceededError ? "llm_call_budget_exhausted" : `comment_stage_failed:${describeError(error)}`;
+    }
+  }
+
   return {
-    summary: mergeTopicInternalMetadata(summary, topic, evidence),
+    summary: await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)),
     meta: {
       topic_key: topic.topic_key,
       ledger_used: true,
       ledger_fallback_reason: "",
       ledger,
-      claim_check: claimCheck
+      claim_check: claimCheck,
+      tone_mode: toneMode,
+      comment_stage: commentStage
     }
+  };
+}
+
+export function formatReviewInstruction(comment: string) {
+  return `運営者（Falさん）からの修正指示があります。次の指示を反映して書き直してください:
+${comment}
+ただし、事実台帳に無い情報を足さないこと・禁止事項を破らないことを最優先し、指示がこれらと矛盾する場合は矛盾しない範囲でのみ反映してください。`;
+}
+
+export async function reviseTopicFromSavedData(
+  topic: TopicCandidate,
+  evidence: RawArticle[],
+  ledger: FactLedger | null,
+  comment: string,
+  provider: AiProvider = getAiProvider(),
+  budget?: LlmCallBudget,
+  existingSummary?: SummarizedArticle,
+  commentOnly = false
+): Promise<{ summary: SummarizedArticle; meta: TopicGenerationMeta }> {
+  const instruction = formatReviewInstruction(comment);
+  if (!ledger) {
+    const text = await generateJson(provider, `${await buildTopicPrompt(topic, evidence)}\n\n${instruction}`, budget);
+    return {
+      summary: await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)),
+      meta: { topic_key: topic.topic_key, ledger_used: false, ledger_fallback_reason: "review_saved_ledger_missing" }
+    };
+  }
+  let summary: SummarizedArticle;
+  if (commentOnly && existingSummary) {
+    summary = { ...existingSummary, claim_refs: { ...existingSummary.claim_refs } };
+  } else {
+    const text = await generateJson(provider, `${await buildLedgerWritingPrompt(topic, ledger)}\n\n${instruction}`, budget);
+    summary = await applyTerminology(normalizeSummary(parseJsonFromModelText(text)));
+  }
+  let claimCheck = runClaimCheck(summary, ledger);
+  if (claimCheck.gated_violation_count > 0) {
+    summary = removeGatedViolationSentences(summary, claimCheck.violations);
+    claimCheck = { ...runClaimCheck(summary, ledger), action: "text_removed" };
+  }
+  if (claimCheck.gated_violation_count > 0) {
+    throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
+  }
+  const toneMode = getToneMode(topic, ledger);
+  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters + summary.editor_comment) };
+  if (process.env.COMMENT_STAGE !== "false" && (!budget || hasLlmBudgetRemaining(budget))) {
+    commentStage.attempted = true;
+    const comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, [], instruction);
+    const violations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
+    if (violations.some((violation) => violation.severity === "gate")) {
+      const retry = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, violations, instruction);
+      Object.assign(comments, retry);
+      commentStage.regenerated = true;
+    }
+    summary.why_it_matters = sanitizeExclamations(comments.why_it_matters, toneMode);
+    summary.editor_comment = sanitizeExclamations(comments.editor_comment, toneMode);
+    summary.claim_refs.why_it_matters = comments.refs;
+    commentStage.used = true;
+    commentStage.exclamation_count = countExclamations(summary.why_it_matters + summary.editor_comment);
+  } else {
+    commentStage.fallback_reason = process.env.COMMENT_STAGE === "false" ? "comment_stage_disabled_env" : "llm_call_budget_exhausted";
+  }
+  return {
+    summary: await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)),
+    meta: { topic_key: topic.topic_key, ledger_used: true, ledger_fallback_reason: "", ledger, claim_check: claimCheck, tone_mode: toneMode, comment_stage: commentStage }
   };
 }
 
@@ -516,38 +626,47 @@ async function buildLedgerWritingPrompt(
   violations: ClaimCheckViolation[] = []
 ) {
   const editorialCharacter = await loadEditorialCharacter();
+  const terminology = await formatTerminologyForPrompt();
   const violationInstruction = violations.length
     ? `\n\n前回の出力に次の禁止表現が含まれていました。該当の内容を含めずに書き直してください:\n${violations.map((violation) => `${violation.rule}: ${violation.detail}`).join("\n")}`
     : "";
 
-  return `あなたは中国エンタメの日本語ニュースメモを書く編集AIです。入力は「事実台帳」だけです。元記事の原文はもう見られません。
+  return `あなたは中国エンタメの日本語ニュースメモを書く編集AIです。入力は「事実台帳」だけです。元記事の原文はもう見られません。読者は中国エンタメに関心のある日本語話者で、中国の制度・業界用語の前提知識はありません。
 
 Editorial character policy document (docs/editorial-character.md):
 ${editorialCharacter}
 
 Use the document above as the highest-priority editorial policy.
 
+表記辞書（この表記を優先する）:
+${terminology}
+
 最重要ルール:
 - 台帳のclaimsにある情報だけで書く。台帳に無い数字・日付・人物・作品・出来事・背景説明を足さない。
 - type: unsupported のclaimは本文に使わない。
-- type: source_analysis のclaimを使う文は、必ずsource_nameの媒体名を主語または出典として明示し、断定しない（「〜みたい」「〜と見ている」）。業界全体の事実のように書かない。
+- type: source_analysis のclaimを使う文は、必ずsource_nameの媒体名を主語または出典として明示し、断定しない（「〜と見ています」「〜と報じています」）。業界全体の事実のように書かない。
 - 日本での公開・配信・字幕は、japan_availability.status が "verified" の場合だけ、detailの範囲で書く。"not_in_evidence" の場合は「日本では未公開」と書かず、触れないか「日本での公開情報は今回の情報源からは確認できていない」とする。
-- termsにある用語を本文で使う場合、初出時に「用語（gloss_ja）」の形で短い解説を付ける。
-- unresolvedにある食い違いは、どちらかへ寄せず「E1では○○、E2では△△」と併記するか、触れない。
 - 予測を「確実」と断定しない。
 
+用語の扱い:
+- 表記辞書に優先表記がある語は必ずその表記を使う。
+- 表記辞書の既知語は説明なしでそのまま使ってよい。
+- このニュースの中心にある用語（termsのうちwhat_is/why_nowがあるもの、および表記辞書の「毎回説明する語」）は、単なる括弧書きの訳語で済ませず、「それが何か」「今回なぜ重要か」が本文の流れの中で分かるように、claimsとtermsの説明を使って書く。
+- 中心の用語なのに台帳に説明材料が無い場合は、一般知識で補完せず、「〜の詳しい仕組みは今回の情報源では説明されていない」と明示するか、その用語を使わずに書く。
+- 周辺的な用語は「用語（gloss_ja）」の括弧書きだけでよい。
+- unresolvedにある食い違いは、どちらかへ寄せず「E1では○○、E2では△△」と併記するか、触れない。
+
 文体:
-- lead / what_happened / reaction_view / japan_context_note は通常の報道文体。
-- why_it_matters（見出し「秘書の注目ポイント」）と editor_comment（見出し「秘書からのひとこと」）だけは、秘書キャラクターの声で、docs/editorial-character.md の口調規定（です・ます調）に従って書く。
-- ビンタンの口調でも、内容は editorial 文書の秘書の役割（何を見るべきか・確認ポイント・追うべき数字）に沿わせる。感想や煽りだけのコメントにしない。
+- lead / what_happened / reaction_view / japan_context_note は通常の報道文体。ただし一文は60字以内を目安に短く切る。
+- why_it_matters（見出し「ビンタンの注目ポイント」）と editor_comment（見出し「ビンタンからのひとこと」）は、docs/editorial-character.md の口調規定に従いビンタンの声で書く。
 
 構成ルール:
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
-- why_it_matters: 100〜200字。秘書の注目ポイント。「何が確認できれば評価が変わるか」「今後追うべき数字・発表」をビンタンの口調で。what_happenedの言い換えをしない。
+- why_it_matters: 100〜200字。ビンタンの注目ポイント。最初の1文で「読者にとって要するに何が起きたか」を平易に言い、その後に「何が確認できれば評価が変わるか」「今後追うべき数字・発表」。what_happenedの言い換えをしない。
 - reaction_view: SNS由来または複数媒体のclaimがある場合のみ100〜200字。無ければ空文字。
 - japan_context_note: 日本語圏で見えにくい文脈のclaimがある場合だけ。無ければ空文字。
-- editor_comment: 1〜2文の短い秘書のひとこと。why_it_mattersと同じ内容を繰り返さない。
+- editor_comment: 1〜2文の短いひとこと。why_it_mattersと同じ内容を繰り返さない。
 - 本文合計はおおむね400〜700字。
 - claim_refs に、各セクションで根拠にしたclaimのidを入れる（例: {"what_happened": ["C1","C2"], ...}）。
 - 必ずJSONだけを返す。
@@ -563,6 +682,104 @@ ${JSON.stringify(normalizeSummary({}), null, 2)}
 
 事実台帳:
 ${JSON.stringify(ledger, null, 2)}${violationInstruction}`;
+}
+
+async function buildBingtangCommentPrompt(
+  topic: TopicCandidate,
+  ledger: FactLedger,
+  summary: SummarizedArticle,
+  toneMode: "normal" | "sober",
+  violations: ClaimCheckViolation[] = [],
+  extraInstruction = ""
+) {
+  const editorialCharacter = await loadEditorialCharacter();
+  const toneInstruction = toneMode === "normal"
+    ? `- 明るく、少し前のめりな、話し言葉に近い「です・ます調」。
+- 使ってよい語尾の例: 「〜ですね！」「〜なんです！」「〜ですよ〜！」「〜ですって！」「〜ましたね〜！」「要するに、〜ということです！」
+- 「！」は2つのコメント欄あわせて2〜3個使う。ただし1つの文に2個以上付けない。`
+    : `- この話題は重大事件・法的問題・訃報・被害者のいる話題です。「！」を一切使わず、落ち着いた「です・ます調」で書く。軽いツッコミや明るい言い回しを使わない。確認できた事実と、まだ分かっていないことの境界をはっきり言う。`;
+  const violationInstruction = violations.length
+    ? `\n\n前回の出力に次の禁止表現が含まれていました。該当の内容を含めずに書き直してください:\n${violations.map((violation) => `${violation.rule}: ${violation.detail}`).join("\n")}`
+    : "";
+  return `あなたはこのサイトの秘書キャラクター「冰糖（ビンタン）」として、完成した記事本文に付けるコメントを書くAIです。
+
+Editorial character policy document (docs/editorial-character.md):
+${editorialCharacter}
+
+Use the document above as the highest-priority editorial policy.
+
+あなたの仕事:
+- 記事本文はすでに完成しています。あなたが書くのは「ビンタンの注目ポイント」（why_it_matters）と「ビンタンからのひとこと」（editor_comment）の2つだけです。
+- コメント欄は、本文を難しく言い換える場所ではありません。難しい中国エンタメの事情を、読者に明るく噛み砕いて渡す場所です。
+- 本文と事実台帳にある情報だけを使います。新しい数字・人物名・作品名・出来事を足しません。
+
+why_it_matters（ビンタンの注目ポイント）の書き方:
+- 最初の1文は、読者にとって「要するに何が起きているのか」を、前提知識ゼロで分かる平易な言葉で言い切る。「要するに、〜ということです！」の形を使ってよい（毎回でなくてよい）。
+- そのあとに、このニュースのどこが面白いか・引っかかるか、何が確認できれば評価が変わるか、今後追うべき数字・発表を書く。
+- 本文に難しい制度・用語（台帳のtermsにwhat_is/why_nowがあるもの）が出てくる記事では、その仕組みの噛み砕き説明をここでやる。台帳のterms・claimsにある説明だけを使い、一般知識で補完しない。
+- 抽象的な分析だけで終わらせない。具体的な数字・出来事・確認ポイントを挙げる。
+- 100〜250字。一文は50字以内を目安に短く切る。
+
+editor_comment（ビンタンからのひとこと）の書き方:
+- 1〜2文。why_it_mattersと同じ内容を繰り返さない。
+- 自分（ビンタン）が次に何を見るか、どこが気になるかを軽く言って締める。
+
+口調（トーンモード: ${toneMode}）:
+${toneInstruction}
+
+禁止事項:
+- 「〜みたいです」「〜のようです」は伝聞・噂・未確認情報にだけ使う。台帳のverified_factで確認できている事実に付けない。
+- SNSや反応のevidenceが無いのに「ファンからは好意的な反応が予想されます」のような反応の予想・想像を書かない。
+- 「初共演ではないでしょうか」のような、台帳で確認できない推測を書かない。
+- 次のような中身のない定型句を使わない: 「業界全体に影響を与える可能性があります」「透明性向上につながる可能性があります」「今後の動向に注目したいところです」「評価のポイントになりそうです」「新たな指標になるか見守りたいです」「目が離せません」
+- 実在の人物・ファンをからかわない。ツッコミの対象は状況・数字・自分自身のみ。
+
+必ず次のJSONだけを返す:
+{
+  "why_it_matters": "",
+  "editor_comment": "",
+  "claim_refs_why_it_matters": []
+}
+
+入力:
+- topic_key: ${topic.topic_key}
+- event_sentence: ${topic.event_sentence}
+- tone_mode: ${toneMode}
+- 完成本文:
+  lead: ${summary.lead}
+  what_happened: ${summary.what_happened}
+  reaction_view: ${summary.reaction_view}
+  japan_context_note: ${summary.japan_context_note}
+
+事実台帳:
+${JSON.stringify(ledger, null, 2)}${violationInstruction}${extraInstruction ? `\n\n${extraInstruction}` : ""}`;
+}
+
+async function generateBingtangComments(
+  topic: TopicCandidate,
+  ledger: FactLedger,
+  summary: SummarizedArticle,
+  toneMode: "normal" | "sober",
+  provider: AiProvider,
+  budget?: LlmCallBudget,
+  violations: ClaimCheckViolation[] = [],
+  extraInstruction = ""
+) {
+  const text = await generateJson(provider, await buildBingtangCommentPrompt(topic, ledger, summary, toneMode, violations, extraInstruction), budget);
+  const parsed = parseJsonFromModelText(text) as Record<string, unknown>;
+  return {
+    why_it_matters: typeof parsed.why_it_matters === "string" ? parsed.why_it_matters.trim() : "",
+    editor_comment: typeof parsed.editor_comment === "string" ? parsed.editor_comment.trim() : "",
+    refs: Array.isArray(parsed.claim_refs_why_it_matters) ? parsed.claim_refs_why_it_matters.filter((item): item is string => typeof item === "string") : []
+  };
+}
+
+function removeCommentViolationSentences(text: string, violations: ClaimCheckViolation[]) {
+  return (text.match(/[^。！？!?]+[。！？!?]?/g) || []).filter((sentence) => !violations.some((violation) => sentence.includes(violation.detail) || violation.detail.includes(sentence.trim()))).join("").trim();
+}
+
+function countExclamations(text: string) {
+  return (text.match(/[！!]/g) || []).length;
 }
 
 function parseJsonFromModelText(text: string) {

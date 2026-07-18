@@ -13,7 +13,7 @@ export async function renderMarkdownFile(articles: ProcessedArticle[], provider:
 export async function writeArticlesJsonFile(articles: ProcessedArticle[], date = today()) {
   const outputPath = path.resolve("output", `articles_${date}.json`);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
-  await fs.writeFile(outputPath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
+  await fs.writeFile(outputPath, `${JSON.stringify(getPublishableArticles(articles), null, 2)}\n`, "utf8");
   return outputPath;
 }
 

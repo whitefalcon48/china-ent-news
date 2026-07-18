@@ -11,7 +11,9 @@ import type {
   PublishPriority,
   RawArticle,
   SourceExpansionResult,
-  TopicCandidate
+  ToneMode,
+  TopicCandidate,
+  TopicGenerationMeta
 } from "./types.js";
 
 type TraceFreshness = "fresh" | "stale" | "old" | "unknown";
@@ -86,7 +88,15 @@ type SelectionTrace = {
     ledger_fallback_reason: string;
     violations: ClaimCheckViolation[];
     action: ClaimCheckResult["action"];
+    tone_mode?: ToneMode;
+    comment_stage?: TopicGenerationMeta["comment_stage"];
   }>;
+  information_gate: {
+    enabled: boolean;
+    evaluated: number;
+    excluded: number;
+    excluded_topics: Array<{ topic_key: string; reasons: string[] }>;
+  };
   llm_call_budget: {
     limit: number;
     used: number;
@@ -124,6 +134,7 @@ export function buildSelectionTrace(args: {
   sourceExpansion?: SourceExpansionResult;
   topicSelection?: SelectionTrace["topic_selection"];
   llmCallBudget?: LlmCallBudget;
+  informationGate?: SelectionTrace["information_gate"];
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -173,8 +184,11 @@ export function buildSelectionTrace(args: {
         ledger_used: article.generationMeta?.ledger_used ?? false,
         ledger_fallback_reason: article.generationMeta?.ledger_fallback_reason ?? "",
         violations: article.generationMeta?.claim_check?.violations ?? [],
-        action: article.generationMeta?.claim_check?.action ?? "none"
+        action: article.generationMeta?.claim_check?.action ?? "none",
+        tone_mode: article.generationMeta?.tone_mode,
+        comment_stage: article.generationMeta?.comment_stage
       })),
+    information_gate: args.informationGate ?? { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] },
     llm_call_budget: {
       limit: args.llmCallBudget?.limit ?? 0,
       used: args.llmCallBudget?.used ?? 0

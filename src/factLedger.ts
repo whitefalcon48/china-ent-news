@@ -22,7 +22,7 @@ export async function extractFactLedger(
       : await generateGeminiJson(prompt, budget);
     return {
       succeeded: true,
-      ledger: normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key),
+      ledger: normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence)),
       error: ""
     };
   } catch (error) {
@@ -59,12 +59,18 @@ claimの分類（type）:
 - unsupported: evidence中に現れるが根拠が確認できない情報（伝聞、真偽不明の噂など）。記事には使われない。
 
 規則:
+- claimのtextは必ず日本語1文で書く。中国語の文をそのまま写さない（人名・作品名などの固有名詞は原文表記のままでよい）。
 - claimは1件1文。重要な順に最大20件。
-- entities（人物・作品・組織の固有名詞）とnumbers（数字・日付）は原文の表記のまま入れる。
+- entities（人物・作品・組織の固有名詞）とnumbers（数字・日付）は原文の表記のまま入れる。claimの文中に出てくる数字・日付・序数（第八届など）は必ずnumbersにも入れる。
 - quote_zhには根拠となる原文の該当箇所を30字以内で入れる。
 - evidence_refsには根拠のevidence番号（"E1"など）を必ず入れる。
+- このトピックの中心にある制度・仕組み・業界用語について、evidenceが「それが何か」「なぜ問題・重要なのか」「どう機能するのか」を説明している場合、その説明を必ずclaimとして拾う。用語の説明はニュースの理解に不可欠な情報として扱う。
 - 日本での公開・配信・日本語字幕に関する情報がevidenceに明示されている場合のみ、japan_availabilityのstatusを "verified" にし、detailに内容、evidence_refsに根拠を入れる。evidenceに無ければ status は "not_in_evidence"、detailは空文字。推測で "verified" にしない。日本に関する言及が無いことは「日本未公開」を意味しない。
-- 中国エンタメ業界の用語（备案、定档、路演、控评、番位、飯圏など）のうち、日本の読者に説明が必要なものを terms に入れる（最大8件、gloss_jaは20字以内）。
+- terms には、このevidenceの本文に実際に登場する中国エンタメ用語のうち、日本の読者に説明が必要なものだけを入れる（最大8件）。evidenceに登場しない用語を入れない。一般的な用語例からの丸写しをしない。
+  - gloss_ja: 短い日本語訳（20字以内）。
+  - what_is: その用語が指す仕組み・制度の説明（40字以内）。evidenceに説明がある場合のみ。無ければ空文字。
+  - why_now: 今回のニュースでその用語がなぜ重要かの説明（60字以内）。evidenceに説明がある場合のみ。無ければ空文字。
+  - what_is / why_now を一般知識で補完しない。evidenceに書かれていることだけを使う。
 - evidence間で数字・日付・事実が食い違う場合は unresolved に1行で記す。どちらかへ勝手に寄せない。
 - 必ずJSONだけを返す。説明文やMarkdownは返さない。
 
@@ -72,7 +78,7 @@ claimの分類（type）:
 {
   "topic_key": "<入力値をそのまま>",
   "claims": [{ "id": "C1", "type": "verified_fact", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
-  "terms": [{ "term": "", "gloss_ja": "" }],
+  "terms": [{ "term": "", "gloss_ja": "", "what_is": "", "why_now": "" }],
   "japan_availability": { "status": "not_in_evidence", "detail": "", "evidence_refs": [] },
   "unresolved": []
 }
@@ -86,7 +92,7 @@ evidence一覧:
 ${formatEvidenceForPrompt(evidence)}`;
 }
 
-function normalizeFactLedger(value: unknown, topicKey: string): FactLedger {
+export function normalizeFactLedger(value: unknown, topicKey: string, evidence: string): FactLedger {
   const object = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
   const rawClaims = Array.isArray(object.claims) ? object.claims : [];
   const claims = rawClaims.slice(0, 20).map((item, index) => normalizeClaim(item, index));
@@ -95,9 +101,14 @@ function normalizeFactLedger(value: unknown, topicKey: string): FactLedger {
     .slice(0, 8)
     .map((item) => {
       const term = item && typeof item === "object" ? item as Record<string, unknown> : {};
-      return { term: toText(term.term), gloss_ja: toText(term.gloss_ja).slice(0, 20) };
+      return {
+        term: toText(term.term),
+        gloss_ja: toText(term.gloss_ja).slice(0, 20),
+        what_is: toText(term.what_is).slice(0, 40) || undefined,
+        why_now: toText(term.why_now).slice(0, 60) || undefined
+      };
     })
-    .filter((term) => term.term && term.gloss_ja);
+    .filter((term) => term.term && term.gloss_ja && evidence.includes(term.term));
   const rawJapan = object.japan_availability && typeof object.japan_availability === "object"
     ? object.japan_availability as Record<string, unknown>
     : {};
@@ -111,6 +122,10 @@ function normalizeFactLedger(value: unknown, topicKey: string): FactLedger {
     japan_availability: japanAvailability,
     unresolved: toStringArray(object.unresolved)
   };
+}
+
+function evidenceText(evidence: RawArticle[]) {
+  return evidence.map((article) => `${article.title}\n${article.rawContent || ""}\n${article.excerpt || ""}`).join("\n");
 }
 
 function normalizeClaim(value: unknown, index: number): FactLedgerClaim {

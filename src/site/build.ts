@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { getPublishableArticles } from "../renderMarkdown.js";
 import { resolveSummaryTitle } from "../summaryTitle.js";
-import type { ProcessedArticle, SourceRef, SourceTypeLabel, SummarizedArticle } from "../types.js";
+import type { ProcessedArticle, ReviewState, SourceRef, SourceTypeLabel, SummarizedArticle } from "../types.js";
 
 type DayData = { date: string; articles: ProcessedArticle[] };
 type SourceMix = { official: number; media: number; sns: number; data: number };
@@ -14,6 +14,7 @@ const BASE_PATH = normalizeBasePath(process.env.SITE_BASE_PATH || "");
 const SITE_NAME = "冰糖日报（ビンタンちゃんデイリー）";
 const SITE_DESCRIPTION = "中国エンタメの現地温度を、日本語で。";
 const ABOUT_PROFILE = "中国エンタメ担当のAI秘書、冰糖（ビンタン）です。中国語圏で実際に観られている・語られているエンタメを、毎朝届く記事の束から選んで日本語でお届けします。モットーは「熱量は拾う。でも断定しない。」です！";
+const REVIEW_GATE_ENABLED = process.env.REVIEW_GATE !== "false";
 
 async function main() {
   const days = await loadDays();
@@ -105,11 +106,31 @@ async function loadDays(): Promise<DayData[]> {
     if (!files.length) continue;
     const raw = JSON.parse(await fs.readFile(path.join(directory, files.at(-1)!), "utf8")) as unknown;
     if (!Array.isArray(raw)) throw new Error(`${files.at(-1)}: JSONルートは配列である必要があります`);
-    const articles = getPublishableArticles(raw.map((item, index) => normalizeStoredArticle(item, entry.name, index)));
+    const storedArticles = raw.map((item, index) => normalizeStoredArticle(item, entry.name, index));
+    const reviewedArticles = REVIEW_GATE_ENABLED ? await filterReviewedArticles(directory, storedArticles) : storedArticles;
+    if (reviewedArticles === null) continue;
+    const articles = reviewedArticles === storedArticles
+      ? getPublishableArticles(reviewedArticles)
+      : reviewedArticles.filter((article) => article.summary);
     validateArticles(articles, entry.name);
     days.push({ date: entry.name, articles });
   }
   return days.sort((left, right) => right.date.localeCompare(left.date));
+}
+
+async function filterReviewedArticles(directory: string, articles: ProcessedArticle[]): Promise<ProcessedArticle[] | null> {
+  let review: ReviewState;
+  try {
+    review = JSON.parse(await fs.readFile(path.join(directory, "review.json"), "utf8")) as ReviewState;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return articles;
+    throw error;
+  }
+  if (review.status !== "completed") return null;
+  return review.articles
+    .filter((item) => item.status === "approved")
+    .map((item) => articles[item.index - 1])
+    .filter((article): article is ProcessedArticle => Boolean(article));
 }
 
 function normalizeStoredArticle(value: unknown, date: string, index: number): ProcessedArticle {

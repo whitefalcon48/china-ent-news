@@ -5,9 +5,11 @@ import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSourc
 import { fetchHotSearchArticles } from "./fetchHotSearch.js";
 import { expandTopicSources } from "./expandSources.js";
 import { ClaimCheckDiscardError } from "./claimCheck.js";
+import { evaluateTopicInformationCompleteness } from "./completenessGate.js";
 import { writeFactLedgerFile } from "./factLedger.js";
 import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError } from "./llmCallBudget.js";
 import { renderMarkdownFile, writeArticlesJsonFile } from "./renderMarkdown.js";
+import { isReviewGateEnabled, writeInitialReviewState } from "./review/reviewState.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle, summarizeTopic } from "./summarizeWithGemini.js";
 import { buildTopicCandidates, writeTopicCandidatesFile } from "./topicCandidates.js";
@@ -88,9 +90,9 @@ async function main() {
     MAX_ARTICLES_PER_SOURCE
   );
   markSelectionLimitTraceDrops(freshEligibleArticles, legacySelectedCandidates, droppedReasons, maxArticles, MAX_ARTICLES_PER_SOURCE);
-  const topicSelection = topicFirstEnabled
+  const topicSelection: ReturnType<typeof selectTopicsForAi> = topicFirstEnabled
     ? selectTopicsForAi(topicCandidates, topicCandidateArticlePool, maxArticles)
-    : { selected: [], dropped: [], backfillCandidates: [] };
+    : { selected: [], dropped: [], backfillCandidates: [], informationGate: { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] } };
   const topicEvidenceBundles = topicFirstEnabled
     ? await buildTopicEvidenceBundles(topicSelection.selected, topicCandidateArticlePool)
     : [];
@@ -274,6 +276,7 @@ async function main() {
   );
   const outputPath = await renderMarkdownFile(processed, provider);
   const articlesJsonPath = await writeArticlesJsonFile(processed);
+  const reviewPath = isReviewGateEnabled() ? await writeInitialReviewState(processed) : "";
   const nonOfficialSourceDiagnostics = buildNonOfficialSourceDiagnostics(
     sources,
     diagnostics,
@@ -306,6 +309,7 @@ async function main() {
       failed: topicFailures,
       backfilled: backfilledTopicKeys
     },
+    informationGate: topicSelection.informationGate,
     droppedTopics: topicSelection.dropped.map((item) => ({ ...item.topic, reason: item.reason })),
     topicLayerNote: topicFirstEnabled
       ? "Topic-first generation enabled. DeepSeek input contains one representative article per selected topic."
@@ -335,6 +339,7 @@ async function main() {
   console.log(`- 最終出力件数: ${processed.filter((article) => article.summary).length}`);
   console.log(`- Markdown出力先: ${outputPath}`);
   console.log(`- Articles JSON: ${articlesJsonPath}`);
+  if (reviewPath) console.log(`- Review state: ${reviewPath}`);
   console.log(`- Topic candidates: ${topicCandidatesPath}`);
   console.log(`- Fact ledger: ${factLedgerPath}`);
   console.log(`- Selection trace: ${tracePath}`);
@@ -740,11 +745,27 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
   const articlesByUrl = new Map(articlePool.map((article) => [article.url, article]));
   const dropped: Array<{ topic: TopicCandidate; reason: string }> = [];
   const eligible: SelectedTopic[] = [];
+  const informationGate = {
+    enabled: process.env.INFO_COMPLETENESS_GATE !== "false",
+    evaluated: 0,
+    excluded: 0,
+    excluded_topics: [] as Array<{ topic_key: string; reasons: string[] }>
+  };
 
   for (const topic of topicCandidates) {
     if (!["today", "yesterday", "recent"].includes(topic.freshness_label)) {
       dropped.push({ topic, reason: "topic_not_fresh" });
       continue;
+    }
+    if (informationGate.enabled) {
+      informationGate.evaluated += 1;
+      const completeness = evaluateTopicInformationCompleteness(topic);
+      if (!completeness.complete) {
+        informationGate.excluded += 1;
+        informationGate.excluded_topics.push({ topic_key: topic.topic_key, reasons: completeness.reasons });
+        dropped.push({ topic, reason: `information_incomplete:${completeness.reasons.join("+")}` });
+        continue;
+      }
     }
     const publishableEvidence = topic.evidence_articles
       .map((evidence) => articlesByUrl.get(evidence.url))
@@ -827,7 +848,7 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
   const backfillCandidates = eligible
     .filter((item) => !selectedKeys.has(item.topic.topic_key))
     .sort((a, b) => b.score - a.score || a.topic.topic_key.localeCompare(b.topic.topic_key, "ja"));
-  return { selected, dropped, backfillCandidates };
+  return { selected, dropped, backfillCandidates, informationGate };
 }
 
 function addSelectedTopic(

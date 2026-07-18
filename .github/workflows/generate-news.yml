@@ -16,8 +16,12 @@ on:
 
 permissions:
   contents: write
+  issues: write
   pages: write
   id-token: write
+
+env:
+  REVIEW_GATE: "true"
 
 concurrency:
   group: pages
@@ -77,6 +81,13 @@ jobs:
         id: persist
         run: npm run persist:data
 
+      - name: Create review issue
+        if: env.REVIEW_GATE != 'false'
+        run: npm run review:issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_DATE: ${{ steps.persist.outputs.date }}
+
       - name: Commit daily data
         run: |
           git config user.name "github-actions[bot]"
@@ -90,24 +101,29 @@ jobs:
           fi
 
       - name: Build static site
+        if: env.REVIEW_GATE == 'false'
         run: npm run build:site
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
           SITE_BASE_PATH: /${{ github.event.repository.name }}
 
       - name: Configure GitHub Pages
+        if: env.REVIEW_GATE == 'false'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        if: env.REVIEW_GATE == 'false'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/site
 
       - name: Deploy GitHub Pages
+        if: env.REVIEW_GATE == 'false'
         id: deployment
         uses: actions/deploy-pages@v4
 
       - name: Check X daily digest
+        if: env.REVIEW_GATE == 'false'
         run: npm run post:x
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
@@ -115,6 +131,7 @@ jobs:
           POST_DATE: ${{ steps.persist.outputs.date }}
 
       - name: Upload X post texts
+        if: env.REVIEW_GATE == 'false'
         uses: actions/upload-artifact@v4
         with:
           name: x-post-texts
@@ -122,7 +139,7 @@ jobs:
           if-no-files-found: error
 
       - name: Post X daily digest
-        if: ${{ vars.X_POSTING_ENABLED == 'true' }}
+        if: ${{ env.REVIEW_GATE == 'false' && vars.X_POSTING_ENABLED == 'true' }}
         run: npm run post:x
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io

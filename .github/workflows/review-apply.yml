@@ -1,0 +1,109 @@
+name: review-apply
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: >-
+      github.event.comment.author_association == 'OWNER' &&
+      contains(github.event.issue.labels.*.name, 'daily-review')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      REVIEW_GATE: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Apply review comment
+        id: review
+        run: npm run review:apply
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REVIEW_COMMENT: ${{ github.event.comment.body }}
+          AI_PROVIDER: deepseek
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_MODEL: deepseek-chat
+
+      - name: Commit review data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No review data changes."
+          else
+            git commit -m "Apply news review ${{ steps.review.outputs.date }}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || { git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; }
+          fi
+
+      - name: Build approved site
+        if: steps.review.outputs.completed == 'true'
+        run: npm run build:site
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+          SITE_BASE_PATH: /${{ github.event.repository.name }}
+
+      - name: Configure GitHub Pages
+        if: steps.review.outputs.completed == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: steps.review.outputs.completed == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+
+      - name: Deploy GitHub Pages
+        if: steps.review.outputs.completed == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Generate approved X texts
+        if: steps.review.outputs.completed == 'true'
+        run: npm run post:x
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+          SITE_BASE_PATH: /${{ github.event.repository.name }}
+          POST_DATE: ${{ steps.review.outputs.date }}
+
+      - name: Upload X post texts
+        if: steps.review.outputs.completed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: x-post-texts-${{ steps.review.outputs.date }}
+          path: output/x_posts_*.md
+          if-no-files-found: error
+
+      - name: Close completed review issue
+        if: steps.review.outputs.completed == 'true'
+        run: gh issue close "${{ github.event.issue.number }}" --comment "✅ 承認記事の公開処理とX投稿文面の生成が完了しました。"
+        env:
+          GH_TOKEN: ${{ github.token }}

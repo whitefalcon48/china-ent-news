@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { getPublishableArticles } from "../renderMarkdown.js";
 import { resolveSummaryTitle } from "../summaryTitle.js";
-import type { ProcessedArticle, SummarizedArticle } from "../types.js";
+import type { ProcessedArticle, ReviewState, SummarizedArticle } from "../types.js";
 import { MAX_WEIGHTED_LENGTH, buildIndividualPosts, buildPostsMarkdown, truncateToWeight, xWeightedLength } from "./xPostTexts.js";
 
 const dataDir = path.resolve(process.env.SITE_DATA_DIR || "data");
@@ -38,7 +38,16 @@ async function loadArticles(dateValue: string) {
   const filename = path.join(dataDir, dateValue, `articles_${dateValue}.json`);
   const raw = JSON.parse(await fs.readFile(filename, "utf8")) as unknown;
   if (!Array.isArray(raw)) throw new Error(`${filename}: JSONルートは配列である必要があります`);
-  return getPublishableArticles(raw.map((value) => normalizeArticle(value)));
+  const articles = raw.map((value) => normalizeArticle(value));
+  if (process.env.REVIEW_GATE === "false") return getPublishableArticles(articles);
+  try {
+    const review = JSON.parse(await fs.readFile(path.join(dataDir, dateValue, "review.json"), "utf8")) as ReviewState;
+    if (review.status !== "completed") throw new Error(`${dateValue} のレビューが完了していません`);
+    return getPublishableArticles(review.articles.filter((item) => item.status === "approved").map((item) => articles[item.index - 1]).filter(Boolean));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return getPublishableArticles(articles);
+    throw error;
+  }
 }
 
 function normalizeArticle(value: unknown): ProcessedArticle {

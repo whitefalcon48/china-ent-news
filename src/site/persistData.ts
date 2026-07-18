@@ -35,9 +35,13 @@ const targets = names.filter((name) =>
   name === `${date}-gemini.md` ||
   name === `selection_trace_${date}.json` ||
   name === `topic_candidates_${date}.json` ||
-  name === `fact_ledger_${date}.json`
+  name === `fact_ledger_${date}.json` ||
+  name === `review_${date}.json`
 );
-for (const name of targets) await fs.copyFile(path.join(outputDir, name), path.join(destination, name));
+for (const name of targets) {
+  const destinationName = name === `review_${date}.json` ? "review.json" : name;
+  await fs.copyFile(path.join(outputDir, name), path.join(destination, destinationName));
+}
 
 console.log(`data persist: ${date} / ${targets.length} files -> ${destination}`);
 if (process.env.GITHUB_OUTPUT) await fs.appendFile(process.env.GITHUB_OUTPUT, `date=${date}\n`, "utf8");

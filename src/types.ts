@@ -175,7 +175,9 @@ export type FactLedgerClaim = {
   quote_zh?: string;
 };
 
-export type FactLedgerTerm = { term: string; gloss_ja: string };
+export type FactLedgerTerm = { term: string; gloss_ja: string; what_is?: string; why_now?: string };
+
+export type ToneMode = "normal" | "sober";
 
 export type JapanAvailability = {
   status: "verified" | "not_in_evidence";
@@ -207,7 +209,14 @@ export type ClaimCheckRule =
   | "japan_comparison_no_claim"
   | "unattributed_analysis"
   | "generic_comment"
-  | "banned_phrase_other";
+  | "banned_phrase_other"
+  | "fabricated_reaction"
+  | "unverified_speculation"
+  | "template_comment"
+  | "tone_exclamation"
+  | "hedged_verified_fact"
+  | "long_sentence"
+  | "terminology_avoid";
 
 export type ClaimCheckViolation = {
   section: string;
@@ -229,6 +238,50 @@ export type TopicGenerationMeta = {
   ledger_fallback_reason: string;
   ledger?: FactLedger;
   claim_check?: ClaimCheckResult;
+  tone_mode?: ToneMode;
+  comment_stage?: {
+    attempted: boolean;
+    used: boolean;
+    regenerated: boolean;
+    fallback_reason: string;
+    exclamation_count: number;
+  };
+};
+
+export type ReviewStatus = "pending" | "completed";
+export type ReviewArticleStatus = "pending" | "approved" | "rejected" | "revision_requested" | "revised_pending";
+export type ReviewReasonTag = "" | "選定" | "口調" | "用語" | "事実" | "構成" | "その他";
+
+export type ReviewArticle = {
+  index: number;
+  topic_key: string;
+  title: string;
+  status: ReviewArticleStatus;
+  reason_tag: ReviewReasonTag;
+  comment: string;
+  revision_count: number;
+};
+
+export type ReviewState = {
+  date: string;
+  status: ReviewStatus;
+  issue_number: number;
+  articles: ReviewArticle[];
+};
+
+export type ReviewFeedback = {
+  date: string;
+  topic_key: string;
+  action: "rejected" | "revision_requested";
+  reason_tag: Exclude<ReviewReasonTag, "">;
+  comment: string;
+  category: string;
+  topic_type: string;
+  seed_confidence: number;
+  newsworthiness_score: number;
+  publish_priority: string;
+  selection_reason: string;
+  source_mix: Partial<Record<SourceTypeLabel, number>>;
 };
 
 export type ProcessedArticle = {

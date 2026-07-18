@@ -13,7 +13,11 @@
     "audit:sources": "tsx src/auditSources.ts",
     "build:site": "tsx src/site/build.ts",
     "persist:data": "tsx src/site/persistData.ts",
-    "post:x": "tsx src/site/postToX.ts"
+    "post:x": "tsx src/site/postToX.ts",
+    "review:issue": "tsx src/review/buildReviewIssueBody.ts",
+    "review:apply": "tsx src/review/applyReview.ts",
+    "report:feedback": "tsx src/review/feedbackReport.ts",
+    "report:quality": "tsx src/qualityReport.ts"
   },
   "dependencies": {
     "cheerio": "^1.0.0",

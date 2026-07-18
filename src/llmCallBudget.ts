@@ -1,8 +1,8 @@
 export type LlmCallBudget = { limit: number; used: number };
 
-export function createLlmCallBudget(limit = Number(process.env.LLM_CALL_BUDGET || 45)): LlmCallBudget {
+export function createLlmCallBudget(limit = Number(process.env.LLM_CALL_BUDGET || 60)): LlmCallBudget {
   return {
-    limit: Number.isFinite(limit) && limit >= 0 ? limit : 45,
+    limit: Number.isFinite(limit) && limit >= 0 ? limit : 60,
     used: 0
   };
 }
