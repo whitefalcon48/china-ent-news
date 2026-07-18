@@ -1,0 +1,2459 @@
+{
+  "date": "2026-07-18",
+  "generated_at": "2026-07-18T01:55:00.543Z",
+  "ledgers": [
+    {
+      "topic_key": "功夫女足",
+      "ledger": {
+        "topic_key": "功夫女足",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『功夫女足』は2026年7月11日に中国全国公開された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月11日"
+            ],
+            "quote_zh": "7月11日，周星驰自编自导的电影《功夫女足》全国公映"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "公開半日で興行収入が1億元を突破した（2026年7月11日11時32分時点、予約販売含む）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "1億元",
+              "2026年7月11日11時32分"
+            ],
+            "quote_zh": "截至7月11日11时32分，该片含预售累计票房正式突破1亿元"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "累計観客動員数は284万人（2026年7月11日11時32分時点）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "284万"
+            ],
+            "quote_zh": "累计观影人次达284万"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "本作は『少林足球』（2001年公開）の25周年記念続編である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "少林足球"
+            ],
+            "numbers": [
+              "2001年",
+              "25周年"
+            ],
+            "quote_zh": "该片是经典影片《少林足球》25周年的续作"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "監督・脚本は周星馳（チャウ・シンチー）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星驰"
+            ],
+            "numbers": [],
+            "quote_zh": "周星驰自编自导的电影《功夫女足》"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "主演は張小斐（チャン・シャオフェイ）、迪麗熱巴（ディリラバ）、張芸興（レイ・チャン）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "张小斐",
+              "迪丽热巴",
+              "张艺兴"
+            ],
+            "numbers": [],
+            "quote_zh": "影片由知名演员张小斐、迪丽热巴、张艺兴担任领衔主演"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "特別出演は劉嘉玲（カリーナ・ラウ）と佐藤健。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "刘嘉玲",
+              "佐藤健"
+            ],
+            "numbers": [],
+            "quote_zh": "刘嘉玲、佐藤健特别出演"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "総製作費は3.8億元、うち特殊効果に1.9億元を投入。特殊効果カット数は1200以上。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "3.8亿元",
+              "1.9亿元",
+              "1200"
+            ],
+            "quote_zh": "总制作投资达3.8亿元人民币，其中特效制作投入近1.9亿元，"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "2025年3月に深圳で撮影開始、同年6月に実景撮影完了。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "深圳"
+            ],
+            "numbers": [
+              "2025年3月",
+              "2025年6月"
+            ],
+            "quote_zh": "影片2025年3月于深圳正式开机，同年6月完成实景拍摄"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "公開初日の上映シェアは47.4%、上映回数は22.6万回超。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "47.4%",
+              "22.6万"
+            ],
+            "quote_zh": "首日排片占比高达47.4%，首日场次超22.6万场"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "中国映史の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン予約販売記録を更新。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "已打破中国影史暑期档影片首映日场次纪录、过去三年暑期档影片首"
+          },
+          {
+            "id": "C12",
+            "type": "source_analysis",
+            "text": "猫眼専業版は初日興収2億元超、最終興収14億元超と予測。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "猫眼专业版",
+            "entities": [],
+            "numbers": [
+              "2亿元",
+              "14亿元"
+            ],
+            "quote_zh": "猫眼专业版预测其首日票房超2亿元，最终总票房落点在14亿＋"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "灯塔専業版は初日興収1.95億元、最終興収10億元超と予測。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "灯塔专业版",
+            "entities": [],
+            "numbers": [
+              "1.95亿元",
+              "10亿元"
+            ],
+            "quote_zh": "灯塔专业版预测，该片首日全天票房可达1.95亿元，总票房有望"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "配給は中影集団が担当。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "中影集团"
+            ],
+            "numbers": [],
+            "quote_zh": "中影集团位列官方出品名单并负责影片内地发行"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "製作は周星馳の星輝海外有限公司が主導。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "星辉海外有限公司"
+            ],
+            "numbers": [],
+            "quote_zh": "由周星驰旗下星辉海外有限公司主控出品"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "一部の観客は『少林足球』と設定が酷似し、ストーリーに新鮮味がなく、無厘頭コメディの再現が硬いと指摘。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "影片与《少林足球》在核心设定上高度相似...缺少突破性反转"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "周星馳本人が出演しないことや巨額投資が今後の興行に不確実性をもたらすとの見方。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星驰"
+            ],
+            "numbers": [],
+            "quote_zh": "周星驰本人未出演、影片数亿总投资等因素，也为影片后续走势增加"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "2026年夏休みシーズン（6月1日～8月31日）の総興収は7月11日時点で25億元突破。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "2026年",
+              "6.1-8.31",
+              "25亿元"
+            ],
+            "quote_zh": "截至7月11日，2026年暑期档（6.1-8.31）档期总票"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "本作は2026年W杯（米国・カナダ・メキシコ）開催時期に合わせて公開。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "美加墨男足世界杯"
+            ],
+            "numbers": [
+              "2026年"
+            ],
+            "quote_zh": "7月11日正式上映精准卡位2026年美加墨男足世界杯赛事关键"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "元中国女子サッカー代表GK趙麗娜が出演・アクション指導。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "赵丽娜"
+            ],
+            "numbers": [],
+            "quote_zh": "邀请前中国女足门将赵丽娜等专业足球业内人士，参与出演与动作指"
+          }
+        ],
+        "terms": [
+          {
+            "term": "备案",
+            "gloss_ja": "映画の撮影許可申請"
+          },
+          {
+            "term": "定档",
+            "gloss_ja": "公開日決定"
+          },
+          {
+            "term": "路演",
+            "gloss_ja": "舞台挨拶イベント"
+          },
+          {
+            "term": "排片",
+            "gloss_ja": "上映スケジュール配分"
+          },
+          {
+            "term": "预售",
+            "gloss_ja": "前売り券販売"
+          },
+          {
+            "term": "票房",
+            "gloss_ja": "興行収入"
+          },
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休み興行シーズン"
+          },
+          {
+            "term": "无厘头",
+            "gloss_ja": "ナンセンスコメディ"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "2026中国—东盟微短剧大赛",
+      "ledger": {
+        "topic_key": "2026中国—东盟微短剧大赛",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月17日、2026中国—东盟微短剧大赛の専場説明会が北京の広西大厦で開催された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "2026中国—东盟微短剧大赛",
+              "北京",
+              "广西大厦"
+            ],
+            "numbers": [
+              "2026年7月17日"
+            ],
+            "quote_zh": "7月17日，2026中国—东盟微短剧大赛专场推介会在北京广西"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "本大会は第8回中国—东盟視聴週の6大活動の一つであり、テーマは「AI赋能 共创共享」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "第八届中国—东盟视听周",
+              "中国—东盟微短剧大赛"
+            ],
+            "numbers": [],
+            "quote_zh": "作为第八届中国—东盟视听周六大活动之一，本次大赛以“AI赋能"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "大会の目的は、中国とASEANの微短劇業界の国家級協力プラットフォームを構築し、国境を越えた視聴覚産業の革新とウィンウィンを促進することである。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "中国",
+              "东盟"
+            ],
+            "numbers": [],
+            "quote_zh": "旨在搭建中国与东盟微短剧行业国家级合作平台，推动跨境视听产业"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "大会は3つの競技カテゴリーを設置：真人微短劇、AI微短劇、オリジナル脚本。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "3"
+            ],
+            "quote_zh": "设置真人微短剧、AI微短剧、原创剧本三大竞赛类别"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "真人微短劇の一等賞は100万元、AI微短劇の一等賞は20万元の支援金が提供される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "100万元",
+              "20万元"
+            ],
+            "quote_zh": "真人微短剧一等奖扶持100万元，AI微短剧一等奖扶持20万元"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "現在、作品の集中募集段階にあり、8月中旬から9月下旬に専門審査が行われ、10月19日に広西北海で開催される第8回中国—东盟視聴週開幕式で表彰される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "广西北海",
+              "第八届中国—东盟视听周"
+            ],
+            "numbers": [
+              "8月中旬",
+              "9月下旬",
+              "10月19日"
+            ],
+            "quote_zh": "8月中旬至9月下旬将开展专业评审，10月19日将在广西北海举"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "10月20日には広西北海で大会成果発表説明会と創作採風などのイベントが開催され、「中国—东盟微短剧国际传播发展报告」が発表される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "广西北海"
+            ],
+            "numbers": [
+              "10月20日"
+            ],
+            "quote_zh": "10月20日将在广西北海举办大赛成果发布推介会和创作采风等活"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "大会は「飛兔兔AI短劇共創プラットフォーム」を搭載し、火山引擎Seedance2.0動画生成大モデルに接続している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "飞兔兔AI短剧共创平台",
+              "火山引擎Seedance2.0"
+            ],
+            "numbers": [],
+            "quote_zh": "搭载飞兔兔AI短剧共创平台，接入火山引擎Seedance2."
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "大会は広西壮族自治区広播電視局、北海市人民政府、広西出版伝媒グループが共同で運営する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "广西壮族自治区广播电视局",
+              "北海市人民政府",
+              "广西出版传媒集团"
+            ],
+            "numbers": [],
+            "quote_zh": "本次微短剧大赛由广西壮族自治区广播电视局、北海市人民政府、广"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "第8回中国—东盟視聴週は、国家広播電視総局、広西壮族自治区人民政府、ブルネイ関連部門が共同主催する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "国家广播电视总局",
+              "广西壮族自治区人民政府",
+              "文莱"
+            ],
+            "numbers": [],
+            "quote_zh": "第八届中国—东盟视听周由国家广播电视总局、广西壮族自治区人民"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "本大会は今年の外交部の中国—ASEAN全面戦略パートナーシップ5周年記念シリーズ活動に組み込まれている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "外交部",
+              "中国—东盟建立全面战略伙伴关系5周年"
+            ],
+            "numbers": [
+              "5周年"
+            ],
+            "quote_zh": "已列入今年外交部的中国—东盟建立全面战略伙伴关系5周年主题年"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "説明会には国家広播電視総局関連部門、中国網絡視聴節目服務協会、中華広播影視交流協会などの代表が参加した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "国家广播电视总局",
+              "中国网络视听节目服务协会",
+              "中华广播影视交流协会"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广播电视总局相关司局、直属单位，以及中国网络视听节目服务"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "中国網絡視聴節目服務協会副会長の魏党軍が説明会で挨拶した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "魏党军",
+              "中国网络视听节目服务协会"
+            ],
+            "numbers": [],
+            "quote_zh": "中国网络视听节目服务协会副会长魏党军在中国—东盟微短剧大赛北"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "国家広播電視総局広播影視発展研究センター副主任の史杰が説明会で挨拶した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "史杰",
+              "国家广播电视总局广播影视发展研究中心"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广播电视总局广播影视发展研究中心副主任史杰在中国—东盟微"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "広西壮族自治区広播電視局党組成員・副局長の陸正寧が大会の全体状況を紹介した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "陆正宁",
+              "广西壮族自治区广播电视局"
+            ],
+            "numbers": [],
+            "quote_zh": "广西壮族自治区广播电视局党组成员、副局长陆正宁介绍大赛整体情"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "広西出版伝媒グループ市場と読書普及部副主任の薩宣敏が飛兔兔AI短劇共創プラットフォームを紹介した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "萨宣敏",
+              "广西出版传媒集团",
+              "飞兔兔AI短剧共创平台"
+            ],
+            "numbers": [],
+            "quote_zh": "广西出版传媒集团市场与阅读推广部副主任萨宣敏介绍飞兔兔AI短"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "国家広電総局発展研究センター副研究員の周述雅が微短劇の国境を越えた伝播発展の動向を解説した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "周述雅",
+              "国家广电总局发展研究中心"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广电总局发展研究中心副研究员周述雅解读微短剧跨境传播发展"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "新京報は、広西がASEAN向けの微短劇ハブとして「造船出海+借船出海」の双方向戦略を採用し、「広西創作+ASEAN撮影+共同発行」の合作モデルを構築していると分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "广西",
+              "东盟"
+            ],
+            "numbers": [],
+            "quote_zh": "坚持“造船出海+借船出海”双向发力，创新打造“广西创作+东盟"
+          },
+          {
+            "id": "C19",
+            "type": "source_analysis",
+            "text": "新京報は、今回の大会が中国とASEANの優れた微短劇コンテンツの国境を越えた伝播をさらに促進し、文化の絆を深め、産業の共同繁栄を促進すると評価している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "中国",
+              "东盟"
+            ],
+            "numbers": [],
+            "quote_zh": "本次大赛将进一步推动中国和东盟优质微短剧内容跨境传播，以微短"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "大会は創作チームや大学などに開放された共創チャンネルを提供し、専用の計算能力とトラフィック支援を提供する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "面向创作团队、高校等开放共创通道，提供专属算力与流量扶持"
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "1話数分の超短尺ドラマ"
+          },
+          {
+            "term": "推介会",
+            "gloss_ja": "説明会・プロモーション会"
+          },
+          {
+            "term": "视听周",
+            "gloss_ja": "視聴覚週間イベント"
+          },
+          {
+            "term": "赋能",
+            "gloss_ja": "能力を付与する"
+          },
+          {
+            "term": "共创共享",
+            "gloss_ja": "共創・共有"
+          },
+          {
+            "term": "出海",
+            "gloss_ja": "海外進出（コンテンツ輸出）"
+          },
+          {
+            "term": "合拍",
+            "gloss_ja": "共同制作"
+          },
+          {
+            "term": "采风",
+            "gloss_ja": "取材・ロケハン"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "郎朗《钢琴书2》",
+      "ledger": {
+        "topic_key": "郎朗《钢琴书2》",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "郎朗凭借《钢琴书2》获得德国古典音乐大奖（OPUS KLASSIK）的“年度畅销专辑”奖。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "《钢琴书2》",
+              "德国古典音乐大奖",
+              "OPUS KLASSIK"
+            ],
+            "numbers": [],
+            "quote_zh": "郎朗《钢琴书2》蝉联“年度畅销专辑”"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "这是郎朗继去年凭借《圣-桑》获奖后，连续第二年获得该奖项。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "《圣-桑》"
+            ],
+            "numbers": [],
+            "quote_zh": "继去年凭借专辑《圣-桑》荣获同一奖项后"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "郎朗以十五次获奖刷新德国古典音乐最高奖项的历史纪录。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "德国古典音乐大奖"
+            ],
+            "numbers": [
+              "十五次"
+            ],
+            "quote_zh": "郎朗则以十五次获奖的惊人纪录"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "《钢琴书2》于2025年9月由环球音乐集团旗下德意志留声机唱片全球发行。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "《钢琴书2》",
+              "环球音乐集团",
+              "德意志留声机唱片"
+            ],
+            "numbers": [
+              "2025年9月"
+            ],
+            "quote_zh": "《钢琴书2》于2025年9月由环球音乐集团旗下德意志留声机唱"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "该专辑发布后迅速登顶Apple Music古典音乐频道百大热门专辑榜单首位。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "Apple Music"
+            ],
+            "numbers": [],
+            "quote_zh": "迅速登顶Apple Music古典音乐频道百大热门专辑榜单首"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "前作《钢琴书》全球流媒体播放量已突破12亿次，被誉为“21世纪最成功的古典音乐专辑之一”。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "《钢琴书》"
+            ],
+            "numbers": [
+              "12亿次"
+            ],
+            "quote_zh": "前作全球流媒体播放量已突破12亿次"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "《钢琴书2》收录了32首曲目，涵盖巴赫、肖邦、李斯特、拉赫玛尼诺夫等古典巨匠的经典，以及鲁多维科·艾奥迪、久石让等当代作曲家的作品，并引入影视动漫配乐、游戏旋律和网络神曲。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "巴赫",
+              "肖邦",
+              "李斯特",
+              "拉赫玛尼诺夫",
+              "鲁多维科·艾奥迪",
+              "久石让",
+              "《天使爱美丽》",
+              "《爱乐之城》",
+              "《火影忍者》",
+              "《原神》",
+              "《最终幻想X》",
+              "《疾速E音（Rush E）》"
+            ],
+            "numbers": [
+              "32首"
+            ],
+            "quote_zh": "《钢琴书2》收录了32首被郎朗称为“微型杰作”的曲目"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年4月10日，郎朗推出全新EP《Piano Book 2 – Classical Encores》，收录六首经典钢琴佳作。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "《Piano Book 2 – Classical Encores》"
+            ],
+            "numbers": [
+              "2026年4月10日",
+              "六首"
+            ],
+            "quote_zh": "今年4月10日，郎朗推出全新EP《Piano Book 2 "
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "郎朗将受邀亮相在纽约举办的FIFA-House世界杯官方活动，带来专属独奏演出，包括演奏世界杯主题作品《DNA（不止于比赛）》和《茉莉花》。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "FIFA-House",
+              "世界杯",
+              "《DNA（不止于比赛）》",
+              "《茉莉花》"
+            ],
+            "numbers": [],
+            "quote_zh": "郎朗将受邀亮相在纽约举办的FIFA-House世界杯官方活动"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "该活动将于2026年7月17日举行。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "2026年7月17日"
+            ],
+            "quote_zh": "在即将到来的7月17日"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2025年12月，郎朗受邀出席首届“金字塔回响”音乐节，在金字塔前献上开幕演出。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "金字塔回响"
+            ],
+            "numbers": [
+              "2025年12月"
+            ],
+            "quote_zh": "去年12月，他受邀出席首届“金字塔回响”音乐节"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "2026年2月6日，郎朗在米兰冬奥会开幕式与玛丽亚·凯莉、安德烈·波切利、劳拉·帕西尼等艺术家共同演出。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "米兰冬奥会",
+              "玛丽亚·凯莉",
+              "安德烈·波切利",
+              "劳拉·帕西尼"
+            ],
+            "numbers": [
+              "2026年2月6日"
+            ],
+            "quote_zh": "今年2月6日，郎朗在米兰冬奥会开幕式"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "郎朗中国巡演正在进行中，2026年7月5日深圳站与莫文蔚合作《一生所爱》，并与张乘郝四手联弹《疾速E音（Rush E）》。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗",
+              "莫文蔚",
+              "《一生所爱》",
+              "张乘郝",
+              "《疾速E音（Rush E）》"
+            ],
+            "numbers": [
+              "2026年7月5日"
+            ],
+            "quote_zh": "7月5日深圳站与莫文蔚合作的《一生所爱》"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "郎朗中国巡演后续城市包括绍兴（7月25日）、重庆（7月31日）、崇礼（8月13日）、杭州（8月16日）、台州（8月19日）和上海（8月27日）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "绍兴",
+              "重庆",
+              "崇礼",
+              "杭州",
+              "台州",
+              "上海"
+            ],
+            "numbers": [
+              "7月25日",
+              "7月31日",
+              "8月13日",
+              "8月16日",
+              "8月19日",
+              "8月27日"
+            ],
+            "quote_zh": "郎朗中国巡演还将依次亮相绍兴（7月25日）"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "新京报分析认为，郎朗以钢琴为纽带，将古典音乐艺术和足球体育文化相融，在国际顶级平台展现中国音乐魅力。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "郎朗"
+            ],
+            "numbers": [],
+            "quote_zh": "郎朗以钢琴为纽带，将古典音乐艺术和足球体育文化相融"
+          }
+        ],
+        "terms": [
+          {
+            "term": "蝉联",
+            "gloss_ja": "連続受賞"
+          },
+          {
+            "term": "路演",
+            "gloss_ja": "プロモーション公演"
+          },
+          {
+            "term": "四手联弹",
+            "gloss_ja": "連弾"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "第九届红色微短剧（微电影）展启动仪式暨星火大别山主题展合肥站巡展",
+      "ledger": {
+        "topic_key": "第九届红色微短剧（微电影）展启动仪式暨星火大别山主题展合肥站巡展",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "第九届红色微短剧（微电影）展启动仪式暨「星火大别山」主题展合肥站巡展于2026年7月9日在渡江战役纪念馆举行。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "第九届红色微短剧（微电影）展",
+              "星火大别山主题展",
+              "渡江战役纪念馆"
+            ],
+            "numbers": [
+              "2026年7月9日"
+            ],
+            "quote_zh": "7月9日，第九届红色微短剧（微电影）展启动仪式暨“星火大别山"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "本次活动由中共安徽省委宣传部、中国电影家协会指导，中共安徽省委网信办、安徽省文化和旅游厅等多家单位联合主办。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "中共安徽省委宣传部",
+              "中国电影家协会",
+              "中共安徽省委网信办",
+              "安徽省文化和旅游厅"
+            ],
+            "numbers": [],
+            "quote_zh": "本次活动由中共安徽省委宣传部、中国电影家协会指导，中共安徽省"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "今年恰逢中国共产党成立105周年、中国工农红军长征胜利90周年。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "中国共产党",
+              "中国工农红军"
+            ],
+            "numbers": [
+              "105周年",
+              "90周年"
+            ],
+            "quote_zh": "今年恰逢中国共产党成立105周年、中国工农红军长征胜利90周"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "活动年度主题为「剧映大别山 影动新六安」。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "大别山",
+              "六安"
+            ],
+            "numbers": [],
+            "quote_zh": "活动以“剧映大别山 影动新六安”为年度主题。"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "启动仪式在主题曲《红色记忆》中拉开帷幕。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "《红色记忆》"
+            ],
+            "numbers": [],
+            "quote_zh": "启动仪式在悠扬庄重的主题曲《红色记忆》中拉开帷幕。"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "安徽电影集团发布了2026年度活动主题及总体安排。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "安徽电影集团"
+            ],
+            "numbers": [
+              "2026"
+            ],
+            "quote_zh": "安徽电影集团发布2026年度活动主题及总体安排。"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "安徽省文化和旅游厅发布了「青春耀江淮」百部红故事目录。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "安徽省文化和旅游厅",
+              "青春耀江淮"
+            ],
+            "numbers": [],
+            "quote_zh": "省文化和旅游厅正式发布 “青春耀江淮”百部红故事目录。"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "同步推出「研学大别山 行走的思政课」2026年六安市暑期研学暨创作采风主题线路。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "研学大别山 行走的思政课",
+              "六安市"
+            ],
+            "numbers": [
+              "2026"
+            ],
+            "quote_zh": "同步推出的“研学大别山 行走的思政课”2026年六安市暑期研"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "安徽首批12处影视拍摄取景地正式面向全国发布，涵盖红色革命文物与历史实景、红色文旅复合型、专业影视片场三大板块。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "安徽"
+            ],
+            "numbers": [
+              "12"
+            ],
+            "quote_zh": "安徽首批12处影视拍摄取景地正式面向全国发布。"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "本届活动单元设置全面升级，新增「百部红故事共创」「寻美六安」「清风廉韵」等专项单元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "百部红故事共创",
+              "寻美六安",
+              "清风廉韵"
+            ],
+            "numbers": [],
+            "quote_zh": "大赛新增了“百部红故事共创”“寻美六安”“清风廉韵”等专项单"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "主竞赛单元包括微电影、微短剧、短视频。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "除了以往的主竞赛单元（微电影、微短剧、短视频）外。"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "鼓励创作者运用AI数字技术赋能红色题材创作。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "鼓励创作者运用AI数字技术赋能红色题材创作。"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "安徽广播电视台微短剧事业部以红色微短剧《等你回家》为例，解析红色题材视听创作赋能文旅的转化路径。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "安徽广播电视台微短剧事业部",
+              "《等你回家》"
+            ],
+            "numbers": [],
+            "quote_zh": "安徽广播电视台微短剧事业部以红色微短剧《等你回家》为例。"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "报道称活动旨在实现「因为一部剧，带火一座城」的品牌效应。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "努力实现“因为一部剧，带火一座城”的品牌效应。"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "报道称活动以年轻化、数字化、场景化的影像叙事，推动红色文旅深度融合。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "以年轻化、数字化、场景化的影像叙事，定格革命峥嵘岁月。"
+          }
+        ],
+        "terms": [
+          {
+            "term": "红色微短剧",
+            "gloss_ja": "革命をテーマにした短尺ドラマ"
+          },
+          {
+            "term": "微电影",
+            "gloss_ja": "短編映画"
+          },
+          {
+            "term": "备案",
+            "gloss_ja": "政府への登録・承認"
+          },
+          {
+            "term": "定档",
+            "gloss_ja": "公開日決定"
+          },
+          {
+            "term": "路演",
+            "gloss_ja": "ロードショー・舞台挨拶"
+          },
+          {
+            "term": "控评",
+            "gloss_ja": "コメント管理・誘導"
+          },
+          {
+            "term": "番位",
+            "gloss_ja": "出演者の序列・順位"
+          },
+          {
+            "term": "饭圈",
+            "gloss_ja": "ファンコミュニティ"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "功夫女足偷票房",
+      "ledger": {
+        "topic_key": "功夫女足偷票房",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "『功夫女足』は2026年7月11日に公開され、公開初日27分で興行収入1億元を突破、初日総興行収入は2.6億元、初日累計観客動員数は284万人に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月11日",
+              "27分",
+              "1億元",
+              "2.6億元",
+              "284万"
+            ],
+            "quote_zh": "影片7月11日公映首日，上映仅27分钟票房便突破1亿元"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年7月16日、周星馳はソーシャルメディアに『功夫女足』の手書きチケットの画像を投稿し、疑問符3つを添えて、興行収入横取り疑惑に間接的に反応した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星馳",
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月16日"
+            ],
+            "quote_zh": "7月16日，周星驰在社交平台分享了《功夫女足》手写票图片，并"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "2026年7月13日、映画『功夫女足』の公式アカウントが声明を発表し、文明的な観覧を呼びかけ、興行収入の横取り・報告漏れを共同で抵制し、通報窓口を開設した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月13日"
+            ],
+            "quote_zh": "7月13日，@电影功夫女足发布声明，明确倡导文明观影、联合抵"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "福建省漳州のネットユーザーが、窓口で購入したチケットが白紙だったと報告した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "每日经济新闻",
+            "entities": [
+              "福建漳州"
+            ],
+            "numbers": [],
+            "quote_zh": "福建漳州一位网友吐槽，他在柜台买票时，打出来的票是空白的"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "映画館側は、白紙チケットは新しいロール紙が湿っていたためであり、システムから発行された正規のチケットであり、興行収入の横取りはないと説明した。該当従業員は停職処分となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "电影院向有关媒体解释称，当天才换的一卷票纸太潮湿，导致油墨显"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "配給側は、デジタル2D版の新しい番組盤とキーを7月17日から、IMAX 2D、CINITY 2Dなどの特殊版を7月19日から使用開始する通知を出した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "极目新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月17日",
+              "7月19日"
+            ],
+            "quote_zh": "数字2D版本的新版节目盘及对应密钥于7月17日启用，IMAX"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "新通知では「分段密钥」を採用し、興行収入横取りなどの不正行為を取り締まることを目的としている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "扬子晚报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "新通知显示采用“分段密钥”，意在打击偷票房等违规行为"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年7月17日時点で、『功夫女足』は公開7日間で総興行収入10.06億元を記録し、興行収入ランキング1位。興行収入シェア44.6%、上映シェア46.9%。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "猫眼数据",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月17日",
+              "7日間",
+              "10.06億元",
+              "44.6%",
+              "46.9%"
+            ],
+            "quote_zh": "截至7月17日界面新闻发稿，《功夫女足》上映7天，以总票房1"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "『功夫女足』の豆瓣スコアは6.5点で、17.9万人が評価に参加した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "豆瓣",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "6.5",
+              "17.9万"
+            ],
+            "quote_zh": "豆瓣评分显示，目前该片的最新打分为6.5分，一共有17.9万"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "『功夫女足』は周星馳にとって7年ぶりの新作である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星馳",
+              "功夫女足"
+            ],
+            "numbers": [
+              "7年"
+            ],
+            "quote_zh": "作为周星驰时隔七年推出的新作"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "『功夫女足』は中国映史の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン予約販売記録を破った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "灯塔专业版",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [],
+            "quote_zh": "《功夫女足 》已打破中国影史暑期档影片首映日场次纪录、过去三"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "本作は『少林足球』（2001年公開）の25周年を記念する精神的続編と見なされている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "少林足球",
+              "功夫女足"
+            ],
+            "numbers": [
+              "2001年",
+              "25周年"
+            ],
+            "quote_zh": "该片被认为是经典影片《少林足球》25周年的“精神续作”"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "『少林足球』の全世界総興行収入は4277.6万ドル。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "公开数据",
+            "entities": [
+              "少林足球"
+            ],
+            "numbers": [
+              "4277.6万"
+            ],
+            "quote_zh": "2001年上映的《少林足球》影片全球总票房达4277.6万美"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "『功夫女足』は草の根女子サッカーチーム「峨眉隊」の逆転物語で、伝統的な功夫要素と女子サッカーを融合している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "峨眉隊",
+              "功夫女足"
+            ],
+            "numbers": [],
+            "quote_zh": "《功夫女足》则聚焦于草根女子足球队“峨眉队”的逆袭之路"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "主演は張小斐、迪麗熱巴（ディリラバ）、張芸興（レイ）で、特別出演に劉嘉玲（カリーナ・ラウ）、佐藤健が名を連ねる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "张小斐",
+              "迪丽热巴",
+              "张艺兴",
+              "刘嘉玲",
+              "佐藤健",
+              "冯勉恒",
+              "张美娥"
+            ],
+            "numbers": [],
+            "quote_zh": "由张小斐、迪丽热巴、张艺兴担任领衔主演，刘嘉玲、佐藤健特别出"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "本作の総製作投資額は3.8億元で、うち特殊効果製作に1.9億元、全編で1200以上の特殊効果カットがある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "公开报道",
+            "entities": [
+              "星辉海外"
+            ],
+            "numbers": [
+              "3.8億元",
+              "1.9億元",
+              "1200"
+            ],
+            "quote_zh": "总制作投资达3.8亿元人民币，其中特效制作投入近1.9亿元，"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "界面新聞は、『功夫女足』の興行収入横取り疑惑は業界の古くからの問題を再び浮き彫りにしたと分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [],
+            "quote_zh": "“偷票房”这一老话题再度进入公众视野"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "揚子晩報は、分段密钥の採用は興行収入横取りなどの不正行為を取り締まる意図があると報じている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "扬子晚报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "新通知显示采用“分段密钥”，意在打击偷票房等违规行为"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "中国電影発行放映協会は、観客が疑わしいチケットをWeChat公式アカウント「电影票房监督」で報告できる検証チャンネルを開設している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "中国电影发行放映协会",
+              "电影票房监督"
+            ],
+            "numbers": [],
+            "quote_zh": "中国电影发行放映协会也已面向观众开放核验通道"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "『功夫女足』の公開初日、上映シェアは47.4%、上映回数は22.6万回を超え、デイリー興行収入は5000万元から3億元以上に引き上げられた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "47.4%",
+              "22.6万",
+              "5000万",
+              "3億"
+            ],
+            "quote_zh": "影片首日排片占比高达47.4%，首日场次超22.6万场"
+          }
+        ],
+        "terms": [
+          {
+            "term": "偷票房",
+            "gloss_ja": "興行収入の横取り"
+          },
+          {
+            "term": "手写票",
+            "gloss_ja": "手書きチケット"
+          },
+          {
+            "term": "空白票",
+            "gloss_ja": "白紙チケット"
+          },
+          {
+            "term": "分段密钥",
+            "gloss_ja": "分割キー"
+          },
+          {
+            "term": "排片占比",
+            "gloss_ja": "上映シェア"
+          },
+          {
+            "term": "票房占比",
+            "gloss_ja": "興行収入シェア"
+          },
+          {
+            "term": "豆瓣评分",
+            "gloss_ja": "豆瓣評価点"
+          },
+          {
+            "term": "精神续作",
+            "gloss_ja": "精神的続編"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "袁娅维回应歌手写错名字",
+      "ledger": {
+        "topic_key": "袁娅维回应歌手写错名字",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "袁娅维在自我介绍环节风趣回应了《歌手》写错名字的热议。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "《歌手》"
+            ],
+            "numbers": [],
+            "quote_zh": "自我介绍环节风趣回应了《歌手》写错名字的热议"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "袁娅维为张远突围赛打call。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远"
+            ],
+            "numbers": [],
+            "quote_zh": "为张远突围打call"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "袁娅维与张远合作了《莫离》OST。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远",
+              "《莫离》"
+            ],
+            "numbers": [],
+            "quote_zh": "与@张远Bird 合作《莫离》OST"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "袁娅维现场夸赞了张远的声音表现力。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远"
+            ],
+            "numbers": [],
+            "quote_zh": "娅维现场夸赞了张远的声音表现力"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "袁娅维表示张远近两年演绎情感作品非常出色。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远"
+            ],
+            "numbers": [],
+            "quote_zh": "近两年他演绎这些情感作品也是非常出色的"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "张远即将参加《歌手》突围赛。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "张远",
+              "《歌手》"
+            ],
+            "numbers": [],
+            "quote_zh": "张远即将开唱的《歌手》突围赛"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "袁娅维隔空力挺张远，称不用想太多，只是一种游戏规则。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远"
+            ],
+            "numbers": [],
+            "quote_zh": "不用想太多，只是一种游戏规则"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "该报道发布于2026年7月16日。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [
+              "2026年07月16日"
+            ],
+            "quote_zh": "2026年07月16日 11:19"
+          },
+          {
+            "id": "C9",
+            "type": "source_analysis",
+            "text": "新浪娱乐认为袁娅维的回应综艺感拉满。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维"
+            ],
+            "numbers": [],
+            "quote_zh": "综艺感拉满"
+          },
+          {
+            "id": "C10",
+            "type": "source_analysis",
+            "text": "新浪娱乐称该内容来自其原创工作室《我的音乐你来听》先导片。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "《我的音乐你来听》"
+            ],
+            "numbers": [],
+            "quote_zh": "新浪娱乐原创工作室《我的音乐你来听》先导片"
+          }
+        ],
+        "terms": [
+          {
+            "term": "打call",
+            "gloss_ja": "応援すること"
+          },
+          {
+            "term": "突围赛",
+            "gloss_ja": "予選突破戦"
+          },
+          {
+            "term": "OST",
+            "gloss_ja": "オリジナルサウンドトラック"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "2026年第二季度全国国产电视剧发行许可情况",
+      "ledger": {
+        "topic_key": "2026年第二季度全国国产电视剧发行许可情况",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家广播电视总局は2026年7月14日、2026年第2四半期（4-6月）の全国国産テレビドラマ発行許可状況を通達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局"
+            ],
+            "numbers": [
+              "2026-07-14",
+              "2026年4-6月"
+            ],
+            "quote_zh": "2026-07-14 17:58 来源：电视剧司"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年4-6月に生産完了し発行許可を得た国産テレビドラマは21部595集。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "21部",
+              "595集"
+            ],
+            "quote_zh": "生产完成并获准发行国产电视剧21部595集"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "現実題材のドラマは16部428集で、全体の部数76.19%、集数71.93%を占め、すべて当代題材。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "16部",
+              "428集",
+              "76.19%",
+              "71.93%"
+            ],
+            "quote_zh": "现实题材剧目共计16部428集，分别占总部、集数的76.19"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "歴史題材のドラマは5部167集で、全体の部数23.81%、集数28.07%。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "5部",
+              "167集",
+              "23.81%",
+              "28.07%"
+            ],
+            "quote_zh": "历史题材剧目共计5部167集，分别占总部、集数的23.81%"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "歴史題材の内訳：近代題材1部24集（部数4.76%、集数4.03%）、古代題材4部143集（部数19.05%、集数24.03%）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "1部",
+              "24集",
+              "4.76%",
+              "4.03%",
+              "4部",
+              "143集",
+              "19.05%",
+              "24.03%"
+            ],
+            "quote_zh": "近代题材共计1部24集...古代题材共计4部143集"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "通達番号は〔2026〕6号。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "〔2026〕6号"
+            ],
+            "quote_zh": "〔2026〕6号"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "通達日付は2026年7月13日付（国家广播电视总局办公厅）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局办公厅"
+            ],
+            "numbers": [
+              "2026年7月13日"
+            ],
+            "quote_zh": "国家广播电视总局办公厅 2026年7月13日"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "添付ファイルとして「2026年4-6月全国《国产电视剧发行许可证》目录.pdf」が存在。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "附件：2026年4-6月全国《国产电视剧发行许可证》目录.p"
+          }
+        ],
+        "terms": [
+          {
+            "term": "备案",
+            "gloss_ja": "制作許可申請"
+          },
+          {
+            "term": "发行许可证",
+            "gloss_ja": "放送許可証"
+          },
+          {
+            "term": "现实题材",
+            "gloss_ja": "現代社会を扱う題材"
+          },
+          {
+            "term": "历史题材",
+            "gloss_ja": "歴史を扱う題材"
+          },
+          {
+            "term": "当代题材",
+            "gloss_ja": "現代（改革開放以降）を舞台とする題材"
+          },
+          {
+            "term": "近代题材",
+            "gloss_ja": "近代（1840-1949年）を舞台とする"
+          },
+          {
+            "term": "古代题材",
+            "gloss_ja": "古代（1840年以前）を舞台とする題材"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "蔡赴朝涉嫌严重违纪违法被审查调查",
+      "ledger": {
+        "topic_key": "蔡赴朝涉嫌严重违纪违法被审查调查",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家广播电视总局党组于2026年7月15日召开会议，传达中央纪委国家监委对蔡赴朝涉嫌严重违纪违法进行纪律审查和监察调查的决定。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局",
+              "中央纪委国家监委",
+              "蔡赴朝"
+            ],
+            "numbers": [
+              "2026-07-15"
+            ],
+            "quote_zh": "7月15日，国家广播电视总局党组召开会议，传达中央纪委国家监"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "与会同志一致表示坚决拥护党中央决定，坚决拥护中央纪委国家监委决定。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "与会同志一致表示，坚决拥护党中央决定，坚决拥护中央纪委国家监"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "中央宣传部副部长，国家广播电视总局党组书记、局长曹淑敏主持会议。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "曹淑敏",
+              "中央宣传部",
+              "国家广播电视总局"
+            ],
+            "numbers": [],
+            "quote_zh": "中央宣传部副部长，国家广播电视总局党组书记、局长曹淑敏主持会"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "国家广播电视总局党组成员、副局长何飚、刘建国出席会议。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "何飚",
+              "刘建国",
+              "国家广播电视总局"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广播电视总局党组成员、副局长何飚、刘建国出席会议"
+          },
+          {
+            "id": "C5",
+            "type": "source_analysis",
+            "text": "会议指出，党中央决定对蔡赴朝进行审查调查，彰显了党中央推进全面从严治党、把党的自我革命进行到底的坚定决心和坚强意志。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "蔡赴朝"
+            ],
+            "numbers": [],
+            "quote_zh": "充分彰显了以习近平同志为核心的党中央持之以恒推进全面从严治党"
+          },
+          {
+            "id": "C6",
+            "type": "source_analysis",
+            "text": "会议强调，要深刻汲取教训，加强警示教育，广电总局系统各级领导干部要以案为鉴。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "广电总局"
+            ],
+            "numbers": [],
+            "quote_zh": "要深刻汲取教训，切实引以为戒，做到警钟长鸣"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "会议指出，要以更高标准、更实举措推进全面从严治党，排查重点领域、关键环节廉政风险隐患。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "要以更高标准、更实举措推进全面从严治党"
+          },
+          {
+            "id": "C8",
+            "type": "source_analysis",
+            "text": "会议强调，要以高质量党建促进高质量发展，加快推动广电视听高质量发展。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "以高质量党建促进高质量发展"
+          }
+        ],
+        "terms": [
+          {
+            "term": "纪律审查",
+            "gloss_ja": "党規違反の調査"
+          },
+          {
+            "term": "监察调查",
+            "gloss_ja": "監察機関による調査"
+          },
+          {
+            "term": "全面从严治党",
+            "gloss_ja": "全面的な厳しい党内統治"
+          },
+          {
+            "term": "两个确立",
+            "gloss_ja": "習近平の核心地位と思想の指導的地位の確立"
+          },
+          {
+            "term": "两个维护",
+            "gloss_ja": "党中央の権威と集中統一領導の維持"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "大哥发视频没有自己画面",
+      "ledger": {
+        "topic_key": "大哥发视频没有自己画面",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "新浪娱乐が2026年7月18日に「大哥好不容易发个视频，然后一点儿自己画面没有啊」という記事を掲載した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "新浪娱乐"
+            ],
+            "numbers": [
+              "2026年07月18日"
+            ],
+            "quote_zh": "大哥好不容易发个视频，然后一点儿自己画面没有啊"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "記事の著者は「阳光小暖王」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "阳光小暖王"
+            ],
+            "numbers": [],
+            "quote_zh": "作者 阳光小暖王"
+          },
+          {
+            "id": "C3",
+            "type": "source_analysis",
+            "text": "記事は「大哥」が動画を投稿したが、自身の映像が一切含まれていないことを指摘している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "大哥"
+            ],
+            "numbers": [],
+            "quote_zh": "大哥好不容易发个视频，然后一点儿自己画面没有啊"
+          },
+          {
+            "id": "C4",
+            "type": "source_analysis",
+            "text": "記事の内容は著者の個人的見解であり、新浪網の公式見解ではない。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "新浪网"
+            ],
+            "numbers": [],
+            "quote_zh": "以上文章内容仅代表作者本人观点，不代表新浪网观点或立场"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "群星闪耀时",
+      "ledger": {
+        "topic_key": "群星闪耀时",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『群星闪耀时』は2026年8月1日より全国のIMAX劇場で公開される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "群星闪耀时"
+            ],
+            "numbers": [
+              "2026年8月1日"
+            ],
+            "quote_zh": "将于8月1日起登陆全国IMAX影院"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "監督は章笛沙、脚本は胡晓曦と章笛沙。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "章笛沙",
+              "胡晓曦"
+            ],
+            "numbers": [],
+            "quote_zh": "章笛沙执导，胡晓曦、章笛沙编剧"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "主演は黄渤、吴磊、高叶、孙阳。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "黄渤",
+              "吴磊",
+              "高叶",
+              "孙阳"
+            ],
+            "numbers": [],
+            "quote_zh": "黄渤、吴磊、高叶、孙阳领衔主演"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "特別出演は李乃文、郭涛、杨新鸣、杜志国、沈月。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "李乃文",
+              "郭涛",
+              "杨新鸣",
+              "杜志国",
+              "沈月"
+            ],
+            "numbers": [],
+            "quote_zh": "李乃文、郭涛、杨新鸣特邀主演，杜志国、沈月特邀出演"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "物語は2035年、3人の中国宇宙飛行士が深宇宙で地上との連絡を失い、危機的状況の中、1970年の『東方紅』のメロディー信号が届くという内容。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "中国",
+              "東方紅"
+            ],
+            "numbers": [
+              "2035年",
+              "1970年"
+            ],
+            "quote_zh": "2035年三名中国航天员在深空绝境中与地面失联，一段来自19"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "本作は第28回上海国際映画祭の閉幕作品として初公開された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "上海国際映画祭"
+            ],
+            "numbers": [
+              "第28回"
+            ],
+            "quote_zh": "作为第28届上海国际电影节闭幕影片完成首次公开放映"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "1905电影网は、映画の反応として「震撼」「感動」「ロマンチック」というキーワードが挙がり、「中国人にしか撮れないSF映画」との声があったと伝えている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "“震撼”“感动”与“浪漫”成为映后的关键词，更有人直言这是“"
+          },
+          {
+            "id": "C8",
+            "type": "source_analysis",
+            "text": "監督の章笛沙は、脚本準備のために多くの科学研究者を訪問し、資料を調べたと述べている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "章笛沙"
+            ],
+            "numbers": [],
+            "quote_zh": "筹备与剧本阶段他走访了大量科研工作者、查阅海量资料"
+          },
+          {
+            "id": "C9",
+            "type": "source_analysis",
+            "text": "監製の黄建新は、脚本を初めて読んだ際、中国人の未知に対する確固たる素朴な感情の力に感動したと語っている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "黄建新"
+            ],
+            "numbers": [],
+            "quote_zh": "第一次看到剧本就被中国人面对未知时那种坚定、朴素的情感力量打"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "映画は65年を隔てた信号で2つの時代を結ぶ構成。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [
+              "65年"
+            ],
+            "quote_zh": "以一段穿越65年的神秘信号，将两个时代紧紧相连"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2026年7月13日に新予告編が公開され、黄渤と呉磊が打開策を模索する内容。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "黄渤",
+              "吴磊"
+            ],
+            "numbers": [
+              "2026年7月13日"
+            ],
+            "quote_zh": "《群星闪耀时》曝全新预告 黄渤吴磊寻求破局"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "映画の公開日は2026年8月1日。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [
+              "2026年8月1日"
+            ],
+            "quote_zh": "8月1日，《群星闪耀时》全国公映"
+          }
+        ],
+        "terms": [
+          {
+            "term": "备案",
+            "gloss_ja": "映画の撮影許可申請"
+          },
+          {
+            "term": "定档",
+            "gloss_ja": "公開日決定"
+          },
+          {
+            "term": "路演",
+            "gloss_ja": "舞台挨拶ツアー"
+          },
+          {
+            "term": "控评",
+            "gloss_ja": "コメント操作"
+          },
+          {
+            "term": "番位",
+            "gloss_ja": "出演者順位"
+          },
+          {
+            "term": "饭圈",
+            "gloss_ja": "ファンコミュニティ"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
