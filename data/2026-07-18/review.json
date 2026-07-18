@@ -1,13 +1,13 @@
 {
   "date": "2026-07-18",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 1,
   "articles": [
     {
       "index": 1,
       "topic_key": "功夫女足",
       "title": "周星馳監督『功夫女足』公開半日で興収1億元突破、夏休みシーズン記録を更新",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -16,7 +16,7 @@
       "index": 2,
       "topic_key": "2026中国—东盟微短剧大赛",
       "title": "2026中国—ASEAN微短劇大賽、説明会を開催—AI部門新設で賞金100万元",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -25,7 +25,7 @@
       "index": 3,
       "topic_key": "郎朗《钢琴书2》",
       "title": "郎朗『钢琴书2』がドイツ古典音楽賞「年間ベストセラーアルバム」に、ワールドカップ公式イベント出演へ",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -34,7 +34,7 @@
       "index": 4,
       "topic_key": "第九届红色微短剧（微电影）展启动仪式暨星火大别山主题展合肥站巡展",
       "title": "第9回レッドマイクロドラマ展が安徽省で開幕、AI活用や撮影地誘致も",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -43,7 +43,7 @@
       "index": 5,
       "topic_key": "功夫女足偷票房",
       "title": "周星馳『功夫女足』、公開7日で興収10億元突破も「興行収入横取り」疑惑が浮上",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -52,7 +52,7 @@
       "index": 6,
       "topic_key": "袁娅维回应歌手写错名字",
       "title": "袁婭維、『歌手』名前間違いにユーモアで応え、張遠を応援",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -61,7 +61,7 @@
       "index": 7,
       "topic_key": "2026年第二季度全国国产电视剧发行许可情况",
       "title": "2026年第2四半期、国産ドラマ発行許可は21部595集、現実題材が76%占める",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -70,7 +70,7 @@
       "index": 8,
       "topic_key": "蔡赴朝涉嫌严重违纪违法被审查调查",
       "title": "元国家ラジオテレビ総局幹部・蔡赴朝氏、重大な規律違反・違法の疑いで審査調査に",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -79,7 +79,7 @@
       "index": 9,
       "topic_key": "大哥发视频没有自己画面",
       "title": "「大哥」が動画投稿、自身の姿は一切映さず 新浪エンタメが指摘",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -88,7 +88,7 @@
       "index": 10,
       "topic_key": "群星闪耀时",
       "title": "映画『群星闪耀时』新予告編公開、黄渤×呉磊が深宇宙の危機に挑む",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
