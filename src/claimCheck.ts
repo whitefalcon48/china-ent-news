@@ -158,15 +158,23 @@ export function runCommentCheck(
   }
   if (/ではないでしょうか/.test(text)) violations.push(toViolation("comment", "unverified_speculation", "gate", matchingSentence(text, /ではないでしょうか/)));
   if (/かもしれません/.test(text)) violations.push(toViolation("comment", "unverified_speculation", "warning", matchingSentence(text, /かもしれません/)));
-  const template = /業界全体に影響を与える可能性|透明性向上につながる可能性|今後の動向(に|を)?(注目|注視|追|見守)|評価のポイントになりそう|新たな指標になるか|目が離せ(ない|ません)|注目したいところ|注目が集ま(りそう|る)/;
+  const template = /業界全体に影響を与える可能性|透明性向上につながる可能性|今後の動向(に|を)?(注目|注視|追|見守)|評価のポイントになりそう|新たな指標になるか|目が離せ(ない|ません)|今後注目したい|注目したいところ|注目が集ま(りそう|る)/;
   if (template.test(text)) violations.push(toViolation("comment", "template_comment", "gate", matchingSentence(text, template)));
   const exclamations = (text.match(/[！!]/g) || []).length;
   const tooManyInSentence = splitSentences(text).some((sentence) => (sentence.match(/[！!]/g) || []).length > 1);
   if (toneMode === "sober" && exclamations > 0) violations.push(toViolation("comment", "tone_exclamation", "gate", text));
-  if (toneMode === "normal" && (exclamations === 0 || exclamations > 3 || tooManyInSentence)) violations.push(toViolation("comment", "tone_exclamation", "warning", text));
+  if (toneMode === "normal" && (exclamations === 0 || exclamations > 4 || tooManyInSentence)) violations.push(toViolation("comment", "tone_exclamation", "warning", text));
   splitSentences(text).filter((sentence) => sentence.replace(/[。！？!?]/g, "").length > 90).forEach((sentence) => violations.push(toViolation("comment", "long_sentence", "warning", sentence.trim())));
-  if (/みたい|のようです/.test(text) && (topic.source_mix.sns || 0) + (topic.source_mix.rumor || 0) === 0 && !ledger.claims.some((claim) => claim.type === "unsupported")) {
-    violations.push(toViolation("comment", "hedged_verified_fact", "warning", matchingSentence(text, /みたい|のようです/)));
+  const desuNeCount = splitSentences(text).filter((sentence) => /ですね[。！!]$/.test(sentence.trim())).length;
+  if (desuNeCount >= 3) violations.push(toViolation("comment", "ending_repetition", "warning", `ですね文末: ${desuNeCount}回`));
+  const ledgerNumbers = new Set(ledger.claims.flatMap((claim) => claim.numbers).flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean));
+  const ledgerEntities = ledger.claims.flatMap((claim) => claim.entities).filter(Boolean);
+  for (const sentence of splitSentences(text).filter((item) => /かも|みたい|のようです/.test(item))) {
+    const hasLedgerNumber = extractNumberTokens(sentence).map(normalizeNumberToken).some((token) => ledgerNumbers.has(token));
+    const hasLedgerEntity = ledgerEntities.some((entity) => entity && sentence.includes(entity));
+    if (hasLedgerNumber || hasLedgerEntity) {
+      violations.push(toViolation("comment", "hedged_verified_fact", "warning", sentence.trim()));
+    }
   }
   return violations;
 }
@@ -179,7 +187,7 @@ export function sanitizeExclamations(text: string, toneMode: ToneMode) {
     return sentence.replace(/[！!]/g, () => {
       total += 1;
       inSentence += 1;
-      return total > 3 || inSentence > 1 ? "。" : "！";
+      return total > 4 || inSentence > 1 ? "。" : "！";
     });
   }).join("").replace(/。。+/g, "。");
 }

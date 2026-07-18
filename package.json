@@ -16,6 +16,7 @@
     "post:x": "tsx src/site/postToX.ts",
     "review:issue": "tsx src/review/buildReviewIssueBody.ts",
     "review:apply": "tsx src/review/applyReview.ts",
+    "review:ui": "tsx src/review/uiServer.ts",
     "report:feedback": "tsx src/review/feedbackReport.ts",
     "report:quality": "tsx src/qualityReport.ts"
   },

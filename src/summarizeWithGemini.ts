@@ -116,7 +116,7 @@ export async function summarizeTopic(
     try {
       let comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget);
       let commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
-      if (commentViolations.some((violation) => violation.severity === "gate" || violation.rule === "tone_exclamation")) {
+      if (needsCommentRegeneration(commentViolations, comments.why_it_matters, comments.editor_comment, toneMode)) {
         commentStage.regenerated = true;
         comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, commentViolations);
         commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
@@ -205,7 +205,7 @@ export async function reviseTopicFromSavedData(
     commentStage.attempted = true;
     const comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, [], instruction);
     const violations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
-    if (violations.some((violation) => violation.severity === "gate")) {
+    if (needsCommentRegeneration(violations, comments.why_it_matters, comments.editor_comment, toneMode)) {
       const retry = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, violations, instruction);
       Object.assign(comments, retry);
       commentStage.regenerated = true;
@@ -694,10 +694,13 @@ async function buildBingtangCommentPrompt(
 ) {
   const editorialCharacter = await loadEditorialCharacter();
   const toneInstruction = toneMode === "normal"
-    ? `- 明るく、少し前のめりな、話し言葉に近い「です・ます調」。
-- 使ってよい語尾の例: 「〜ですね！」「〜なんです！」「〜ですよ〜！」「〜ですって！」「〜ましたね〜！」「要するに、〜ということです！」
-- 「！」は2つのコメント欄あわせて2〜3個使う。ただし1つの文に2個以上付けない。`
-    : `- この話題は重大事件・法的問題・訃報・被害者のいる話題です。「！」を一切使わず、落ち着いた「です・ます調」で書く。軽いツッコミや明るい言い回しを使わない。確認できた事実と、まだ分かっていないことの境界をはっきり言う。`;
+    ? `- 明るく、少し前のめりな、話し言葉に近い「です・ます調」。短いくだけた感想を混ぜてよい。
+- 使ってよい表現の例: 「〜かも！」「〜みたい！」「すごい！」「これは気になる！」「ちょっと待って！」「ここ、大事です！」「〜なんです！」「〜でしたね〜！」「要するに、〜ということです！」
+- 「かも」「みたい」はビンタンの見方・可能性にだけ使う。事実台帳で確認できた事実は、です・ます調で明確に言い切る。
+- 「すごい！」「これは気になる！」のような短い感想は、1つのコメント欄につき1回まで。
+- 「！」は2つのコメント欄あわせて2〜4個使う。0個にしない。1つの文に2個以上付けない。
+- 同じ語尾を続けて使わない。「〜ですね」の多用と、「今後注目したい」型の締めの反復を避ける。`
+    : `- この話題は重大事件・法的問題・訃報・被害者のいる話題です。「！」を一切使わず、落ち着いた「です・ます調」で書く。軽いツッコミ・くだけた感想・明るい言い回しを使わない。確認できた事実と、まだ分かっていないことの境界をはっきり言う。`;
   const violationInstruction = violations.length
     ? `\n\n前回の出力に次の禁止表現が含まれていました。該当の内容を含めずに書き直してください:\n${violations.map((violation) => `${violation.rule}: ${violation.detail}`).join("\n")}`
     : "";
@@ -710,7 +713,7 @@ Use the document above as the highest-priority editorial policy.
 
 あなたの仕事:
 - 記事本文はすでに完成しています。あなたが書くのは「ビンタンの注目ポイント」（why_it_matters）と「ビンタンからのひとこと」（editor_comment）の2つだけです。
-- コメント欄は、本文を難しく言い換える場所ではありません。難しい中国エンタメの事情を、読者に明るく噛み砕いて渡す場所です。
+- コメント欄は、本文を難しく言い換える場所ではありません。難しい中国エンタメの事情を読者に噛み砕いて渡し、ビンタン自身の感情のリアクションを添える場所です。
 - 本文と事実台帳にある情報だけを使います。新しい数字・人物名・作品名・出来事を足しません。
 
 why_it_matters（ビンタンの注目ポイント）の書き方:
@@ -728,7 +731,7 @@ editor_comment（ビンタンからのひとこと）の書き方:
 ${toneInstruction}
 
 禁止事項:
-- 「〜みたいです」「〜のようです」は伝聞・噂・未確認情報にだけ使う。台帳のverified_factで確認できている事実に付けない。
+- 「かも」「みたい」「〜のようです」を、台帳のverified_factで確認できている事実に付けない。
 - SNSや反応のevidenceが無いのに「ファンからは好意的な反応が予想されます」のような反応の予想・想像を書かない。
 - 「初共演ではないでしょうか」のような、台帳で確認できない推測を書かない。
 - 次のような中身のない定型句を使わない: 「業界全体に影響を与える可能性があります」「透明性向上につながる可能性があります」「今後の動向に注目したいところです」「評価のポイントになりそうです」「新たな指標になるか見守りたいです」「目が離せません」
@@ -780,6 +783,18 @@ function removeCommentViolationSentences(text: string, violations: ClaimCheckVio
 
 function countExclamations(text: string) {
   return (text.match(/[！!]/g) || []).length;
+}
+
+export function needsCommentRegeneration(
+  violations: ClaimCheckViolation[],
+  whyItMatters: string,
+  editorComment: string,
+  toneMode: "normal" | "sober"
+) {
+  if (violations.some((violation) => violation.severity === "gate")) return true;
+  return toneMode === "normal"
+    && countExclamations(`${whyItMatters}\n${editorComment}`) === 0
+    && violations.some((violation) => violation.rule === "tone_exclamation");
 }
 
 function parseJsonFromModelText(text: string) {

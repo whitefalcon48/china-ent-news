@@ -214,6 +214,7 @@ export type ClaimCheckRule =
   | "unverified_speculation"
   | "template_comment"
   | "tone_exclamation"
+  | "ending_repetition"
   | "hedged_verified_fact"
   | "long_sentence"
   | "terminology_avoid";
