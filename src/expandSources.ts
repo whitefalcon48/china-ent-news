@@ -13,7 +13,7 @@ const DEFAULT_TIMEOUT_MS = 6000;
 const DEFAULT_MAX_TOPICS = 8;
 const DEFAULT_QUERIES_PER_TOPIC = 2;
 const MAX_ITEMS_PER_ROUTE = 8;
-const SERPER_ENDPOINT = "https://api.serper.dev/search";
+const SERPER_ENDPOINT = "https://google.serper.dev/search";
 
 type ExpansionRoute = {
   id: string;
