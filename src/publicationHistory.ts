@@ -76,7 +76,12 @@ export function evaluateTopicHistory(topic: TopicCandidate, history: Publication
     .sort((a, b) => b.specificity - a.specificity || b.entry.topic_key.length - a.entry.topic_key.length)[0]?.entry;
   if (!matched) return undefined;
   const oldUrls = new Set(matched.evidence_urls);
-  const newEvidence = topic.evidence_articles.filter((evidence) => evidence.url && !oldUrls.has(evidence.url));
+  const newEvidence = topic.evidence_articles.filter((evidence) =>
+    evidence.url
+    && !oldUrls.has(evidence.url)
+    && Boolean(evidence.published_date)
+    && ["today", "yesterday", "recent"].includes(evidence.freshness_label)
+  );
   const substantiveUpdate = detectSubstantiveUpdate(newEvidence.map((evidence) => `${evidence.title} ${evidence.key_points.join(" ")}`).join(" "));
   return {
     topic_key: topic.topic_key,
