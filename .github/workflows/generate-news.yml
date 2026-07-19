@@ -13,6 +13,11 @@ on:
         options:
           - gemini
           - deepseek
+      refresh_review:
+        description: "Replace today's stored candidates and create a fresh review issue"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -83,6 +88,8 @@ jobs:
       - name: Persist daily data
         id: persist
         run: npm run persist:data
+        env:
+          ALLOW_DATA_OVERWRITE: ${{ inputs.refresh_review == true && 'true' || 'false' }}
 
       - name: Create review issue
         if: env.REVIEW_GATE != 'false'

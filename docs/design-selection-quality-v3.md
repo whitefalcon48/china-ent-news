@@ -351,6 +351,8 @@ comment_diversity: { openings: [{topic_key, opening}], regenerated_opening: [...
 - **V11** workflow 更新（.github/workflows/generate-news.yml）: `SOURCE_EXPANSION_SKIP_RSSHUB=true` と `SOURCE_EXPANSION_MAX_TOPICS=8` を生成ステップ env に追加（SERPER_API_KEY は 988fc27 で配線済み）。受け入れ: yml 差分のみ・他ステップ不変
 - **V12** ローカル検証（§10）→ roadmap 更新（実測値1行）→ コミット → push → Actions 実行 → §10 の当日判定セットで合否確認 → レビュー承認 → サイト生成まで本日中に進める
 
+同日の品質修正後に Actions を再実行する場合は、通常の上書き防止を維持したまま `workflow_dispatch` の `refresh_review=true` を明示した実行に限り、当日の保存候補と `review.json` を更新して新しいレビュー Issue を作る。旧 Issue のコメントは履歴として残す。
+
 ## 10. 検証手順
 
 **ローカル**:
