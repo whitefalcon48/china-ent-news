@@ -6,9 +6,11 @@ import { fetchHotSearchArticles } from "./fetchHotSearch.js";
 import { expandTopicSources } from "./expandSources.js";
 import { ClaimCheckDiscardError } from "./claimCheck.js";
 import { evaluateTopicInformationCompleteness } from "./completenessGate.js";
+import { evaluateEditorialValues, isOfficialOnlyTopic, type EditorialValueAssessment, type EditorialValueResult } from "./editorialValue.js";
 import { writeFactLedgerFile } from "./factLedger.js";
 import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError } from "./llmCallBudget.js";
 import { renderMarkdownFile, writeArticlesJsonFile } from "./renderMarkdown.js";
+import { evaluateTopicHistory, loadPublicationHistory, type PublicationHistory, type PublicationHistoryMatch } from "./publicationHistory.js";
 import { isReviewGateEnabled, writeInitialReviewState } from "./review/reviewState.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle, summarizeTopic } from "./summarizeWithGemini.js";
@@ -63,6 +65,7 @@ async function main() {
     topic_seed_extraction: topicSeedExtraction,
     source_expansion: topicExpansion.expansion
   });
+  const publicationHistory = await loadPublicationHistory(getRunDate());
   const droppedReasons = new Map<string, string>();
   const selectionReasons = new Map<string, string>();
   markNonPublishableTraceDrops(generationCandidatePool, droppedReasons);
@@ -90,9 +93,15 @@ async function main() {
     MAX_ARTICLES_PER_SOURCE
   );
   markSelectionLimitTraceDrops(freshEligibleArticles, legacySelectedCandidates, droppedReasons, maxArticles, MAX_ARTICLES_PER_SOURCE);
-  const topicSelection: ReturnType<typeof selectTopicsForAi> = topicFirstEnabled
-    ? selectTopicsForAi(topicCandidates, topicCandidateArticlePool, maxArticles)
-    : { selected: [], dropped: [], backfillCandidates: [], informationGate: { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] } };
+  const topicSelection = topicFirstEnabled
+    ? await selectTopicsForAi(topicCandidates, topicCandidateArticlePool, maxArticles, publicationHistory, provider, llmCallBudget)
+    : {
+        selected: [], dropped: [], backfillCandidates: [],
+        informationGate: { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] },
+        editorialValue: { enabled: false, llm: "fallback" as const, candidates: [] },
+        publicationHistory: { loaded_days: publicationHistory.loaded_days, entry_count: publicationHistory.entries.length, matches: [] },
+        officialOnly: { limit: 1, used: [], excluded: [] }
+      };
   const topicEvidenceBundles = topicFirstEnabled
     ? await buildTopicEvidenceBundles(topicSelection.selected, topicCandidateArticlePool)
     : [];
@@ -157,6 +166,7 @@ async function main() {
     ? usableTopicBundles.map((bundle) => ({ article: bundle.evidence[0], topic: bundle.topic, evidence: bundle.evidence, selectedTopic: bundle.selectedTopic }))
     : selectedArticles.map((article) => ({ article, topic: undefined, evidence: [article] }));
   const attemptedTopicKeys = new Set(generationItems.map((item) => item.topic?.topic_key).filter((key): key is string => Boolean(key)));
+  const usedCommentOpenings: string[] = [];
   let backfillCount = 0;
   let backfillLowPriorityCount = topicSelection.selected.filter((item) => item.representative.isLowPriority).length;
 
@@ -176,7 +186,10 @@ async function main() {
       let summary: SummarizedArticle;
       let generationMeta: TopicGenerationMeta | undefined;
       if (topic) {
-        const result = await summarizeTopic(topic, evidence, provider, llmCallBudget);
+        const result = await summarizeTopic(topic, evidence, provider, llmCallBudget, {
+          angleHint: item.selectedTopic?.editorialValue?.axes.bingtang_angle.angle_hint,
+          usedOpenings: usedCommentOpenings
+        });
         summary = result.summary;
         generationMeta = result.meta;
       } else {
@@ -199,6 +212,7 @@ async function main() {
         continue;
       }
       processed.push({ raw: article, summary, topic, generationMeta });
+      if (generationMeta?.comment_stage?.opening) usedCommentOpenings.push(generationMeta.comment_stage.opening);
     } catch (error) {
       const message = describeError(error);
       aiErrors.push(`${article.title}: ${message}`);
@@ -310,6 +324,16 @@ async function main() {
       backfilled: backfilledTopicKeys
     },
     informationGate: topicSelection.informationGate,
+    editorialValue: topicSelection.editorialValue,
+    publicationHistory: topicSelection.publicationHistory,
+    officialOnly: topicSelection.officialOnly,
+    commentDiversity: {
+      openings: processed.flatMap((article) => article.generationMeta?.comment_stage?.opening
+        ? [{ topic_key: article.topic?.topic_key ?? "", opening: article.generationMeta.comment_stage.opening }]
+        : []),
+      regenerated_opening: processed.filter((article) => article.generationMeta?.comment_stage?.regenerated_opening).map((article) => article.topic?.topic_key ?? ""),
+      regenerated_paraphrase: processed.filter((article) => article.generationMeta?.comment_stage?.regenerated_paraphrase).map((article) => article.topic?.topic_key ?? "")
+    },
     droppedTopics: topicSelection.dropped.map((item) => ({ ...item.topic, reason: item.reason })),
     topicLayerNote: topicFirstEnabled
       ? "Topic-first generation enabled. DeepSeek input contains one representative article per selected topic."
@@ -739,12 +763,22 @@ type SelectedTopic = {
   category: FeedCategory;
   score: number;
   selectionReason: string;
+  editorialValue?: EditorialValueAssessment;
 };
 
-function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawArticle[], maxTopics: number) {
+async function selectTopicsForAi(
+  topicCandidates: TopicCandidate[],
+  articlePool: RawArticle[],
+  maxTopics: number,
+  publicationHistory: PublicationHistory,
+  provider: ReturnType<typeof getAiProvider>,
+  llmCallBudget: ReturnType<typeof createLlmCallBudget>
+) {
   const articlesByUrl = new Map(articlePool.map((article) => [article.url, article]));
   const dropped: Array<{ topic: TopicCandidate; reason: string }> = [];
-  const eligible: SelectedTopic[] = [];
+  const preEvsEligible: Array<SelectedTopic & { historyMatch?: PublicationHistoryMatch }> = [];
+  const historyMatches: PublicationHistoryMatch[] = [];
+  const editorialGateEnabled = process.env.EDITORIAL_VALUE_GATE !== "false";
   const informationGate = {
     enabled: process.env.INFO_COMPLETENESS_GATE !== "false",
     evaluated: 0,
@@ -767,6 +801,14 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
         continue;
       }
     }
+    const historyMatch = evaluateTopicHistory(topic, publicationHistory);
+    if (historyMatch) {
+      historyMatches.push(historyMatch);
+      if (editorialGateEnabled && historyMatch.decision === "dup_no_update") {
+        dropped.push({ topic, reason: "dup_no_update" });
+        continue;
+      }
+    }
     const publishableEvidence = topic.evidence_articles
       .map((evidence) => articlesByUrl.get(evidence.url))
       .filter((article): article is RawArticle => Boolean(article))
@@ -776,13 +818,36 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
       continue;
     }
     const representative = [...publishableEvidence].sort(compareArticlesForAiInput)[0];
-    eligible.push({
+    preEvsEligible.push({
       topic,
       representative,
       category: representative.feedCategory ?? "その他",
       score: getTopicSelectionScore(topic, publishableEvidence),
-      selectionReason: topic.selection_reason
+      selectionReason: topic.selection_reason,
+      historyMatch
     });
+  }
+
+  preEvsEligible.sort((a, b) => b.score - a.score || a.topic.topic_key.localeCompare(b.topic.topic_key, "ja"));
+  const evsShortlist = editorialGateEnabled ? preEvsEligible.slice(0, 20) : preEvsEligible;
+  for (const item of editorialGateEnabled ? preEvsEligible.slice(20) : []) dropped.push({ topic: item.topic, reason: "evs_candidate_limit" });
+  const evsHistoryMatches = new Map(evsShortlist.flatMap((item) => item.historyMatch ? [[item.topic.topic_key, item.historyMatch] as const] : []));
+  const editorialValueResult: EditorialValueResult = editorialGateEnabled
+    ? await evaluateEditorialValues(evsShortlist.map((item) => item.topic), evsHistoryMatches, provider, llmCallBudget)
+    : { llm: "fallback", candidates: [] };
+  const assessments = new Map(editorialValueResult.candidates.map((assessment) => [assessment.topic_key, assessment]));
+  const eligible: SelectedTopic[] = [];
+  for (const item of evsShortlist) {
+    if (!editorialGateEnabled) {
+      eligible.push(item);
+      continue;
+    }
+    const assessment = assessments.get(item.topic.topic_key);
+    if (!assessment || assessment.total < 7) {
+      dropped.push({ topic: item.topic, reason: `evs_below_threshold:${assessment?.total ?? 0}` });
+      continue;
+    }
+    eligible.push({ ...item, score: assessment.total, editorialValue: assessment, selectionReason: `${item.selectionReason}, evs:${assessment.total}` });
   }
 
   const groups = new Map<FeedCategory, SelectedTopic[]>();
@@ -798,6 +863,7 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
   const categoryCounts = new Map<FeedCategory, number>();
   let snsOnlyCount = 0;
   let lowPriorityCount = 0;
+  let officialOnlyCount = 0;
   const finalFillCandidates: SelectedTopic[] = [];
 
   while (selected.length < maxTopics) {
@@ -807,7 +873,7 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
       const group = groups.get(category) ?? [];
       while (group.length) {
         const item = group.shift()!;
-        const reason = getTopicLimitReason(item, selected.length, maxTopics, sourceCounts, categoryCounts, snsOnlyCount, lowPriorityCount);
+        const reason = getTopicLimitReason(item, selected.length, maxTopics, sourceCounts, categoryCounts, snsOnlyCount, lowPriorityCount, officialOnlyCount, editorialGateEnabled);
         if (reason) {
           if (reason === "topic_category_limit") finalFillCandidates.push(item);
           else dropped.push({ topic: item.topic, reason });
@@ -816,6 +882,7 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
         addSelectedTopic(item, selected, sourceCounts, categoryCounts);
         if (isSnsOnlySingleEvidence(item.topic)) snsOnlyCount++;
         if (item.representative.isLowPriority) lowPriorityCount++;
+        if (isOfficialOnlyTopic(item.topic)) officialOnlyCount++;
         added = true;
         break;
       }
@@ -833,7 +900,7 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
       dropped.push({ topic: item.topic, reason: "topic_count_limit" });
       continue;
     }
-    const reason = getTopicNonCategoryLimitReason(item, sourceCounts, snsOnlyCount, lowPriorityCount);
+    const reason = getTopicLimitReason(item, selected.length, maxTopics, sourceCounts, categoryCounts, snsOnlyCount, lowPriorityCount, officialOnlyCount, editorialGateEnabled);
     if (reason) {
       dropped.push({ topic: item.topic, reason });
       continue;
@@ -842,13 +909,28 @@ function selectTopicsForAi(topicCandidates: TopicCandidate[], articlePool: RawAr
     addSelectedTopic(item, selected, sourceCounts, categoryCounts);
     if (isSnsOnlySingleEvidence(item.topic)) snsOnlyCount++;
     if (item.representative.isLowPriority) lowPriorityCount++;
+    if (isOfficialOnlyTopic(item.topic)) officialOnlyCount++;
   }
 
   const selectedKeys = new Set(selected.map((item) => item.topic.topic_key));
   const backfillCandidates = eligible
     .filter((item) => !selectedKeys.has(item.topic.topic_key))
     .sort((a, b) => b.score - a.score || a.topic.topic_key.localeCompare(b.topic.topic_key, "ja"));
-  return { selected, dropped, backfillCandidates, informationGate };
+  const officialUsed = selected.filter((item) => isOfficialOnlyTopic(item.topic)).map((item) => item.topic.topic_key);
+  const officialExcluded = dropped.filter((item) => item.reason === "official_only_limit").map((item) => item.topic.topic_key);
+  for (const topicKey of officialExcluded) {
+    const assessment = assessments.get(topicKey);
+    if (assessment) assessment.result = "official_only_limit";
+  }
+  return {
+    selected,
+    dropped,
+    backfillCandidates,
+    informationGate,
+    editorialValue: { enabled: editorialGateEnabled, ...editorialValueResult },
+    publicationHistory: { loaded_days: publicationHistory.loaded_days, entry_count: publicationHistory.entries.length, matches: historyMatches },
+    officialOnly: { limit: 1, used: officialUsed, excluded: officialExcluded }
+  };
 }
 
 function addSelectedTopic(
@@ -862,13 +944,6 @@ function addSelectedTopic(
   categoryCounts.set(item.category, (categoryCounts.get(item.category) ?? 0) + 1);
 }
 
-function getTopicNonCategoryLimitReason(item: SelectedTopic, sourceCounts: Map<string, number>, snsOnlyCount: number, lowPriorityCount: number) {
-  if ((sourceCounts.get(item.representative.sourceName) ?? 0) >= MAX_TOPICS_PER_PRIMARY_SOURCE) return "topic_source_limit";
-  if (isSnsOnlySingleEvidence(item.topic) && snsOnlyCount >= MAX_SNS_ONLY_TOPICS) return "topic_sns_only_limit";
-  if (item.representative.isLowPriority && lowPriorityCount >= MAX_LOW_PRIORITY_ARTICLES) return "topic_low_priority_limit";
-  return "";
-}
-
 function getTopicLimitReason(
   item: SelectedTopic,
   selectedCount: number,
@@ -876,13 +951,16 @@ function getTopicLimitReason(
   sourceCounts: Map<string, number>,
   categoryCounts: Map<FeedCategory, number>,
   snsOnlyCount: number,
-  lowPriorityCount: number
+  lowPriorityCount: number,
+  officialOnlyCount: number,
+  enforceOfficialOnly: boolean
 ) {
   if (selectedCount >= maxTopics) return "topic_count_limit";
   if ((sourceCounts.get(item.representative.sourceName) ?? 0) >= MAX_TOPICS_PER_PRIMARY_SOURCE) return "topic_source_limit";
   if ((categoryCounts.get(item.category) ?? 0) >= (CATEGORY_LIMITS[item.category] ?? 1)) return "topic_category_limit";
   if (isSnsOnlySingleEvidence(item.topic) && snsOnlyCount >= MAX_SNS_ONLY_TOPICS) return "topic_sns_only_limit";
   if (item.representative.isLowPriority && lowPriorityCount >= MAX_LOW_PRIORITY_ARTICLES) return "topic_low_priority_limit";
+  if (enforceOfficialOnly && isOfficialOnlyTopic(item.topic) && officialOnlyCount >= 1) return "official_only_limit";
   return "";
 }
 
@@ -905,6 +983,15 @@ function isOfficialCulturalEventWithoutPopSignal(article: RawArticle) {
 function isSnsOnlySingleEvidence(topic: TopicCandidate) {
   const evidence = topic.evidence_articles;
   return evidence.length === 1 && evidence[0]?.source_type === "sns" && !topic.signals.has_official_source && !topic.signals.has_media_context && !topic.signals.has_data_signal;
+}
+
+function getRunDate() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
 }
 
 async function buildTopicEvidenceBundles(selectedTopics: SelectedTopic[], articlePool: RawArticle[]) {

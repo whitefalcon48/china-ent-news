@@ -15,6 +15,10 @@ async function main() {
   const trace = JSON.parse(await fs.readFile(path.join(outputDir, traceFile), "utf8")) as {
     information_gate?: { enabled: boolean; evaluated: number; excluded: number; excluded_topics: Array<{ topic_key: string; reasons: string[] }> };
     llm_call_budget?: { limit: number; used: number };
+    editorial_value?: { enabled: boolean; llm: string; candidates: Array<{ topic_key: string; axes: Record<string, { score: number; reason: string; angle_hint?: string }>; total: number; caps: string[]; result: string }> };
+    publication_history?: { loaded_days: string[]; entry_count: number; matches: Array<{ topic_key: string; matched_date: string; matched_key: string; substantive_update: string; decision: string }> };
+    official_only?: { limit: number; used: string[]; excluded: string[] };
+    comment_diversity?: { openings: Array<{ topic_key: string; opening: string }>; regenerated_opening: string[]; regenerated_paraphrase: string[] };
   };
   const terminology = await loadTerminology();
   const avoid = terminology.preferred_names.flatMap((item) => item.avoid);
@@ -41,6 +45,31 @@ async function main() {
   console.log("\n## LLM call budget");
   console.log(`- used: ${trace.llm_call_budget?.used ?? 0}`);
   console.log(`- limit: ${trace.llm_call_budget?.limit ?? 0}`);
+  console.log("\n## Editorial value score");
+  console.log(`- enabled: ${trace.editorial_value?.enabled ?? false}`);
+  console.log(`- llm: ${trace.editorial_value?.llm ?? "n/a"}`);
+  for (const item of trace.editorial_value?.candidates ?? []) {
+    const axes = Object.entries(item.axes).map(([name, value]) => `${name}=${value.score} (${value.reason})`).join(" / ");
+    console.log(`- ${item.topic_key}: ${item.total}/10 [${item.result}] ${axes} caps=${item.caps.join(",") || "none"}`);
+  }
+  console.log("\n## Publication history");
+  console.log(`- loaded_days: ${trace.publication_history?.loaded_days.join(", ") || "none"}`);
+  console.log(`- entry_count: ${trace.publication_history?.entry_count ?? 0}`);
+  for (const match of trace.publication_history?.matches ?? []) {
+    console.log(`- ${match.topic_key} <= ${match.matched_date}/${match.matched_key}: ${match.substantive_update} -> ${match.decision}`);
+  }
+  console.log("\n## Official-only");
+  console.log(`- limit: ${trace.official_only?.limit ?? 1}`);
+  console.log(`- used: ${trace.official_only?.used.join(", ") || "none"}`);
+  console.log(`- excluded: ${trace.official_only?.excluded.join(", ") || "none"}`);
+  console.log("\n## Comment diversity");
+  const openingCounts = new Map<string, number>();
+  for (const item of trace.comment_diversity?.openings ?? []) openingCounts.set(item.opening, (openingCounts.get(item.opening) ?? 0) + 1);
+  for (const item of trace.comment_diversity?.openings ?? []) console.log(`- ${item.topic_key}: ${item.opening}${(openingCounts.get(item.opening) ?? 0) > 1 ? " [duplicate]" : ""}`);
+  const paraphraseWarnings = articles.flatMap((article) => article.generationMeta?.claim_check?.violations.filter((violation) => violation.rule === "comment_paraphrase").map(() => article.topic?.topic_key ?? "") ?? []);
+  console.log(`- regenerated_opening: ${trace.comment_diversity?.regenerated_opening.join(", ") || "none"}`);
+  console.log(`- regenerated_paraphrase: ${trace.comment_diversity?.regenerated_paraphrase.join(", ") || "none"}`);
+  console.log(`- paraphrase_warning: ${paraphraseWarnings.join(", ") || "none"}`);
 }
 
 main().catch((error) => {

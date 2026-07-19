@@ -56,7 +56,7 @@ function normalizeUrl(url: string) {
   }
 }
 
-function areTitlesSimilar(a: string, b: string) {
+export function areTitlesSimilar(a: string, b: string) {
   const left = normalizeTitle(a);
   const right = normalizeTitle(b);
 

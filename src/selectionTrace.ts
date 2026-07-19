@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { LlmCallBudget } from "./llmCallBudget.js";
+import type { EditorialValueAssessment } from "./editorialValue.js";
+import type { PublicationHistoryMatch } from "./publicationHistory.js";
 import type {
   AiProvider,
   ClaimCheckResult,
@@ -97,6 +99,22 @@ type SelectionTrace = {
     excluded: number;
     excluded_topics: Array<{ topic_key: string; reasons: string[] }>;
   };
+  editorial_value: {
+    enabled: boolean;
+    llm: "ok" | "fallback";
+    candidates: EditorialValueAssessment[];
+  };
+  publication_history: {
+    loaded_days: string[];
+    entry_count: number;
+    matches: PublicationHistoryMatch[];
+  };
+  official_only: { limit: number; used: string[]; excluded: string[] };
+  comment_diversity: {
+    openings: Array<{ topic_key: string; opening: string }>;
+    regenerated_opening: string[];
+    regenerated_paraphrase: string[];
+  };
   llm_call_budget: {
     limit: number;
     used: number;
@@ -135,6 +153,10 @@ export function buildSelectionTrace(args: {
   topicSelection?: SelectionTrace["topic_selection"];
   llmCallBudget?: LlmCallBudget;
   informationGate?: SelectionTrace["information_gate"];
+  editorialValue?: SelectionTrace["editorial_value"];
+  publicationHistory?: SelectionTrace["publication_history"];
+  officialOnly?: SelectionTrace["official_only"];
+  commentDiversity?: SelectionTrace["comment_diversity"];
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -189,6 +211,10 @@ export function buildSelectionTrace(args: {
         comment_stage: article.generationMeta?.comment_stage
       })),
     information_gate: args.informationGate ?? { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] },
+    editorial_value: args.editorialValue ?? { enabled: false, llm: "fallback", candidates: [] },
+    publication_history: args.publicationHistory ?? { loaded_days: [], entry_count: 0, matches: [] },
+    official_only: args.officialOnly ?? { limit: 1, used: [], excluded: [] },
+    comment_diversity: args.commentDiversity ?? { openings: [], regenerated_opening: [], regenerated_paraphrase: [] },
     llm_call_budget: {
       limit: args.llmCallBudget?.limit ?? 0,
       used: args.llmCallBudget?.used ?? 0

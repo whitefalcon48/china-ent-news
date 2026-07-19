@@ -9,7 +9,8 @@ export function evaluateTopicInformationCompleteness(topic: TopicCandidate): { c
     if (topic.seed_confidence < 0.5) reasons.push("low_seed_confidence");
     if (!topic.event_sentence.trim() || /という記事を掲載/.test(topic.event_sentence) || (topic.source_count === 1 && topic.title_hint && topic.event_sentence.includes(topic.title_hint))) reasons.push("title_echo_event");
     const keyPointLength = topic.evidence_articles.flatMap((item) => item.key_points).join("").length;
-    if (topic.topic_type === "unknown" && topic.source_count === 1 && keyPointLength < 40) reasons.push("thin_unknown");
+    const hasNoPrimaryEntity = !topic.main_entities.people.length && !topic.main_entities.works.length && !topic.main_entities.events.length;
+    if (topic.topic_type === "unknown" && topic.source_count === 1 && keyPointLength < 40 && hasNoPrimaryEntity) reasons.push("thin_unknown");
   }
   return { complete: reasons.length === 0, reasons };
 }

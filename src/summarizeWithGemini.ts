@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { ClaimCheckDiscardError, removeGatedViolationSentences, runClaimCheck, runCommentCheck, sanitizeExclamations } from "./claimCheck.js";
+import { ClaimCheckDiscardError, getCommentOpening, removeGatedViolationSentences, runClaimCheck, runCommentCheck, sanitizeExclamations } from "./claimCheck.js";
 import { extractFactLedger } from "./factLedger.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { resolveSummaryTitle } from "./summaryTitle.js";
@@ -31,6 +31,8 @@ export const OUTPUT_COUNT_INSTRUCTION = "Output every candidate item that is wor
 
 let editorialCharacterCache: string | undefined;
 
+type CommentGenerationContext = { angleHint?: string; usedOpenings?: string[] };
+
 async function loadEditorialCharacter() {
   if (editorialCharacterCache !== undefined) {
     return editorialCharacterCache;
@@ -54,7 +56,8 @@ export async function summarizeTopic(
   topic: TopicCandidate,
   evidence: RawArticle[],
   provider: AiProvider = getAiProvider(),
-  budget?: LlmCallBudget
+  budget?: LlmCallBudget,
+  commentContext: CommentGenerationContext = {}
 ): Promise<{ summary: SummarizedArticle; meta: TopicGenerationMeta }> {
   if (process.env.FACT_LEDGER === "false") {
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
@@ -106,7 +109,7 @@ export async function summarizeTopic(
 
   const toneMode = getToneMode(topic, ledger);
   const originalComments = { why_it_matters: summary.why_it_matters, editor_comment: summary.editor_comment, refs: summary.claim_refs.why_it_matters };
-  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters + summary.editor_comment) };
+  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters + summary.editor_comment), opening: "", regenerated_opening: false, regenerated_paraphrase: false };
   if (process.env.COMMENT_STAGE === "false") {
     commentStage.fallback_reason = "comment_stage_disabled_env";
   } else if (budget && !hasLlmBudgetRemaining(budget)) {
@@ -114,12 +117,15 @@ export async function summarizeTopic(
   } else {
     commentStage.attempted = true;
     try {
-      let comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget);
-      let commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
+      let comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, [], "", commentContext);
+      const checkContext = { usedOpenings: commentContext.usedOpenings, bodyText: `${summary.lead}\n${summary.what_happened}` };
+      let commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode, checkContext);
       if (needsCommentRegeneration(commentViolations, comments.why_it_matters, comments.editor_comment, toneMode)) {
         commentStage.regenerated = true;
-        comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, commentViolations);
-        commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
+        commentStage.regenerated_opening = commentViolations.some((violation) => violation.rule === "comment_opening_duplicate");
+        commentStage.regenerated_paraphrase = commentViolations.some((violation) => violation.rule === "comment_paraphrase");
+        comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, commentViolations, "", commentContext);
+        commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode, checkContext);
       }
       const gated = commentViolations.filter((violation) => violation.severity === "gate");
       if (gated.length) {
@@ -135,9 +141,10 @@ export async function summarizeTopic(
       summary.why_it_matters = sanitizeExclamations(comments.why_it_matters, toneMode);
       summary.editor_comment = sanitizeExclamations(comments.editor_comment, toneMode);
       summary.claim_refs.why_it_matters = comments.refs;
-      const finalCommentViolations = runCommentCheck(summary.why_it_matters, summary.editor_comment, ledger, topic, toneMode);
+      const finalCommentViolations = runCommentCheck(summary.why_it_matters, summary.editor_comment, ledger, topic, toneMode, checkContext);
       claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
       commentStage.exclamation_count = countExclamations(summary.why_it_matters + summary.editor_comment);
+      commentStage.opening = getCommentOpening(summary.why_it_matters);
     } catch (error) {
       summary.why_it_matters = originalComments.why_it_matters;
       summary.editor_comment = originalComments.editor_comment;
@@ -663,7 +670,7 @@ ${terminology}
 構成ルール:
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
-- why_it_matters: 100〜200字。ビンタンの注目ポイント。最初の1文で「読者にとって要するに何が起きたか」を平易に言い、その後に「何が確認できれば評価が変わるか」「今後追うべき数字・発表」。what_happenedの言い換えをしない。
+- why_it_matters: 100〜200字。ビンタンの注目ポイント。what_happenedを言い換えず、「何が確認できれば評価が変わるか」「今後追うべき数字・発表」「情報源の見方」のいずれかを書く。
 - reaction_view: SNS由来または複数媒体のclaimがある場合のみ100〜200字。無ければ空文字。
 - japan_context_note: 日本語圏で見えにくい文脈のclaimがある場合だけ。無ければ空文字。
 - editor_comment: 1〜2文の短いひとこと。why_it_mattersと同じ内容を繰り返さない。
@@ -690,12 +697,14 @@ async function buildBingtangCommentPrompt(
   summary: SummarizedArticle,
   toneMode: "normal" | "sober",
   violations: ClaimCheckViolation[] = [],
-  extraInstruction = ""
+  extraInstruction = "",
+  commentContext: CommentGenerationContext = {}
 ) {
   const editorialCharacter = await loadEditorialCharacter();
+  const needsTermExplanation = getNeedsTermExplanation(ledger, summary);
   const toneInstruction = toneMode === "normal"
     ? `- 明るく、少し前のめりな、話し言葉に近い「です・ます調」。短いくだけた感想を混ぜてよい。
-- 使ってよい表現の例: 「〜かも！」「〜みたい！」「すごい！」「これは気になる！」「ちょっと待って！」「ここ、大事です！」「〜なんです！」「〜でしたね〜！」「要するに、〜ということです！」
+- 使ってよい表現の例: 「〜かも！」「〜みたい！」「すごい！」「これは気になる！」「ちょっと待って！」「ここ、大事です！」「〜なんです！」「〜でしたね〜！」
 - 「かも」「みたい」はビンタンの見方・可能性にだけ使う。事実台帳で確認できた事実は、です・ます調で明確に言い切る。
 - 「すごい！」「これは気になる！」のような短い感想は、1つのコメント欄につき1回まで。
 - 「！」は2つのコメント欄あわせて2〜4個使う。0個にしない。1つの文に2個以上付けない。
@@ -713,13 +722,20 @@ Use the document above as the highest-priority editorial policy.
 
 あなたの仕事:
 - 記事本文はすでに完成しています。あなたが書くのは「ビンタンの注目ポイント」（why_it_matters）と「ビンタンからのひとこと」（editor_comment）の2つだけです。
-- コメント欄は、本文を難しく言い換える場所ではありません。難しい中国エンタメの事情を読者に噛み砕いて渡し、ビンタン自身の感情のリアクションを添える場所です。
+- コメント欄は、本文の言い換え・要約をする場所ではありません。本文に書いていないが、読者の理解や興味に効くことを渡す場所です。
 - 本文と事実台帳にある情報だけを使います。新しい数字・人物名・作品名・出来事を足しません。
 
 why_it_matters（ビンタンの注目ポイント）の書き方:
-- 最初の1文は、読者にとって「要するに何が起きているのか」を、前提知識ゼロで分かる平易な言葉で言い切る。「要するに、〜ということです！」の形を使ってよい（毎回でなくてよい）。
-- そのあとに、このニュースのどこが面白いか・引っかかるか、何が確認できれば評価が変わるか、今後追うべき数字・発表を書く。
-- 本文に難しい制度・用語（台帳のtermsにwhat_is/why_nowがあるもの）が出てくる記事では、その仕組みの噛み砕き説明をここでやる。台帳のterms・claimsにある説明だけを使い、一般知識で補完しない。
+- 入力の needs_term_explanation が true の場合: この記事の中心にある用語・制度の噛み砕き説明を書く。台帳のterms・claimsにある説明だけを使い、一般知識で補完しない。
+- needs_term_explanation が false の場合: 用語解説を無理に書かない。本文の内容を言い換えない。かわりに、次のうち記事に最も合う角度を1つ選んで書く:
+  1. なぜ今このニュースが気になるのか
+  2. 日本語圏から見えにくい点
+  3. 次に確認するべき数字・発表・反応
+  4. この作品・人物・業界のこれまでの流れとの関係（台帳にある範囲で）
+  5. 情報源の見方・注意点（公式発表のみ、単一ソース、SNS由来など）
+- 入力に angle_hint がある場合、切り口の参考にしてよい（従う義務はない）。
+- lead や what_happened に書いてあることを繰り返さない。読み終えた読者が「なるほど、そこを見ればいいのか」と思える内容にする。
+- 書き出しは used_openings にある書き出しと重ならないようにする。
 - 抽象的な分析だけで終わらせない。具体的な数字・出来事・確認ポイントを挙げる。
 - 100〜250字。一文は50字以内を目安に短く切る。
 
@@ -732,8 +748,8 @@ ${toneInstruction}
 
 禁止事項:
 - 「かも」「みたい」「〜のようです」を、台帳のverified_factで確認できている事実に付けない。
-- SNSや反応のevidenceが無いのに「ファンからは好意的な反応が予想されます」のような反応の予想・想像を書かない。
-- 「初共演ではないでしょうか」のような、台帳で確認できない推測を書かない。
+- SNSや反応のevidenceが無いのに反応の予想・想像を書かない。
+- 台帳で確認できない推測を書かない。
 - 次のような中身のない定型句を使わない: 「業界全体に影響を与える可能性があります」「透明性向上につながる可能性があります」「今後の動向に注目したいところです」「評価のポイントになりそうです」「新たな指標になるか見守りたいです」「目が離せません」
 - 実在の人物・ファンをからかわない。ツッコミの対象は状況・数字・自分自身のみ。
 
@@ -748,6 +764,9 @@ ${toneInstruction}
 - topic_key: ${topic.topic_key}
 - event_sentence: ${topic.event_sentence}
 - tone_mode: ${toneMode}
+- needs_term_explanation: ${needsTermExplanation}
+- angle_hint: ${commentContext.angleHint?.trim() || "なし"}
+- used_openings: ${JSON.stringify(commentContext.usedOpenings ?? [])}
 - 完成本文:
   lead: ${summary.lead}
   what_happened: ${summary.what_happened}
@@ -766,15 +785,21 @@ async function generateBingtangComments(
   provider: AiProvider,
   budget?: LlmCallBudget,
   violations: ClaimCheckViolation[] = [],
-  extraInstruction = ""
+  extraInstruction = "",
+  commentContext: CommentGenerationContext = {}
 ) {
-  const text = await generateJson(provider, await buildBingtangCommentPrompt(topic, ledger, summary, toneMode, violations, extraInstruction), budget);
+  const text = await generateJson(provider, await buildBingtangCommentPrompt(topic, ledger, summary, toneMode, violations, extraInstruction, commentContext), budget);
   const parsed = parseJsonFromModelText(text) as Record<string, unknown>;
   return {
     why_it_matters: typeof parsed.why_it_matters === "string" ? parsed.why_it_matters.trim() : "",
     editor_comment: typeof parsed.editor_comment === "string" ? parsed.editor_comment.trim() : "",
     refs: Array.isArray(parsed.claim_refs_why_it_matters) ? parsed.claim_refs_why_it_matters.filter((item): item is string => typeof item === "string") : []
   };
+}
+
+function getNeedsTermExplanation(ledger: FactLedger, summary: SummarizedArticle) {
+  const body = `${summary.lead}\n${summary.what_happened}`;
+  return ledger.terms.some((term) => Boolean(term.what_is?.trim() || term.why_now?.trim()) && body.includes(term.term));
 }
 
 function removeCommentViolationSentences(text: string, violations: ClaimCheckViolation[]) {
@@ -792,6 +817,7 @@ export function needsCommentRegeneration(
   toneMode: "normal" | "sober"
 ) {
   if (violations.some((violation) => violation.severity === "gate")) return true;
+  if (violations.some((violation) => violation.rule === "comment_opening_duplicate" || violation.rule === "comment_paraphrase")) return true;
   return toneMode === "normal"
     && countExclamations(`${whyItMatters}\n${editorComment}`) === 0
     && violations.some((violation) => violation.rule === "tone_exclamation");

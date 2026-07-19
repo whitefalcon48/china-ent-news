@@ -6,11 +6,12 @@ import type {
   SourceTypeLabel,
   TopicCandidate
 } from "./types.js";
+import { areTitlesSimilar } from "./dedupe.js";
 
 const DEFAULT_RSSHUB_BASE_URL = "https://rsshub.app";
 const DEFAULT_TIMEOUT_MS = 6000;
-const DEFAULT_MAX_TOPICS = 3;
-const DEFAULT_QUERIES_PER_TOPIC = 1;
+const DEFAULT_MAX_TOPICS = 8;
+const DEFAULT_QUERIES_PER_TOPIC = 2;
 const MAX_ITEMS_PER_ROUTE = 8;
 const SERPER_ENDPOINT = "https://api.serper.dev/search";
 
@@ -57,15 +58,20 @@ const DEFAULT_ROUTES: ExpansionRoute[] = [
 ];
 
 export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
-  const routes = getExpansionRoutes();
-  const topics = topicCandidates.slice(0, getMaxTopics());
+  const skipRsshub = process.env.SOURCE_EXPANSION_SKIP_RSSHUB === "true";
+  const routes = skipRsshub ? [] : getExpansionRoutes();
+  const topics = topicCandidates
+    .filter((topic) => ["today", "yesterday", "recent"].includes(topic.freshness_label))
+    .sort((a, b) => b.newsworthiness_score - a.newsworthiness_score || a.topic_key.localeCompare(b.topic_key, "ja"))
+    .slice(0, getMaxTopics());
   const attempts: SourceExpansionAttempt[] = [];
   const evidenceByTopic = new Map<string, SourceExpansionEvidence[]>();
 
-  if (!routes.length || !topics.length || process.env.SOURCE_EXPANSION_ENABLED === "false") {
+  if (!topics.length || process.env.SOURCE_EXPANSION_ENABLED === "false") {
     return {
       topicCandidates,
       expansion: {
+        shortlisted_topic_keys: [],
         attempted_topic_count: 0,
         attempted_route_count: 0,
         success_route_count: 0,
@@ -79,6 +85,14 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
   for (const topic of topics) {
     const queries = getTopicQueries(topic).slice(0, getQueriesPerTopic());
     for (const query of queries) {
+      if (skipRsshub) {
+        const serperAttempt = await fetchSerperSearch(topic, query);
+        attempts.push(serperAttempt.attempt);
+        if (serperAttempt.evidence.length) {
+          evidenceByTopic.set(topic.topic_key, [...(evidenceByTopic.get(topic.topic_key) ?? []), ...serperAttempt.evidence]);
+        }
+        continue;
+      }
       const rssAttempts: SourceExpansionAttempt[] = [];
       for (const route of routes) {
         const attempt = await fetchExpansionRoute(topic, query, route);
@@ -101,6 +115,7 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
   const evidence = [...evidenceByTopic.values()].flat();
   const expandedTopics = topicCandidates.map((topic) => attachExpansionEvidence(topic, evidenceByTopic.get(topic.topic_key) ?? []));
   const expansion: SourceExpansionResult = {
+    shortlisted_topic_keys: topics.map((topic) => topic.topic_key),
     attempted_topic_count: topics.length,
     attempted_route_count: attempts.length,
     success_route_count: attempts.filter((attempt) => attempt.fetch_status === "success").length,
@@ -270,13 +285,16 @@ function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceExpansio
   }
 
   const existingKeys = new Set(topic.evidence_articles.map((article) => article.url || `${article.source_name}:${article.title}`));
+  const acceptedTitles = topic.evidence_articles.map((article) => article.title);
   const newEvidence = evidence
     .filter((item) => {
       const key = item.url || `${item.source_name}:${item.title}`;
       if (existingKeys.has(key)) {
         return false;
       }
+      if (acceptedTitles.some((title) => areTitlesSimilar(title, item.title))) return false;
       existingKeys.add(key);
+      acceptedTitles.push(item.title);
       return true;
     })
     .map((item) => ({

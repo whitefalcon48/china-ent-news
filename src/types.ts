@@ -215,6 +215,8 @@ export type ClaimCheckRule =
   | "template_comment"
   | "tone_exclamation"
   | "ending_repetition"
+  | "comment_opening_duplicate"
+  | "comment_paraphrase"
   | "hedged_verified_fact"
   | "long_sentence"
   | "terminology_avoid";
@@ -246,6 +248,9 @@ export type TopicGenerationMeta = {
     regenerated: boolean;
     fallback_reason: string;
     exclamation_count: number;
+    opening?: string;
+    regenerated_opening?: boolean;
+    regenerated_paraphrase?: boolean;
   };
 };
 
@@ -363,6 +368,7 @@ export type SourceExpansionAttempt = {
 };
 
 export type SourceExpansionResult = {
+  shortlisted_topic_keys: string[];
   attempted_topic_count: number;
   attempted_route_count: number;
   success_route_count: number;

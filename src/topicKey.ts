@@ -5,6 +5,30 @@ const KNOWN_TOPICS: Array<{ pattern: RegExp; key: string }> = [
 
 const KNOWN_EVENTS = ["上海国际电影节", "北京国际电影节", "白玉兰奖", "华表奖", "金鸡奖", "微博电影之夜", "微博视界大会"];
 
+type ComparableTopic = {
+  topic_key: string;
+  topic_type: string;
+  main_entities?: { people?: string[]; works?: string[] };
+  entities?: { people?: string[]; works?: string[] };
+};
+
+export function areTopicsLikelySame(a: ComparableTopic, b: ComparableTopic) {
+  return getTopicMatchSpecificity(a, b) > 0;
+}
+
+export function getTopicMatchSpecificity(a: ComparableTopic, b: ComparableTopic) {
+  const aKey = normalizeComparisonValue(a.topic_key);
+  const bKey = normalizeComparisonValue(b.topic_key);
+  if (aKey === bKey) return 3;
+  if (!a.topic_type || a.topic_type === "unknown" || a.topic_type !== b.topic_type) return 0;
+  const shorterKey = aKey.length <= bKey.length ? aKey : bKey;
+  const longerKey = aKey.length > bKey.length ? aKey : bKey;
+  if (shorterKey.length >= 6 && longerKey.includes(shorterKey)) return 2;
+  const aEntities = getComparableEntities(a);
+  const bEntities = getComparableEntities(b);
+  return aEntities.some((entity) => bEntities.includes(entity)) ? 1 : 0;
+}
+
 export function createTopicKey(title: string, excerpt = "") {
   const text = `${title} ${excerpt}`;
 
@@ -91,4 +115,13 @@ function extractTitleKeywords(title: string) {
 export function cleanTopicKey(value: string) {
   const cleaned = value.replace(/\s+/g, "").replace(/演唱会高翻唱率/g, "演唱会翻唱版权").replace(/高翻唱率/g, "翻唱率");
   return cleaned.slice(0, 40) || "unknown";
+}
+
+function getComparableEntities(topic: ComparableTopic) {
+  const entities = topic.main_entities ?? topic.entities ?? {};
+  return [...new Set([...(entities.works ?? []), ...(entities.people ?? [])].map(normalizeComparisonValue).filter(Boolean))];
+}
+
+function normalizeComparisonValue(value: string) {
+  return value.normalize("NFKC").toLowerCase().replace(/[《》『』「」“”‘’'"・·\s\p{P}\p{S}]/gu, "");
 }

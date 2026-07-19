@@ -149,7 +149,8 @@ export function runCommentCheck(
   editorComment: string,
   ledger: FactLedger,
   topic: TopicCandidate,
-  toneMode: ToneMode
+  toneMode: ToneMode,
+  context: { usedOpenings?: string[]; bodyText?: string } = {}
 ): ClaimCheckViolation[] {
   const text = `${whyItMatters}\n${editorComment}`;
   const violations: ClaimCheckViolation[] = [];
@@ -176,7 +177,34 @@ export function runCommentCheck(
       violations.push(toViolation("comment", "hedged_verified_fact", "warning", sentence.trim()));
     }
   }
+  const opening = getCommentOpening(whyItMatters);
+  if (opening && (context.usedOpenings ?? []).includes(opening)) {
+    violations.push(toViolation("comment", "comment_opening_duplicate", "warning", opening));
+  }
+  if (context.bodyText && isCommentParaphrase(whyItMatters, context.bodyText)) {
+    violations.push(toViolation("comment", "comment_paraphrase", "warning", "注目ポイントが本文の言い換えになっています"));
+  }
   return violations;
+}
+
+export function getCommentOpening(value: string) {
+  return value.replace(/[\s「」『』“”]/g, "").slice(0, 10);
+}
+
+export function isCommentParaphrase(whyItMatters: string, bodyText: string) {
+  const sentences = splitSentences(whyItMatters).map((sentence) => sentence.replace(/[。！？!?]/g, "").trim()).filter((sentence) => sentence.length >= 15);
+  if (!sentences.length) return false;
+  const paraphrases = sentences.map((sentence) => shingleContainment(sentence, bodyText) >= 0.55);
+  return paraphrases[0] || paraphrases.filter(Boolean).length / paraphrases.length >= 0.5;
+}
+
+function shingleContainment(value: string, bodyText: string) {
+  const normalized = value.replace(/\s+/g, "");
+  const body = bodyText.replace(/\s+/g, "");
+  const shingles = new Set<string>();
+  for (let index = 0; index <= normalized.length - 4; index += 1) shingles.add(normalized.slice(index, index + 4));
+  if (!shingles.size) return 0;
+  return [...shingles].filter((shingle) => body.includes(shingle)).length / shingles.size;
 }
 
 export function sanitizeExclamations(text: string, toneMode: ToneMode) {
