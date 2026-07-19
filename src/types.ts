@@ -363,6 +363,8 @@ export type SourceExpansionAttempt = {
   fetch_error: string;
   raw_count: number;
   matched_count: number;
+  rejected_count?: number;
+  rejection_reasons?: Partial<Record<"missing_title_or_url" | "unsafe_url" | "weak_topic_match", number>>;
   failure_stage: string;
   source_type: SourceTypeLabel;
 };

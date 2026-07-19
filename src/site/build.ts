@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { getPublishableArticles } from "../renderMarkdown.js";
+import { isRelevantEvidenceForTopic, isSafePublicationSourceUrl, normalizeSourceHostname } from "../sourceRelevance.js";
 import { resolveSummaryTitle } from "../summaryTitle.js";
 import type { ProcessedArticle, ReviewState, SourceRef, SourceTypeLabel, SummarizedArticle } from "../types.js";
 
@@ -159,6 +160,10 @@ function validateArticles(articles: ProcessedArticle[], date: string) {
   articles.forEach((article, index) => {
     const summary = requireSummary(article);
     const sources = getSources(article);
+    const rawSourceCount = summary.source_list?.length || (article.raw.url ? 1 : 0);
+    if (sources.length < rawSourceCount) {
+      console.warn(`${date} #${index + 1}: 公開ソースを関連性・URL品質で ${rawSourceCount}件→${sources.length}件に整理`);
+    }
     if (!sources.length) throw new Error(`${date} #${index + 1}: ソース行が空です`);
     for (const source of sources) {
       if (!source.name.trim() || !source.url?.trim()) throw new Error(`${date} #${index + 1}: 全ソースに媒体名とリンクURLが必要です`);
@@ -175,24 +180,48 @@ function requireSummary(article: ProcessedArticle) {
 
 function getSources(article: ProcessedArticle): Array<{ name: string; url: string }> {
   const summary = requireSummary(article);
-  const sources: SourceRef[] = summary.source_list?.length
-    ? summary.source_list
-    : article.raw.sourceName && article.raw.url
-      ? [{ name: article.raw.sourceName, url: article.raw.url }]
-      : [];
-  return sources.map((source) => ({ name: source.name, url: source.url || "" }));
+  const primary = article.raw.sourceName && article.raw.url ? { name: article.raw.sourceName, url: article.raw.url } : undefined;
+  const candidates: SourceRef[] = [
+    ...(primary ? [primary] : []),
+    ...(summary.source_list ?? [])
+  ];
+  const seenUrls = new Set<string>();
+  const seenHosts = new Set<string>();
+  const evidenceByUrl = new Map(article.topic?.evidence_articles.map((evidence) => [evidence.url, evidence]) ?? []);
+  const sources: Array<{ name: string; url: string }> = [];
+
+  for (const source of candidates) {
+    const url = source.url?.trim() ?? "";
+    if (!source.name.trim() || !url || !isSafePublicationSourceUrl(url)) continue;
+    const isPrimary = url === article.raw.url;
+    const evidence = evidenceByUrl.get(url);
+    if (!isPrimary && article.topic && (!evidence || !isRelevantEvidenceForTopic(article.topic, evidence))) continue;
+    const normalizedUrl = normalizeSourceUrl(url);
+    const hostname = normalizeSourceHostname(url);
+    if (seenUrls.has(normalizedUrl) || (hostname && seenHosts.has(hostname))) continue;
+    seenUrls.add(normalizedUrl);
+    if (hostname) seenHosts.add(hostname);
+    sources.push({ name: source.name, url });
+    if (sources.length >= 4) break;
+  }
+  return sources;
 }
 
 function getSourceMix(article: ProcessedArticle): SourceMix {
   const summary = requireSummary(article);
-  const mix = article.topic?.source_mix;
-  if (mix) {
-    return {
-      official: mix.official + mix.pr_like,
-      media: mix.media_report + mix.mixed,
-      sns: mix.sns + mix.rumor,
-      data: mix.data
-    };
+  const displayedSources = getSources(article);
+  if (article.topic && displayedSources.length) {
+    const mix: SourceMix = { official: 0, media: 0, sns: 0, data: 0 };
+    const evidenceByUrl = new Map(article.topic.evidence_articles.map((evidence) => [evidence.url, evidence.source_type]));
+    for (const source of displayedSources) {
+      const type = evidenceByUrl.get(source.url) ?? (source.url === article.raw.url ? article.raw.sourceType : undefined) ?? summary.source_type;
+      const partial = sourceTypeToMix(type);
+      mix.official += partial.official;
+      mix.media += partial.media;
+      mix.sns += partial.sns;
+      mix.data += partial.data;
+    }
+    return mix;
   }
   return sourceTypeToMix(summary.source_type);
 }
@@ -240,10 +269,24 @@ function renderCard(date: string, position: number, article: ProcessedArticle) {
     <h2><a href="${href(`/t/${date}/${position}/`)}">${escapeHtml(title)}</a></h2>
     <p class="lead clamp-3">${escapeHtml(summary.lead)}</p>
     ${renderSourceMix(article)}
-    ${renderBingtangComment(summary.why_it_matters, "feed")}
+    ${renderFeedDetails(summary)}
+    ${renderBingtangComment(summary.why_it_matters)}
     ${renderSourceRow(article)}
-    <p class="read-more"><a href="${href(`/t/${date}/${position}/`)}">しっかり読む →</a></p>
+    <p class="read-more"><a href="${href(`/t/${date}/${position}/`)}">個別ページを開く・シェア →</a></p>
   </article>`;
+}
+
+function renderFeedDetails(summary: SummarizedArticle) {
+  const sections = [
+    renderCardTextSection("何が起きた？", summary.what_happened),
+    renderCardTextSection("反応・見られ方", summary.reaction_view),
+    renderCardTextSection("日本語圏では見えにくいポイント", summary.japan_context_note)
+  ].filter(Boolean).join("");
+  return sections ? `<details class="feed-details"><summary>しっかり読む</summary><div>${sections}</div></details>` : "";
+}
+
+function renderCardTextSection(title: string, text: string) {
+  return text ? `<section><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></section>` : "";
 }
 
 function renderArticlePage(date: string, article: ProcessedArticle, index: number, previous?: ProcessedArticle, next?: ProcessedArticle) {
@@ -257,7 +300,7 @@ function renderArticlePage(date: string, article: ProcessedArticle, index: numbe
       <p class="article-lead">${escapeHtml(summary.lead)}</p>
       ${renderSourceMix(article)}
       ${renderTextSection("何が起きた？", summary.what_happened)}
-      ${renderBingtangComment(summary.why_it_matters, "detail", summary.editor_comment)}
+      ${renderBingtangComment(summary.why_it_matters, summary.editor_comment)}
       ${renderTextSection("反応・見られ方", summary.reaction_view)}
       ${renderTextSection("日本語圏では見えにくいポイント", summary.japan_context_note)}
       <div class="article-actions">${renderSourceRow(article)}<a class="share" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}">Xでシェア</a></div>
@@ -286,10 +329,8 @@ function renderChips(summary: SummarizedArticle) {
 
 function renderSourceMix(article: ProcessedArticle) {
   const mix = getSourceMix(article);
-  const officialOnly = mix.official > 0 && mix.media + mix.sns + mix.data === 0;
   return `<div class="source-mix"><strong>ソース構成</strong>
     ${pip("official", "公式", mix.official)}${pip("media", "媒体", mix.media)}${pip("sns", "SNS", mix.sns)}${pip("data", "データ", mix.data)}
-    ${officialOnly ? `<span class="official-warning">⚠ 公式発表のみ・裏付けなし</span>` : ""}
   </div>`;
 }
 
@@ -297,9 +338,9 @@ function pip(kind: string, label: string, count: number) {
   return `<span class="pip${count === 0 ? " zero" : ""}"><i class="pip-${kind}"></i>${label} ${count}</span>`;
 }
 
-function renderBingtangComment(main: string, mode: "feed" | "detail", closing = "") {
+function renderBingtangComment(main: string, closing = "") {
   if (!main && !closing) return "";
-  return `<section class="bingtang-comment ${mode === "feed" ? "clamp-4" : ""}">
+  return `<section class="bingtang-comment">
     ${renderAvatar("avatar-36")}
     <div><h3>ビンタンの注目ポイント</h3>${main ? `<p>${escapeHtml(main)}</p>` : ""}${closing ? `<hr><p>${escapeHtml(closing)}</p>` : ""}</div>
   </section>`;
@@ -330,7 +371,7 @@ function renderAbout() {
 }
 
 function renderLegend() {
-  return `<aside class="legend"><h2>表示の見方</h2><p><span class="chip badge badge-news">NEWS</span> 報道　<span class="chip badge badge-official">OFFICIAL</span> 公式　<span class="chip badge badge-data">DATA</span> データ</p><p><span class="chip confidence confidence-A">確度A</span>〜<span class="chip confidence confidence-C">確度C</span> は根拠の確認度です。 ${pip("official", "公式", 1)}${pip("media", "媒体", 1)}${pip("sns", "SNS", 1)}${pip("data", "データ", 1)}</p><p><span class="official-warning">⚠ 公式発表のみ・裏付けなし</span> は、独立した報道や反応をまだ確認できていない記事です。</p></aside>`;
+  return `<aside class="legend"><h2>表示の見方</h2><p><span class="chip badge badge-news">NEWS</span> 報道　<span class="chip badge badge-official">OFFICIAL</span> 公式　<span class="chip badge badge-data">DATA</span> データ</p><p><span class="chip confidence confidence-A">確度A</span>〜<span class="chip confidence confidence-C">確度C</span> は根拠の確認度です。 ${pip("official", "公式", 1)}${pip("media", "媒体", 1)}${pip("sns", "SNS", 1)}${pip("data", "データ", 1)}</p></aside>`;
 }
 
 function renderFooterBanner() {
@@ -348,7 +389,7 @@ function renderLayout(options: { title: string; description: string; canonicalPa
 }
 
 function renderHeader(current: "latest" | "archive" | "about" | "", date?: string) {
-  return `<header class="hero"><div class="hero-inner"><div class="brand"><a href="${href("/")}" class="logo"><span>冰糖</span><b>日报</b></a><span class="subtitle">ビンタンちゃんデイリー</span><p>中国エンタメの<span>現地温度</span>を、日本語で。</p>${date ? `<time class="date-badge" datetime="${date}">${escapeHtml(formatLongDate(date))}</time>` : ""}</div><div class="hero-character"><p>今日のわたしが気になる中国エンタメ情報です！</p><span class="bust"><img src="${href("/assets/bingtang-bust.png")}" alt="ビンタン（AI秘書）" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden class="bust-fallback" aria-hidden="true">🧊</span></span></div></div>${renderNav(current)}</header>`;
+  return `<header class="hero"><div class="hero-inner"><div class="brand"><a href="${href("/")}" class="logo"><span>冰糖</span><b>日报</b></a><span class="subtitle">ビンタンちゃんデイリー</span>${date ? `<time class="date-badge" datetime="${date}">${escapeHtml(formatLongDate(date))}</time>` : ""}</div><div class="hero-character"><p>今日のわたしが気になる中国エンタメ情報です！</p><span class="bust"><img src="${href("/assets/bingtang-bust.png")}" alt="ビンタン（AI秘書）" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden class="bust-fallback" aria-hidden="true">🧊</span></span></div></div>${renderNav(current)}</header>`;
 }
 
 function renderNav(current: "latest" | "archive" | "about" | "") {
@@ -419,6 +460,19 @@ function assertHttpUrl(value: string, label: string) {
   if (url.protocol !== "http:" && url.protocol !== "https:") throw new Error(`${label}: ${value}`);
 }
 
+function normalizeSourceUrl(value: string) {
+  try {
+    const url = new URL(value);
+    url.hash = "";
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^(?:utm_|scm$|spm$|from$|source$)/i.test(key)) url.searchParams.delete(key);
+    }
+    return url.toString();
+  } catch {
+    return value.trim();
+  }
+}
+
 async function writePage(relativePath: string, contents: string) {
   const outputPath = path.join(OUTPUT_DIR, relativePath);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
@@ -440,6 +494,8 @@ const CSS = String.raw`
 :root{--bt-ice:#A7CDDF;--bt-red:#C12B23;--bt-amber:#CD7019;--bt-navy:#1F3043;--bt-ivory:#F0E6DA;--bt-ice-50:#F6FAFC;--bt-ice-100:#EAF4FA;--bt-ice-200:#DEEEF6;--bt-ice-600:#4E8FAE;--bt-red-dark:#A32017;--bt-amber-50:#FBF1E2;--bt-amber-900:#7A4A10;--bt-text:#2A3948;--bt-muted:#6E7E8C;--bt-border:#DCE8EF;--bt-card:#FFF;--bt-silver:#9AA7B1;--bt-gray:#C2CBD2}
 *{box-sizing:border-box}html{overflow-x:hidden;background:var(--bt-ice-50);color:var(--bt-text);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;font-size:16px}body{margin:0;overflow-x:hidden;line-height:1.85}a{color:var(--bt-red);text-decoration:none}a:hover{text-decoration:underline;color:var(--bt-red-dark)}.hero{background:var(--bt-ice-200);border-bottom:1px solid var(--bt-border)}.hero-inner{max-width:1080px;min-height:220px;margin:auto;padding:24px 32px 0;display:flex;align-items:center;justify-content:space-between}.brand{padding-bottom:24px}.logo,.mini-logo{font-weight:900;letter-spacing:.04em}.logo{display:block;font-size:1.6rem;line-height:1.25}.logo span,.mini-logo span{color:var(--bt-navy)}.logo b,.mini-logo b{color:var(--bt-red)}.subtitle{display:block;color:var(--bt-red);font-size:.8rem;font-weight:700}.brand p{color:var(--bt-muted);font-size:.85rem}.brand p span{color:var(--bt-red)}.date-badge{display:inline-block;background:#fff;border:1px solid var(--bt-border);border-radius:999px;padding:4px 12px;font-size:.78rem}.hero-character{height:200px;display:flex;align-items:center;gap:12px}.hero-character>p{position:relative;max-width:220px;margin:0;background:#fff;border:1px solid var(--bt-border);border-radius:14px;padding:12px 16px;font-size:.85rem;font-weight:700;color:var(--bt-navy)}.bust{width:190px;height:200px;display:grid;place-items:end center;overflow:hidden}.bust img{max-width:100%;height:200px;object-fit:contain;object-position:bottom}.bust-fallback{width:150px;height:150px;border-radius:50%;background:var(--bt-ice);display:grid;place-items:center;font-size:64px;margin-bottom:16px}.main-nav{height:52px;background:#fff;display:flex;align-items:center;justify-content:center;gap:42px}.main-nav a{height:52px;padding:12px 4px;color:var(--bt-navy);font-weight:700}.main-nav a.current{border-bottom:2px solid var(--bt-red);color:var(--bt-red)}.feed{width:min(820px,calc(100% - 28px));margin:36px auto}.date-heading{text-align:center;font-size:1.2rem;margin:40px 0 20px}.date-heading a{color:var(--bt-navy)}.page-title{color:var(--bt-navy);font-size:1.45rem;margin:0 0 28px}.news-card{position:relative;background:var(--bt-card);border:1px solid var(--bt-border);border-radius:14px;box-shadow:0 1px 3px rgba(31,48,67,.08);padding:22px 20px 18px;margin-bottom:20px;overflow:hidden}.news-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--bt-red)}.news-card.card-official:before{background:var(--bt-navy)}.news-card.card-data:before{background:var(--bt-ice-600)}.chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.chips time{margin-left:auto;color:var(--bt-muted);font:12px ui-monospace,SFMono-Regular,Consolas,monospace}.chip{display:inline-flex;align-items:center;min-height:27px;border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:700;line-height:1.4}.badge{color:#fff}.badge-news{background:var(--bt-red)}.badge-official{background:var(--bt-navy)}.badge-data{background:var(--bt-ice-600)}.category{background:var(--bt-ivory);color:var(--bt-navy)}.confidence{background:#fff;border:1.5px solid var(--bt-gray);color:var(--bt-muted)}.confidence-A{border-color:var(--bt-amber);color:var(--bt-amber-900)}.confidence-B{border-color:var(--bt-silver);color:#5F6E79}.freshness{border-radius:5px;background:#fff;border:1px solid var(--bt-red);color:var(--bt-red)}.freshness-today{background:var(--bt-red);color:#fff}.news-card h2{font-size:1.08rem;line-height:1.6;margin:14px 0 8px}.news-card h2 a{color:var(--bt-navy)}.lead{font-size:.92rem;margin:0 0 14px}.clamp-3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.source-mix{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#FAF8F5;border-radius:10px;padding:8px 12px;color:var(--bt-muted);font-size:.78rem}.source-mix strong{margin-right:2px}.pip{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}.pip.zero{opacity:.4}.pip i{width:9px;height:9px;border-radius:50%;background:var(--bt-navy)}.pip i.pip-media{background:var(--bt-red)}.pip i.pip-sns{background:var(--bt-amber)}.pip i.pip-data{background:var(--bt-ice-600)}.official-warning{display:inline-flex;border:1px solid #E8CFA4;border-radius:6px;background:var(--bt-amber-50);color:var(--bt-amber-900);font-size:.76rem;font-weight:700;padding:4px 8px}.bingtang-comment{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;margin:16px 0 12px;background:var(--bt-ice-100);border:1px solid var(--bt-ice);border-radius:4px 14px 14px;padding:14px}.bingtang-comment h3{color:var(--bt-red);font-size:.9rem;line-height:1.4;margin:0 0 6px}.bingtang-comment p{margin:0;font-size:.88rem;line-height:1.8}.bingtang-comment hr{border:0;border-top:1px solid var(--bt-ice);margin:14px 0}.bingtang-comment.clamp-4>div{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}.avatar{flex:none;display:inline-grid;border-radius:50%;overflow:hidden;background:var(--bt-ice);border:2px solid var(--bt-ice);place-items:center}.avatar img{width:100%;height:100%;object-fit:cover}.avatar-fallback{display:grid;place-items:center;width:100%;height:100%;font-size:.55em}.avatar-36{width:36px;height:36px;font-size:24px}.avatar-48{width:48px;height:48px;font-size:30px}.avatar-64{width:64px;height:64px;font-size:40px}.sources{font-size:.78rem;margin:12px 0 0;color:var(--bt-muted)}.sources a{margin-left:5px}.read-more{text-align:right;margin:5px 0 0;font-size:.86rem;font-weight:700}.archive-cta{text-align:center;margin:30px}.legend{margin:40px 0;background:#fff;border:1px solid var(--bt-border);border-radius:14px;padding:18px 20px;font-size:.8rem}.legend h2{font-size:1rem;color:var(--bt-navy);margin:0}.legend p{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}.footer-banner{display:flex;align-items:center;gap:14px;background:var(--bt-ice-100);border-radius:14px;padding:16px 20px;margin:40px 0}.footer-banner p{flex:1;margin:0;font-size:.85rem}.footer-banner>a{border-radius:999px;background:var(--bt-red);color:#fff;padding:8px 14px;font-size:.78rem;font-weight:700}.empty{background:#fff;border:1px solid var(--bt-border);border-radius:14px;padding:28px;color:var(--bt-muted)}.article-header{height:52px;background:var(--bt-ice-200);display:flex;align-items:center;justify-content:space-between;padding:0 max(20px,calc((100% - 1080px)/2));font-size:.8rem}.mini-logo{font-size:1.1rem}.article-page{width:min(720px,calc(100% - 28px));margin:44px auto}.article-page h1{color:var(--bt-navy);font-size:1.35rem;line-height:1.6;margin:18px 0}.article-lead{font-size:1rem;margin:0 0 22px}.article-section{margin:36px 0}.article-section h2{color:var(--bt-navy);border-left:4px solid var(--bt-red);padding-left:12px;font-size:1.08rem}.article-section p{white-space:pre-wrap}.article-page .bingtang-comment{margin:36px 0}.article-actions{border-top:1px solid var(--bt-border);margin-top:38px;padding-top:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.article-actions .sources{margin:0;flex:1}.share{flex:none;border:1px solid var(--bt-navy);border-radius:999px;color:var(--bt-navy);padding:8px 14px;font-size:.8rem}.article-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:start;border-top:1px solid var(--bt-border);margin-top:32px;padding-top:20px}.article-nav>a:last-child{text-align:right}.article-nav small{display:block;color:var(--bt-muted);line-height:1.5;margin-top:5px}.narrow{width:min(720px,calc(100% - 28px));margin:44px auto}.archive-list{list-style:none;margin:0;padding:0;background:#fff;border:1px solid var(--bt-border);border-radius:14px;overflow:hidden}.archive-list li+li{border-top:1px solid var(--bt-border)}.archive-list a{display:flex;justify-content:space-between;padding:16px 20px;color:var(--bt-navy)}.about section{margin:34px 0}.about h2{color:var(--bt-navy);font-size:1.08rem}.about .profile{display:flex;align-items:center;gap:16px;background:var(--bt-ice-100);border-radius:14px;padding:20px}.about .profile p{margin:0}.site-footer{background:var(--bt-navy);color:#fff;padding:24px max(20px,calc((100% - 1080px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:.78rem}.site-footer p{margin:0}.site-footer nav{display:flex;gap:16px}.site-footer a{color:#fff}
 @media(max-width:640px){.hero-inner{min-height:230px;padding:18px 14px 0;align-items:flex-start}.brand{padding-bottom:12px}.logo{font-size:1.3rem}.brand p{max-width:190px}.hero-character{height:190px;align-self:flex-end;flex-direction:column-reverse;justify-content:flex-start;gap:4px}.hero-character>p{max-width:150px;padding:7px 9px;font-size:.72rem;line-height:1.45}.bust{width:120px;height:120px}.bust img{height:120px}.bust-fallback{width:92px;height:92px;font-size:42px;margin:0}.main-nav{gap:18px}.main-nav a{font-size:.78rem}.feed,.narrow,.article-page{width:calc(100% - 28px);margin-top:26px}.news-card{padding:20px 14px 16px}.chips time{width:100%;margin-left:0}.source-mix{gap:8px}.bingtang-comment{grid-template-columns:36px minmax(0,1fr);padding:12px 10px}.footer-banner{align-items:flex-start;flex-wrap:wrap}.footer-banner p{min-width:calc(100% - 70px)}.article-header{padding:0 14px}.article-actions{flex-direction:column}.article-nav{grid-template-columns:1fr 1fr}.article-nav>a:nth-child(2){grid-row:2;grid-column:1/-1;text-align:center}.site-footer{align-items:flex-start;flex-direction:column}.article-page h1{font-size:1.2rem}}
+.date-badge{margin-top:18px}.feed-details{margin:14px 0 10px;border:1px solid var(--bt-border);border-radius:10px;background:#fff}.feed-details>summary{cursor:pointer;list-style:none;padding:10px 13px;color:var(--bt-red);font-size:.86rem;font-weight:700}.feed-details>summary::-webkit-details-marker{display:none}.feed-details>summary:after{content:"＋";float:right}.feed-details[open]>summary{border-bottom:1px solid var(--bt-border)}.feed-details[open]>summary:after{content:"−"}.feed-details>div{padding:4px 14px 14px}.feed-details section{margin:16px 0}.feed-details h3{margin:0 0 5px;color:var(--bt-navy);font-size:.92rem}.feed-details p{margin:0;white-space:pre-wrap;font-size:.88rem}.bingtang-comment>div{display:block;overflow:visible}
+@media(max-width:640px){.hero-inner{min-height:190px;gap:0}.brand{flex:1;min-width:0;padding:10px 0 18px}.date-badge{margin-top:14px;padding:3px 9px;font-size:.7rem}.hero-character{position:relative;display:block;flex:none;width:140px;height:172px;align-self:flex-end}.hero-character>p{position:absolute;z-index:2;top:4px;right:0;width:140px;max-width:none;padding:7px 9px}.bust{position:absolute;right:0;bottom:0;width:120px;height:120px}.bust img{height:120px}.feed-details>div{padding-inline:12px}}
 `;
 
 main().catch((error) => {

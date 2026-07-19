@@ -7,6 +7,7 @@ import type {
   TopicCandidate
 } from "./types.js";
 import { areTitlesSimilar } from "./dedupe.js";
+import { assessSourceRelevance, rankTopicSearchQueries } from "./sourceRelevance.js";
 
 const DEFAULT_RSSHUB_BASE_URL = "https://rsshub.app";
 const DEFAULT_TIMEOUT_MS = 6000;
@@ -14,6 +15,7 @@ const DEFAULT_MAX_TOPICS = 8;
 const DEFAULT_QUERIES_PER_TOPIC = 2;
 const MAX_ITEMS_PER_ROUTE = 8;
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
+const MAX_SERPER_RESULTS = 5;
 
 type ExpansionRoute = {
   id: string;
@@ -163,8 +165,9 @@ async function fetchSerperSearch(topic: TopicCandidate, query: string) {
     });
     if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
     const payload = (await response.json()) as { organic?: SerperOrganicItem[] };
-    const items = (payload.organic ?? []).slice(0, 10);
-    const evidence = items.map((item) => toSerperEvidence(item, query)).filter((item) => isUsefulEvidence(topic, query, item));
+    const items = (payload.organic ?? []).slice(0, MAX_SERPER_RESULTS);
+    const assessed = items.map((item) => toSerperEvidence(item, query)).map((item) => ({ item, assessment: assessSourceRelevance(topic, item, query) }));
+    const evidence = assessed.filter(({ assessment }) => assessment.accepted).map(({ item }) => item);
     return {
       attempt: {
         ...common,
@@ -172,6 +175,8 @@ async function fetchSerperSearch(topic: TopicCandidate, query: string) {
         fetch_error: "",
         raw_count: items.length,
         matched_count: evidence.length,
+        rejected_count: assessed.length - evidence.length,
+        rejection_reasons: countRejectionReasons(assessed),
         failure_stage: items.length ? "" : "serper_empty"
       } satisfies SourceExpansionAttempt,
       evidence
@@ -237,7 +242,8 @@ async function fetchExpansionRoute(topic: TopicCandidate, query: string, route: 
     const parser = new Parser();
     const feed = await parser.parseString(xml);
     const items = ((feed.items ?? []) as RssItem[]).slice(0, MAX_ITEMS_PER_ROUTE);
-    const evidence = items.map((item) => toEvidence(item, route, routePath, query)).filter((item) => isUsefulEvidence(topic, query, item));
+    const assessed = items.map((item) => toEvidence(item, route, routePath, query)).map((item) => ({ item, assessment: assessSourceRelevance(topic, item, query) }));
+    const evidence = assessed.filter(({ assessment }) => assessment.accepted).map(({ item }) => item);
 
     return {
       attempt: {
@@ -246,6 +252,8 @@ async function fetchExpansionRoute(topic: TopicCandidate, query: string, route: 
         fetch_error: "",
         raw_count: items.length,
         matched_count: evidence.length,
+        rejected_count: assessed.length - evidence.length,
+        rejection_reasons: countRejectionReasons(assessed),
         failure_stage: items.length ? "" : "rss_parse_empty"
       } satisfies SourceExpansionAttempt,
       evidence
@@ -285,16 +293,13 @@ function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceExpansio
   }
 
   const existingKeys = new Set(topic.evidence_articles.map((article) => article.url || `${article.source_name}:${article.title}`));
-  const acceptedTitles = topic.evidence_articles.map((article) => article.title);
   const newEvidence = evidence
     .filter((item) => {
       const key = item.url || `${item.source_name}:${item.title}`;
       if (existingKeys.has(key)) {
         return false;
       }
-      if (acceptedTitles.some((title) => areTitlesSimilar(title, item.title))) return false;
       existingKeys.add(key);
-      acceptedTitles.push(item.title);
       return true;
     })
     .map((item) => ({
@@ -314,6 +319,7 @@ function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceExpansio
   }
 
   const sourceNames = new Set([...topic.evidence_articles.map((article) => article.source_name), ...newEvidence.map((article) => article.source_name)]);
+  const independentEvidenceCount = countIndependentEvidence([...topic.evidence_articles, ...newEvidence]);
   const sourceMix = { ...topic.source_mix };
   for (const item of newEvidence) {
     sourceMix[item.source_type] = (sourceMix[item.source_type] ?? 0) + 1;
@@ -328,10 +334,20 @@ function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceExpansio
       ...topic.signals,
       has_data_signal: topic.signals.has_data_signal || newEvidence.some((item) => item.source_type === "data"),
       has_hot_search_signal: topic.signals.has_hot_search_signal || newEvidence.some((item) => item.source_type === "sns"),
-      has_multiple_sources: sourceNames.size > 1
+      has_multiple_sources: independentEvidenceCount > 1
     },
     selection_reason: `${topic.selection_reason}, expansion_evidence:${newEvidence.length}`
   };
+}
+
+function countIndependentEvidence(evidence: TopicCandidate["evidence_articles"]) {
+  const accepted: TopicCandidate["evidence_articles"] = [];
+  for (const item of evidence) {
+    if (accepted.some((candidate) => candidate.source_name === item.source_name)) continue;
+    if (accepted.some((candidate) => areTitlesSimilar(candidate.title, item.title))) continue;
+    accepted.push(item);
+  }
+  return accepted.length;
 }
 
 function toEvidence(item: RssItem, route: ExpansionRoute, routePath: string, query: string): SourceExpansionEvidence {
@@ -349,27 +365,18 @@ function toEvidence(item: RssItem, route: ExpansionRoute, routePath: string, que
   };
 }
 
-function isUsefulEvidence(topic: TopicCandidate, query: string, evidence: SourceExpansionEvidence) {
-  if (!evidence.title || !evidence.url) {
-    return false;
-  }
-  const text = `${evidence.title} ${evidence.key_points.join(" ")}`;
-  const tokens = getMatchTokens(topic, query);
-  return tokens.some((token) => text.includes(token));
-}
-
-function getMatchTokens(topic: TopicCandidate, query: string) {
-  const entityTokens = [
-    ...topic.main_entities.works,
-    ...topic.main_entities.people,
-    ...topic.main_entities.organizations,
-    ...topic.main_entities.events
-  ];
-  return [...new Set([topic.topic_key, query, ...entityTokens].map(normalizeToken).filter((token) => token.length >= 2))];
-}
-
 function getTopicQueries(topic: TopicCandidate) {
-  return [...new Set([topic.topic_key, ...topic.search_queries].map((query) => query.trim()).filter(Boolean))];
+  return rankTopicSearchQueries(topic);
+}
+
+function countRejectionReasons(assessed: Array<{ assessment: ReturnType<typeof assessSourceRelevance> }>) {
+  const counts: Partial<Record<"missing_title_or_url" | "unsafe_url" | "weak_topic_match", number>> = {};
+  for (const { assessment } of assessed) {
+    if (assessment.accepted) continue;
+    const reason = assessment.reason as keyof typeof counts;
+    counts[reason] = (counts[reason] ?? 0) + 1;
+  }
+  return counts;
 }
 
 function getExpansionRoutes() {
@@ -448,10 +455,6 @@ function describeFetchError(error: unknown) {
     return `${error.name}: ${error.message}${cause}`;
   }
   return String(error);
-}
-
-function normalizeToken(value: string) {
-  return value.replace(/[《》『』"'“”‘’\s]/g, "").trim();
 }
 
 function stripHtml(value: string) {
