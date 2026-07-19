@@ -7,43 +7,43 @@
       "index": 1,
       "topic_key": "施南生",
       "title": "香港映画の伝説的プロデューサー、施南生が死去",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "その他",
+      "comment": "古い。2日以内であれば採用。",
       "revision_count": 0
     },
     {
       "index": 2,
       "topic_key": "张凌赫张婧仪合体",
-      "title": "張凌赫＆張婧儀、ランコム広告で3年連続共演 温かいCP感が話題に",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
-      "revision_count": 0
+      "title": "張凌赫＆張婧儀、ランコム広告で3年連続の“CP感”披露",
+      "status": "revised_pending",
+      "reason_tag": "その他",
+      "comment": "「ファンの間で「この2人、本当に付き合ってる？」という妄想を育てる戦略でもあります」というのは事実ですか？ それとも考察ですか？ 中国と違い、リアル芸能人同士の関係性(RPS)を安易に消費することは禁忌なので慎重に。それを文化の違いとして紹介するならアリ。",
+      "revision_count": 1
     },
     {
       "index": 3,
       "topic_key": "王年将成",
-      "title": "元サッカー選手・王年将成、短劇俳優に転身「別の競技場」",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
-      "revision_count": 0
+      "title": "元サッカー選手・王年将成、短劇俳優に転身「フィールドが変わっただけ」",
+      "status": "revised_pending",
+      "reason_tag": "その他",
+      "comment": "競技場→フィールド",
+      "revision_count": 1
     },
     {
       "index": 4,
       "topic_key": "中央广播电视总台与优酷联合发布酷剧场",
-      "title": "中央ラジオテレビ総局と優酷、新ブランド「酷劇場」を共同発表",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
-      "revision_count": 0
+      "title": "中央広播電視総台と優酷、新ブランド「酷劇場」を共同発表",
+      "status": "revised_pending",
+      "reason_tag": "その他",
+      "comment": "广电总局はラジオテレビ総局と訳さず、広電総局とするルールを作ったはずです",
+      "revision_count": 1
     },
     {
       "index": 5,
       "topic_key": "第38届大众电影百花奖提名名单",
       "title": "第38回大众电影百花賞ノミネート発表、作品賞に『小小的我』『哪吒之魔童闹海』など6作品",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
