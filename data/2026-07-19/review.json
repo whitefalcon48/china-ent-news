@@ -7,7 +7,7 @@
       "index": 1,
       "topic_key": "功夫女足偷票房疑云",
       "title": "周星驰監督『功夫女足』に「盗撮興行」疑惑、監督自らSNSで疑問視",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -16,7 +16,7 @@
       "index": 2,
       "topic_key": "功夫女足",
       "title": "周星馳7年ぶり新作『功夫女足』、公開3日で興収5億元突破 口コミは二極化",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -25,7 +25,7 @@
       "index": 3,
       "topic_key": "蔡赴朝涉嫌严重违纪违法被审查调查",
       "title": "元広電局（国家广播电视总局）トップ・蔡赴朝氏、重大規律違反で審査調査へ",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -34,63 +34,63 @@
       "index": 4,
       "topic_key": "留几手批冯小刚",
       "title": "留几手が馮小剛をライブ批判「観客と乖離、新作は興行失敗」",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "その他",
+      "comment": "単なる炎上系ライバーなので中身がない",
       "revision_count": 0
     },
     {
       "index": 5,
       "topic_key": "第九届红色微短剧（微电影）展启动仪式暨“星火大别山”主题展合肥站巡展在渡江战役纪",
       "title": "第9回レッドマイクロドラマ展開幕、安徽初の撮影ロケ地12か所を発表",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "その他",
+      "comment": "ニュースとしての面白みに欠ける",
       "revision_count": 0
     },
     {
       "index": 6,
       "topic_key": "2026中国—东盟微短剧大赛",
       "title": "中国-ASEANマイクロドラマコンテスト、北京で説明会—AI部門も新設",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "選定",
+      "comment": "渋い",
       "revision_count": 0
     },
     {
       "index": 7,
       "topic_key": "2026年第二季度全国国产电视剧发行许可",
       "title": "広電局（国家广播电视总局）、2026年第二四半期の国産ドラマ発行許可状況を発表",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "選定",
+      "comment": "备案系が被るのと、分析が浅いのでリストが出てからやりなおしたほうがいい",
       "revision_count": 0
     },
     {
       "index": 8,
       "topic_key": "备案",
       "title": "国家電影局（中国の映画主管当局）、2026年6月の映画备案・立项公示を発表 実写73本・VR15本",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
-      "revision_count": 0
+      "status": "revised_pending",
+      "reason_tag": "口調",
+      "comment": "ニュース選定はいい。「要するに」修正  　备案・立项というのは…です！で始まるといいと思う",
+      "revision_count": 1
     },
     {
       "index": 9,
       "topic_key": "优酷《东大高武学院》开播",
       "title": "優酷、オリジナル3D都市修仙アニメ『東大高武学院』を配信開始",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "構成",
+      "comment": "単なる配信開始ではニュース性がよくわからない。単なる情報。Youkuが初のオリジナルアニメ、歴代予約数1位という点がニュースバリューがあるのに、それがタイトルと注目ポイントから分からない。",
       "revision_count": 0
     },
     {
       "index": 10,
       "topic_key": "袁娅维回应歌手写错名字",
       "title": "袁娅维、『歌手』で名前間違いに反応し張遠の応援呼びかけ",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "選定",
+      "comment": "ワイドショー的でニュース性が低い",
       "revision_count": 0
     }
   ]
