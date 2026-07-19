@@ -1,0 +1,2520 @@
+{
+  "date": "2026-07-19",
+  "generated_at": "2026-07-19T02:07:39.229Z",
+  "ledgers": [
+    {
+      "topic_key": "功夫女足",
+      "ledger": {
+        "topic_key": "功夫女足",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『功夫女足』は2026年7月11日に公開された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月11日"
+            ],
+            "quote_zh": "影片7月11日公映首日"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "公開3日目の7月13日時点で累計興行収入が5億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "7月13日",
+              "5億元"
+            ],
+            "quote_zh": "上映三日累计总票房已突破5亿元"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "公開初日の興行収入は2.6億元で、公開27分で1億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "2.6億元",
+              "27分",
+              "1億元"
+            ],
+            "quote_zh": "首日总票房收至2.6亿元，上映仅27分钟票房便突破1亿元"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "公開初日の観客動員数は284万人、初日の上映シェアは47.4%だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "284万",
+              "47.4%"
+            ],
+            "quote_zh": "累计观影人次达284万，首日排片占比高达47.4%"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "公開2日目の7月12日の興行収入は2.39億元で、上映シェアは48.2%、当日の総興行収入の80.3%を占めた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "7月12日",
+              "2.39億元",
+              "48.2%",
+              "80.3%"
+            ],
+            "quote_zh": "7月12日上映次日，单日再揽2.39亿元票房，拿下全国48."
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "7月12日22時44分に累計興行収入5億元を突破し、観客動員数は1000万人を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "7月12日22時44分",
+              "5億元",
+              "1000万"
+            ],
+            "quote_zh": "截至7月12日22时44分，影片上映1天14小时50分钟累计"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "7月13日午前時点の累計興行収入は5.28億元、平均チケット価格は34.5元だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "7月13日",
+              "5.28億元",
+              "34.5元"
+            ],
+            "quote_zh": "7月13日...影片累计票房达5.28亿元，平均票价34.5"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "猫眼专业版は最終興行収入予測を25.05億元に上方修正した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "猫眼专业版"
+            ],
+            "numbers": [
+              "25.05億元"
+            ],
+            "quote_zh": "猫眼专业版将《功夫女足》最终票房预测上调至25.05亿元"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "灯塔专业版の最終興行収入予測は12.45億元で、両プラットフォームの予測に差がある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "灯塔专业版"
+            ],
+            "numbers": [
+              "12.45億元"
+            ],
+            "quote_zh": "灯塔专业版相对保守，最终票房预测稳定维持在12.45亿元"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "本作は『少林足球』公開25周年の精神的続編であり、2001年公開の『少林足球』の全世界興行収入は4277.6万ドルだった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "少林足球"
+            ],
+            "numbers": [
+              "25周年",
+              "2001年",
+              "4277.6万ドル"
+            ],
+            "quote_zh": "该片是经典影片《少林足球》25周年的“精神续作”，2001年"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "主演は张小斐、迪丽热巴、张艺兴で、刘嘉玲と佐藤健が特別出演している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "张小斐",
+              "迪丽热巴",
+              "张艺兴",
+              "刘嘉玲",
+              "佐藤健"
+            ],
+            "numbers": [],
+            "quote_zh": "由知名演员张小斐、迪丽热巴、张艺兴担任领衔主演，刘嘉玲、佐藤"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "総製作費は3.8億元で、うち特殊効果製作費は約1.9億元、全編で1200以上の特殊効果カットがある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "3.8億元",
+              "1.9億元",
+              "1200"
+            ],
+            "quote_zh": "总制作投资达3.8亿元人民币，其中特效制作投入近1.9亿元，"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "豆瓣のスコアは6.6点で、17%が5つ星、8.6%が1つ星を付けた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "豆瓣"
+            ],
+            "numbers": [
+              "6.6点",
+              "17%",
+              "8.6%"
+            ],
+            "quote_zh": "豆瓣开分仅6.6分，超7万人评分中17%给出五星好评，8.6"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "界面新闻は、本作が中国映史の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン前売り興行記録を破ったと分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "《功夫女足》已打破中国影史暑期档影片首映日场次纪录、过去三年"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "界面新闻は、本作の口コミが二極化しており、一般観客は喜劇効果と熱血さを評価する一方、専門家や豆瓣ユーザーは創作の保守性やジャンル融合の違和感を指摘していると報じている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "专业影评与豆瓣网友评价分歧明显...影片创作较为保守，类型融"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "界面新闻は、特殊効果に「AIグリーンバック感」があるとの観客の声を伝えている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "有不少观众吐槽，特效呈现效果有“AI绿幕感”"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "界面新闻は、2026年夏休みシーズン（6月1日～8月31日）の総興行収入が7月11日時点で25億元を突破したと報じている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "2026年",
+              "6月1日",
+              "8月31日",
+              "7月11日",
+              "25億元"
+            ],
+            "quote_zh": "截至7月11日，2026年暑期档（6.1-8.31）档期总票"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "界面新闻は、本作が夏休みシーズンの大ヒット作として市場を活性化させたと分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "《功夫女足》作为档期头部国产商业大片...也将拉动暑期档大盘"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "本作は周星馳が7年ぶりに手掛けた新作である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星驰"
+            ],
+            "numbers": [
+              "7年"
+            ],
+            "quote_zh": "周星驰时隔七年推出的新作"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "本作のストーリーは草根女子サッカーチーム「峨眉队」の逆転劇である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "峨眉队"
+            ],
+            "numbers": [],
+            "quote_zh": "故事聚焦于草根女子足球队“峨眉队”的逆袭之路"
+          }
+        ],
+        "terms": [
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休みシーズン",
+            "what_is": "中国の映画興行シーズンの一つで、6月から8月まで",
+            "why_now": "本作がこのシーズンの大ヒット作として市場を活性化したため"
+          },
+          {
+            "term": "排片占比",
+            "gloss_ja": "上映シェア",
+            "what_is": "全上映回数に占める特定作品の割合",
+            "why_now": "本作の初日47.4%という高いシェアが注目されたため"
+          },
+          {
+            "term": "豆瓣开分",
+            "gloss_ja": "豆瓣の初期スコア",
+            "what_is": "中国の映画レビューサイト豆瓣での公開直後の評価点",
+            "why_now": "本作の6.6点が口コミ二極化の指標となったため"
+          },
+          {
+            "term": "猫眼专业版",
+            "gloss_ja": "猫眼プロ版",
+            "what_is": "中国の興行収入予測プラットフォーム",
+            "why_now": "本作の最終予測を25.05億元に上方修正したため"
+          },
+          {
+            "term": "灯塔专业版",
+            "gloss_ja": "灯台プロ版",
+            "what_is": "中国の興行収入予測プラットフォーム",
+            "why_now": "猫眼と予測に差があり、市場の見解の相違を示すため"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "2026中国—东盟微短剧大赛",
+      "ledger": {
+        "topic_key": "2026中国—东盟微短剧大赛",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月17日、2026中国—东盟微短剧大赛の専場説明会が北京の広西ビルで開催された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "北京广西大厦"
+            ],
+            "numbers": [
+              "2026-07-17"
+            ],
+            "quote_zh": "7月17日，2026中国—东盟微短剧大赛专场推介会在北京广西"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "本大会は第八回中国—东盟視聴週の6大活動の一つである。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "第八届中国—东盟视听周"
+            ],
+            "numbers": [
+              "第八届"
+            ],
+            "quote_zh": "作为第八届中国—东盟视听周六大活动之一"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "大会のテーマは「AI赋能 共创共享」（AIが力を与え、共に創り共有する）である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "以“AI赋能 共创共享”为主题"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "大会の目的は、中国とASEANのマイクロドラマ業界の国家級協力プラットフォームを構築し、越境視聴覚産業の革新とウィンウィンを促進し、より緊密な中国-ASEAN運命共同体の構築を支援することである。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "中国—东盟命运共同体"
+            ],
+            "numbers": [],
+            "quote_zh": "旨在搭建中国与东盟微短剧行业国家级合作平台"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "第八回中国—东盟視聴週は、国家広播電視総局、広西チワン族自治区人民政府、ブルネイの関連部門が共同主催する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "国家广播电视总局",
+              "广西壮族自治区人民政府",
+              "文莱"
+            ],
+            "numbers": [
+              "第八届"
+            ],
+            "quote_zh": "第八届中国—东盟视听周由国家广播电视总局、广西壮族自治区人民"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "本大会は広西チワン族自治区広播電視局、北海市人民政府、広西出版伝媒グループが共同で運営する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "广西壮族自治区广播电视局",
+              "北海市人民政府",
+              "广西出版传媒集团"
+            ],
+            "numbers": [],
+            "quote_zh": "本次微短剧大赛由广西壮族自治区广播电视局、北海市人民政府、广"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "大会は3つの競技カテゴリーを設置している：真人微短剧（実写マイクロドラマ）、AI微短剧（AIマイクロドラマ）、原创剧本（オリジナル脚本）。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "设置真人微短剧、AI微短剧、原创剧本三大竞赛类别"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "大会は専項支援資金を提供し、実写マイクロドラマの一等賞は100万元、AIマイクロドラマの一等賞は20万元である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "100万元",
+              "20万元"
+            ],
+            "quote_zh": "真人微短剧一等奖扶持100万元，AI微短剧一等奖扶持20万元"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "現在、大会は作品募集の集中段階にあり、8月中旬から9月下旬に専門審査が行われ、10月19日に広西北海で開催される第八回中国—东盟視聴週開幕式の夕べで表彰される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "北海"
+            ],
+            "numbers": [
+              "8月中旬",
+              "9月下旬",
+              "10月19日"
+            ],
+            "quote_zh": "8月中旬至9月下旬将开展专业评审，10月19日将在广西北海举"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "10月20日には広西北海で大会成果発表説明会と創作取材などのイベントが開催され、『中国—东盟微短剧国际传播发展报告』が発表される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "北海"
+            ],
+            "numbers": [
+              "10月20日"
+            ],
+            "quote_zh": "10月20日将在广西北海举办大赛成果发布推介会和创作采风等活"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "大会は飛兔兔AI短劇共創プラットフォームを搭載し、火山引擎Seedance2.0動画生成大モデルに接続し、創作チームや大学などに共創チャンネルを開放し、専用の計算力とトラフィック支援を提供する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "飞兔兔AI短剧共创平台",
+              "火山引擎Seedance2.0"
+            ],
+            "numbers": [],
+            "quote_zh": "搭载飞兔兔AI短剧共创平台，接入火山引擎Seedance2."
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "広西はASEANに向けた独自の地理的優位性と産業優位性を活かし、マイクロドラマのASEANへの輸出ハブを積極的に構築している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "广西"
+            ],
+            "numbers": [],
+            "quote_zh": "广西立足面向东盟的独特区位与产业优势，积极打造微短剧出海东盟"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "広西は「造船出海+借船出海」の双方向発力を堅持し、自主出海プラットフォームと海外主流ストリーミングチャンネルを介してマイクロドラマの常態的な国際伝播を実現している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "坚持“造船出海+借船出海”双向发力，依托自主出海平台及海外主"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "広西は「广西创作+东盟取景+联合发行」の合作撮影モデルを革新し、中泰、中越などの越境合作作品を継続的に産出している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "广西",
+              "中泰",
+              "中越"
+            ],
+            "numbers": [],
+            "quote_zh": "创新打造“广西创作+东盟取景+联合发行”合拍模式，持续产出中"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "新京報は、本大会が科学技術による産業革新を際立たせ、AI短劇の全産業チェーン革新エコシステムを構築すると分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "本次大赛突出科技赋能产业创新"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "新京報は、本大会が中国とASEANの優良マイクロドラマコンテンツの越境伝播をさらに推進し、文化の絆として人文交流を深め、産業の共同繁栄を促進すると分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "本次大赛将进一步推动中国和东盟优质微短剧内容跨境传播"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "中国網絡視聴節目服務協会副会長の魏党軍が説明会で挨拶した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "魏党军",
+              "中国网络视听节目服务协会"
+            ],
+            "numbers": [],
+            "quote_zh": "中国网络视听节目服务协会副会长魏党军在中国—东盟微短剧大赛北"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "国家広播電視総局広播影視発展研究中心副主任の史杰が説明会で挨拶した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "史杰",
+              "国家广播电视总局广播影视发展研究中心"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广播电视总局广播影视发展研究中心副主任史杰在中国—东盟微"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "広西チワン族自治区広播電視局党組成員・副局長の陸正寧が大会の全体状況を紹介した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "陆正宁",
+              "广西壮族自治区广播电视局"
+            ],
+            "numbers": [],
+            "quote_zh": "广西壮族自治区广播电视局党组成员、副局长陆正宁介绍大赛整体情"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "広西出版伝媒グループ市場与閲読推広部副主任の薩宣敏が飛兔兔AI短劇共創プラットフォームを紹介した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "萨宣敏",
+              "广西出版传媒集团",
+              "飞兔兔AI短剧共创平台"
+            ],
+            "numbers": [],
+            "quote_zh": "广西出版传媒集团市场与阅读推广部副主任萨宣敏介绍飞兔兔AI短"
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "マイクロドラマ",
+            "what_is": "短尺の縦型動画ドラマ。1話数分程度。",
+            "why_now": "大会の中心テーマであり、中国とASEANの協力で国際展開を図るため。"
+          },
+          {
+            "term": "中国—东盟视听周",
+            "gloss_ja": "中国-ASEAN視聴覚週間",
+            "what_is": "中国とASEANの視聴覚協力イベント。",
+            "why_now": "本大会はその6大活動の一つであり、外交行事にも位置づけられている。"
+          },
+          {
+            "term": "AI微短剧",
+            "gloss_ja": "AIマイクロドラマ",
+            "what_is": "AI技術で制作された短尺ドラマ。",
+            "why_now": "大会の競技カテゴリーの一つで、AIプラットフォームと大モデルを活用。"
+          },
+          {
+            "term": "飞兔兔AI短剧共创平台",
+            "gloss_ja": "フェイトゥートゥーAI短編共創プラットフ",
+            "what_is": "AI短編ドラマの共同創作プラットフォーム。",
+            "why_now": "大会で採用され、創作チームに計算資源とトラフィック支援を提供。"
+          },
+          {
+            "term": "火山引擎Seedance2.0",
+            "gloss_ja": "火山エンジンSeedance2.0",
+            "what_is": "動画生成の大規模AIモデル。",
+            "why_now": "大会プラットフォームに組み込まれ、AIドラマ制作を支援。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "袁娅维回应歌手写错名字",
+      "ledger": {
+        "topic_key": "袁娅维回应歌手写错名字",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月16日、袁娅维が『歌手』で自分の名前を間違えられたことについて反応した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "歌手"
+            ],
+            "numbers": [
+              "2026年7月16日"
+            ],
+            "quote_zh": "袁娅维回应歌手写错名字"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "袁娅维は張遠の『歌手』突围赛への応援を呼びかけた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远",
+              "歌手"
+            ],
+            "numbers": [],
+            "quote_zh": "为张远突围打call"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "袁娅维は張遠とのコラボ曲『莫离』OSTについて言及した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远",
+              "莫离"
+            ],
+            "numbers": [],
+            "quote_zh": "与@张远Bird 合作《莫离》OST"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "袁娅维は張遠の声音表現力を「近两年他演绎这些情感作品也是非常出色的」と評価した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远"
+            ],
+            "numbers": [],
+            "quote_zh": "近两年他演绎这些情感作品也是非常出色的"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "袁娅维は張遠の突围赛について「不用想太多，只是一种游戏规则」と述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维",
+              "张远"
+            ],
+            "numbers": [],
+            "quote_zh": "不用想太多，只是一种游戏规则"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "この発言は新浪娱乐のオリジナル番組『我的音乐你来听』の先導片で行われた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "新浪娱乐",
+              "我的音乐你来听"
+            ],
+            "numbers": [],
+            "quote_zh": "新浪娱乐原创工作室《我的音乐你来听》"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "新浪娱乐は袁娅维の反応を「综艺感拉满」と評価した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "袁娅维"
+            ],
+            "numbers": [],
+            "quote_zh": "综艺感拉满"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "第九届红色微短剧（微电影）展启动仪式暨“星火大别山”主题展合肥站巡展在渡江战役纪",
+      "ledger": {
+        "topic_key": "第九届红色微短剧（微电影）展启动仪式暨“星火大别山”主题展合肥站巡展在渡江战役纪",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "第九届红色微短剧（微电影）展启动仪式暨“星火大别山”主题展合肥站巡展于2026年7月9日在渡江战役纪念馆举行。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "第九届红色微短剧（微电影）展",
+              "星火大别山",
+              "渡江战役纪念馆"
+            ],
+            "numbers": [
+              "第九届",
+              "2026年7月9日"
+            ],
+            "quote_zh": "7月9日，第九届红色微短剧（微电影）展启动仪式暨“星火大别山"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "本次活动由中共安徽省委宣传部、中国电影家协会指导，多家单位联合主办。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "中共安徽省委宣传部",
+              "中国电影家协会",
+              "中共安徽省委网信办",
+              "安徽省文化和旅游厅",
+              "共青团安徽省委员会",
+              "安徽省文学艺术界联合会",
+              "六安市人民政府",
+              "安徽广电传媒产业集团"
+            ],
+            "numbers": [],
+            "quote_zh": "本次活动由中共安徽省委宣传部、中国电影家协会指导，中共安徽省"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "今年恰逢中国共产党成立105周年、中国工农红军长征胜利90周年。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "中国共产党成立105周年",
+              "中国工农红军长征胜利90周年"
+            ],
+            "numbers": [
+              "105周年",
+              "90周年"
+            ],
+            "quote_zh": "今年恰逢中国共产党成立105周年、中国工农红军长征胜利90周"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "活动年度主题为“剧映大别山 影动新六安”。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "剧映大别山 影动新六安"
+            ],
+            "numbers": [],
+            "quote_zh": "活动以“剧映大别山 影动新六安”为年度主题"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "安徽省文化和旅游厅发布了“青春耀江淮”百部红故事目录。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "安徽省文化和旅游厅",
+              "青春耀江淮"
+            ],
+            "numbers": [
+              "百部"
+            ],
+            "quote_zh": "省文化和旅游厅正式发布 “青春耀江淮”百部红故事目录"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "同步推出“研学大别山 行走的思政课”2026年六安市暑期研学暨创作采风主题线路。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "研学大别山 行走的思政课",
+              "六安市"
+            ],
+            "numbers": [
+              "2026年"
+            ],
+            "quote_zh": "同步推出的“研学大别山 行走的思政课”2026年六安市暑期研"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "安徽首批12处影视拍摄取景地正式面向全国发布，涵盖红色革命文物与历史实景、红色文旅复合型、专业影视片场三大板块。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "安徽首批12处影视拍摄取景地"
+            ],
+            "numbers": [
+              "12处"
+            ],
+            "quote_zh": "安徽首批12处影视拍摄取景地正式面向全国发布，涵盖红色革命文"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "本届活动单元设置全面升级，新增“百部红故事共创”“寻美六安”“清风廉韵”等专项单元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "百部红故事共创",
+              "寻美六安",
+              "清风廉韵"
+            ],
+            "numbers": [],
+            "quote_zh": "大赛新增了“百部红故事共创”“寻美六安”“清风廉韵”等专项单"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "主竞赛单元包括微电影、微短剧、短视频。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "除了以往的主竞赛单元（微电影、微短剧、短视频）外"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "鼓励创作者运用AI数字技术赋能红色题材创作。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "AI数字技术"
+            ],
+            "numbers": [],
+            "quote_zh": "鼓励创作者运用AI数字技术赋能红色题材创作"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "安徽广播电视台微短剧事业部以红色微短剧《等你回家》为例，解析红色题材视听创作赋能文旅的转化路径。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "安徽广播电视台微短剧事业部",
+              "等你回家"
+            ],
+            "numbers": [],
+            "quote_zh": "安徽广播电视台微短剧事业部以红色微短剧《等你回家》为例"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "启动仪式在主题曲《红色记忆》中拉开帷幕。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "红色记忆"
+            ],
+            "numbers": [],
+            "quote_zh": "启动仪式在悠扬庄重的主题曲《红色记忆》中拉开帷幕"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "1905电影网报道称，活动旨在推动红色基因在新时代持续传承、焕发更强活力。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "推动红色基因在新时代持续传承、焕发更强活力"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "1905电影网分析认为，“青春耀江淮”百部红故事目录将使红色文化传播从“被动展示”走向“全民共创”。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "青春耀江淮"
+            ],
+            "numbers": [],
+            "quote_zh": "红色文化的传播，正在从“被动展示”走向“全民共创”"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "1905电影网指出，活动努力实现“因为一部剧，带火一座城”的品牌效应。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "努力实现“因为一部剧，带火一座城”的品牌效应"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "1905电影网认为，影视拍摄取景地的发布搭建了影视创作与地方文旅精准对接的合作平台。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "搭建起影视创作与地方文旅精准对接的合作平台"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "1905电影网报道称，“清风廉韵”单元倡导将镜头对准廉洁元素，弘扬清风正气。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "清风廉韵"
+            ],
+            "numbers": [],
+            "quote_zh": "“清风廉韵”单元倡导创作者将镜头对准廉洁元素"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "1905电影网指出，活动将持续联动全国影视创作力量、高校青年群体、文旅行业资源。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "持续联动全国影视创作力量、高校青年群体、文旅行业资源"
+          },
+          {
+            "id": "C19",
+            "type": "source_analysis",
+            "text": "1905电影网称，活动以年轻化、数字化、场景化的影像叙事，让大别山红色基因代代相传。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "大别山"
+            ],
+            "numbers": [],
+            "quote_zh": "以年轻化、数字化、场景化的影像叙事，定格革命峥嵘岁月"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "裕安区独山镇、金寨大湾村、霍山六万情峡景区、泾县新四军军部旧址、合肥长丰五七干校等被列为安徽首批影视拍摄取景地。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "裕安区独山镇",
+              "金寨大湾村",
+              "霍山六万情峡景区",
+              "泾县新四军军部旧址",
+              "合肥长丰五七干校"
+            ],
+            "numbers": [],
+            "quote_zh": "裕安区独山镇、金寨大湾村、霍山六万情峡景区、泾县新四军军部旧"
+          }
+        ],
+        "terms": [
+          {
+            "term": "红色微短剧",
+            "gloss_ja": "レッドマイクロドラマ",
+            "what_is": "中国の革命・愛国テーマの短尺ドラマ",
+            "why_now": "本イベントの中心コンテンツであり、第九回展で新たな試みが行われている。"
+          },
+          {
+            "term": "微电影",
+            "gloss_ja": "マイクロフィルム",
+            "what_is": "短編映画",
+            "why_now": "主競技部門の一つとして募集されている。"
+          },
+          {
+            "term": "短视频",
+            "gloss_ja": "ショート動画",
+            "what_is": "短尺動画",
+            "why_now": "主競技部門の一つとして募集されている。"
+          },
+          {
+            "term": "百部红故事",
+            "gloss_ja": "百の赤い物語",
+            "what_is": "安徽省が選定した100の革命物語",
+            "why_now": "新設された「百部红故事共创」ユニットの素材として提供される。"
+          },
+          {
+            "term": "影视拍摄取景地",
+            "gloss_ja": "映像撮影ロケ地",
+            "what_is": "公式に認定された撮影可能な場所",
+            "why_now": "安徽初の12か所が発表され、制作と観光の連携が進む。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "留几手批冯小刚",
+      "ledger": {
+        "topic_key": "留几手批冯小刚",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "留几手がライブ配信で馮小剛を批判した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "留几手",
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "留几手直播狠批冯小刚"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "留几手は馮小剛が観客と乖離し、新作の興行収入が失敗したと指摘した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "留几手",
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "早与观众脱节了，票房扑街真不冤"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "留几手は馮小剛の創作姿勢について、何十年も過去のスタイルに頼っていると批判した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "留几手",
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "创作躺平，几十年吃老本"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "留几手は馮小剛が現在の若者の視聴傾向を理解していないと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "留几手",
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "完全脱节，压根不知道现在观众想看什么"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "留几手は馮小剛の態度が高慢で、観客が当然のように作品を支持すべきだと考えていると批判した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "留几手",
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "姿态太高，总觉得观众天生该买他的账"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "馮小剛は過去に観客を「垃圾观众」と発言したことが批判されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "早年那句“垃圾观众”又被翻出来鞭尸"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "馮小剛は新作公開時に「走个面儿」（顔を立てて）応援を呼びかけたとされる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "暗戳戳让大家“给个面儿”去捧场"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "馮小剛の新作は2人の主演男優と大規模制作にもかかわらず、興行収入と評判が振るわなかった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "冯小刚"
+            ],
+            "numbers": [],
+            "quote_zh": "双影帝、大制作，票房照样凉透"
+          },
+          {
+            "id": "C9",
+            "type": "source_analysis",
+            "text": "新浪娱乐の記事は、現在の観客は作品の質を重視し、過去の名声だけでは興行収入を保証できないと分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "现在的观众早不吃这套了"
+          },
+          {
+            "id": "C10",
+            "type": "source_analysis",
+            "text": "新浪娱乐の記事は、若い観客は共感できるストーリーや新しい表現方法を求めていると分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "要的是能共情的故事，表达方式得新"
+          }
+        ],
+        "terms": [
+          {
+            "term": "走个面儿",
+            "gloss_ja": "顔を立てる",
+            "what_is": "人間関係を重視し、面子を立てるために応援や協力を求める行為。",
+            "why_now": "馮小剛が新作公開時に観客に「走个面儿」での応援を呼びかけたとされ、批判の対象となった。"
+          },
+          {
+            "term": "垃圾观众",
+            "gloss_ja": "ゴミ観客",
+            "what_is": "馮小剛が過去に観客を侮辱した発言。",
+            "why_now": "この発言が再び取り上げられ、馮小剛の評判をさらに悪化させた。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "优酷《东大高武学院》开播",
+      "ledger": {
+        "topic_key": "优酷《东大高武学院》开播",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月16日、優酷でオリジナル3D都市修仙アニメ『東大高武学院』が独占配信開始された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "优酷",
+              "东大高武学院"
+            ],
+            "numbers": [
+              "2026年7月16日"
+            ],
+            "quote_zh": "7月16日，首部原创3D都市修仙动画《东大高武学院》在优酷全"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "放送前の予約者数は230万人を突破し、2026年オリジナル国漫新番予約と優酷プラットフォーム歴代新番予約の両方で1位を獲得した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "优酷"
+            ],
+            "numbers": [
+              "230万",
+              "2026年",
+              "TOP1"
+            ],
+            "quote_zh": "全网预约人数突破230万，位居2026年原创国漫新番预约及优"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "本作は優酷動漫が『雲深不知夢』に続いて送り出す2作目のオリジナル作品である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "优酷动漫",
+              "云深不知梦"
+            ],
+            "numbers": [],
+            "quote_zh": "优酷动漫继《云深不知梦》之后推出的又一原创力作"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "本作は「中式霍格沃茨（中国版ハリーポッター）」東方魔法学園設定と「二十四節気」功法体系を融合している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "东大高武学院"
+            ],
+            "numbers": [],
+            "quote_zh": "以“中式霍格沃茨”东方魔法校园设定融合“二十四节气”功法体系"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "物語は平凡な少年・秦雨が真武大帝の残魂を覚醒させ、魔物から民を救ったことで「万物生」功法の認可を得て、当代女武神・雲未央の門下に入る展開である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "秦雨",
+              "真武大帝",
+              "万物生",
+              "云未央"
+            ],
+            "numbers": [],
+            "quote_zh": "平凡少年秦雨因偶然觉醒真武大帝残魂，在拯救了被魔物袭击的百姓"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "秦雨は東大高武学院で韓之陽、欧陽清、田沐沐、徐金鳴、于歓ら同級生と切磋琢磨し、試練を経て成長する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "秦雨",
+              "韩之阳",
+              "欧阳清",
+              "田沐沐",
+              "徐金鸣",
+              "于欢",
+              "东大高武学院"
+            ],
+            "numbers": [],
+            "quote_zh": "秦雨与韩之阳、欧阳清、田沐沐、徐金鸣、于欢等个性鲜明的同窗并"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "世界観は霊気復活した藍星世界で、深淵魔族が通道を通じて頻繁に侵入し、神州は八大高武学院を設立して修行者を育成している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "蓝星",
+              "神州",
+              "八大高武学院"
+            ],
+            "numbers": [
+              "八大"
+            ],
+            "quote_zh": "描绘了灵气复苏的蓝星世界——深渊魔族借通道频繁入侵，神州设立"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "東大高武学院は八校の首位に位置し、下に丹薬、霊器、御獣、符籙、法陣の五大学院を設置している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "东大高武学院"
+            ],
+            "numbers": [
+              "八校",
+              "五大学院"
+            ],
+            "quote_zh": "“东大高武学院”位列八校之首，下设丹药、灵器、御兽、符箓、法"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "核心功法「万物生」は二十四節気と五行哲学を深く組み込んでおり、招式特效は立春抽芽、雨水潤霊、小満盈沢などの節気意象に対応している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "万物生"
+            ],
+            "numbers": [],
+            "quote_zh": "核心功法“万物生”深度植入二十四节气与五行哲学，招式特效对应"
+          },
+          {
+            "id": "C10",
+            "type": "source_analysis",
+            "text": "新京報は本作を「現代都市＋中式修仙＋学園成長」のタイプを重ねた新たなモデルと分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "“现代都市+中式修仙+校园成长”的类型叠加新模式引发关注"
+          },
+          {
+            "id": "C11",
+            "type": "source_analysis",
+            "text": "新京報は本作が国漫の東方美学体系を深化させ、伝統文化の現代表現の新たな道を模索したと評価している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "既深化了国漫东方美学体系，也探索了传统文化现代表达的新路径"
+          }
+        ],
+        "terms": [
+          {
+            "term": "国漫",
+            "gloss_ja": "中国アニメ",
+            "what_is": "中国製アニメーション作品の総称。",
+            "why_now": "本作は優酷初のオリジナル3D都市修仙国漫として注目されている。"
+          },
+          {
+            "term": "都市修仙",
+            "gloss_ja": "都市修仙",
+            "what_is": "現代都市を舞台に修行・成仙を描くジャンル。",
+            "why_now": "本作は「現代都市＋中式修仙＋学園成長」の新モデルとされる。"
+          },
+          {
+            "term": "二十四节气",
+            "gloss_ja": "二十四節気",
+            "what_is": "中国の伝統的な季節区分。",
+            "why_now": "本作の核心功法「万物生」に二十四節気と五行哲学が組み込まれている。"
+          },
+          {
+            "term": "中式霍格沃茨",
+            "gloss_ja": "中国版ハリーポッター",
+            "what_is": "中国風の魔法学園設定。",
+            "why_now": "本作の東方魔法学園設定を指すキャッチフレーズ。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "2026年第二季度全国国产电视剧发行许可",
+      "ledger": {
+        "topic_key": "2026年第二季度全国国产电视剧发行许可",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家广播电视总局は2026年7月14日、2026年第二四半期の全国国産テレビドラマ発行許可状況を通達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局"
+            ],
+            "numbers": [
+              "2026-07-14",
+              "2026年第二季度"
+            ],
+            "quote_zh": "国家广播电视总局办公厅关于2026年第二季度全国国产电视剧发"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年4月から6月までに、全国のテレビドラマ制作機関が完成・発行許可を取得した国産ドラマは合計21部595集である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "21部",
+              "595集",
+              "2026年4-6月"
+            ],
+            "quote_zh": "生产完成并获准发行国产电视剧21部595集"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "現実題材のドラマは16部428集で、全体の部数76.19%、集数71.93%を占め、すべて当代題材である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "16部",
+              "428集",
+              "76.19%",
+              "71.93%"
+            ],
+            "quote_zh": "现实题材剧目共计16部428集，分别占总部、集数的76.19"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "歴史題材のドラマは5部167集で、全体の部数23.81%、集数28.07%を占める。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "5部",
+              "167集",
+              "23.81%",
+              "28.07%"
+            ],
+            "quote_zh": "历史题材剧目共计5部167集，分别占总部、集数的23.81%"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "歴史題材のうち、近代題材は1部24集（部数4.76%、集数4.03%）、古代題材は4部143集（部数19.05%、集数24.03%）である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [
+              "1部",
+              "24集",
+              "4.76%",
+              "4.03%",
+              "4部",
+              "143集",
+              "19.05%",
+              "24.03%"
+            ],
+            "quote_zh": "近代题材共计1部24集...古代题材共计4部143集"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "本通告は国家广播电视总局弁公庁が2026年7月13日に発出した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局办公厅"
+            ],
+            "numbers": [
+              "2026-07-13"
+            ],
+            "quote_zh": "国家广播电视总局办公厅 2026年7月13日"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "通告には2026年4-6月の全国《国産テレビドラマ発行許可証》目録（PDF）が添付されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "《国产电视剧发行许可证》"
+            ],
+            "numbers": [
+              "2026年4-6月"
+            ],
+            "quote_zh": "附件：2026年4-6月全国《国产电视剧发行许可证》目录.p"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "本通告は国家广播电视总局电视剧司が情報源である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "电视剧司"
+            ],
+            "numbers": [],
+            "quote_zh": "来源：电视剧司"
+          },
+          {
+            "id": "C9",
+            "type": "source_analysis",
+            "text": "国家广播电视总局は、本通告がテレビドラマ管理に関する規定に基づくとしている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局"
+            ],
+            "numbers": [],
+            "quote_zh": "根据国家广播电视总局电视剧管理有关规定"
+          }
+        ],
+        "terms": [
+          {
+            "term": "国产电视剧发行许可证",
+            "gloss_ja": "国産テレビドラマ発行許可証",
+            "what_is": "中国で国産ドラマを放送するために必要な許可証。",
+            "why_now": "今回の通告で2026年第二四半期の発行状況が公表された。"
+          },
+          {
+            "term": "现实题材",
+            "gloss_ja": "現実題材",
+            "what_is": "現代社会を舞台にしたドラマのジャンル。",
+            "why_now": "今回の許可作品の76%以上を占め、主流であることが示された。"
+          },
+          {
+            "term": "历史题材",
+            "gloss_ja": "歴史題材",
+            "what_is": "過去の時代を舞台にしたドラマのジャンル。",
+            "why_now": "今回の許可作品の約24%を占め、近代と古代に分類される。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "功夫女足偷票房疑云",
+      "ledger": {
+        "topic_key": "功夫女足偷票房疑云",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "『功夫女足』は上映7日目で興行収入10億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "7日",
+              "10億元"
+            ],
+            "quote_zh": "上映7天票房破10亿元"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年7月16日、周星驰がSNSに『功夫女足』の手書きチケットの画像を投稿し、疑問符3つを付けて疑惑に反応した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星驰",
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月16日",
+              "3"
+            ],
+            "quote_zh": "7月16日，周星驰在社交平台分享了《功夫女足》手写票图片，并"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "2026年7月13日、映画『功夫女足』の公式アカウントが声明を発表し、文明観覧の呼びかけと不正行為の共同抵制を表明し、通報窓口を開設した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月13日"
+            ],
+            "quote_zh": "7月13日，@电影功夫女足发布声明，明确倡导文明观影、联合抵"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "福建漳州の観客が、窓口で購入したチケットが白紙だったと報告した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "每日经济新闻",
+            "entities": [
+              "福建漳州"
+            ],
+            "numbers": [],
+            "quote_zh": "福建漳州一位网友吐槽，他在柜台买票时，打出来的票是空白的"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "当該映画館は、チケット用紙の湿気が原因でインクが不鮮明になったと説明し、従業員を停職処分にした。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "当天才换的一卷票纸太潮湿，导致油墨显示不清"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "配給側は『功夫女足』の新版プログラムディスクと対応キーを7月17日（デジタル2D版）および7月19日（IMAX 2D、CINITY 2D等）から使用開始する通知を出した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "极目新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月17日",
+              "7月19日"
+            ],
+            "quote_zh": "数字2D版本的新版节目盘及对应密钥于7月17日启用，IMAX"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "新通知では「分段密钥」を採用し、不正な興行収入操作を防止する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "扬子晚报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "新通知显示采用“分段密钥”，意在打击偷票房等违规行为"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年7月17日時点で、『功夫女足』の累計興行収入は10.06億元で、興行収入ランキング1位である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "猫眼",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月17日",
+              "10.06億元"
+            ],
+            "quote_zh": "截至7月17日界面新闻发稿，《功夫女足》上映7天，以总票房1"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "『功夫女足』の興行収入シェアは44.6%、上映枠シェアは46.9%である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "猫眼",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "44.6%",
+              "46.9%"
+            ],
+            "quote_zh": "票房占比为44.6%，排片占比为46.9%"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "『功夫女足』の豆瓣スコアは6.5点で、17.9万人が評価した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "豆瓣",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "6.5",
+              "17.9万"
+            ],
+            "quote_zh": "豆瓣评分显示，目前该片的最新打分为6.5分，一共有17.9万"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "『功夫女足』は2026年7月11日に公開され、公開初日27分で興行収入1億元を突破し、初日総興行収入は2.6億元、初日上映枠比率は47.4%、初日上映回数は22.6万回を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "2026年7月11日",
+              "27分",
+              "1億元",
+              "2.6億元",
+              "47.4%",
+              "22.6万"
+            ],
+            "quote_zh": "影片7月11日公映首日，上映仅27分钟票房便突破1亿元，首日"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "『功夫女足』は中国映画史の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン初日上映回数記録、過去3年の夏休みシーズン予約販売記録を更新した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "灯塔专业版",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [],
+            "quote_zh": "《功夫女足》已打破中国影史暑期档影片首映日场次纪录、过去三年"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "『功夫女足』は『少林足球』公開25周年の精神的続編と見なされている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足",
+              "少林足球"
+            ],
+            "numbers": [
+              "25周年"
+            ],
+            "quote_zh": "该片被认为是经典影片《少林足球》25周年的“精神续作”"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "2001年公開の『少林足球』の全世界興行収入は4277.6万ドルである。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "少林足球"
+            ],
+            "numbers": [
+              "2001年",
+              "4277.6万ドル"
+            ],
+            "quote_zh": "2001年上映的《少林足球》影片全球总票房达4277.6万美"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "『功夫女足』は草根女子サッカーチーム「峨眉隊」の逆転物語で、主演は张小斐、迪丽热巴、张艺兴、特別出演は刘嘉玲、佐藤健である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足",
+              "峨眉隊",
+              "张小斐",
+              "迪丽热巴",
+              "张艺兴",
+              "刘嘉玲",
+              "佐藤健"
+            ],
+            "numbers": [],
+            "quote_zh": "影片聚焦于草根女子足球队“峨眉队”的逆袭之路，由张小斐、迪丽"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "『功夫女足』の総製作費は3.8億元で、うち特殊効果に1.9億元、全編で1200以上の特殊効果カットがある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "3.8億元",
+              "1.9億元",
+              "1200"
+            ],
+            "quote_zh": "总制作投资达3.8亿元人民币，其中特效制作投入近1.9亿元，"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "「偷票房」とは、映画館が不正操作で公式統計の興行収入を横流しする業界の不正行為である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "所谓偷票房是指影视行业内部分影院通过违规操作，截留、转移本该"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "「偷票房」の主な手段には、手書き白条、返金現金購入の誘導、陰陽票、偽造機打票、セット分割などがある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "常见的偷票房手段包括手写白条替代机打票、诱导退票现金购票、阴"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "『中華人民共和国電影産業促進法』第51条は、虚偽取引や売上報告の虚偽記載に対し、5万元以上50万元以下の罰金、重大な場合は営業停止や許可証取消しを規定している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "中華人民共和国電影産業促進法"
+            ],
+            "numbers": [
+              "51条",
+              "5万元",
+              "50万元"
+            ],
+            "quote_zh": "根据《中华人民共和国电影产业促进法》第五十一条明确规定，处五"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "中国电影发行放映协会は、観客が疑わしいチケットをWeChat公式アカウント「电影票房监督」で報告できる検証チャネルを開設している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "中国电影发行放映协会",
+              "电影票房监督"
+            ],
+            "numbers": [],
+            "quote_zh": "中国电影发行放映协会也已面向观众开放核验通道，观众可以通过微"
+          }
+        ],
+        "terms": [
+          {
+            "term": "偷票房",
+            "gloss_ja": "興行収入の横流し",
+            "what_is": "映画館が不正操作で公式統計の興行収入を横流しする業界の不正行為。",
+            "why_now": "『功夫女足』で手書きチケットや空白チケットの報告があり、周星驰がSNSで疑問を呈したため。"
+          },
+          {
+            "term": "分段密钥",
+            "gloss_ja": "分割キー",
+            "what_is": "映画の上映を時間帯ごとに分割管理する暗号鍵方式。",
+            "why_now": "配給側が『功夫女足』の新版プログラムディスクで採用し、不正防止を図っている。"
+          },
+          {
+            "term": "手写票",
+            "gloss_ja": "手書きチケット",
+            "what_is": "機械印刷ではなく手書きで発行されるチケット。",
+            "why_now": "『功夫女足』で観客が手書きチケットを受け取ったと報告され、疑惑の原因となった。"
+          },
+          {
+            "term": "空白票",
+            "gloss_ja": "空白チケット",
+            "what_is": "印刷が不鮮明で内容が読めないチケット。",
+            "why_now": "福建漳州の観客が空白チケットを受け取ったと報告し、疑惑が拡大した。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "蔡赴朝涉嫌严重违纪违法被审查调查",
+      "ledger": {
+        "topic_key": "蔡赴朝涉嫌严重违纪违法被审查调查",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月15日、国家广播电视总局党组は会議を開き、中央纪委国家監察委員会が蔡赴朝の重大な規律違反・違法容疑で纪律審査と監察調査を行う決定を伝達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局",
+              "中央纪委国家监察委员会",
+              "蔡赴朝"
+            ],
+            "numbers": [
+              "2026年7月15日"
+            ],
+            "quote_zh": "7月15日，国家广播电视总局党组召开会议，传达中央纪委国家监"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "会議では、出席者全員が党中央の決定を断固支持することを表明した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "与会同志一致表示，坚决拥护党中央决定"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "会議は中央宣伝部副部長、国家广播电视总局党组书记・局長の曹淑敏が主宰し、党組成員・副局長の何飚、劉建国が出席した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "曹淑敏",
+              "何飚",
+              "刘建国"
+            ],
+            "numbers": [],
+            "quote_zh": "中央宣传部副部长，国家广播电视总局党组书记、局长曹淑敏主持会"
+          },
+          {
+            "id": "C4",
+            "type": "source_analysis",
+            "text": "党中央の決定は、反腐敗闘争における無禁区域、全カバー、ゼロトレランスの一貫した立場を示している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "充分体现了我们党坚持反腐败无禁区、全覆盖、零容忍的一贯立场"
+          },
+          {
+            "id": "C5",
+            "type": "source_analysis",
+            "text": "党中央の決定は、反腐敗闘争が一歩も止まらず、半歩も退かないという強いシグナルを発している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "充分释放了反腐败斗争一步不停歇、半步不退让的强烈信号"
+          },
+          {
+            "id": "C6",
+            "type": "source_analysis",
+            "text": "会議は、思想と行動を党中央の決定に統一するよう求めた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "要切实把思想和行动统一到党中央决定上来"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "会議は、教訓を深く汲み取り、戒めとし、警鐘を鳴らし続けるよう指摘した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "要深刻汲取教训，切实引以为戒，做到警钟长鸣"
+          },
+          {
+            "id": "C8",
+            "type": "source_analysis",
+            "text": "会議は、より高い基準とより実質的な措置で全面从严治党を推進するよう指摘した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "要以更高标准、更实举措推进全面从严治党"
+          },
+          {
+            "id": "C9",
+            "type": "source_analysis",
+            "text": "会議は、重点分野と重要業務の廉潔リスクを調査し、制度構築と執行を強化するよう求めた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "要排查重点领域、关键环节廉政风险隐患，进一步加强制度建设和执"
+          },
+          {
+            "id": "C10",
+            "type": "source_analysis",
+            "text": "会議は、高品質な党建設で高品質な発展を促進することを強調した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "要以高质量党建促进高质量发展"
+          },
+          {
+            "id": "C11",
+            "type": "source_analysis",
+            "text": "会議は、中央八項規定の精神を徹底する学習教育の成果を定着・拡大し、正しい政績観の学習教育を着実に展開するよう求めた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "中央八项规定"
+            ],
+            "numbers": [],
+            "quote_zh": "持续巩固拓展深入贯彻中央八项规定精神学习教育成果，扎实开展树"
+          },
+          {
+            "id": "C12",
+            "type": "source_analysis",
+            "text": "会議は、广电の「二三四」業務ポジショニングを堅持し、三大業務方向に沿って、今年の10項目の重点業務を高品質かつ効率的に推進するよう求めた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "广电"
+            ],
+            "numbers": [
+              "10"
+            ],
+            "quote_zh": "坚持广电“二三四”工作定位，锚定三大工作方向，高质高效推动今"
+          }
+        ],
+        "terms": [
+          {
+            "term": "全面从严治党",
+            "gloss_ja": "全面的な厳しい党内統治",
+            "what_is": "中国共産党が党の規律を厳格にし、腐敗を防止・処罰するための方針。",
+            "why_now": "本件は規律違反・違法容疑の調査であり、この方針の一環として位置づけられている。"
+          },
+          {
+            "term": "中央八项规定",
+            "gloss_ja": "中央八項目規定",
+            "what_is": "中国共産党中央が2012年に制定した、幹部の行動規範に関する8項目の規定。",
+            "why_now": "会議でその学習教育の成果を定着させるよう言及されている。"
+          },
+          {
+            "term": "广电",
+            "gloss_ja": "広播電視（放送テレビ）",
+            "what_is": "中国の放送・テレビ業界の略称。",
+            "why_now": "国家广播电视总局が所管する分野であり、本件の舞台。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "备案",
+      "ledger": {
+        "topic_key": "备案",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家电影局が2026年7月15日に2026年6月の全国映画脚本（梗概）の备案・立项公示を発表した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "国家电影局"
+            ],
+            "numbers": [
+              "2026年7月15日",
+              "2026年6月"
+            ],
+            "quote_zh": "2026-07-15 来源：国家电影局"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "本期备案立项公示では、全国で処理された故事影片（実写映画）は73部、虚拟现实影片（VR映画）は15部である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [],
+            "numbers": [
+              "73",
+              "15"
+            ],
+            "quote_zh": "全国处理备案故事影片共73部。全国处理备案虚拟现实影片共15"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "故事影片73部のうち、北京市が最多の24部、次いで広東省が20部、浙江省が3部など、各地域で备案されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "北京市",
+              "広東省",
+              "浙江省"
+            ],
+            "numbers": [
+              "24",
+              "20",
+              "3"
+            ],
+            "quote_zh": "北京市 24部、广东省 20部、浙江省 3部"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "故事影片の备案結果はすべて「同意拍摄」（撮影許可）である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "备案结果 同意拍摄"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "虚拟现实影片15部はすべて「直备」（中央直轄备案）として処理されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [],
+            "numbers": [
+              "15"
+            ],
+            "quote_zh": "影虚备字〔2026〕第32号 同意拍摄 直备"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "故事影片の备案地は安徽省、北京市、福建省、広東省、海南省、河北省、湖北省、湖南省、江西省、山東省、陝西省、上海市、天津市、雲南省、浙江省の15地域にわたる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "安徽省",
+              "北京市",
+              "福建省",
+              "広東省",
+              "海南省",
+              "河北省",
+              "湖北省",
+              "湖南省",
+              "江西省",
+              "山東省",
+              "陝西省",
+              "上海市",
+              "天津市",
+              "雲南省",
+              "浙江省"
+            ],
+            "numbers": [
+              "15"
+            ],
+            "quote_zh": "备案地 安徽省、北京市、福建省、广东省、海南省、河北省、湖北"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "故事影片には『城里的月光』『遥远的他们』『人世间的那一次偶然』など73作品が含まれる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "城里的月光",
+              "遥远的他们",
+              "人世间的那一次偶然"
+            ],
+            "numbers": [
+              "73"
+            ],
+            "quote_zh": "1 影剧备字〔2026〕第894号 城里的月光"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "虚拟现实影片には『西南联大·烽火弦歌』『万物生：盘古』『昆虫世界·巨大王国』など15作品が含まれる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "西南联大·烽火弦歌",
+              "万物生：盘古",
+              "昆虫世界·巨大王国"
+            ],
+            "numbers": [
+              "15"
+            ],
+            "quote_zh": "1 影虚备字〔2026〕第32号 西南联大·烽火弦歌"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "故事影片には越劇作品『董孝子传奇（越剧）』が含まれる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "董孝子传奇（越剧）"
+            ],
+            "numbers": [],
+            "quote_zh": "72 影剧备字〔2026〕第892号 董孝子传奇（越剧）"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "备案・立项公示は国家电影局の公式サイトで公開されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "国家电影局"
+            ],
+            "numbers": [],
+            "quote_zh": "国家电影局关于2026年6月上全国电影剧本（梗概） 备案、立"
+          }
+        ],
+        "terms": [
+          {
+            "term": "备案",
+            "gloss_ja": "映画脚本の届出・登録",
+            "what_is": "中国で映画製作前に脚本を政府に届け出る制度",
+            "why_now": "今回の公示で73本の実写映画と15本のVR映画が承認された"
+          },
+          {
+            "term": "立项",
+            "gloss_ja": "プロジェクト承認",
+            "what_is": "备案後に映画プロジェクトとして正式に認可されること",
+            "why_now": "すべての作品が「同意拍摄」となり、製作が許可された"
+          },
+          {
+            "term": "故事影片",
+            "gloss_ja": "実写映画（劇映画）",
+            "what_is": "通常の実写による劇映画を指す",
+            "why_now": "今回73本が备案され、最も多いカテゴリー"
+          },
+          {
+            "term": "虚拟现实影片",
+            "gloss_ja": "VR映画",
+            "what_is": "バーチャルリアリティ技術を用いた映画",
+            "why_now": "15本が备案され、新たなジャンルとして注目される"
+          },
+          {
+            "term": "直备",
+            "gloss_ja": "中央直轄备案",
+            "what_is": "国家电影局が直接备案を処理すること",
+            "why_now": "VR映画はすべて直备で処理されている"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
