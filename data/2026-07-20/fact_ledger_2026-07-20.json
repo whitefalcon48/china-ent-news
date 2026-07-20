@@ -1,0 +1,362 @@
+{
+  "date": "2026-07-20",
+  "generated_at": "2026-07-20T04:40:29.328Z",
+  "ledgers": [
+    {
+      "topic_key": "施南生逝世",
+      "ledger": {
+        "topic_key": "施南生逝世",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "施南生が2026年7月13日夜に養和医院で病没した。享年75歳。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生",
+              "養和医院"
+            ],
+            "numbers": [
+              "2026年7月13日",
+              "75歳"
+            ],
+            "quote_zh": "7月13日晚，施南生病逝于养和医院，享年75岁"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2022年から免疫系に問題があり、健康状態が思わしくなかった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "2022年"
+            ],
+            "quote_zh": "自2022年免疫系统出现问题"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "施南生は1951年に上海で生まれ、家族の事業で香港に移住した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生",
+              "上海",
+              "香港"
+            ],
+            "numbers": [
+              "1951年"
+            ],
+            "quote_zh": "1951年出生于上海的施南生"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "16歳で英国の寄宿学校に留学し、19歳で北伦敦理工学院でコンピュータと統計学を学び、5か国語を習得した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "北伦敦理工学院"
+            ],
+            "numbers": [
+              "16歳",
+              "19歳"
+            ],
+            "quote_zh": "16岁的施南生...选择了英国的一所寄宿学校"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "1978年に徐克と知り合い恋愛関係となり、徐克の勧めで新藝城に入社した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "徐克",
+              "新藝城"
+            ],
+            "numbers": [
+              "1978年"
+            ],
+            "quote_zh": "1978年，施南生与徐克相识相恋"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "新藝城で予算編成と配給システムを構築し、『鬼馬智多星』『最佳拍檔』『難兄難弟』などのヒット作を生み出した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "新藝城",
+              "鬼馬智多星",
+              "最佳拍檔",
+              "難兄難弟"
+            ],
+            "numbers": [],
+            "quote_zh": "建立拍片预算与发行体系"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "新藝城の最盛期には邵氏、嘉禾と並び、麦嘉、石天、黄百鳴、曾志偉、泰迪・羅賓、徐克、施南生は「新藝城七怪」と呼ばれた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "新藝城",
+              "邵氏",
+              "嘉禾",
+              "麦嘉",
+              "石天",
+              "黄百鳴",
+              "曾志偉",
+              "泰迪・羅賓",
+              "徐克",
+              "施南生",
+              "新藝城七怪"
+            ],
+            "numbers": [],
+            "quote_zh": "新艺城七怪"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "1984年に徐克と「電影工作室」を設立し、徐克は創作、施南生は資金調達・配給・海外展開を担当した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "徐克",
+              "電影工作室"
+            ],
+            "numbers": [
+              "1984年"
+            ],
+            "quote_zh": "1984年，徐克和施南生成立了“电影工作室”"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "施南生は2017年に第67回ベルリン国際映画祭金撮影賞を受賞し、同賞を受賞した初の女性プロデューサーとなった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生",
+              "ベルリン国際映画祭"
+            ],
+            "numbers": [
+              "2017年",
+              "第67回"
+            ],
+            "quote_zh": "2017年，施南生获得第67届柏林电影节金摄影奖"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "2014年に施南生と徐克はパートナー関係を解消し、仕事上の友人となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生",
+              "徐克"
+            ],
+            "numbers": [
+              "2014年"
+            ],
+            "quote_zh": "2014年，这对分分合合三十多年的“神雕侠侣”，最终放下伴侣"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2025年に施南生と徐克は第43回香港電影金像奨で最高栄誉の終身成就獎を共同受賞し、同賞初のダブル受賞となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生",
+              "徐克",
+              "香港電影金像奨"
+            ],
+            "numbers": [
+              "2025年",
+              "第43回"
+            ],
+            "quote_zh": "2025年，施南生与徐克共同获得第43届香港电影金像奖最高荣"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "施南生は寰亞影業の上層部として『無間道』の製作に参加し、海外への著作権販売を成功させた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "寰亞影業",
+              "無間道"
+            ],
+            "numbers": [],
+            "quote_zh": "她出任寰亚影业高层，参与监制了《无间道》"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "施南生は2014年に第67回ロカルノ国際映画祭独立制作賞、2015年に第17回イタリア極東映画祭終身成就獎を受賞した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "ロカルノ国際映画祭",
+              "イタリア極東映画祭"
+            ],
+            "numbers": [
+              "2014年",
+              "第67回",
+              "2015年",
+              "第17回"
+            ],
+            "quote_zh": "2014年，她获得第67届洛迦诺国际电影节独立制作奖"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "『Variety』は施南生を「世界で最も影響力のある映画人50人」の一人に選んだ。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "Variety",
+              "施南生"
+            ],
+            "numbers": [],
+            "quote_zh": "《Variety》曾将其评为“世界上最有影响力的50位电影人"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "施南生は生前、臓器提供の同意書に署名し、遺体を医学研究に提供することを決めていた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生"
+            ],
+            "numbers": [],
+            "quote_zh": "她签了同意书，决定身后把器官捐献出来做医学研究"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "界面新聞は施南生の死去を「華語映画が先導者を失った」と評した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生"
+            ],
+            "numbers": [],
+            "quote_zh": "施南生的离去，意味着华语电影失去了一位领航人"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "新浪娯楽は施南生を「香港映画の金メダル級プロデューサー」と評した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "施南生"
+            ],
+            "numbers": [],
+            "quote_zh": "香港电影金牌制片人"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "施南生は林青霞、亦舒、黄霑、倪匡など多くの著名人から称賛されていた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "林青霞",
+              "亦舒",
+              "黄霑",
+              "倪匡"
+            ],
+            "numbers": [],
+            "quote_zh": "林青霞曾形容施南生...亦舒则将施南生视为自己的偶像"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "亦舒の小説『流金歳月』の主人公・蒋南孫は施南生をモデルにしている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "亦舒",
+              "流金歳月",
+              "蒋南孫",
+              "施南生"
+            ],
+            "numbers": [],
+            "quote_zh": "《流金岁月》里坚韧独立的蒋南孙就是以施南生为原型"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "施南生は最後の公の場に姿を見せたのは約2か月前、香港映画人・谷薇麗の葬儀で、杖をつき支えられながらだった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "施南生",
+              "谷薇麗"
+            ],
+            "numbers": [
+              "2か月前"
+            ],
+            "quote_zh": "施南生最后一次露面在两个月前，香港电影人谷薇丽的丧礼上"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
