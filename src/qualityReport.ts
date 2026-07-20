@@ -19,13 +19,34 @@ async function main() {
     publication_history?: { loaded_days: string[]; entry_count: number; matches: Array<{ topic_key: string; matched_date: string; matched_key: string; substantive_update: string; decision: string }> };
     official_only?: { limit: number; used: string[]; excluded: string[] };
     comment_diversity?: { openings: Array<{ topic_key: string; opening: string }>; regenerated_opening: string[]; regenerated_paraphrase: string[] };
+    ledger_anchor?: Array<{ topic_key: string; dropped_explanations: Array<{ topic_key: string; term: string; reason: string }> }>;
+    display_normalization?: { residues: Array<{ topic_key: string; field: string; chars: string[] }> };
+    claim_check?: Array<{
+      comment_grounding?: { gated_sentences_removed: string[]; unmatched_numbers: string[] };
+      violations?: Array<{ rule: string; severity: "gate" | "warning" }>;
+    }>;
   };
   const terminology = await loadTerminology();
   const avoid = terminology.preferred_names.flatMap((item) => item.avoid);
+  const editorCommentNonEmpty = articles.filter((article) => article.summary?.editor_comment.trim()).length;
   console.log(`# Quality report: ${articlesFile}\n`);
+  console.log(`- editor_comment_non_empty: ${editorCommentNonEmpty}\n`);
+  const commentLengths = articles.flatMap((article) => article.summary ? [article.summary.why_it_matters.length] : []);
+  console.log(`- why_it_matters_length_min: ${commentLengths.length ? Math.min(...commentLengths) : 0}`);
+  console.log(`- why_it_matters_length_max: ${commentLengths.length ? Math.max(...commentLengths) : 0}`);
+  console.log(`- why_it_matters_length_outside_100_250: ${commentLengths.filter((length) => length < 100 || length > 250).length}`);
+  console.log(`- simplified_char_residues: ${trace.display_normalization?.residues.map((item) => `${item.topic_key}:${item.field}:${item.chars.join("")}`).join(" / ") || "none"}`);
+  const droppedExplanations = trace.ledger_anchor?.flatMap((item) => item.dropped_explanations) ?? [];
+  console.log(`- term_explanation_dropped: ${droppedExplanations.map((item) => `${item.topic_key}:${item.term}:${item.reason}`).join(" / ") || "none"}`);
+  const grounding = trace.claim_check?.flatMap((item) => item.comment_grounding ? [item.comment_grounding] : []) ?? [];
+  const groundingViolations = trace.claim_check?.flatMap((item) => item.violations?.filter((violation) => ["comment_number_not_in_ledger", "comment_entity_not_in_ledger", "comment_ungrounded_background"].includes(violation.rule)) ?? []) ?? [];
+  console.log(`- comment_grounding_gate_removed: ${grounding.reduce((sum, item) => sum + item.gated_sentences_removed.length, 0)}`);
+  console.log(`- comment_grounding_unmatched_numbers: ${grounding.reduce((sum, item) => sum + item.unmatched_numbers.length, 0)}\n`);
+  console.log(`- comment_grounding_gate_count: ${groundingViolations.filter((item) => item.severity === "gate").length}`);
+  console.log(`- comment_grounding_warning_count: ${groundingViolations.filter((item) => item.severity === "warning").length}\n`);
   articles.filter((article) => article.summary).forEach((article, index) => {
     const summary = article.summary!;
-    const comments = `${summary.why_it_matters}\n${summary.editor_comment}`;
+    const comments = summary.why_it_matters;
     const allText = [summary.title_ja, summary.lead, summary.what_happened, summary.why_it_matters, summary.reaction_view, summary.japan_context_note, summary.editor_comment].join("\n");
     const longSentences = (comments.match(/[^。！？!?]+[。！？!?]?/g) || []).filter((sentence) => sentence.replace(/[。！？!?]/g, "").length > 90).length;
     const exclamations = (comments.match(/[！!]/g) || []).length;

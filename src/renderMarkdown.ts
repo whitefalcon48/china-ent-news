@@ -58,7 +58,6 @@ function renderArticle(article: ProcessedArticle, index: number) {
     summary.why_it_matters ? `### ビンタンの注目ポイント\n${summary.why_it_matters}` : "",
     summary.reaction_view ? `### 反応・見られ方\n${summary.reaction_view}` : "",
     summary.japan_context_note ? `### 日本語圏では見えにくいポイント\n${summary.japan_context_note}` : "",
-    summary.editor_comment ? `### ビンタンからのひとこと\n${summary.editor_comment}` : "",
     `ソース：${sources.map(formatSourceLink).join("、")}`
   ].filter(Boolean);
 

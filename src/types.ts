@@ -173,9 +173,17 @@ export type FactLedgerClaim = {
   entities: string[];
   numbers: string[];
   quote_zh?: string;
+  anchor?: boolean;
 };
 
-export type FactLedgerTerm = { term: string; gloss_ja: string; what_is?: string; why_now?: string };
+export type FactLedgerTerm = {
+  term: string;
+  gloss_ja: string;
+  what_is?: string;
+  why_now?: string;
+  explain_quote_zh?: string;
+  explain_evidence_refs?: string[];
+};
 
 export type ToneMode = "normal" | "sober";
 
@@ -191,6 +199,13 @@ export type FactLedger = {
   terms: FactLedgerTerm[];
   japan_availability: JapanAvailability;
   unresolved: string[];
+};
+
+export type TermExpansionTrace = {
+  enabled: boolean;
+  attempted: Array<{ topic_key: string; term: string; query: string }>;
+  succeeded: Array<{ topic_key: string; term: string; url: string }>;
+  failed: Array<{ topic_key: string; term: string; reason: string }>;
 };
 
 export type ClaimRefs = {
@@ -217,6 +232,10 @@ export type ClaimCheckRule =
   | "ending_repetition"
   | "comment_opening_duplicate"
   | "comment_paraphrase"
+  | "comment_number_not_in_ledger"
+  | "comment_entity_not_in_ledger"
+  | "comment_ungrounded_background"
+  | "simplified_char_residue"
   | "hedged_verified_fact"
   | "long_sentence"
   | "terminology_avoid";
@@ -240,6 +259,27 @@ export type TopicGenerationMeta = {
   ledger_used: boolean;
   ledger_fallback_reason: string;
   ledger?: FactLedger;
+  ai_models?: {
+    base: { provider: AiProvider; model: string };
+    ledger: { provider: AiProvider; model: string };
+    comment: { provider: AiProvider; model: string };
+  };
+  ledger_anchor?: {
+    topic_key: string;
+    claims_total: number;
+    anchor_unverified: number;
+    dropped_explanations: Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>;
+  };
+  term_expansion?: TermExpansionTrace;
+  display_normalization?: {
+    residues: Array<{ field: string; chars: string[] }>;
+  };
+  comment_grounding?: {
+    topic_key: string;
+    refs: string[];
+    gated_sentences_removed: string[];
+    unmatched_numbers: string[];
+  };
   claim_check?: ClaimCheckResult;
   tone_mode?: ToneMode;
   comment_stage?: {

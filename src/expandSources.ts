@@ -32,7 +32,7 @@ type RssItem = {
   summary?: string;
 };
 
-type SerperOrganicItem = {
+export type SerperOrganicItem = {
   title?: string;
   link?: string;
   snippet?: string;
@@ -154,18 +154,7 @@ async function fetchSerperSearch(topic: TopicCandidate, query: string) {
   }
 
   try {
-    const response = await fetch(SERPER_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "X-API-KEY": apiKey
-      },
-      body: JSON.stringify({ q: query, gl: "cn", hl: "zh-cn", num: 10 }),
-      signal: AbortSignal.timeout(getTimeoutMs())
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
-    const payload = (await response.json()) as { organic?: SerperOrganicItem[] };
-    const items = (payload.organic ?? []).slice(0, MAX_SERPER_RESULTS);
+    const items = (await searchSerperOrganic(query)).slice(0, MAX_SERPER_RESULTS);
     const assessed = items.map((item) => toSerperEvidence(item, query)).map((item) => ({ item, assessment: assessSourceRelevance(topic, item, query) }));
     const evidence = assessed.filter(({ assessment }) => assessment.accepted).map(({ item }) => item);
     return {
@@ -194,6 +183,23 @@ async function fetchSerperSearch(topic: TopicCandidate, query: string) {
       evidence: []
     };
   }
+}
+
+export async function searchSerperOrganic(query: string): Promise<SerperOrganicItem[]> {
+  const apiKey = process.env.SERPER_API_KEY;
+  if (!apiKey?.trim()) throw new Error("SERPER_API_KEY is not set");
+  const response = await fetch(SERPER_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-API-KEY": apiKey
+    },
+    body: JSON.stringify({ q: query, gl: "cn", hl: "zh-cn", num: 10 }),
+    signal: AbortSignal.timeout(getTimeoutMs())
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+  const payload = (await response.json()) as { organic?: SerperOrganicItem[] };
+  return payload.organic ?? [];
 }
 
 function toSerperEvidence(item: SerperOrganicItem, query: string): SourceExpansionEvidence {

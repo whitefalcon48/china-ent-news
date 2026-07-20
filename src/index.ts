@@ -9,11 +9,13 @@ import { evaluateTopicInformationCompleteness } from "./completenessGate.js";
 import { evaluateEditorialValues, isOfficialOnlyTopic, type EditorialValueAssessment, type EditorialValueResult } from "./editorialValue.js";
 import { writeFactLedgerFile } from "./factLedger.js";
 import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError } from "./llmCallBudget.js";
+import { writeCompareFixture } from "./compareFixture.js";
 import { renderMarkdownFile, writeArticlesJsonFile } from "./renderMarkdown.js";
 import { evaluateTopicHistory, loadPublicationHistory, type PublicationHistory, type PublicationHistoryMatch } from "./publicationHistory.js";
 import { isReviewGateEnabled, writeInitialReviewState } from "./review/reviewState.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle, summarizeTopic } from "./summarizeWithGemini.js";
+import { createTermExpansionSession } from "./termExplainExpansion.js";
 import { buildTopicCandidates, writeTopicCandidatesFile } from "./topicCandidates.js";
 import { extractTopicSeeds } from "./topicSeeds.js";
 import type { ArticleType, FeedCategory, ProcessedArticle, RawArticle, SourceDiagnostic, SourceTypeLabel, SummarizedArticle, TopicCandidate, TopicGenerationMeta } from "./types.js";
@@ -165,8 +167,11 @@ async function main() {
   const generationItems: Array<{ article: RawArticle; topic?: TopicCandidate; evidence: RawArticle[]; selectedTopic?: SelectedTopic }> = topicFirstEnabled
     ? usableTopicBundles.map((bundle) => ({ article: bundle.evidence[0], topic: bundle.topic, evidence: bundle.evidence, selectedTopic: bundle.selectedTopic }))
     : selectedArticles.map((article) => ({ article, topic: undefined, evidence: [article] }));
+  const compareFixturePath = await writeCompareFixture(generationItems);
+  if (compareFixturePath) console.log(`model compare fixture: ${compareFixturePath}`);
   const attemptedTopicKeys = new Set(generationItems.map((item) => item.topic?.topic_key).filter((key): key is string => Boolean(key)));
   const usedCommentOpenings: string[] = [];
+  const termExpansionSession = createTermExpansionSession();
   let backfillCount = 0;
   let backfillLowPriorityCount = topicSelection.selected.filter((item) => item.representative.isLowPriority).length;
 
@@ -188,7 +193,8 @@ async function main() {
       if (topic) {
         const result = await summarizeTopic(topic, evidence, provider, llmCallBudget, {
           angleHint: item.selectedTopic?.editorialValue?.axes.bingtang_angle.angle_hint,
-          usedOpenings: usedCommentOpenings
+          usedOpenings: usedCommentOpenings,
+          termExpansionSession
         });
         summary = result.summary;
         generationMeta = result.meta;

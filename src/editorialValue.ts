@@ -208,7 +208,7 @@ async function generateJson(provider: AiProvider, prompt: string) {
     const response = await fetch(DEEPSEEK_ENDPOINT, {
       method: "POST",
       headers: { "content-type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({ model: process.env.DEEPSEEK_MODEL || "deepseek-chat", messages: [{ role: "user", content: prompt }], temperature: 0.1, response_format: { type: "json_object" } })
+      body: JSON.stringify({ model: process.env.DEEPSEEK_MODEL || "deepseek-v4-flash", messages: [{ role: "user", content: prompt }], temperature: 0.1, response_format: { type: "json_object" } })
     });
     if (!response.ok) throw new Error(`DeepSeek EVS API error: HTTP ${response.status} ${response.statusText}`);
     const payload = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };

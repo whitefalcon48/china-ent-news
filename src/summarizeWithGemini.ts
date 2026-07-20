@@ -1,9 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { ClaimCheckDiscardError, getCommentOpening, removeGatedViolationSentences, runClaimCheck, runCommentCheck, sanitizeExclamations } from "./claimCheck.js";
+import { ClaimCheckDiscardError, extractNumberTokens, getCommentOpening, removeGatedViolationSentences, runClaimCheck, runCommentCheck, sanitizeExclamations } from "./claimCheck.js";
+import { inspectDisplayKanjiResidues } from "./displayKanji.js";
+import { resolveAiModels, resolveStageAi } from "./aiRouting.js";
 import { extractFactLedger } from "./factLedger.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { resolveSummaryTitle } from "./summaryTitle.js";
+import { createTermExpansionSession, expandTermExplanation, type TermExpansionSession } from "./termExplainExpansion.js";
 import { applyTerminology, formatTerminologyForPrompt } from "./terminology.js";
 import { getToneMode } from "./toneMode.js";
 import type {
@@ -20,6 +23,7 @@ import type {
   SummarizedArticle,
   TopicCandidate,
   FactLedger,
+  ClaimCheckResult,
   ClaimCheckViolation,
   TopicGenerationMeta
 } from "./types.js";
@@ -31,7 +35,7 @@ export const OUTPUT_COUNT_INSTRUCTION = "Output every candidate item that is wor
 
 let editorialCharacterCache: string | undefined;
 
-type CommentGenerationContext = { angleHint?: string; usedOpenings?: string[] };
+type CommentGenerationContext = { angleHint?: string; usedOpenings?: string[]; termExpansionSession?: TermExpansionSession };
 
 async function loadEditorialCharacter() {
   if (editorialCharacterCache !== undefined) {
@@ -49,7 +53,7 @@ async function loadEditorialCharacter() {
 
 export async function summarizeArticle(article: RawArticle, provider = getAiProvider(), budget?: LlmCallBudget): Promise<SummarizedArticle> {
   const text = await generateJson(provider, await buildPrompt(article), budget);
-  return applyTerminology(mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article));
+  return clearEditorComment(await applyTerminology(mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article)));
 }
 
 export async function summarizeTopic(
@@ -59,37 +63,53 @@ export async function summarizeTopic(
   budget?: LlmCallBudget,
   commentContext: CommentGenerationContext = {}
 ): Promise<{ summary: SummarizedArticle; meta: TopicGenerationMeta }> {
+  const aiModels = resolveAiModels(provider);
+  const ledgerAi = resolveStageAi("ledger", provider);
+  const commentAi = resolveStageAi("comment", provider);
   if (process.env.FACT_LEDGER === "false") {
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
+    const summary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)));
+    const residues = inspectDisplayKanjiResidues(summary);
     return {
-      summary: await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)),
+      summary,
       meta: {
         topic_key: topic.topic_key,
         ledger_used: false,
-        ledger_fallback_reason: "fact_ledger_disabled_env"
+        ledger_fallback_reason: "fact_ledger_disabled_env",
+        ai_models: aiModels,
+        display_normalization: { residues }
       }
     };
   }
 
-  const extraction = await extractFactLedger(topic, evidence, provider, budget);
+  const extraction = await extractFactLedger(topic, evidence, ledgerAi.provider, budget, ledgerAi.model);
   if (!extraction.succeeded || !extraction.ledger) {
     if (extraction.error.includes("llm_call_budget_exceeded")) {
       throw new LlmCallBudgetExceededError();
     }
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
+    const summary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)));
+    const residues = inspectDisplayKanjiResidues(summary);
     return {
-      summary: await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)),
+      summary,
       meta: {
-        topic_key: topic.topic_key,
-        ledger_used: false,
-        ledger_fallback_reason: `ledger_extraction_failed:${extraction.error}`
+          topic_key: topic.topic_key,
+          ledger_used: false,
+          ledger_fallback_reason: `ledger_extraction_failed:${extraction.error}`,
+          ai_models: aiModels,
+          display_normalization: { residues }
       }
     };
   }
 
   const ledger = extraction.ledger;
+  const termExpansionSession = commentContext.termExpansionSession ?? createTermExpansionSession();
+  const ledgerEvidence = [...evidence];
+  await expandTermExplanation(topic, ledgerEvidence, ledger, ledgerAi.provider, aiModels.ledger.model, budget, termExpansionSession, {
+    generate: generateJson
+  });
   let text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger), budget);
-  let summary = await applyTerminology(normalizeSummary(parseJsonFromModelText(text)));
+  let summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
   let claimCheck = runClaimCheck(summary, ledger);
 
   if (claimCheck.gated_violation_count > 0) {
@@ -98,7 +118,7 @@ export async function summarizeTopic(
     if (claimCheck.gated_violation_count > 0) {
       const gatedViolations = claimCheck.violations.filter((violation) => violation.severity === "gate");
       text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, gatedViolations), budget);
-      summary = await applyTerminology(normalizeSummary(parseJsonFromModelText(text)));
+      summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
       claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
       if (claimCheck.gated_violation_count > 0) {
         claimCheck = { ...claimCheck, action: "discarded" };
@@ -108,8 +128,10 @@ export async function summarizeTopic(
   }
 
   const toneMode = getToneMode(topic, ledger);
-  const originalComments = { why_it_matters: summary.why_it_matters, editor_comment: summary.editor_comment, refs: summary.claim_refs.why_it_matters };
-  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters + summary.editor_comment), opening: "", regenerated_opening: false, regenerated_paraphrase: false };
+  const originalComments = { why_it_matters: summary.why_it_matters, refs: summary.claim_refs.why_it_matters };
+  const gatedCommentSentencesRemoved: string[] = [];
+  const unmatchedCommentNumbers: string[] = [];
+  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters), opening: "", regenerated_opening: false, regenerated_paraphrase: false };
   if (process.env.COMMENT_STAGE === "false") {
     commentStage.fallback_reason = "comment_stage_disabled_env";
   } else if (budget && !hasLlmBudgetRemaining(budget)) {
@@ -117,20 +139,23 @@ export async function summarizeTopic(
   } else {
     commentStage.attempted = true;
     try {
-      let comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, [], "", commentContext);
+      let comments = await generateBingtangComments(topic, ledger, summary, toneMode, commentAi.provider, budget, [], "", commentContext, commentAi.model);
       const checkContext = { usedOpenings: commentContext.usedOpenings, bodyText: `${summary.lead}\n${summary.what_happened}` };
-      let commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode, checkContext);
-      if (needsCommentRegeneration(commentViolations, comments.why_it_matters, comments.editor_comment, toneMode)) {
+      let commentViolations = runCommentCheck(comments.why_it_matters, "", ledger, topic, toneMode, checkContext);
+      unmatchedCommentNumbers.push(...unmatchedNumbersFromViolations(commentViolations));
+      if (needsCommentRegeneration(commentViolations, comments.why_it_matters, "", toneMode)) {
         commentStage.regenerated = true;
         commentStage.regenerated_opening = commentViolations.some((violation) => violation.rule === "comment_opening_duplicate");
         commentStage.regenerated_paraphrase = commentViolations.some((violation) => violation.rule === "comment_paraphrase");
-        comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, commentViolations, "", commentContext);
-        commentViolations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode, checkContext);
+        comments = await generateBingtangComments(topic, ledger, summary, toneMode, commentAi.provider, budget, commentViolations, "", commentContext, commentAi.model);
+        commentViolations = runCommentCheck(comments.why_it_matters, "", ledger, topic, toneMode, checkContext);
+        unmatchedCommentNumbers.push(...unmatchedNumbersFromViolations(commentViolations));
       }
       const gated = commentViolations.filter((violation) => violation.severity === "gate");
       if (gated.length) {
+        gatedCommentSentencesRemoved.push(...gated.map((violation) => violation.detail));
+        unmatchedCommentNumbers.push(...gated.filter((violation) => violation.rule === "comment_number_not_in_ledger").flatMap((violation) => extractNumberTokens(violation.detail)));
         comments.why_it_matters = removeCommentViolationSentences(comments.why_it_matters, gated);
-        comments.editor_comment = removeCommentViolationSentences(comments.editor_comment, gated);
       }
       if (!comments.why_it_matters.trim()) {
         Object.assign(comments, originalComments);
@@ -139,27 +164,50 @@ export async function summarizeTopic(
         commentStage.used = true;
       }
       summary.why_it_matters = sanitizeExclamations(comments.why_it_matters, toneMode);
-      summary.editor_comment = sanitizeExclamations(comments.editor_comment, toneMode);
-      summary.claim_refs.why_it_matters = comments.refs;
-      const finalCommentViolations = runCommentCheck(summary.why_it_matters, summary.editor_comment, ledger, topic, toneMode, checkContext);
-      claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
-      commentStage.exclamation_count = countExclamations(summary.why_it_matters + summary.editor_comment);
+      summary.editor_comment = "";
+      summary.claim_refs.why_it_matters = filterClaimRefs(comments.refs, ledger);
+      commentStage.exclamation_count = countExclamations(summary.why_it_matters);
       commentStage.opening = getCommentOpening(summary.why_it_matters);
     } catch (error) {
       summary.why_it_matters = originalComments.why_it_matters;
-      summary.editor_comment = originalComments.editor_comment;
+      summary.editor_comment = "";
       summary.claim_refs.why_it_matters = originalComments.refs;
       commentStage.fallback_reason = error instanceof LlmCallBudgetExceededError ? "llm_call_budget_exhausted" : `comment_stage_failed:${describeError(error)}`;
     }
   }
 
+  const finalCommentViolations = runCommentCheck(summary.why_it_matters, "", ledger, topic, toneMode, {
+    usedOpenings: commentContext.usedOpenings,
+    bodyText: `${summary.lead}\n${summary.what_happened}`
+  });
+  const finalCommentGates = finalCommentViolations.filter((violation) => violation.severity === "gate");
+  if (finalCommentGates.length) {
+    gatedCommentSentencesRemoved.push(...finalCommentGates.map((violation) => violation.detail));
+    unmatchedCommentNumbers.push(...finalCommentGates.filter((violation) => violation.rule === "comment_number_not_in_ledger").flatMap((violation) => extractNumberTokens(violation.detail)));
+    summary.why_it_matters = removeCommentViolationSentences(summary.why_it_matters, finalCommentGates);
+  }
+  claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
+
+  const finalizedSummary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)));
+  const residues = inspectDisplayKanjiResidues(finalizedSummary);
+  claimCheck = appendDisplayResidueViolations(claimCheck, residues);
   return {
-    summary: await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)),
+    summary: finalizedSummary,
     meta: {
       topic_key: topic.topic_key,
       ledger_used: true,
       ledger_fallback_reason: "",
       ledger,
+      ai_models: aiModels,
+      ledger_anchor: extraction.anchor,
+      term_expansion: termExpansionSession.trace,
+      display_normalization: { residues },
+      comment_grounding: {
+        topic_key: topic.topic_key,
+        refs: finalizedSummary.claim_refs.why_it_matters,
+        gated_sentences_removed: [...new Set(gatedCommentSentencesRemoved)],
+        unmatched_numbers: [...new Set(unmatchedCommentNumbers)]
+      },
       claim_check: claimCheck,
       tone_mode: toneMode,
       comment_stage: commentStage
@@ -183,12 +231,16 @@ export async function reviseTopicFromSavedData(
   existingSummary?: SummarizedArticle,
   commentOnly = false
 ): Promise<{ summary: SummarizedArticle; meta: TopicGenerationMeta }> {
+  const aiModels = resolveAiModels(provider);
+  const commentAi = resolveStageAi("comment", provider);
   const instruction = formatReviewInstruction(comment);
   if (!ledger) {
     const text = await generateJson(provider, `${await buildTopicPrompt(topic, evidence)}\n\n${instruction}`, budget);
+    const summary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)));
+    const residues = inspectDisplayKanjiResidues(summary);
     return {
-      summary: await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)),
-      meta: { topic_key: topic.topic_key, ledger_used: false, ledger_fallback_reason: "review_saved_ledger_missing" }
+      summary,
+      meta: { topic_key: topic.topic_key, ledger_used: false, ledger_fallback_reason: "review_saved_ledger_missing", ai_models: aiModels, display_normalization: { residues } }
     };
   }
   let summary: SummarizedArticle;
@@ -196,8 +248,9 @@ export async function reviseTopicFromSavedData(
     summary = { ...existingSummary, claim_refs: { ...existingSummary.claim_refs } };
   } else {
     const text = await generateJson(provider, `${await buildLedgerWritingPrompt(topic, ledger)}\n\n${instruction}`, budget);
-    summary = await applyTerminology(normalizeSummary(parseJsonFromModelText(text)));
+    summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
   }
+  summary = normalizeSummaryClaimRefs(summary, ledger);
   let claimCheck = runClaimCheck(summary, ledger);
   if (claimCheck.gated_violation_count > 0) {
     summary = removeGatedViolationSentences(summary, claimCheck.violations);
@@ -207,27 +260,64 @@ export async function reviseTopicFromSavedData(
     throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
   }
   const toneMode = getToneMode(topic, ledger);
-  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters + summary.editor_comment) };
+  const gatedCommentSentencesRemoved: string[] = [];
+  const unmatchedCommentNumbers: string[] = [];
+  const commentStage = { attempted: false, used: false, regenerated: false, fallback_reason: "", exclamation_count: countExclamations(summary.why_it_matters) };
   if (process.env.COMMENT_STAGE !== "false" && (!budget || hasLlmBudgetRemaining(budget))) {
     commentStage.attempted = true;
-    const comments = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, [], instruction);
-    const violations = runCommentCheck(comments.why_it_matters, comments.editor_comment, ledger, topic, toneMode);
-    if (needsCommentRegeneration(violations, comments.why_it_matters, comments.editor_comment, toneMode)) {
-      const retry = await generateBingtangComments(topic, ledger, summary, toneMode, provider, budget, violations, instruction);
+    const comments = await generateBingtangComments(topic, ledger, summary, toneMode, commentAi.provider, budget, [], instruction, {}, commentAi.model);
+    const violations = runCommentCheck(comments.why_it_matters, "", ledger, topic, toneMode);
+    unmatchedCommentNumbers.push(...unmatchedNumbersFromViolations(violations));
+    if (needsCommentRegeneration(violations, comments.why_it_matters, "", toneMode)) {
+      const retry = await generateBingtangComments(topic, ledger, summary, toneMode, commentAi.provider, budget, violations, instruction, {}, commentAi.model);
       Object.assign(comments, retry);
       commentStage.regenerated = true;
     }
+    const finalViolations = runCommentCheck(comments.why_it_matters, "", ledger, topic, toneMode, { bodyText: `${summary.lead}\n${summary.what_happened}` });
+    const gates = finalViolations.filter((violation) => violation.severity === "gate");
+    if (gates.length) {
+      gatedCommentSentencesRemoved.push(...gates.map((violation) => violation.detail));
+      unmatchedCommentNumbers.push(...gates.filter((violation) => violation.rule === "comment_number_not_in_ledger").flatMap((violation) => extractNumberTokens(violation.detail)));
+      comments.why_it_matters = removeCommentViolationSentences(comments.why_it_matters, gates);
+    }
     summary.why_it_matters = sanitizeExclamations(comments.why_it_matters, toneMode);
-    summary.editor_comment = sanitizeExclamations(comments.editor_comment, toneMode);
-    summary.claim_refs.why_it_matters = comments.refs;
+    summary.editor_comment = "";
+    summary.claim_refs.why_it_matters = filterClaimRefs(comments.refs, ledger);
     commentStage.used = true;
-    commentStage.exclamation_count = countExclamations(summary.why_it_matters + summary.editor_comment);
+    commentStage.exclamation_count = countExclamations(summary.why_it_matters);
   } else {
     commentStage.fallback_reason = process.env.COMMENT_STAGE === "false" ? "comment_stage_disabled_env" : "llm_call_budget_exhausted";
   }
+  const finalCommentViolations = runCommentCheck(summary.why_it_matters, "", ledger, topic, toneMode, { bodyText: `${summary.lead}\n${summary.what_happened}` });
+  const finalCommentGates = finalCommentViolations.filter((violation) => violation.severity === "gate");
+  if (finalCommentGates.length) {
+    gatedCommentSentencesRemoved.push(...finalCommentGates.map((violation) => violation.detail));
+    unmatchedCommentNumbers.push(...finalCommentGates.filter((violation) => violation.rule === "comment_number_not_in_ledger").flatMap((violation) => extractNumberTokens(violation.detail)));
+    summary.why_it_matters = removeCommentViolationSentences(summary.why_it_matters, finalCommentGates);
+  }
+  claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
+  const finalizedSummary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)));
+  const residues = inspectDisplayKanjiResidues(finalizedSummary);
+  claimCheck = appendDisplayResidueViolations(claimCheck, residues);
   return {
-    summary: await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)),
-    meta: { topic_key: topic.topic_key, ledger_used: true, ledger_fallback_reason: "", ledger, claim_check: claimCheck, tone_mode: toneMode, comment_stage: commentStage }
+    summary: finalizedSummary,
+    meta: {
+      topic_key: topic.topic_key,
+      ledger_used: true,
+      ledger_fallback_reason: "",
+      ledger,
+      ai_models: aiModels,
+      display_normalization: { residues },
+      comment_grounding: {
+        topic_key: topic.topic_key,
+        refs: finalizedSummary.claim_refs.why_it_matters,
+        gated_sentences_removed: [...new Set(gatedCommentSentencesRemoved)],
+        unmatched_numbers: [...new Set(unmatchedCommentNumbers)]
+      },
+      claim_check: claimCheck,
+      tone_mode: toneMode,
+      comment_stage: commentStage
+    }
   };
 }
 
@@ -276,7 +366,7 @@ export function getProviderEnvStatus(provider: AiProvider) {
     return {
       provider,
       hasApiKey: Boolean(process.env.DEEPSEEK_API_KEY?.trim()),
-      model: process.env.DEEPSEEK_MODEL || "deepseek-chat"
+      model: process.env.DEEPSEEK_MODEL || "deepseek-v4-flash"
     };
   }
 
@@ -296,17 +386,17 @@ export function describeError(error: unknown) {
   return cause ? `${error.message} / cause: ${cause}` : error.message;
 }
 
-async function generateJson(provider: AiProvider, prompt: string, budget?: LlmCallBudget) {
+export async function generateJson(provider: AiProvider, prompt: string, budget?: LlmCallBudget, model?: string) {
   if (provider === "deepseek") {
-    return generateDeepSeekJson(prompt, budget);
+    return generateDeepSeekJson(prompt, budget, model);
   }
 
-  return generateGeminiJson(prompt, budget);
+  return generateGeminiJson(prompt, budget, model);
 }
 
-async function generateGeminiJson(prompt: string, budget?: LlmCallBudget) {
+async function generateGeminiJson(prompt: string, budget?: LlmCallBudget, modelOverride?: string) {
   const apiKey = process.env.GEMINI_API_KEY;
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+  const model = modelOverride || process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 
   if (!apiKey?.trim()) {
     throw new Error("GEMINI_API_KEY is not set. .envまたはGitHub SecretsにAPIキーを設定してください。");
@@ -353,9 +443,9 @@ async function generateGeminiJson(prompt: string, budget?: LlmCallBudget) {
   return text;
 }
 
-async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget) {
+async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget, modelOverride?: string) {
   const apiKey = process.env.DEEPSEEK_API_KEY;
-  const model = process.env.DEEPSEEK_MODEL || "deepseek-chat";
+  const model = modelOverride || process.env.DEEPSEEK_MODEL || "deepseek-v4-flash";
 
   if (!apiKey?.trim()) {
     throw new Error("DEEPSEEK_API_KEY is not set. .envまたはGitHub SecretsにAPIキーを設定してください。");
@@ -460,15 +550,15 @@ publish_priority rules:
 - 感嘆符や断定調で煽らない。
 - ゴシップ系は断定しない。
 - 作品名・人名は原文表記を基本にし、勝手に日本語読みへ変換しない。
-- 中国本土作品は簡体字を基本表記にする。初出で必要なら日本語仮訳を添える。
+- 作品名・人名は原文の固有名詞を保ちつつ、公開本文では日本語の字体で表記する（例: 张艺谋→張芸謀）。初出で必要なら日本語仮訳を添える。
 
 出し分けルール:
 - lead は2〜3行程度。何が起きたかが軽く分かる文章にする。
 - what_happened は150〜250字程度で、出来事・数字・日付・関係者を整理する。
 - reaction_view は元記事内にSNS反応、読者反応、複数メディアでの見られ方、話題性、業界的意味がある場合に150〜250字程度で書く。根拠がなければ空文字。
-- editor_comment は「ひとこと」として表示する読者向けの主観コメント。内部メモではなく、編集者キャラの短い見方を書く。
+- editor_comment は常に空文字にする。
 - japan_context_note は「日本語圏では見えにくいポイント」として表示する。中国では高評価・高興行、日本語圏では紹介されにくい文脈、ファン文化、方言・地域文化、国家宣伝・文化輸出、日本公開・字幕情報などがある場合だけ書く。なければ空文字。
-- 各記事は lead とは別に、what_happened と why_it_matters / reaction_view / editor_comment のいずれかを含め、最低2つの本文セクションを埋める。ただし根拠がない反応は作らない。
+- 各記事は lead とは別に、what_happened と why_it_matters / reaction_view のいずれかを含め、最低2つの本文セクションを埋める。ただし根拠がない反応は作らない。
 - SNS情報が元記事にない場合、has_sns_signal は false、reaction_view は空文字にする。
 - 公式発表が記事内で確認できない場合、has_official_source は false にする。
 - 1ソースのみの場合、has_multiple_sources は false にする。
@@ -478,7 +568,7 @@ publish_priority rules:
 - HOT SEARCHは通常ニュースと同じフィードに混ぜるが、断定しない。公式発表や大手報道がない場合、confidence は C または D にする。
 - PR WATCHは官製PRや文化交流記事をそのまま流さず、何を外向きに見せたい記事かをひとことで補足する。
 - ゴシップでは「報じられた」「SNS上で話題になっている」など情報源に応じた表現にする。
-- ゴシップや未確認情報がある場合、本人・事務所・公式側の反応有無と出典の弱さを editor_comment または verification_status に反映する。
+- ゴシップや未確認情報がある場合、本人・事務所・公式側の反応有無と出典の弱さを verification_status に反映する。
 - 原文を翻訳調でなぞらず、日本語として自然に再構成する。
 - 必ずJSONだけを返す。説明文やMarkdownは返さない。
 
@@ -593,9 +683,9 @@ evidenceの扱い方:
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。official/media evidenceの事実だけで、出来事・数字・日付・関係者を整理。
 - reaction_view: SNS evidenceまたは複数媒体の見られ方がある場合のみ150〜250字。根拠がなければ空文字。
-- why_it_matters: なぜ今このトピックが出てきたのか、現地でどういう位置づけかをevidenceの範囲で。
+- why_it_matters: 本文の言い換えをせず、「なぜ今気になるか」「日本語圏から見えにくい点」「次に確認する数字・発表・反応」「情報源の見方・注意点」のいずれかをevidenceの範囲で書く。
 - japan_context_note: 日本語圏では見えにくい文脈がevidenceにある場合だけ。なければ空文字。
-- editor_comment: 読者向けの短い見方。内部メモにしない。
+- editor_comment: 常に空文字にする。
 - confidence: officialを含む複数ソース整合=A/B、媒体単独=B/C、SNS単独=C/Dを目安にする。
 - badge: OFFICIAL / HOT SEARCH / DATA / PR WATCH / NEWS のいずれか。
 - topic_key は入力値をそのまま返す。
@@ -665,15 +755,15 @@ ${terminology}
 
 文体:
 - lead / what_happened / reaction_view / japan_context_note は通常の報道文体。ただし一文は60字以内を目安に短く切る。
-- why_it_matters（見出し「ビンタンの注目ポイント」）と editor_comment（見出し「ビンタンからのひとこと」）は、docs/editorial-character.md の口調規定に従いビンタンの声で書く。
+- why_it_matters（見出し「ビンタンの注目ポイント」）だけは、docs/editorial-character.md の口調規定に従いビンタンの声で書く。
 
 構成ルール:
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
-- why_it_matters: 100〜200字。ビンタンの注目ポイント。what_happenedを言い換えず、「何が確認できれば評価が変わるか」「今後追うべき数字・発表」「情報源の見方」のいずれかを書く。
+- why_it_matters: 100〜250字。ビンタンの注目ポイント。本文の言い換え・要約をせず、「用語・制度の噛み砕き説明（termsに説明がある場合だけ）」「なぜ今気になるか」「日本語圏から見えにくい点」「次に確認する数字・発表・反応」「これまでの流れとの関係」「情報源の見方・注意点」のうち、この記事に最も価値のある角度を1つ選んで書く。
 - reaction_view: SNS由来または複数媒体のclaimがある場合のみ100〜200字。無ければ空文字。
 - japan_context_note: 日本語圏で見えにくい文脈のclaimがある場合だけ。無ければ空文字。
-- editor_comment: 1〜2文の短いひとこと。why_it_mattersと同じ内容を繰り返さない。
+- editor_comment: 常に空文字 "" を返す（このサイトのコメント欄は「ビンタンの注目ポイント」の1つだけ）。
 - 本文合計はおおむね400〜700字。
 - claim_refs に、各セクションで根拠にしたclaimのidを入れる（例: {"what_happened": ["C1","C2"], ...}）。
 - 必ずJSONだけを返す。
@@ -706,14 +796,14 @@ async function buildBingtangCommentPrompt(
     ? `- 明るく、少し前のめりな、話し言葉に近い「です・ます調」。短いくだけた感想を混ぜてよい。
 - 使ってよい表現の例: 「〜かも！」「〜みたい！」「すごい！」「これは気になる！」「ちょっと待って！」「ここ、大事です！」「〜なんです！」「〜でしたね〜！」
 - 「かも」「みたい」はビンタンの見方・可能性にだけ使う。事実台帳で確認できた事実は、です・ます調で明確に言い切る。
-- 「すごい！」「これは気になる！」のような短い感想は、1つのコメント欄につき1回まで。
-- 「！」は2つのコメント欄あわせて2〜4個使う。0個にしない。1つの文に2個以上付けない。
+- 「すごい！」「これは気になる！」のような短い感想は、1つのコメントにつき1回まで。
+- 「！」はコメント全体で2〜4個使う。0個にしない。1つの文に2個以上付けない。
 - 同じ語尾を続けて使わない。「〜ですね」の多用と、「今後注目したい」型の締めの反復を避ける。`
     : `- この話題は重大事件・法的問題・訃報・被害者のいる話題です。「！」を一切使わず、落ち着いた「です・ます調」で書く。軽いツッコミ・くだけた感想・明るい言い回しを使わない。確認できた事実と、まだ分かっていないことの境界をはっきり言う。`;
   const violationInstruction = violations.length
     ? `\n\n前回の出力に次の禁止表現が含まれていました。該当の内容を含めずに書き直してください:\n${violations.map((violation) => `${violation.rule}: ${violation.detail}`).join("\n")}`
     : "";
-  return `あなたはこのサイトの秘書キャラクター「冰糖（ビンタン）」として、完成した記事本文に付けるコメントを書くAIです。
+  return `あなたはこのサイトの秘書キャラクター「冰糖（ビンタン）」として、完成した記事本文に付けるコメント「ビンタンの注目ポイント」を書くAIです。
 
 Editorial character policy document (docs/editorial-character.md):
 ${editorialCharacter}
@@ -721,27 +811,27 @@ ${editorialCharacter}
 Use the document above as the highest-priority editorial policy.
 
 あなたの仕事:
-- 記事本文はすでに完成しています。あなたが書くのは「ビンタンの注目ポイント」（why_it_matters）と「ビンタンからのひとこと」（editor_comment）の2つだけです。
-- コメント欄は、本文の言い換え・要約をする場所ではありません。本文に書いていないが、読者の理解や興味に効くことを渡す場所です。
-- 本文と事実台帳にある情報だけを使います。新しい数字・人物名・作品名・出来事を足しません。
+- 記事本文はすでに完成しています。あなたが書くのは「ビンタンの注目ポイント」（why_it_matters）の1つだけです。これが読者に見えるビンタンの唯一のコメント欄です。
+- コメント欄は、本文の言い換え・要約をする場所ではありません。本文に書いていないが、この記事で読者の理解や興味にいちばん効くことを、前提知識のない読者に分かる言葉で渡す場所です。
+- 本文と事実台帳にある情報だけを使います。新しい数字・人物名・作品名・出来事・背景知識を足しません。あなた自身の知識で賞・制度・人物の説明を補完してはいけません。
 
-why_it_matters（ビンタンの注目ポイント）の書き方:
-- 入力の needs_term_explanation が true の場合: この記事の中心にある用語・制度の噛み砕き説明を書く。台帳のterms・claimsにある説明だけを使い、一般知識で補完しない。
-- needs_term_explanation が false の場合: 用語解説を無理に書かない。本文の内容を言い換えない。かわりに、次のうち記事に最も合う角度を1つ選んで書く:
-  1. なぜ今このニュースが気になるのか
-  2. 日本語圏から見えにくい点
-  3. 次に確認するべき数字・発表・反応
-  4. この作品・人物・業界のこれまでの流れとの関係（台帳にある範囲で）
-  5. 情報源の見方・注意点（公式発表のみ、単一ソース、SNS由来など）
-- 入力に angle_hint がある場合、切り口の参考にしてよい（従う義務はない）。
+書き方:
+- まず、次の中からこの記事に最も価値のある角度を1つ（多くても2つ）選ぶ:
+  1. 中国特有の用語・制度・ファン文化の噛み砕き説明（台帳のtermsにwhat_is/why_nowがある場合だけ。その説明の範囲内で）
+  2. なぜ今この話題が気になるのか
+  3. 日本語圏からは見えにくい文脈
+  4. 過去の流れとの関係（台帳にある範囲で）
+  5. 次に確認するべき数字・発表・反応
+  6. 情報源の読み方・注意点（公式発表のみ、単一ソース、SNS由来など）
+  7. ビンタン自身の短いリアクション（他の角度に1〜2文添える形でもよい）
+- needs_term_explanation が false の記事では、用語解説を無理に作らない。
 - lead や what_happened に書いてあることを繰り返さない。読み終えた読者が「なるほど、そこを見ればいいのか」と思える内容にする。
-- 書き出しは used_openings にある書き出しと重ならないようにする。
-- 抽象的な分析だけで終わらせない。具体的な数字・出来事・確認ポイントを挙げる。
-- 100〜250字。一文は50字以内を目安に短く切る。
-
-editor_comment（ビンタンからのひとこと）の書き方:
-- 1〜2文。why_it_mattersと同じ内容を繰り返さない。
-- 自分（ビンタン）が次に何を見るか、どこが気になるかを軽く言って締める。
+- 決まった書き出しを使わない。書き出しは used_openings にある書き出しと重ならないようにする。
+- 「今後に注目です」「動向を追いたいです」だけで終わらせない。締めにも具体的な数字・出来事・確認ポイント、またはビンタンの具体的なリアクションを置く。
+- 本文の固い言葉を別の固い言葉に言い換えない。話し言葉でほどく。
+- 感想を書くとき、その感想の前提になっている事実（「初共演」「7年ぶり」など）は、台帳のclaimsで確認できるものだけを使う。
+- 入力に angle_hint がある場合、切り口の参考にしてよい（従う義務はない）。
+- 100〜250字。一文は50字以内を目安に短く切る。文の数は2〜7文。
 
 口調（トーンモード: ${toneMode}）:
 ${toneInstruction}
@@ -749,14 +839,13 @@ ${toneInstruction}
 禁止事項:
 - 「かも」「みたい」「〜のようです」を、台帳のverified_factで確認できている事実に付けない。
 - SNSや反応のevidenceが無いのに反応の予想・想像を書かない。
-- 台帳で確認できない推測を書かない。
+- 台帳で確認できない推測・背景説明を書かない。賞・制度の仕組みを、台帳のterms・claimsに無い内容で説明しない。
 - 次のような中身のない定型句を使わない: 「業界全体に影響を与える可能性があります」「透明性向上につながる可能性があります」「今後の動向に注目したいところです」「評価のポイントになりそうです」「新たな指標になるか見守りたいです」「目が離せません」
 - 実在の人物・ファンをからかわない。ツッコミの対象は状況・数字・自分自身のみ。
 
 必ず次のJSONだけを返す:
 {
   "why_it_matters": "",
-  "editor_comment": "",
   "claim_refs_why_it_matters": []
 }
 
@@ -786,13 +875,13 @@ async function generateBingtangComments(
   budget?: LlmCallBudget,
   violations: ClaimCheckViolation[] = [],
   extraInstruction = "",
-  commentContext: CommentGenerationContext = {}
+  commentContext: CommentGenerationContext = {},
+  model?: string
 ) {
-  const text = await generateJson(provider, await buildBingtangCommentPrompt(topic, ledger, summary, toneMode, violations, extraInstruction, commentContext), budget);
+  const text = await generateJson(provider, await buildBingtangCommentPrompt(topic, ledger, summary, toneMode, violations, extraInstruction, commentContext), budget, model);
   const parsed = parseJsonFromModelText(text) as Record<string, unknown>;
   return {
     why_it_matters: typeof parsed.why_it_matters === "string" ? parsed.why_it_matters.trim() : "",
-    editor_comment: typeof parsed.editor_comment === "string" ? parsed.editor_comment.trim() : "",
     refs: Array.isArray(parsed.claim_refs_why_it_matters) ? parsed.claim_refs_why_it_matters.filter((item): item is string => typeof item === "string") : []
   };
 }
@@ -808,6 +897,24 @@ function removeCommentViolationSentences(text: string, violations: ClaimCheckVio
 
 function countExclamations(text: string) {
   return (text.match(/[！!]/g) || []).length;
+}
+
+function clearEditorComment(summary: SummarizedArticle) {
+  summary.editor_comment = "";
+  return summary;
+}
+
+function filterClaimRefs(refs: string[], ledger: FactLedger) {
+  const validIds = new Set(ledger.claims.map((claim) => claim.id));
+  return refs.filter((id) => validIds.has(id));
+}
+
+function normalizeSummaryClaimRefs(summary: SummarizedArticle, ledger: FactLedger) {
+  summary.claim_refs.what_happened = filterClaimRefs(summary.claim_refs.what_happened, ledger);
+  summary.claim_refs.why_it_matters = filterClaimRefs(summary.claim_refs.why_it_matters, ledger);
+  summary.claim_refs.reaction_view = filterClaimRefs(summary.claim_refs.reaction_view, ledger);
+  summary.claim_refs.japan_context_note = filterClaimRefs(summary.claim_refs.japan_context_note, ledger);
+  return summary;
 }
 
 export function needsCommentRegeneration(
@@ -1067,6 +1174,31 @@ function ensureSourceRefs(value: unknown) {
 
 function safePreview(value: string, maxLength = 500) {
   return value.replace(/\s+/g, " ").trim().slice(0, maxLength);
+}
+
+function appendDisplayResidueViolations(
+  claimCheck: ClaimCheckResult,
+  residues: Array<{ field: string; chars: string[] }>
+): ClaimCheckResult {
+  if (!residues.length) return claimCheck;
+  return {
+    ...claimCheck,
+    violations: [
+      ...claimCheck.violations,
+      ...residues.map((residue) => ({
+        section: residue.field,
+        rule: "simplified_char_residue" as const,
+        severity: "warning" as const,
+        detail: residue.chars.join("")
+      }))
+    ]
+  };
+}
+
+function unmatchedNumbersFromViolations(violations: ClaimCheckViolation[]) {
+  return violations
+    .filter((violation) => violation.rule === "comment_number_not_in_ledger")
+    .flatMap((violation) => extractNumberTokens(violation.detail));
 }
 
 function formatCause(cause: unknown): string {

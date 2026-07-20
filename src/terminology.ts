@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { applyDisplayKanji } from "./displayKanji.js";
 import type { SummarizedArticle } from "./types.js";
 
 export type TerminologyConfig = {
@@ -8,15 +9,28 @@ export type TerminologyConfig = {
   known_terms: string[];
   first_gloss_terms: Array<{ term: string; gloss: string }>;
   always_explain_terms: string[];
+  person_names: Array<{ zh: string; display: string; reading: string }>;
+  work_titles: Array<{ zh: string; display: string; ja_official: string }>;
+  word_overrides: Array<{ zh: string; display: string }>;
 };
 
-const EMPTY: TerminologyConfig = { version: 1, preferred_names: [], known_terms: [], first_gloss_terms: [], always_explain_terms: [] };
+const EMPTY: TerminologyConfig = { version: 1, preferred_names: [], known_terms: [], first_gloss_terms: [], always_explain_terms: [], person_names: [], work_titles: [], word_overrides: [] };
 let cache: TerminologyConfig | undefined;
 
 export async function loadTerminology(): Promise<TerminologyConfig> {
   if (cache) return cache;
   try {
-    cache = JSON.parse(await fs.readFile(path.resolve("config/terminology.json"), "utf8")) as TerminologyConfig;
+    const parsed = JSON.parse(await fs.readFile(path.resolve("config/terminology.json"), "utf8")) as Partial<TerminologyConfig>;
+    cache = {
+      version: parsed.version ?? 1,
+      preferred_names: parsed.preferred_names ?? [],
+      known_terms: parsed.known_terms ?? [],
+      first_gloss_terms: parsed.first_gloss_terms ?? [],
+      always_explain_terms: parsed.always_explain_terms ?? [],
+      person_names: parsed.person_names ?? [],
+      work_titles: parsed.work_titles ?? [],
+      word_overrides: parsed.word_overrides ?? []
+    };
   } catch (error) {
     console.warn(`terminology warning: ${error instanceof Error ? error.message : String(error)}`);
     cache = EMPTY;
@@ -28,6 +42,43 @@ export async function applyTerminology(summary: SummarizedArticle): Promise<Summ
   const config = await loadTerminology();
   const next = { ...summary };
   const fields = ["title_ja", "lead", "what_happened", "why_it_matters", "reaction_view", "japan_context_note", "editor_comment"] as const;
+  for (const work of [...config.work_titles].sort((a, b) => b.zh.length - a.zh.length)) {
+    let seen = false;
+    const variants = [work.zh, work.display, work.ja_official].filter(Boolean).sort((a, b) => b.length - a.length);
+    const regex = new RegExp(variants.map(escapeRegex).join("|"), "g");
+    for (const field of fields) {
+      next[field] = next[field].replace(regex, () => {
+        if (!work.ja_official) return work.display;
+        if (!seen) {
+          seen = true;
+          return `${work.ja_official}（原題『${work.display}』）`;
+        }
+        return work.ja_official;
+      });
+    }
+  }
+  for (const person of [...config.person_names].sort((a, b) => b.zh.length - a.zh.length)) {
+    let seen = false;
+    const firstMention = person.reading ? `${person.display}（${person.reading}）` : person.display;
+    const variants = [firstMention, person.zh, person.display].sort((a, b) => b.length - a.length);
+    const regex = new RegExp(variants.map(escapeRegex).join("|"), "g");
+    for (const field of fields) {
+      next[field] = next[field].replace(regex, (matched) => {
+        if (matched === firstMention) {
+          seen = true;
+          return matched;
+        }
+        if (!seen) {
+          seen = true;
+          return firstMention;
+        }
+        return person.display;
+      });
+    }
+  }
+  for (const override of [...config.word_overrides].sort((a, b) => b.zh.length - a.zh.length)) {
+    for (const field of fields) next[field] = next[field].replaceAll(override.zh, override.display);
+  }
   for (const preferred of config.preferred_names) {
     let seen = false;
     const variants = [preferred.first_mention, preferred.zh, ...preferred.avoid, preferred.display].sort((a, b) => b.length - a.length);
@@ -46,7 +97,7 @@ export async function applyTerminology(summary: SummarizedArticle): Promise<Summ
       });
     }
   }
-  return next;
+  return applyDisplayKanji(next).summary;
 }
 
 export async function formatTerminologyForPrompt() {

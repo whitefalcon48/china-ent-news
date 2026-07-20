@@ -12,7 +12,33 @@
       "display": "国家電影局",
       "first_mention": "国家電影局（中国の映画主管当局）",
       "avoid": ["国家映画局"]
+    },
+    {
+      "zh": "大众电影百花奖",
+      "display": "大衆電影百花賞",
+      "first_mention": "大衆電影百花賞（百花賞）",
+      "avoid": ["大众电影百花賞", "大衆電影百花奨"]
+    },
+    {
+      "zh": "香港电影金像奖",
+      "display": "香港電影金像奨",
+      "first_mention": "香港電影金像奨",
+      "avoid": ["香港電影金像賞"]
     }
+  ],
+  "person_names": [
+    { "zh": "张艺谋", "display": "張芸謀", "reading": "チャン・イーモウ" },
+    { "zh": "成龙", "display": "成龍", "reading": "ジャッキー・チェン" },
+    { "zh": "周星驰", "display": "周星馳", "reading": "チャウ・シンチー" },
+    { "zh": "徐克", "display": "徐克", "reading": "ツイ・ハーク" }
+  ],
+  "work_titles": [
+    { "zh": "哪吒之魔童闹海", "display": "哪吒之魔童鬧海", "ja_official": "" }
+  ],
+  "word_overrides": [
+    { "zh": "摄影", "display": "撮影" },
+    { "zh": "电影节", "display": "電影節" },
+    { "zh": "高叶", "display": "高葉" }
   ],
   "known_terms": ["微博", "豆瓣", "熱搜", "IP", "OST", "IMAX"],
   "first_gloss_terms": [

@@ -27,6 +27,9 @@ const UNSUPPORTED_GENERALIZATION = /これまで.{0,12}(なかった|存在し�
 const UNATTRIBUTED_ANALYSIS = /が鮮明|とみられる|とされる/;
 const BANNED_PHRASE_OTHER = /活性化|が加速/;
 const TERMINOLOGY_AVOID = /国家ラジオテレビ総局|国家ラジオ・テレビ総局|国家放送テレビ総局|国家広播電視総局|国家映画局/;
+const COMMENT_BACKGROUND_PATTERN = /とは、|という(仕組み|制度|賞|文化|呼び方|システム)|で決ま(る|り)|が決め|と呼ばれ/;
+
+export const BACKGROUND_GROUNDING_THRESHOLD = 0.35;
 
 export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): ClaimCheckResult {
   const violations: ClaimCheckViolation[] = [];
@@ -152,7 +155,7 @@ export function runCommentCheck(
   toneMode: ToneMode,
   context: { usedOpenings?: string[]; bodyText?: string } = {}
 ): ClaimCheckViolation[] {
-  const text = `${whyItMatters}\n${editorComment}`;
+  const text = whyItMatters;
   const violations: ClaimCheckViolation[] = [];
   if (/反応が(予想|期待)され|好意的な反応|ファンから.{0,12}(反応|声)が(集ま|上が|出)/.test(text) && (topic.source_mix.sns || 0) + (topic.source_mix.rumor || 0) === 0) {
     violations.push(toViolation("comment", "fabricated_reaction", "gate", matchingSentence(text, /反応が(予想|期待)され|好意的な反応|ファンから.{0,12}(反応|声)が(集ま|上が|出)/)));
@@ -168,8 +171,46 @@ export function runCommentCheck(
   splitSentences(text).filter((sentence) => sentence.replace(/[。！？!?]/g, "").length > 90).forEach((sentence) => violations.push(toViolation("comment", "long_sentence", "warning", sentence.trim())));
   const desuNeCount = splitSentences(text).filter((sentence) => /ですね[。！!]$/.test(sentence.trim())).length;
   if (desuNeCount >= 3) violations.push(toViolation("comment", "ending_repetition", "warning", `ですね文末: ${desuNeCount}回`));
-  const ledgerNumbers = new Set(ledger.claims.flatMap((claim) => claim.numbers).flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean));
-  const ledgerEntities = ledger.claims.flatMap((claim) => claim.entities).filter(Boolean);
+  const ledgerNumbers = new Set(
+    ledger.claims.flatMap((claim) => [
+      ...claim.numbers,
+      claim.text,
+      ...claim.entities,
+      claim.quote_zh || ""
+    ]).flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean)
+  );
+  const ledgerEntities = ledger.claims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
+  const groundedBackground = [
+    ...ledger.claims.map((claim) => claim.text),
+    ...ledger.terms
+      .filter((term) => Boolean(term.explain_quote_zh))
+      .flatMap((term) => [term.gloss_ja, term.what_is || "", term.why_now || ""]),
+    context.bodyText || ""
+  ].filter(Boolean).join("\n");
+
+  for (const sentence of splitSentences(whyItMatters)) {
+    const detail = sentence.trim();
+    if (!detail) continue;
+    for (const token of extractNumberTokens(detail)) {
+      const normalized = normalizeNumberToken(token);
+      if (normalized && !ledgerNumbers.has(normalized)) {
+        violations.push(toViolation("comment", "comment_number_not_in_ledger", "gate", detail));
+        break;
+      }
+    }
+    for (const entity of extractBracketedEntities(detail)) {
+      if (!ledgerEntities.some((ledgerEntity) => ledgerEntity.includes(entity) || entity.includes(ledgerEntity))) {
+        violations.push(toViolation("comment", "comment_entity_not_in_ledger", "warning", detail));
+        break;
+      }
+    }
+    if (
+      COMMENT_BACKGROUND_PATTERN.test(detail)
+      && shingleContainment(detail, groundedBackground) < BACKGROUND_GROUNDING_THRESHOLD
+    ) {
+      violations.push(toViolation("comment", "comment_ungrounded_background", "gate", detail));
+    }
+  }
   for (const sentence of splitSentences(text).filter((item) => /かも|みたい|のようです/.test(item))) {
     const hasLedgerNumber = extractNumberTokens(sentence).map(normalizeNumberToken).some((token) => ledgerNumbers.has(token));
     const hasLedgerEntity = ledgerEntities.some((entity) => entity && sentence.includes(entity));
@@ -198,7 +239,7 @@ export function isCommentParaphrase(whyItMatters: string, bodyText: string) {
   return paraphrases[0] || paraphrases.filter(Boolean).length / paraphrases.length >= 0.5;
 }
 
-function shingleContainment(value: string, bodyText: string) {
+export function shingleContainment(value: string, bodyText: string) {
   const normalized = value.replace(/\s+/g, "");
   const body = bodyText.replace(/\s+/g, "");
   const shingles = new Set<string>();
@@ -254,7 +295,10 @@ function matchingSentence(value: string, pattern: RegExp) {
 }
 
 function extractBracketedEntities(value: string) {
-  return [...value.matchAll(/《([^》]+)》/g)].map((match) => match[1].trim()).filter(Boolean);
+  return [
+    ...value.matchAll(/《([^》]+)》/g),
+    ...value.matchAll(/『([^』]+)』/g)
+  ].map((match) => match[1].trim()).filter(Boolean);
 }
 
 function referencedClaims(summary: SummarizedArticle, section: CheckedSection, ledger: FactLedger) {

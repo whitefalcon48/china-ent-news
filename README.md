@@ -173,7 +173,9 @@ GEMINI_API_KEY=ここにGeminiのAPIキー
 GEMINI_MODEL=gemini-2.5-flash-lite
 
 DEEPSEEK_API_KEY=ここにDeepSeekのAPIキー
-DEEPSEEK_MODEL=deepseek-chat
+DEEPSEEK_MODEL=deepseek-v4-flash
+LEDGER_AI_MODEL=deepseek-v4-pro
+COMMENT_AI_MODEL=deepseek-v4-pro
 
 MAX_ARTICLES=8
 ```
@@ -205,7 +207,9 @@ DEEPSEEK_API_KEY=...
 
 ```env
 GEMINI_MODEL=gemini-2.5-flash-lite
-DEEPSEEK_MODEL=deepseek-chat
+DEEPSEEK_MODEL=deepseek-v4-flash
+LEDGER_AI_MODEL=deepseek-v4-pro
+COMMENT_AI_MODEL=deepseek-v4-pro
 ```
 
 ## 実行方法

@@ -36,7 +36,8 @@ const targets = names.filter((name) =>
   name === `selection_trace_${date}.json` ||
   name === `topic_candidates_${date}.json` ||
   name === `fact_ledger_${date}.json` ||
-  name === `review_${date}.json`
+  name === `review_${date}.json` ||
+  name === `compare_fixture_${date}.json`
 );
 for (const name of targets) {
   const destinationName = name === `review_${date}.json` ? "review.json" : name;

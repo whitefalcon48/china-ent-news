@@ -37,8 +37,6 @@ ${summary.what_happened}
 
 **ビンタンの注目ポイント**: ${summary.why_it_matters}
 
-**ひとこと**: ${summary.editor_comment}
-
 ソース: ${sources.map(formatSource).join(" / ")}`;
 }
 

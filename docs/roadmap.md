@@ -174,10 +174,11 @@ official-only 減点(-15)と备案ボーナス削除、`src/topicKey.ts` への�
 3b-V3. ✅ **選定品質・コメント品質 v3 P0 — 実装・当日判定・公開完了（2026-07-19／翌日2日連続確認待ち）**: 2026-07-19 の品質後退（前日topic再掲7/10・「要するに」開始9/10・公式のみ3本・レビュー却下6/10）への立て直し。公開判断専用の編集価値スコア（5軸10点・**7点以上のみ公開**・単一ソースは原則上限6点・official-only 1日1本）、過去5日の掲載履歴とレビュー結果による重複制御（実質的更新の定義・cooldown）、ソース拡張のゲート後移動（上位8件×2クエリ・SKIP_RSSHUB）、コメント生成v3（「要するに」削除・5角度・書き出し重複と本文言い換えの機械検査）、thin_unknown 誤爆修正、final_fill の上限迂回修正、出力本数可変。**Codex 実装指示書 = `docs/design-selection-quality-v3.md`**（P1-1〜P1-5 は後日・P0 の2日連続受け入れ後）。⚠️ は無し。受け入れ: 当日判定セット（公開全topic 7点以上／前日topic再掲0／official-only≦1／書き出し重複0／出力本数可変 ほか）→ 翌日実行で2日連続項目（expansion success>0・複数ソースtopic数など）を閉じる
    ローカル実測: check成功。07-18履歴10件を読込み、07-19再掲5ケースを `dup_no_update`、thin_unknown正常3件通過・不完全1件除外。EVSモックで备案7点・留几手cap6・転載独立数1、コメント重複/言い換え再生成を確認。APIなし実行は候補99件・EVS fallback 16件・7点合格0件のまま可変本数0で完走、trace全4セクション・budget 0/60を確認。
    Actions実測（run 29675037356／`refresh_review=true`）: 出力5件はEVS 10/8/8/7/7点、前日一致8件は全て `dup_no_update`で再掲0、official-only 1、書き出し重複0・「要するに」0、Serper 16/16成功・evidence 137・複数ソース4/5、budget 21/60。当日判定セット合格。Issue #3 で採用3本・却下2本を確定し、run 29676449812 で Pages 公開成功（HTTP 200）。
-3b-V4. 🔷 **コメント品質 v4（注目ポイント一本化・表記正規化・事実ゲート強化・モデル移行）— 設計完了・実装待ち（2026-07-19 Fable）**: **Codex 実装指示書 = `docs/design-comment-quality-v4.md`**（Q1〜Q14）。
+3b-V4. ✅ **コメント品質 v4（注目ポイント一本化・表記正規化・事実ゲート強化・モデル移行）— 実装完了・Actions待ち（2026-07-20）**: **Codex 実装指示書 = `docs/design-comment-quality-v4.md`**（Q1〜Q14）。
    内容: ①公開コメントを「ビンタンの注目ポイント」1本に統一（editor_comment は空文字で移行・独立した「ひとこと」枠は廃止）②日本語表示の表記正規化（terminology拡張＋簡体字→日本語字体マップ＋残存warning）③事実台帳の根拠アンカー（terms説明に原文quote必須・根拠なし背景説明の決定的削除）とコメント接地ゲート④DeepSeek廃止モデル名の移行（deepseek-chat→deepseek-v4-flash。**2026-07-24 15:59 UTC 期限・Q1は単独で最優先適用**）⑤工程別モデルルーティング（台帳・コメント=deepseek-v4-pro 推奨）⑥固定fixtureによる3構成ブラインドモデル比較（model-compare.yml）。
    ⚠️ は無し（設計・プロンプト文言・辞書初期値は確定済み。Codex は文面を変えずに実装する）。
    受け入れ基準の要点: 公開記事の editor_comment 全て空・「ひとこと」見出し0／公開本文の簡体字残存warning 0／根拠アンカーの無い terms 説明が台帳から削除される／コメントの台帳外数字・エンティティ gate 0件公開／モデル比較ハード条件6項目／維持ライン（官庁≦50%・媒体fresh>0・複数ソースtopic≧1・budget≦60）後退なし
+   ローカル実測: `npm run check` 成功。Q4〜Q9 ダミー検算、07-19公開5記事の title/lead/what_happened 残存簡体字0、レビューUI health/一本化表示、model compare 3構成・key分離出力、build:site（3日・23記事・29ページ）成功。APIなし実行は取得0件のため、維持ラインとAI生成品質はActions確認待ち。
 4. **Phase 3c**: analysis_feature 解禁（editorial-character.md 改訂・F5 supersede・1本/日上限）
 
 各段で Actions 実測を挟み、官庁比率 ≦ 50% / 媒体 fresh > 0 / 最終本数・複数ソース topic 数の

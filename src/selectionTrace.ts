@@ -65,6 +65,12 @@ type TraceFinalOutput = {
 type SelectionTrace = {
   date: string;
   provider: AiProvider;
+  ai_models: NonNullable<TopicGenerationMeta["ai_models"]>;
+  ledger_anchor: NonNullable<TopicGenerationMeta["ledger_anchor"]>[];
+  term_expansion: NonNullable<TopicGenerationMeta["term_expansion"]>;
+  display_normalization: {
+    residues: Array<{ topic_key: string; field: string; chars: string[] }>;
+  };
   candidate_pool: TraceCandidate[];
   topic_candidates_count: number;
   topic_candidates: TopicCandidate[];
@@ -92,6 +98,7 @@ type SelectionTrace = {
     action: ClaimCheckResult["action"];
     tone_mode?: ToneMode;
     comment_stage?: TopicGenerationMeta["comment_stage"];
+    comment_grounding?: TopicGenerationMeta["comment_grounding"];
   }>;
   information_gate: {
     enabled: boolean;
@@ -191,6 +198,24 @@ export function buildSelectionTrace(args: {
   const trace: SelectionTrace = {
     date: args.date ?? today(),
     provider: args.provider,
+    ai_models: args.processed.find((article) => article.generationMeta?.ai_models)?.generationMeta?.ai_models ?? {
+      base: { provider: args.provider, model: args.provider === "deepseek" ? process.env.DEEPSEEK_MODEL || "deepseek-v4-flash" : process.env.GEMINI_MODEL || "gemini-2.5-flash-lite" },
+      ledger: { provider: args.provider, model: args.provider === "deepseek" ? process.env.DEEPSEEK_MODEL || "deepseek-v4-flash" : process.env.GEMINI_MODEL || "gemini-2.5-flash-lite" },
+      comment: { provider: args.provider, model: args.provider === "deepseek" ? process.env.DEEPSEEK_MODEL || "deepseek-v4-flash" : process.env.GEMINI_MODEL || "gemini-2.5-flash-lite" }
+    },
+    ledger_anchor: args.processed.flatMap((article) => article.generationMeta?.ledger_anchor ? [article.generationMeta.ledger_anchor] : []),
+    term_expansion: [...args.processed].reverse().find((article) => article.generationMeta?.term_expansion)?.generationMeta?.term_expansion ?? {
+      enabled: process.env.TERM_EXPLAIN_EXPANSION !== "false",
+      attempted: [],
+      succeeded: [],
+      failed: []
+    },
+    display_normalization: {
+      residues: args.processed.flatMap((article) => (article.generationMeta?.display_normalization?.residues ?? []).map((residue) => ({
+        topic_key: article.generationMeta?.topic_key ?? article.topic?.topic_key ?? "",
+        ...residue
+      })))
+    },
     candidate_pool: candidatePool,
     topic_candidates_count: args.topicCandidates?.length ?? 0,
     topic_candidates: args.topicCandidates ?? [],
@@ -208,7 +233,8 @@ export function buildSelectionTrace(args: {
         violations: article.generationMeta?.claim_check?.violations ?? [],
         action: article.generationMeta?.claim_check?.action ?? "none",
         tone_mode: article.generationMeta?.tone_mode,
-        comment_stage: article.generationMeta?.comment_stage
+        comment_stage: article.generationMeta?.comment_stage,
+        comment_grounding: article.generationMeta?.comment_grounding
       })),
     information_gate: args.informationGate ?? { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] },
     editorial_value: args.editorialValue ?? { enabled: false, llm: "fallback", candidates: [] },

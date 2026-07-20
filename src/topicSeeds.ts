@@ -255,7 +255,7 @@ async function generateGeminiJson(prompt: string) {
 
 async function generateDeepSeekJson(prompt: string) {
   const apiKey = process.env.DEEPSEEK_API_KEY;
-  const model = process.env.DEEPSEEK_MODEL || "deepseek-chat";
+  const model = process.env.DEEPSEEK_MODEL || "deepseek-v4-flash";
   if (!apiKey?.trim()) {
     throw new Error("DEEPSEEK_API_KEY is not set");
   }
