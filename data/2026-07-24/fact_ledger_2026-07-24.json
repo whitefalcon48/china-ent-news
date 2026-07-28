@@ -1,0 +1,758 @@
+{
+  "date": "2026-07-24",
+  "generated_at": "2026-07-24T04:21:37.350Z",
+  "ledgers": [
+    {
+      "topic_key": "功夫女足",
+      "ledger": {
+        "topic_key": "功夫女足",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『功夫女足』は周星馳が監督・脚本を務め、張小斐、迪麗熱巴、張芸興が主演、劉嘉玲、佐藤健が特別出演している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "周星驰",
+              "张小斐",
+              "迪丽热巴",
+              "张艺兴",
+              "刘嘉玲",
+              "佐藤健"
+            ],
+            "numbers": [],
+            "quote_zh": "由周星驰执导、编剧，张小斐、迪丽热巴、张艺兴领衔主演，刘嘉玲"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年7月15日22時30分時点で、『功夫女足』の全国累計観客動員数は2458.5万人を超え、興行収入は8.55億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [
+              "2026年7月15日22時30分",
+              "2458.5万",
+              "8.55億"
+            ],
+            "quote_zh": "截至7月15日22时30分，影片在全国的观影人次已超过245"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "『功夫女足』は公開から5日連続で複数のチャートで1位を獲得し、興行収入は上昇を続けている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [
+              "5日"
+            ],
+            "quote_zh": "连续五日斩获多项冠军，票房持续走高"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "2026年7月15日、周星馳監督は張芸興、雪野、蔡思貝、倪好らと共に深圳での舞台挨拶に出席した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "周星驰",
+              "张艺兴",
+              "雪野",
+              "蔡思贝",
+              "倪好",
+              "深圳"
+            ],
+            "numbers": [
+              "2026年7月15日"
+            ],
+            "quote_zh": "7月15日，导演、编剧周星驰携领衔主演张艺兴，特别介绍雪野、"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "映画の中で、娥眉チームは中国武術とサッカーを融合させ、各国の強敵と外部の疑念に立ち向かう。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "娥眉队"
+            ],
+            "numbers": [],
+            "quote_zh": "娥眉队面对各国劲敌与外界的质疑，她们不惧非议、迎难而上，融合"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "周星馳監督は娥眉チームについて「民間の才能ある人材を発掘して娥眉チームに加え、世界を打ち負かす」と語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "周星驰",
+              "娥眉队"
+            ],
+            "numbers": [],
+            "quote_zh": "我们娥眉队就是发掘民间有天赋的人加入娥眉队，我们一定要打爆世"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "『少林足球』に出演した陳国坤が舞台挨拶にサプライズ登場し、周星馳、林子聡と共演した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "陈国坤",
+              "周星驰",
+              "林子聪",
+              "少林足球"
+            ],
+            "numbers": [],
+            "quote_zh": "曾经和周星驰合作过《少林足球》的演员陈国坤空降路演现场，与周"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "彭昱暢は『功夫女足』を2回観賞し、「子供の頃に戻ったようだ」と絶賛した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "彭昱畅"
+            ],
+            "numbers": [],
+            "quote_zh": "彭昱畅二刷支持《功夫女足》，并力荐道：...好像回到了我也是"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "『功夫女足』は2026年7月11日に公開された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [
+              "2026年7月11日"
+            ],
+            "quote_zh": "《功夫女足》定档7.11"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "公開半日で興行収入が1億元を突破した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [
+              "1億"
+            ],
+            "quote_zh": "上映半日票房破亿"
+          },
+          {
+            "id": "C11",
+            "type": "source_analysis",
+            "text": "1905电影网は、『功夫女足』の予測興行収入が30億元を超えると報じている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [],
+            "numbers": [
+              "30億"
+            ],
+            "quote_zh": "《功夫女足》预测票房破30亿"
+          },
+          {
+            "id": "C12",
+            "type": "source_analysis",
+            "text": "界面新聞は、『功夫女足』が夏の興行シーズンを活性化させたと分析している。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "引爆暑期档"
+          }
+        ],
+        "terms": [
+          {
+            "term": "路演",
+            "gloss_ja": "舞台挨拶",
+            "what_is": "映画公開前後に監督・俳優が各地で行うプロモーションイベント",
+            "why_now": "本作では深圳で路演が行われ、観客との交流や撮影秘話が語られた"
+          },
+          {
+            "term": "娥眉队",
+            "gloss_ja": "娥眉チーム",
+            "what_is": "映画内の女性サッカーチーム。中国武術とサッカーを融合",
+            "why_now": "物語の中心チームであり、周星馳監督が「世界を打ち負かす」と語る"
+          },
+          {
+            "term": "无厘头",
+            "gloss_ja": "ナンセンス・ギャグ",
+            "what_is": "周星馳作品の特徴的な笑いのスタイル",
+            "why_now": "本作でも観客から「爆笑無厘頭」と評されている"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "2026中国—东盟微短剧大赛",
+      "ledger": {
+        "topic_key": "2026中国—东盟微短剧大赛",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月17日、2026中国—东盟微短剧大赛の専場推介会が北京広西大厦で開催された。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "北京広西大厦"
+            ],
+            "numbers": [
+              "2026年7月17日"
+            ],
+            "quote_zh": "7月17日，2026中国—东盟微短剧大赛专场推介会在北京广西"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "本大会は第八回中国—东盟視聴周の六大活動の一つである。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "第八回中国—东盟視聴周"
+            ],
+            "numbers": [
+              "第八回"
+            ],
+            "quote_zh": "作为第八届中国—东盟视听周六大活动之一"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "大会テーマは「AI赋能 共创共享」（AIが力を与え、共に創り共有する）である。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "source_name": "新京報",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "以“AI赋能 共创共享”为主题"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "大会の目的は、中国とASEANの微短劇業界の国家級協力プラットフォームを構築し、越境視聴覚産業の革新とウィンウィンを促進し、より緊密な中国—ASEAN運命共同体の構築を支援することである。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "中国—ASEAN運命共同体"
+            ],
+            "numbers": [],
+            "quote_zh": "旨在搭建中国与东盟微短剧行业国家级合作平台"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "第八回中国—东盟視聴周は、国家広播電視総局、広西壮族自治区人民政府、ブルネイの関連部門が共同主催し、中国外交部の中国—ASEAN全面戦略パートナーシップ5周年テーマ年シリーズ記念活動に組み込まれている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "国家広播電視総局",
+              "広西壮族自治区人民政府",
+              "ブルネイ",
+              "中国外交部"
+            ],
+            "numbers": [
+              "5周年"
+            ],
+            "quote_zh": "第八届中国—东盟视听周由国家广播电视总局、广西壮族自治区人民"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "本微短劇大会は、広西壮族自治区広播電視局、北海市人民政府、広西出版伝媒集団が共同で運営する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "広西壮族自治区広播電視局",
+              "北海市人民政府",
+              "広西出版伝媒集団"
+            ],
+            "numbers": [],
+            "quote_zh": "本次微短剧大赛由广西壮族自治区广播电视局、北海市人民政府、广"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "大会は、広西のASEANに面したフロンティアの立地優位性を活かし、広西の特色、ASEAN要素、国際的表現を兼ね備えた微短劇国際伝播体系の構築に注力する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "広西"
+            ],
+            "numbers": [],
+            "quote_zh": "依托广西面向东盟的前沿区位优势，着力打造兼具广西特色、东盟元"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026中国—东盟微短劇大会は、真人微短劇、AI微短劇、オリジナル脚本の3つの競技カテゴリーを設置している。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "source_name": "新京報",
+            "entities": [],
+            "numbers": [
+              "3"
+            ],
+            "quote_zh": "设置真人微短剧、AI微短剧、原创剧本三大竞赛类别"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "大会は専項支援資金を提供し、真人微短劇の一等賞は100万元、AI微短劇の一等賞は20万元の支援金が支給される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [],
+            "numbers": [
+              "100万元",
+              "20万元"
+            ],
+            "quote_zh": "真人微短剧一等奖扶持100万元，AI微短剧一等奖扶持20万元"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "受賞作品は全面的な伝播推進と産業化の機会を得られる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "获奖作品还将获得全方位的传播推广和产业化落地机会"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "現在、大会は作品募集の集中段階にあり、8月中旬から9月下旬に専門審査が行われ、10月19日に広西北海で開催される第八回中国—东盟視聴周開幕式の夕べで表彰される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "広西北海"
+            ],
+            "numbers": [
+              "8月中旬",
+              "9月下旬",
+              "10月19日"
+            ],
+            "quote_zh": "8月中旬至9月下旬将开展专业评审，10月19日将在广西北海举"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "10月20日には広西北海で大会成果発表推介会と創作採風などの活動が行われ、『中国—东盟微短劇国際伝播発展報告』が発表される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "広西北海"
+            ],
+            "numbers": [
+              "10月20日"
+            ],
+            "quote_zh": "10月20日将在广西北海举办大赛成果发布推介会和创作采风等活"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "大会は科技による産業革新を強調し、飛兔兔AI短劇共創プラットフォームを搭載し、火山引擎Seedance2.0動画生成大モデルに接続している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "飛兔兔AI短劇共創プラットフォーム",
+              "火山引擎Seedance2.0"
+            ],
+            "numbers": [],
+            "quote_zh": "搭载飞兔兔AI短剧共创平台，接入火山引擎Seedance2."
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "大会は創作チームや大学などに共創チャンネルを開放し、専用の計算力とトラフィック支援を提供し、AI短劇の全産業チェーン革新エコシステムを構築する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "面向创作团队、高校等开放共创通道，提供专属算力与流量扶持，构"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "広西はASEANに面した独自の立地と産業優位性を活かし、微短劇のASEANへの輸出ハブを積極的に構築している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "広西",
+              "ASEAN"
+            ],
+            "numbers": [],
+            "quote_zh": "广西立足面向东盟的独特区位与产业优势，积极打造微短剧出海东盟"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "広西は「造船出海＋借船出海」の双方向発力を堅持し、自主出海プラットフォームと海外主流ストリーミングチャンネルを介して微短劇の常態的な国際伝播を実現している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "広西"
+            ],
+            "numbers": [],
+            "quote_zh": "坚持“造船出海+借船出海”双向发力，依托自主出海平台及海外主"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "広西は「広西創作＋ASEANロケ＋共同配給」の合作モデルを革新し、中タイ、中ベトナムなどの越境合作作品を継続的に生み出している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "広西",
+              "タイ",
+              "ベトナム"
+            ],
+            "numbers": [],
+            "quote_zh": "创新打造“广西创作+东盟取景+联合发行”合拍模式，持续产出中"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "新京報は、本大会が中国とASEANの優れた微短劇コンテンツの越境伝播をさらに推進し、微短劇を文化の絆として人文交流を深め、産業の共同繁栄を促進し、中国とASEANの視聴覚産業の質の高い発展を支援すると分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "中国",
+              "ASEAN"
+            ],
+            "numbers": [],
+            "quote_zh": "本次大赛将进一步推动中国和东盟优质微短剧内容跨境传播"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "推介会には、国家広播電視総局の関連部門、直属機関、中国網絡視聴節目服務協会、中華広播影視交流協会、業界関連プラットフォーム機関、ニュースメディアが参加した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "国家広播電視総局",
+              "中国網絡視聴節目服務協会",
+              "中華広播影視交流協会"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广播电视总局相关司局、直属单位，以及中国网络视听节目服务"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "中国網絡視聴節目服務協会副会長の魏党軍が北京推介会で挨拶した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "魏党軍",
+              "中国網絡視聴節目服務協会"
+            ],
+            "numbers": [],
+            "quote_zh": "中国网络视听节目服务协会副会长魏党军在中国—东盟微短剧大赛北"
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "マイクロドラマ",
+            "what_is": "1話数分の短尺縦型ドラマ。スマホ向けに制作される。",
+            "why_now": "本大会の中心コンテンツであり、中国とASEANの協力で国際展開を図るため。"
+          },
+          {
+            "term": "AI赋能",
+            "gloss_ja": "AIによる能力強化",
+            "what_is": "AI技術で創作や制作を支援すること。",
+            "why_now": "大会テーマの一部であり、AI微短劇部門やAIプラットフォームの活用が特徴。"
+          },
+          {
+            "term": "视听周",
+            "gloss_ja": "視聴覚週間",
+            "what_is": "中国とASEANの放送・映像交流イベント。",
+            "why_now": "本大会は第八回中国—东盟視聴周の一部であり、外交行事として位置づけられる。"
+          },
+          {
+            "term": "出海",
+            "gloss_ja": "海外進出",
+            "what_is": "中国コンテンツの海外展開を指す業界用語。",
+            "why_now": "広西が微短劇のASEANへの輸出ハブを目指す文脈で使用。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "成毅路过短剧谐音梗",
+      "ledger": {
+        "topic_key": "成毅路过短剧谐音梗",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月23日、短剧『砵兰街行动』の台詞で「诚意」と「成毅」の同音を利用した谐音梗が発生した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "砵兰街行动",
+              "成毅"
+            ],
+            "numbers": [
+              "2026年7月23日"
+            ],
+            "quote_zh": "诚意与成毅的完全同音"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "短剧『砵兰街行动』の台詞は「我今天一个人过来，就是带着诚意」と「你别说带成毅了，带刘德华也没用！」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "砵兰街行动",
+              "成毅",
+              "刘德华"
+            ],
+            "numbers": [],
+            "quote_zh": "我今天一个人过来，就是带着诚意"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "谐音梗は微博で拡散され、話題「#成毅路过短剧#」の閲覧数は762.7万を超え、高位热搜となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "微博",
+              "成毅"
+            ],
+            "numbers": [
+              "762.7万"
+            ],
+            "quote_zh": "阅读量突破762.7万"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "谐音梗が発生した日は成毅の代表作『莲花楼』の開播3周年と重なった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "莲花楼",
+              "成毅"
+            ],
+            "numbers": [
+              "3周年"
+            ],
+            "quote_zh": "莲花楼开播三周年当天"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "粉丝は谐音梗を利用して成毅の待機作品『狩谎』『两京十五日』『英雄志』を宣伝した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "成毅",
+              "狩谎",
+              "两京十五日",
+              "英雄志"
+            ],
+            "numbers": [],
+            "quote_zh": "精准导向成毅的待播作品"
+          },
+          {
+            "id": "C6",
+            "type": "source_analysis",
+            "text": "新浪娱乐は、この事件が成毅の名前の高い認知度と国民度を示していると分析した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "成毅"
+            ],
+            "numbers": [],
+            "quote_zh": "国民度高的表现"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "新浪娱乐は、この热度は非マーケティング型であり、視聴者の真面目な俳優への共感を示すと指摘した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "非营销式热度"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "网友は「成毅=诚意=成亿」の谐音遊びを広め、「人如其名，自带满满诚意」という闭环梗を作った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "成毅"
+            ],
+            "numbers": [],
+            "quote_zh": "成毅=诚意=成亿"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "短剧『砵兰街行动』の台詞截图が谐音梗の起点である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "砵兰街行动"
+            ],
+            "numbers": [],
+            "quote_zh": "一段对话截图"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "网友は成毅が「零片酬、零出镜、零宣传」で短剧に「客串」したと冗談した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "成毅"
+            ],
+            "numbers": [],
+            "quote_zh": "零片酬、零出镜、零宣传"
+          }
+        ],
+        "terms": [
+          {
+            "term": "谐音梗",
+            "gloss_ja": "同音ネタ",
+            "what_is": "同音異義語を利用した言葉遊び",
+            "why_now": "今回の事件の核心であり、成毅の名前と「诚意」の同音が笑いを生んだ"
+          },
+          {
+            "term": "短剧",
+            "gloss_ja": "ショートドラマ",
+            "what_is": "中国で流行の短尺縦型ドラマ",
+            "why_now": "事件の発端となった『砵兰街行动』が短剧である"
+          },
+          {
+            "term": "热搜",
+            "gloss_ja": "トレンド",
+            "what_is": "微博の話題ランキング",
+            "why_now": "話題が高位热搜となり、拡散の指標となった"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
+}

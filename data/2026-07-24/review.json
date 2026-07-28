@@ -1,0 +1,34 @@
+{
+  "date": "2026-07-24",
+  "status": "pending",
+  "issue_number": 8,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "功夫女足",
+      "title": "周星馳監督『功夫女足』、公開5日で興収8.55億元突破 深圳で舞台挨拶も",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 2,
+      "topic_key": "2026中国—东盟微短剧大赛",
+      "title": "2026中国—ASEAN微短劇大赛、北京で推介会—AI部門新設で賞金最大100万元",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 3,
+      "topic_key": "成毅路过短剧谐音梗",
+      "title": "成毅、短剧の谐音梗で話題に ファンが待機作をPR",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
+}
