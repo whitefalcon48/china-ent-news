@@ -53,7 +53,7 @@
 
 （what_happened）
 
-**ビンタンのひとこと感想**: （why_it_matters）
+**ビンタンの注目ポイント**: （why_it_matters）
 
 ソース: （source_list）
 
