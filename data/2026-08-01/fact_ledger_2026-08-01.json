@@ -1,5 +1,11 @@
 {
   "date": "2026-08-01",
-  "generated_at": "2026-08-01T03:50:23.964Z",
-  "ledgers": []
+  "generated_at": "2026-08-01T04:38:28.687Z",
+  "ledgers": [
+    {
+      "topic_key": "九门",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text"
+    }
+  ]
 }

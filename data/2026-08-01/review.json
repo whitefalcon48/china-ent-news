@@ -1,6 +1,16 @@
 {
   "date": "2026-08-01",
   "status": "pending",
-  "issue_number": 16,
-  "articles": []
+  "issue_number": 17,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "九门",
+      "title": "『九門』試写会で南派三叔が7年改稿を告白、7月30日配信開始",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
 }
