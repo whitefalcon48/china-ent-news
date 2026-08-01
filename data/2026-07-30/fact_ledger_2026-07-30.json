@@ -1,0 +1,436 @@
+{
+  "date": "2026-07-30",
+  "generated_at": "2026-07-30T04:11:28.893Z",
+  "ledgers": [
+    {
+      "topic_key": "AI精品短剧《北派笔记》分享会",
+      "ledger": {
+        "topic_key": "AI精品短剧《北派笔记》分享会",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "AI精品短剧《北派笔记》由兴艺凯晨出品、满天星科技承制。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "兴艺凯晨",
+              "满天星科技",
+              "北派笔记"
+            ],
+            "numbers": [],
+            "quote_zh": "由兴艺凯晨出品、满天星科技承制的AI精品短剧《北派笔记》"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年7月24日，《北派笔记》在北京举行创作分享会，编剧及总导演杨念出席。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "杨念",
+              "北派笔记"
+            ],
+            "numbers": [
+              "2026年7月24日"
+            ],
+            "quote_zh": "7月24日，由兴艺凯晨出品...在京举行创作分享会"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "《北派笔记》改编自6月小说网作者云峰的作品《北派盗墓笔记》。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "6月小说网",
+              "云峰",
+              "北派盗墓笔记",
+              "北派笔记"
+            ],
+            "numbers": [],
+            "quote_zh": "改编自6月小说网作者云峰的作品《北派盗墓笔记》"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "故事讲述出身贫寒的项云峰为给重病奶奶筹钱治疗，误入北派江湖的地下冒险故事。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "项云峰"
+            ],
+            "numbers": [],
+            "quote_zh": "讲述了出身贫寒的项云峰...地下冒险故事"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "播出首周，《北派笔记》站内最高热度达17673，成为腾讯视频首部热度突破17000的AI精品短剧。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "腾讯视频",
+              "北派笔记"
+            ],
+            "numbers": [
+              "17673",
+              "17000"
+            ],
+            "quote_zh": "播出首周，该剧站内最高热度达到17673"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "首周分账收入超过100万元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "100万元"
+            ],
+            "quote_zh": "同期分账收入超过100万元"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "杨念表示IP改编的核心在于保留原著精神内核、人物关系和情感秩序，技术使用需保持克制。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "杨念"
+            ],
+            "numbers": [],
+            "quote_zh": "IP改编的核心在于保留原著的精神内核"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "剧集为原著粉保留了北派行当规矩、师徒传承、兄弟情义等元素，并通过主角“小白”入局降低新观众门槛。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "保留了北派行当规矩、师徒传承、兄弟情义等元素"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "团队核心制作人员为6人，AI改变了工作结构但未减少导演工作量。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "6人"
+            ],
+            "quote_zh": "团队核心制作人员为6人"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "团队建立了标准化提示词撰写规范，使不同制作人员产出质量一致，为AI影像工业化量产提供基础。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "建立了一套标准化的提示词撰写规范"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "观众弹幕讨论多集中于选角贴合度、人物塑造、场景真实性及剧情走向，对AI技术关注度较低。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "观众弹幕讨论多集中于选角贴合度...对AI技术的关注度相对较"
+          },
+          {
+            "id": "C12",
+            "type": "source_analysis",
+            "text": "杨念认为随着AI工具普及，内容制作门槛降低，创作者的审美判断和内容资产开发能力成为稀缺资源。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "杨念"
+            ],
+            "numbers": [],
+            "quote_zh": "创作者的审美判断和内容资产开发能力正成为稀缺资源"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "杨念认为行业关注点已从“AI能生成什么”转向如何借助AI建立人物、世界观和可持续开发的内容资产。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "杨念"
+            ],
+            "numbers": [],
+            "quote_zh": "行业关注点已从“AI能生成什么”转向如何借助AI建立人物、世"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "《北派笔记》第二季已进入筹备阶段，制作方计划未来三年内持续推进系列内容，逐步完成原著主要故事的影像化呈现。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "北派笔记"
+            ],
+            "numbers": [
+              "三年"
+            ],
+            "quote_zh": "第二季已进入筹备阶段，制作方计划在未来三年内持续推进系列内容"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "从第二季起，团队计划定期发布制作花絮，邀请原著读者参与讨论角色、场景和镜头设计。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "从第二季起，团队计划定期发布制作花絮"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "团队计划以独立账号运营剧中的AI演员，根据角色适配度参与其他IP剧集，探索数字角色的长期资产化运营。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "计划以独立账号运营剧中的AI演员"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "《北派笔记》正在腾讯视频热播。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "腾讯视频",
+              "北派笔记"
+            ],
+            "numbers": [],
+            "quote_zh": "AI精品短剧《北派笔记》正在腾讯视频热播"
+          }
+        ],
+        "terms": [
+          {
+            "term": "AI精品短剧",
+            "gloss_ja": "AI高品質短編ドラマ",
+            "what_is": "AI技術を活用して制作された高品質な短編ドラマシリーズ。",
+            "why_now": "本ニュースの中心作品『北派笔记』がこの形式で制作され、高い視聴熱度を記録したため。"
+          },
+          {
+            "term": "分账收入",
+            "gloss_ja": "収益分配収入",
+            "what_is": "プラットフォームと制作会社間で収益を分配する仕組み。",
+            "why_now": "『北派笔记』が初週で100万元超の分账收入を達成したことが話題。"
+          },
+          {
+            "term": "虚拟演员",
+            "gloss_ja": "仮想俳優",
+            "what_is": "AIで生成されたデジタルキャラクターを俳優として運用する概念。",
+            "why_now": "制作側が第二季から独立アカウントで運用し、他作品にも出演させる計画を発表。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "微短剧精品创作传播计划‘五个一批工程’第一批拟扶持项目",
+      "ledger": {
+        "topic_key": "微短剧精品创作传播计划‘五个一批工程’第一批拟扶持项目",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家广播电视总局办公厅于2026年7月28日公示了“微短剧精品创作传播计划‘五个一批工程’”第一批拟扶持项目。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "国家广播电视总局"
+            ],
+            "numbers": [
+              "2026年7月28日"
+            ],
+            "quote_zh": "2026-07-28 16:50 来源：网络视听节目管理司"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "该计划分三批征集作品，第一批拟扶持项目包括《开标之战》《扁担银行》等16部作品。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "《开标之战》",
+              "《扁担银行》"
+            ],
+            "numbers": [
+              "16部"
+            ],
+            "quote_zh": "确定《开标之战》《扁担银行》等16部作品"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "公示期至2026年8月3日，期间可以书面形式向广电总局网络视听节目管理司反映异议。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "广电总局网络视听节目管理司"
+            ],
+            "numbers": [
+              "2026年8月3日"
+            ],
+            "quote_zh": "请于2026年8月3日前以书面形式"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "项目由各省级广播电视行政部门和中央直属单位推荐，广电总局组织专家评审。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [
+              "省级广播电视行政部门",
+              "中央直属单位",
+              "广电总局"
+            ],
+            "numbers": [],
+            "quote_zh": "经各省级广播电视行政部门和中央直属单位推荐"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "该计划旨在持续引导微短剧精品创作，发挥精品示范引领作用。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "source_name": "国家广播电视总局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "为持续引导微短剧精品创作，充分发挥精品示范引领作用"
+          },
+          {
+            "id": "C6",
+            "type": "source_analysis",
+            "text": "有报道称，实施“五个一批”工程旨在全年打造千部优秀微短剧。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "tvoao.com",
+            "entities": [],
+            "numbers": [
+              "千部"
+            ],
+            "quote_zh": "全年打造千部优秀微短剧"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "有报道指出，应建立省级微短剧精品项目遴选机制，择优上报总局参与扶持项目评审。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "tvoao.com",
+            "entities": [
+              "省级微短剧精品项目遴选机制"
+            ],
+            "numbers": [],
+            "quote_zh": "建立省级微短剧精品项目遴选机制"
+          },
+          {
+            "id": "C8",
+            "type": "source_analysis",
+            "text": "有报道建议，积极争取地方财政支持，规范引导社会资本参与。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "tvoao.com",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "积极争取地方财政支持，规范引导社会资本参与"
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "マイクロドラマ",
+            "what_is": "短尺のネット配信ドラマ",
+            "why_now": "本計画の対象作品であり、規制・奨励の焦点"
+          },
+          {
+            "term": "五个一批工程",
+            "gloss_ja": "五つの一批プロジェクト",
+            "what_is": "優良作品を選抜・支援する制度",
+            "why_now": "本公示の根幹となる政策枠組み"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
+}

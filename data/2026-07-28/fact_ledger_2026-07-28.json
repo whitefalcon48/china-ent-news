@@ -1,0 +1,270 @@
+{
+  "date": "2026-07-28",
+  "generated_at": "2026-07-28T04:16:11.291Z",
+  "ledgers": [
+    {
+      "topic_key": "AI精品短剧《北派笔记》",
+      "ledger": {
+        "topic_key": "AI精品短剧《北派笔记》",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "AI精品短剧『北派笔记』の創作分享会が2026年7月24日に北京で開催された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "AI精品短剧《北派笔记》",
+              "北京"
+            ],
+            "numbers": [
+              "2026-07-24"
+            ],
+            "quote_zh": "7月24日，AI精品短剧《北派笔记》在京举行创作分享会"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "『北派笔记』は兴艺凯晨が制作、满天星科技が技術提供し、编剧兼総导演は杨念。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "兴艺凯晨",
+              "满天星科技",
+              "杨念"
+            ],
+            "numbers": [],
+            "quote_zh": "由兴艺凯晨出品、满天星科技承制，编剧及总导演杨念"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "本作は6月小说网の作者云峰の小説『北派盗墓笔记』を原作とし、貧しい家庭に生まれた项云峰が重病の祖母の治療費を稼ぐため北へ向かい、北派の江湖に巻き込まれる物語。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "6月小说网",
+              "云峰",
+              "《北派盗墓笔记》",
+              "项云峰"
+            ],
+            "numbers": [],
+            "quote_zh": "改编自6月小说网作者云峰的作品《北派盗墓笔记》"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "放送初週、腾讯视频での最高热度は17673に達し、同プラットフォームで初めて热度17000を超えたAI精品短剧となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "腾讯视频"
+            ],
+            "numbers": [
+              "17673",
+              "17000"
+            ],
+            "quote_zh": "播出首周，该剧站内最高热度达到17673，成为腾讯视频首部热"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "放送初週の分账収入は100万元を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "100万元"
+            ],
+            "quote_zh": "同期分账收入超过100万元"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "杨念は、IP改编の核心は原作の精神、人物関係、情感秩序を保つことであり、技術の使用は抑制的であるべきと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "杨念"
+            ],
+            "numbers": [],
+            "quote_zh": "IP改编的核心在于保留原著的精神内核、人物关系和情感秩序，技"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "制作チームは6人のコアメンバーで構成され、AIは导演の作業量を減らさず、作業構造を変えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [
+              "6人"
+            ],
+            "quote_zh": "团队核心制作人员为6人，AI并未减少导演的工作量，而是改变了"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "チームは標準化されたプロンプト記述規範を確立し、AI映像の工業的量産の基礎を築いた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "团队建立了一套标准化的提示词撰写规范，为AI影像的工业化量产"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "視聴者の弹幕議論は主にキャスティング、人物造形、シーンのリアリティ、ストーリー展開に集中し、AI技術への関心は低かった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "观众弹幕讨论多集中于选角贴合度、人物塑造、场景真实性及剧情走"
+          },
+          {
+            "id": "C10",
+            "type": "source_analysis",
+            "text": "杨念は、AI生成ツールの普及によりコンテンツ制作のハードルが下がり、クリエイターの審美眼とコンテンツ資産開発能力が希少資源になると分析した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "杨念"
+            ],
+            "numbers": [],
+            "quote_zh": "随着AI生成工具普及，内容制作门槛降低，创作者的审美判断和内"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "『北派笔记』第二季は既に準備段階に入り、制作側は今後3年以内にシリーズを継続し、原作の主要ストーリーを映像化する計画。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "《北派笔记》"
+            ],
+            "numbers": [
+              "3年"
+            ],
+            "quote_zh": "《北派笔记》第二季已进入筹备阶段，制作方计划在未来三年内持续"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "第二季から、制作チームは定期的に制作メイキングを公開し、原作読者にキャラクターやシーン、カットの議論に参加してもらう予定。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "从第二季起，团队计划定期发布制作花絮，邀请原著读者参与讨论角"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "制作側は剧中のAI演员を独立したアカウントで運営し、役の適合度に応じて他のIP剧に参加させることで、デジタルキャラクターの長期的資産化を模索する計画。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "AI演员"
+            ],
+            "numbers": [],
+            "quote_zh": "计划以独立账号运营剧中的AI演员，根据角色适配度参与其他IP"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "『北派笔记』は腾讯视频で配信中。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "腾讯视频"
+            ],
+            "numbers": [],
+            "quote_zh": "AI精品短剧《北派笔记》正在腾讯视频热播"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "新京报は、業界の関心が「AIが何を生成できるか」から「AIを使って人物や世界観、持続可能なコンテンツ資産をどう構築するか」に移ったと報じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "行业关注点已从“AI能生成什么”转向如何借助AI建立人物、世"
+          }
+        ],
+        "terms": [
+          {
+            "term": "AI精品短剧",
+            "gloss_ja": "AI高品質短編ドラマ",
+            "what_is": "AI技術を活用して制作された高品質な短編ドラマシリーズ。",
+            "why_now": "本作は腾讯视频で初めて热度17000を超えたAI精品短剧であり、その成功が注目されている。"
+          },
+          {
+            "term": "分账收入",
+            "gloss_ja": "収益分配収入",
+            "what_is": "プラットフォームと制作会社間で収益を分配する仕組み。",
+            "why_now": "本作の初週分账收入が100万元を超え、商業的成功を示している。"
+          },
+          {
+            "term": "弹幕",
+            "gloss_ja": "コメント字幕",
+            "what_is": "動画上に流れる視聴者のリアルタイムコメント。",
+            "why_now": "視聴者の弹幕がAI技術よりストーリーに集中していることが、制作側の意図通りと評価された。"
+          },
+          {
+            "term": "IP改编",
+            "gloss_ja": "知的財産の翻案",
+            "what_is": "既存の小説などのIPをドラマ化すること。",
+            "why_now": "本作は人気小説を原作とし、原作の精神を保つことが強調されている。"
+          },
+          {
+            "term": "虚拟演员",
+            "gloss_ja": "仮想俳優",
+            "what_is": "AIで生成されたデジタルキャラクター。",
+            "why_now": "制作側はAI演员を独立アカウントで運営し、長期的資産化を計画している。"
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
