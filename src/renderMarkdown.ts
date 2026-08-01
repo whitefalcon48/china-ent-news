@@ -27,7 +27,7 @@ export function getPublishableArticles(articles: ProcessedArticle[]) {
     });
 }
 
-function renderMarkdown(articles: ProcessedArticle[], date: string, provider: AiProvider) {
+export function renderMarkdown(articles: ProcessedArticle[], date: string, provider: AiProvider) {
   const publishableArticles = getPublishableArticles(articles);
   const body = publishableArticles.length
     ? publishableArticles.map((article, index) => renderArticle(article, index + 1)).join("\n\n")
@@ -55,7 +55,7 @@ function renderArticle(article: ProcessedArticle, index: number) {
     `source_type: ${summary.source_type} / freshness_label: ${summary.freshness_label}`,
     formatSourceMix(article),
     summary.what_happened ? `### 何が起きた？\n${summary.what_happened}` : "",
-    summary.why_it_matters ? `### ビンタンの注目ポイント\n${summary.why_it_matters}` : "",
+    summary.why_it_matters ? `### ビンタンのひとこと感想\n${summary.why_it_matters}` : "",
     summary.reaction_view ? `### 反応・見られ方\n${summary.reaction_view}` : "",
     summary.japan_context_note ? `### 日本語圏では見えにくいポイント\n${summary.japan_context_note}` : "",
     `ソース：${sources.map(formatSourceLink).join("、")}`

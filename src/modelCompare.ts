@@ -138,7 +138,7 @@ function renderComparisonMarkdown(combo: string, processed: ProcessedArticle[], 
   const articles = processed.map((article, index) => {
     const summary = article.summary;
     if (!summary) return `## ${index + 1}. ${article.raw.title}\n\n生成失敗: ${article.aiError || "unknown error"}\n`;
-    return `## ${index + 1}. ${summary.title_ja}\n\n${summary.lead}\n\n### 何が起きた？\n\n${summary.what_happened}\n\n### ビンタンの注目ポイント\n\n${summary.why_it_matters}\n`;
+    return `## ${index + 1}. ${summary.title_ja}\n\n${summary.lead}\n\n### 何が起きた？\n\n${summary.what_happened}\n\n### ビンタンのひとこと感想\n\n${summary.why_it_matters}\n`;
   }).join("\n");
   return `# Model comparison ${combo}\n\n## Machine checks\n\n\`\`\`json\n${JSON.stringify(checks, null, 2)}\n\`\`\`\n\n${articles}`;
 }

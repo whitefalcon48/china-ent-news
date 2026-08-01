@@ -11,6 +11,7 @@
     "test:title": "tsx src/testSummaryTitle.ts",
     "test:sources": "tsx src/testSourceRelevance.ts",
     "test:evs": "tsx src/testEditorialValue.ts",
+    "test:kanji": "tsx src/testDisplayKanji.ts",
     "check": "tsc --noEmit",
     "audit:sources": "tsx src/auditSources.ts",
     "build:site": "tsx src/site/build.ts",
@@ -26,6 +27,7 @@
   "dependencies": {
     "cheerio": "^1.0.0",
     "dotenv": "^16.4.7",
+    "opencc-js": "^1.4.1",
     "rss-parser": "^3.13.0",
     "tsx": "^4.19.2"
   },
