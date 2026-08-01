@@ -48,13 +48,13 @@
       "rawContentLength": 6931
     },
     "summary": {
-      "title_ja": "周星馳監督『功夫女足』、公開5日で興収8.55億元突破 深圳で舞台挨拶も",
+      "title_ja": "周星馳（チャウ・シンチー）監督『功夫女足』、公開5日で興収8.55億元突破 深圳で舞台挨拶も",
       "badge": "NEWS",
       "lead": "周星馳監督の最新作『功夫女足』が7月11日に公開され、公開5日連続でチャート1位を獲得。7月15日時点で興行収入8.55億元、観客動員2458.5万人を突破した。",
       "what_happened": "周星馳監督・脚本の映画『功夫女足』は、張小斐、迪麗熱巴、張芸興が主演、劉嘉玲、佐藤健が特別出演。2026年7月11日に公開され、公開半日で興収1億元を突破。7月15日22時30分時点で全国累計観客動員2458.5万人、興収8.55億元を超え、5日連続で複数チャート1位を記録した。7月15日には周星馳監督が張芸興、雪野、蔡思貝、倪好と共に深圳で舞台挨拶を実施。『少林足球』出演の陳国坤もサプライズ登場した。彭昱暢が2回鑑賞し絶賛した。",
       "reaction_view": "",
-      "why_it_matters": "周星馳監督の新作が公開5日で興収8.55億元、予測30億元超え。夏の興行シーズンを牽引する勢いです。『少林足球』の陳国坤がサプライズ登場するなど、過去作との繋がりも話題に。日本語圏では周星馳作品のヒット規模が伝わりにくいので、この数字の大きさを押さえておきたいですね。",
-      "editor_comment": "公開半日で1億元突破って、さすがの周星馳ブランドですね！これからどこまで伸びるか、週末の数字も気になります。",
+      "why_it_matters": "公開半日で1億元突破！ 5日で8.55億元です！ ただものじゃないスタートですね。しかも佐藤健さんが特別出演！ 日本ファンとしても気になりますが、現時点では日本公開の情報は見当たりません。まずは中国国内で週末の数字をどこまで伸ばすか、要チェックですね！",
+      "editor_comment": "",
       "japan_context_note": "",
       "category": "映画",
       "confidence": "A",
@@ -75,7 +75,7 @@
         },
         {
           "name": "界面新闻 影视产业",
-          "url": "https://www.jiemian.com/article/14745259.html"
+          "url": "https://www.jiemian.com/article/14752726.html"
         }
       ],
       "has_official_source": false,
@@ -109,7 +109,7 @@
         },
         {
           "name": "界面新闻 影视产业",
-          "url": "https://www.jiemian.com/article/14745259.html"
+          "url": "https://www.jiemian.com/article/14752726.html"
         }
       ],
       "tags": [
@@ -134,10 +134,9 @@
           "C10"
         ],
         "why_it_matters": [
-          "C2",
-          "C3",
-          "C11",
-          "C7"
+          "C1",
+          "C10",
+          "C2"
         ],
         "reaction_view": [],
         "japan_context_note": []
@@ -469,6 +468,33 @@
         },
         "unresolved": []
       },
+      "ai_models": {
+        "base": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-flash"
+        },
+        "ledger": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "comment": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        }
+      },
+      "display_normalization": {
+        "residues": []
+      },
+      "comment_grounding": {
+        "topic_key": "功夫女足",
+        "refs": [
+          "C1",
+          "C10",
+          "C2"
+        ],
+        "gated_sentences_removed": [],
+        "unmatched_numbers": []
+      },
       "claim_check": {
         "topic_key": "功夫女足",
         "violations": [
@@ -479,10 +505,10 @@
             "detail": "周星馳監督の最新作『功夫女足』が7月11日に公開され、公開5日連続でチャート1位を獲得。"
           },
           {
-            "section": "why_it_matters",
-            "rule": "banned_phrase_other",
+            "section": "comment",
+            "rule": "hedged_verified_fact",
             "severity": "warning",
-            "detail": "1905电影网は予測興収30億元超えを報じ、界面新聞は夏の興行シーズンを活性化させたと分析しています。"
+            "detail": "しかも佐藤健さんが特別出演！"
           }
         ],
         "gated_violation_count": 0,
@@ -494,10 +520,7 @@
         "used": true,
         "regenerated": false,
         "fallback_reason": "",
-        "exclamation_count": 1,
-        "opening": "周星馳監督の新作が公",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 4
       }
     }
   },
@@ -545,13 +568,13 @@
       "rawContentLength": 1899
     },
     "summary": {
-      "title_ja": "2026中国—ASEAN微短劇大赛、北京で推介会—AI部門新設で賞金最大100万元",
+      "title_ja": "2026中国—ASEAN微短劇大賽、北京で推介会—AI部門新設で賞金最大100万元",
       "badge": "NEWS",
-      "lead": "2026中国—ASEAN微短劇大赛の専場推介会が7月17日に北京で開催された。大会は真人・AI・脚本の3部門を設け、AI活用と国際協力を前面に打ち出している。",
-      "what_happened": "2026年7月17日、北京広西大厦で「2026中国—东盟微短劇大赛」の専場推介会が開かれた。本大会は第八回中国—东盟視聴周の六大活動の一つで、テーマは「AI赋能 共创共享」（AIが力を与え、共に創り共有する）。競技カテゴリーは真人微短劇、AI微短劇、オリジナル脚本の3つ。真人微短劇の一等賞には100万元、AI微短劇の一等賞には20万元の支援金が支給される。受賞作品は全面的な伝播推進と産業化の機会を得られる。作品募集は現在集中段階で、8月中旬から9月下旬に専門審査、10月19日に広西北海で開催される視聴周開幕式で表彰される。10月20日には成果発表会と創作採風が行われ、『中国—东盟微短劇国際伝播発展報告』も発表予定。大会は火山引擎Seedance2.0動画生成大モデルを搭載した飛兔兔AI短劇共創プラットフォームを活用し、創作チームや大学に共創チャンネルを開放する。",
+      "lead": "2026中国—ASEAN微短劇大賽の専場推介会が7月17日に北京で開催された。大会は真人・AI・脚本の3部門を設け、AI活用と国際協力を前面に打ち出している。",
+      "what_happened": "2026年7月17日、北京広西大廈で「2026中国—東盟微短劇大賽」の専場推介会が開かれた。本大会は第八回中国—東盟視聴周の六大活動の一つで、テーマは「AI賦能 共創共享」（AIが力を与え、共に創り共有する）。競技カテゴリーは真人微短劇、AI微短劇、オリジナル脚本の3つ。真人微短劇の一等賞には100万元、AI微短劇の一等賞には20万元の支援金が支給される。受賞作品は全面的な伝播推進と産業化の機会を得られる。作品募集は現在集中段階で、8月中旬から9月下旬に専門審査、10月19日に広西北海で開催される視聴周開幕式で表彰される。10月20日には成果発表会と創作採風が行われ、『中国—東盟微短劇国際伝播発展報告』も発表予定。大会は火山引擎Seedance2.0動画生成大モデルを搭載した飛兎兎AI短劇共創プラットフォームを活用し、創作チームや大学に共創チャンネルを開放する。",
       "reaction_view": "",
-      "why_it_matters": "「微短劇（マイクロドラマ）」は1話数分の縦型ドラマで、スマホ向けに量産されています。中国国内で爆発的に普及し、今度はASEAN向けに本格輸出しようというのがこの大会の狙い。注目は「AI微短劇」部門で、火山引擎の動画生成モデルを使った作品が20万円の支援金対象に。単なるコンテストではなく、広西をハブにした国際協力の枠組みとして見ると面白いです。",
-      "editor_comment": "100万元の賞金、すごいですね！どんな作品が集まるのか、10月の発表が楽しみです。",
+      "why_it_matters": "1話数分の縦型ドラマ“微短劇”が、ASEANとタッグを組んで国際展開する大会が始まりました！ AI部門も設置され、一等賞は20万元。真人部門の100万元と比べると少なめですが、AI創作を本気で後押しする姿勢が伝わってきます。10月の表彰式と『国際伝播発展報告』の発表では、どんな作品とデータが出てくるのか、ちょっと楽しみです。",
+      "editor_comment": "",
       "japan_context_note": "",
       "category": "イベント・アワード",
       "confidence": "C",
@@ -657,8 +680,8 @@
         "why_it_matters": [
           "C8",
           "C9",
-          "C13",
-          "C15"
+          "C11",
+          "C12"
         ],
         "reaction_view": [],
         "japan_context_note": []
@@ -1145,11 +1168,39 @@
         },
         "unresolved": []
       },
+      "ai_models": {
+        "base": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-flash"
+        },
+        "ledger": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "comment": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        }
+      },
+      "display_normalization": {
+        "residues": []
+      },
+      "comment_grounding": {
+        "topic_key": "2026中国—东盟微短剧大赛",
+        "refs": [
+          "C8",
+          "C9",
+          "C11",
+          "C12"
+        ],
+        "gated_sentences_removed": [],
+        "unmatched_numbers": []
+      },
       "claim_check": {
         "topic_key": "2026中国—东盟微短剧大赛",
         "violations": [],
         "gated_violation_count": 0,
-        "action": "text_removed"
+        "action": "none"
       },
       "tone_mode": "normal",
       "comment_stage": {
@@ -1157,10 +1208,7 @@
         "used": true,
         "regenerated": false,
         "fallback_reason": "",
-        "exclamation_count": 1,
-        "opening": "微短劇（マイクロドラ",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 1
       }
     }
   },
