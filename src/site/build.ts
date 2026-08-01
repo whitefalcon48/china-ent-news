@@ -342,7 +342,7 @@ function renderBingtangComment(main: string, closing = "") {
   if (!main && !closing) return "";
   return `<section class="bingtang-comment">
     ${renderAvatar("avatar-36")}
-    <div><h3>ビンタンのひとこと感想</h3>${main ? `<p>${escapeHtml(main)}</p>` : ""}${closing ? `<hr><p>${escapeHtml(closing)}</p>` : ""}</div>
+    <div><h3>ビンタンの注目ポイント</h3>${main ? `<p>${escapeHtml(main)}</p>` : ""}${closing ? `<hr><p>${escapeHtml(closing)}</p>` : ""}</div>
   </section>`;
 }
 

@@ -41,7 +41,7 @@ ${summary.lead}
 
 ${summary.what_happened}
 
-**ビンタンのひとこと感想**: ${summary.why_it_matters}
+**ビンタンの注目ポイント**: ${summary.why_it_matters}
 
 ソース: ${sources.map(formatSource).join(" / ")}`;
 }
