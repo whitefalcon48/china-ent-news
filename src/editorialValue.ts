@@ -19,12 +19,21 @@ export type EditorialValueAssessment = {
   };
   total: number;
   caps: string[];
-  result: "qualified" | "evs_below_threshold" | "official_only_limit";
+  result: "qualified" | "review_rescue" | "evs_below_threshold" | "official_only_limit";
 };
 
 export type EditorialValueResult = {
   llm: "ok" | "fallback";
   candidates: EditorialValueAssessment[];
+};
+
+export type EditorialReviewRescue = {
+  enabled: boolean;
+  activated: boolean;
+  threshold: number;
+  limit: number;
+  selected_topic_keys: string[];
+  reason: "standard_qualified" | "review_gate_disabled" | "no_borderline_candidates" | "zero_standard_qualified";
 };
 
 type LlmScore = {
@@ -35,6 +44,33 @@ type LlmScore = {
   angle_reason?: string;
   angle_hint?: string;
 };
+
+export function selectEditorialReviewRescue(
+  assessments: EditorialValueAssessment[],
+  options: { enabled: boolean; threshold?: number; limit?: number }
+): EditorialReviewRescue {
+  const threshold = clampInteger(options.threshold, 1, 6, 6);
+  const limit = clampInteger(options.limit, 1, 10, 3);
+  if (!options.enabled) {
+    return { enabled: false, activated: false, threshold, limit, selected_topic_keys: [], reason: "review_gate_disabled" };
+  }
+  if (assessments.some((assessment) => assessment.total >= 7)) {
+    return { enabled: true, activated: false, threshold, limit, selected_topic_keys: [], reason: "standard_qualified" };
+  }
+  const selectedTopicKeys = assessments
+    .filter((assessment) => assessment.total >= threshold)
+    .sort((a, b) => b.total - a.total || a.topic_key.localeCompare(b.topic_key, "ja"))
+    .slice(0, limit)
+    .map((assessment) => assessment.topic_key);
+  return {
+    enabled: true,
+    activated: selectedTopicKeys.length > 0,
+    threshold,
+    limit,
+    selected_topic_keys: selectedTopicKeys,
+    reason: selectedTopicKeys.length ? "zero_standard_qualified" : "no_borderline_candidates"
+  };
+}
 
 export async function evaluateEditorialValues(
   topics: TopicCandidate[],
@@ -236,6 +272,11 @@ function parseJson(text: string) {
 function clampScore(value: unknown) {
   const number = typeof value === "number" ? value : Number(value);
   return Number.isFinite(number) ? Math.max(0, Math.min(2, Math.round(number))) : 0;
+}
+
+function clampInteger(value: unknown, min: number, max: number, fallback: number) {
+  const number = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(number) ? Math.max(min, Math.min(max, Math.round(number))) : fallback;
 }
 
 function cleanReason(value: unknown) {

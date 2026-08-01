@@ -2,6 +2,18 @@
 
 2026-07-19 の実出力（10本中7本が前日と同一topic・「要するに」開始9本・公式のみ3本・レビューで6/10却下）の原因分析に基づく立て直し設計。公開判断専用の「編集価値スコア（EVS）」10点制・7点以上のみ公開、過去掲載履歴とレビュー結果による重複制御、ソース拡張の再配置、コメント生成v3を導入する。この文書に沿って Codex が実装する。設計判断はすべて確定済み。R1〜R7・B1〜B12・U1〜U7 は実装済みが前提。**実装は §0 のとおり P0（本日: 実装 → Actions 検証 → サイト生成まで）と P1（後日）に分割する。P0 は単独で検証・公開できる完結した仕様で、タスク列 V1〜V12 がそのまま P0 である。**
 
+## 運用hotfix: レビュー限定EVS救済（2026-08-01）
+
+7月21〜27日の7日間で6日が0件となり、収集候補は101〜105件、Serper成功16/16でもEVS最高6点の日が続いたため、次の限定救済を追加する。本節は「7点未満で本数を埋めない」というP0規則を、人間レビュー運用中だけ部分的に上書きする。
+
+- `REVIEW_GATE=true` かつ通常の7点以上候補が0件の場合だけ発動する。
+- EVS 6点の候補を最大3件、公開記事ではなくレビュー候補として選定する。5点以下は救済しない。
+- 7点以上が1件でもある日、`REVIEW_GATE=false`、または `EVS_REVIEW_RESCUE=false` の場合は発動しない。
+- 既存のカテゴリ・ソース・SNS単独・low priority・official-only上限は救済候補にもそのまま適用する。
+- trace の `editorial_value.review_rescue` に enabled / activated / threshold / limit / selected_topic_keys / reason を記録し、各救済候補の result を `review_rescue`、selection_reason を `evs_review_rescue:<score>` とする。
+- 環境変数は `EVS_REVIEW_RESCUE`（既定true）、`EVS_REVIEW_RESCUE_THRESHOLD`（既定6、上限6）、`EVS_REVIEW_RESCUE_LIMIT`（既定3）。
+- EVS LLMがfallbackした場合も同じ条件で救済できるが、レビュー承認なしには公開されない。これによりAI障害時の0件固定を避けつつ、自動公開への品質条件は緩めない。
+
 ## 0. 実装フェーズ分割（P0 = 本日 / P1 = 後日）
 
 **P0 要件と実現箇所**:

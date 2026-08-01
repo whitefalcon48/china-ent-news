@@ -70,6 +70,9 @@ jobs:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           SOURCE_EXPANSION_SKIP_RSSHUB: "true"
           SOURCE_EXPANSION_MAX_TOPICS: "8"
+          EVS_REVIEW_RESCUE: "true"
+          EVS_REVIEW_RESCUE_THRESHOLD: "6"
+          EVS_REVIEW_RESCUE_LIMIT: "3"
           WRITE_COMPARE_FIXTURE: ${{ inputs.write_compare_fixture == true && 'true' || 'false' }}
 
       - name: Upload generated Markdown

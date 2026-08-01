@@ -6,7 +6,7 @@ import { fetchHotSearchArticles } from "./fetchHotSearch.js";
 import { expandTopicSources } from "./expandSources.js";
 import { ClaimCheckDiscardError } from "./claimCheck.js";
 import { evaluateTopicInformationCompleteness } from "./completenessGate.js";
-import { evaluateEditorialValues, isOfficialOnlyTopic, type EditorialValueAssessment, type EditorialValueResult } from "./editorialValue.js";
+import { evaluateEditorialValues, isOfficialOnlyTopic, selectEditorialReviewRescue, type EditorialValueAssessment, type EditorialValueResult } from "./editorialValue.js";
 import { writeFactLedgerFile } from "./factLedger.js";
 import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError } from "./llmCallBudget.js";
 import { writeCompareFixture } from "./compareFixture.js";
@@ -100,7 +100,12 @@ async function main() {
     : {
         selected: [], dropped: [], backfillCandidates: [],
         informationGate: { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] },
-        editorialValue: { enabled: false, llm: "fallback" as const, candidates: [] },
+        editorialValue: {
+          enabled: false,
+          llm: "fallback" as const,
+          candidates: [],
+          review_rescue: { enabled: false, activated: false, threshold: 6, limit: 3, selected_topic_keys: [], reason: "review_gate_disabled" as const }
+        },
         publicationHistory: { loaded_days: publicationHistory.loaded_days, entry_count: publicationHistory.entries.length, matches: [] },
         officialOnly: { limit: 1, used: [], excluded: [] }
       };
@@ -842,6 +847,12 @@ async function selectTopicsForAi(
     ? await evaluateEditorialValues(evsShortlist.map((item) => item.topic), evsHistoryMatches, provider, llmCallBudget)
     : { llm: "fallback", candidates: [] };
   const assessments = new Map(editorialValueResult.candidates.map((assessment) => [assessment.topic_key, assessment]));
+  const reviewRescue = selectEditorialReviewRescue(editorialValueResult.candidates, {
+    enabled: editorialGateEnabled && isReviewGateEnabled() && process.env.EVS_REVIEW_RESCUE !== "false",
+    threshold: process.env.EVS_REVIEW_RESCUE_THRESHOLD ? Number(process.env.EVS_REVIEW_RESCUE_THRESHOLD) : undefined,
+    limit: process.env.EVS_REVIEW_RESCUE_LIMIT ? Number(process.env.EVS_REVIEW_RESCUE_LIMIT) : undefined
+  });
+  const reviewRescueKeys = new Set(reviewRescue.selected_topic_keys);
   const eligible: SelectedTopic[] = [];
   for (const item of evsShortlist) {
     if (!editorialGateEnabled) {
@@ -849,6 +860,16 @@ async function selectTopicsForAi(
       continue;
     }
     const assessment = assessments.get(item.topic.topic_key);
+    if (assessment && reviewRescueKeys.has(item.topic.topic_key)) {
+      assessment.result = "review_rescue";
+      eligible.push({
+        ...item,
+        score: assessment.total,
+        editorialValue: assessment,
+        selectionReason: `${item.selectionReason}, evs_review_rescue:${assessment.total}`
+      });
+      continue;
+    }
     if (!assessment || assessment.total < 7) {
       dropped.push({ topic: item.topic, reason: `evs_below_threshold:${assessment?.total ?? 0}` });
       continue;
@@ -933,7 +954,7 @@ async function selectTopicsForAi(
     dropped,
     backfillCandidates,
     informationGate,
-    editorialValue: { enabled: editorialGateEnabled, ...editorialValueResult },
+    editorialValue: { enabled: editorialGateEnabled, ...editorialValueResult, review_rescue: reviewRescue },
     publicationHistory: { loaded_days: publicationHistory.loaded_days, entry_count: publicationHistory.entries.length, matches: historyMatches },
     officialOnly: { limit: 1, used: officialUsed, excluded: officialExcluded }
   };

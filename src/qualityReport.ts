@@ -15,7 +15,12 @@ async function main() {
   const trace = JSON.parse(await fs.readFile(path.join(outputDir, traceFile), "utf8")) as {
     information_gate?: { enabled: boolean; evaluated: number; excluded: number; excluded_topics: Array<{ topic_key: string; reasons: string[] }> };
     llm_call_budget?: { limit: number; used: number };
-    editorial_value?: { enabled: boolean; llm: string; candidates: Array<{ topic_key: string; axes: Record<string, { score: number; reason: string; angle_hint?: string }>; total: number; caps: string[]; result: string }> };
+    editorial_value?: {
+      enabled: boolean;
+      llm: string;
+      candidates: Array<{ topic_key: string; axes: Record<string, { score: number; reason: string; angle_hint?: string }>; total: number; caps: string[]; result: string }>;
+      review_rescue?: { enabled: boolean; activated: boolean; threshold: number; limit: number; selected_topic_keys: string[]; reason: string };
+    };
     publication_history?: { loaded_days: string[]; entry_count: number; matches: Array<{ topic_key: string; matched_date: string; matched_key: string; substantive_update: string; decision: string }> };
     official_only?: { limit: number; used: string[]; excluded: string[] };
     comment_diversity?: { openings: Array<{ topic_key: string; opening: string }>; regenerated_opening: string[]; regenerated_paraphrase: string[] };
@@ -69,6 +74,9 @@ async function main() {
   console.log("\n## Editorial value score");
   console.log(`- enabled: ${trace.editorial_value?.enabled ?? false}`);
   console.log(`- llm: ${trace.editorial_value?.llm ?? "n/a"}`);
+  console.log(`- review_rescue: ${trace.editorial_value?.review_rescue?.activated ? "activated" : "inactive"}`);
+  console.log(`- review_rescue_reason: ${trace.editorial_value?.review_rescue?.reason ?? "n/a"}`);
+  console.log(`- review_rescue_topics: ${trace.editorial_value?.review_rescue?.selected_topic_keys.join(", ") || "none"}`);
   for (const item of trace.editorial_value?.candidates ?? []) {
     const axes = Object.entries(item.axes).map(([name, value]) => `${name}=${value.score} (${value.reason})`).join(" / ");
     console.log(`- ${item.topic_key}: ${item.total}/10 [${item.result}] ${axes} caps=${item.caps.join(",") || "none"}`);

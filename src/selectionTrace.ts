@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { LlmCallBudget } from "./llmCallBudget.js";
-import type { EditorialValueAssessment } from "./editorialValue.js";
+import type { EditorialReviewRescue, EditorialValueAssessment } from "./editorialValue.js";
 import type { PublicationHistoryMatch } from "./publicationHistory.js";
 import type {
   AiProvider,
@@ -110,6 +110,7 @@ type SelectionTrace = {
     enabled: boolean;
     llm: "ok" | "fallback";
     candidates: EditorialValueAssessment[];
+    review_rescue?: EditorialReviewRescue;
   };
   publication_history: {
     loaded_days: string[];

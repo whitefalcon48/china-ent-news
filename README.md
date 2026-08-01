@@ -178,9 +178,16 @@ LEDGER_AI_MODEL=deepseek-v4-pro
 COMMENT_AI_MODEL=deepseek-v4-pro
 
 MAX_ARTICLES=8
+
+# 人間レビュー有効時のみ。7点合格が0件なら6点候補を最大3件レビュー対象へ救済
+EVS_REVIEW_RESCUE=true
+EVS_REVIEW_RESCUE_THRESHOLD=6
+EVS_REVIEW_RESCUE_LIMIT=3
 ```
 
 APIキーはコードに直接書かず、必ず `.env` またはGitHub Secretsに入れてください。
+
+`EVS_REVIEW_RESCUE` は `REVIEW_GATE=true` のときだけ発動します。自動公開時には7点未満の記事を通しません。
 
 ## GeminiとDeepSeekの切り替え
 
