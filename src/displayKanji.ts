@@ -1,40 +1,44 @@
 import kanjiConfig from "../config/kanji-display-map.json" with { type: "json" };
-import terminologyConfig from "../config/terminology.json" with { type: "json" };
+import OpenCC from "opencc-js";
 import type { SummarizedArticle } from "./types.js";
 
 const PUBLIC_FIELDS = ["title_ja", "lead", "what_happened", "why_it_matters", "reaction_view", "japan_context_note", "editor_comment"] as const;
 
 export type DisplayResidue = { field: (typeof PUBLIC_FIELDS)[number]; chars: string[] };
 
+const toJapaneseShinjitai = OpenCC.Converter({ from: "cn", to: "jp" });
+const openCcSafeInputs = new Set<string>(kanjiConfig.opencc_safe);
+
+function convertDisplayText(value: string) {
+  // Project-specific choices (for example 奖 -> 賞) take precedence over the
+  // general OpenCC cn -> jp conversion. No proper noun or industry term is
+  // exempt: every public field follows the same display rule.
+  const mapped = [...value]
+    .map((character) => {
+      const projectMapping = kanjiConfig.map[character as keyof typeof kanjiConfig.map];
+      if (projectMapping) return projectMapping;
+      // Some Han characters are valid Japanese characters with a different
+      // meaning (for example 干・叶・里). Converting all Japanese prose as
+      // Chinese would corrupt it, so OpenCC is applied only to reviewed,
+      // unambiguous simplified inputs. Ambiguous inputs stay in detect_only.
+      return openCcSafeInputs.has(character) ? toJapaneseShinjitai(character) : character;
+    })
+    .join("");
+  return mapped;
+}
+
 export function applyDisplayKanji(summary: SummarizedArticle): { summary: SummarizedArticle; residues: DisplayResidue[] } {
   if (process.env.DISPLAY_KANJI === "false") return { summary, residues: [] };
   const next = { ...summary };
-  const protectedTerms = [
-    ...terminologyConfig.known_terms,
-    ...terminologyConfig.first_gloss_terms.map((item) => item.term),
-    ...terminologyConfig.always_explain_terms,
-    ...terminologyConfig.preferred_names.map((item) => item.zh)
-  ].filter(Boolean).sort((a, b) => b.length - a.length);
-
   for (const field of PUBLIC_FIELDS) {
-    const placeholders = new Map<string, string>();
-    let value = next[field];
-    for (const term of protectedTerms) {
-      const placeholder = `__BT_PROTECTED_${placeholders.size}__`;
-      if (!value.includes(term)) continue;
-      placeholders.set(placeholder, term);
-      value = value.replaceAll(term, placeholder);
-    }
-    value = [...value].map((character) => kanjiConfig.map[character as keyof typeof kanjiConfig.map] ?? character).join("");
-    for (const [placeholder, term] of placeholders) value = value.replaceAll(placeholder, term);
-    next[field] = value;
+    next[field] = convertDisplayText(next[field]);
   }
   return { summary: next, residues: inspectDisplayKanjiResidues(next) };
 }
 
 export function inspectDisplayKanjiResidues(summary: SummarizedArticle): DisplayResidue[] {
   if (process.env.DISPLAY_KANJI === "false") return [];
-  const residueCharacters = new Set([...Object.keys(kanjiConfig.map), ...kanjiConfig.detect_only]);
+  const residueCharacters = new Set([...Object.keys(kanjiConfig.map), ...kanjiConfig.opencc_safe, ...kanjiConfig.detect_only]);
   return PUBLIC_FIELDS.flatMap((field) => {
     const chars = [...new Set([...summary[field]].filter((character) => residueCharacters.has(character)))];
     return chars.length ? [{ field, chars }] : [];

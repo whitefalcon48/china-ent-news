@@ -180,6 +180,7 @@ official-only 減点(-15)と备案ボーナス削除、`src/topicKey.ts` への�
    ⚠️ は無し（設計・プロンプト文言・辞書初期値は確定済み。Codex は文面を変えずに実装する）。
    受け入れ基準の要点: 公開記事の editor_comment 全て空・「ひとこと」見出し0／公開本文の簡体字残存warning 0／根拠アンカーの無い terms 説明が台帳から削除される／コメントの台帳外数字・エンティティ gate 0件公開／モデル比較ハード条件6項目／維持ライン（官庁≦50%・媒体fresh>0・複数ソースtopic≧1・budget≦60）後退なし
    ローカル実測: `npm run check` 成功。Q4〜Q9 ダミー検算、07-19公開5記事の title/lead/what_happened 残存簡体字0、レビューUI health/一本化表示、model compare 3構成・key分離出力、build:site（3日・23記事・29ページ）成功。APIなし実行は取得0件のため、維持ラインとAI生成品質はActions確認待ち。
+   2026-08-01 全体フィードバック: 公開コメント名を「ビンタンのひとこと感想」へ変更し、旧「ひとこと」と同じ口調を明示。固有名詞・中国業界用語の変換除外を廃止し、全公開テキストへ OpenCC cn→jp とプロジェクト固有マップを適用。7/24分は既存レビューIssueの全3記事へ修正指示を送り、Actions実測する。
 4. **Phase 3c**: analysis_feature 解禁（editorial-character.md 改訂・F5 supersede・1本/日上限）
 
 各段で Actions 実測を挟み、官庁比率 ≦ 50% / 媒体 fresh > 0 / 最終本数・複数ソース topic 数の

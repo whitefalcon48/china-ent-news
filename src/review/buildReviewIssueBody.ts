@@ -9,11 +9,17 @@ export function buildReviewIssueBody(state: ReviewState, articles: ProcessedArti
   const header = `# 📋 ニュースレビュー ${state.date}（${state.articles.length}本）
 
 判定はこのIssueへの返信コメントで。1コメントにまとめて書けます。
+**各行の先頭に「-」「・」などの箇条書き記号を付けず、次の形をそのまま入力してください。**
 
-- \`<番号> 採用\`
-- \`<番号> 却下 <理由タグ> <コメント>\`
-- \`<番号> 修正 <理由タグ> <修正指示>\`
-- \`残り採用\`（未判定をすべて採用）
+\`\`\`text
+1 採用
+2 却下 選定 却下理由
+3 修正 口調 修正指示
+残り採用
+\`\`\`
+
+- 形式: \`<番号> 採用\` / \`<番号> 却下 <理由タグ> <コメント>\` / \`<番号> 修正 <理由タグ> <修正指示>\`
+- \`残り採用\` は未判定をすべて採用
 - 理由タグ: 選定 / 口調 / 用語 / 事実 / 構成 / その他
 
 ---`;
@@ -35,7 +41,7 @@ ${summary.lead}
 
 ${summary.what_happened}
 
-**ビンタンの注目ポイント**: ${summary.why_it_matters}
+**ビンタンのひとこと感想**: ${summary.why_it_matters}
 
 ソース: ${sources.map(formatSource).join(" / ")}`;
 }
