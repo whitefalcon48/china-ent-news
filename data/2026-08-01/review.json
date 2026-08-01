@@ -6,11 +6,11 @@
     {
       "index": 1,
       "topic_key": "九门",
-      "title": "『九門』試写会で南派三叔が7年改稿を告白、7月30日配信開始",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
-      "revision_count": 0
+      "title": "南派三叔が「7年7稿」と明かした『九門』、優酷で配信開始",
+      "status": "revised_pending",
+      "reason_tag": "用語",
+      "comment": "「精華」「反逻辑」は日本語訳を括弧で添える。「刺激のためだけのVFX」の「刺激」は「インパクト」など自然な日本語にする。",
+      "revision_count": 1
     }
   ]
 }

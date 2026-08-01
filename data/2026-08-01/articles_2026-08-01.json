@@ -48,24 +48,24 @@
       "rawContentLength": 6166
     },
     "summary": {
-      "title_ja": "『九門』試写会で南派三叔が7年改稿を告白、7月30日配信開始",
+      "title_ja": "南派三叔が「7年7稿」と明かした『九門』、優酷で配信開始",
       "badge": "NEWS",
-      "lead": "7月28日、北京で『九門』の試写会が開かれ、南派三叔が2016年ヒットドラマ『老九門』の続編となる映画『九門』の脚本を7年かけて毎年書き直したと明かしました。作品は7月30日からネット配信が始まります。",
-      "what_happened": "7月28日、北京で『九門』の試写会が開催され、原作・脚本の南派三叔と監督の柏杉が登壇した。『九門』は2016年ヒットドラマ『老九門』の続編で、張启山（陳偉霆）、吴老狗（曾舜晞）、霍仙姑（陳瑶）が百人部隊失踪の謎を追う冒険物語。南派三叔は「初稿は7年前に完成、毎年業界の進歩に合わせて書き直し、実質7稿。今見せるのは全て精華」と説明。張启山は“反逻辑”な完璧キャラ、吴老狗は庶民の代表だと語った。柏杉監督は「刺激のためだけのVFXにしない」と述べた。7月30日よりネット配信。",
-      "reaction_view": "",
-      "why_it_matters": "2016年爆発ヒットした『老九門』の続編で、南派三叔が「毎年書き直した」と語るほど、変化の速い中国ドラマ産業の現在地が映る。新京報は「初めて全景的に九門九人の江湖熱血冒険物語を描く」と紹介。日本語圏では知名度が低いが、盗墓・冒険ジャンルの定点として配信後の数字が気になる。",
+      "lead": "2016年ヒットドラマ『老九門』の続編『九門』が7月30日、優酷で配信開始。北京での試写会で、原作者・脚本の南派三叔が「脚本は7年間、毎年書き直してきた」と制作の裏側を明かした。",
+      "what_happened": "7月28日、北京で『九門』の試写会が開催され、原作者・脚本の南派三叔と監督・柏杉が登壇した。2016年のドラマ『老九門』の続編で、張啟山（陳偉霆）、吳老狗（曾舜晞）、霍仙姑（陳瑶）が百人部隊失踪の謎を追う冒険物語。南派三叔は「7年前に初稿を書き、その後毎年改稿してきた。今の形は“精華”（エッセンス）だ」と説明。張啟山は“反邏輯”（理屈を超えた）ほど完璧な存在、吳老狗は庶民の代表だと語った。柏杉監督は幻想要素を「インパクトのためだけに使わない」と述べている。7月30日から優酷でネット配信が始まった。",
+      "reaction_view": "新京報は、本作を「九門九人の江湖熱血冒険を初めて全景的に描く」作品と紹介。1905電影網は南派三叔と柏杉監督のコメントを詳報しており、現時点で視聴者の反応や再生データは確認できていない。",
+      "why_it_matters": "南派三叔が「7年間で7つの稿」と言うのは、続編への執念の表れでしょう。ただ、作り手の言葉だけでは評価は分からないので、配信後の再生ランキングやSNSでの感想を確認したいです。この作品が既存ファン以外に届くかどうかも、数字と反応を追えば見えてきそうです。",
       "editor_comment": "",
       "japan_context_note": "",
-      "category": "映画",
+      "category": "中国ドラマ",
       "confidence": "B",
       "source_type": "media_report",
       "published_date": "2026-07-30",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-30",
       "freshness_label": "recent",
       "newsworthiness_score": 70,
       "japan_visibility": "unknown",
       "japan_gap": "unknown",
-      "context_value": "low",
+      "context_value": "medium",
       "sns_heat": "none",
       "source_count": 3,
       "source_list": [
@@ -87,21 +87,23 @@
       "has_sns_signal": false,
       "article_type": "news_event",
       "skip_reason": "",
-      "verification_status": "confirmed",
+      "verification_status": "confirmed_by_media",
       "topic_key": "九门",
       "main_entities": {
         "people": [
-          "南派三叔",
-          "柏杉",
-          "陈伟霆",
+          "陳偉霆",
           "曾舜晞",
-          "陈瑶"
+          "陳瑶",
+          "南派三叔",
+          "柏杉"
         ],
         "works": [
-          "九门",
-          "老九门"
+          "『九門』",
+          "『老九門』"
         ],
-        "organizations": []
+        "organizations": [
+          "優酷"
+        ]
       },
       "related_sources": [
         {
@@ -118,15 +120,15 @@
         }
       ],
       "tags": [
+        "九門",
+        "老九門",
         "南派三叔",
-        "老九门",
-        "九门",
+        "優酷",
         "中国ドラマ",
-        "ネット配信",
-        "試写会"
+        "配信"
       ],
       "publish_priority": "medium",
-      "publish_reason": "中国で人気の盗墓系IP新作が配信開始。原作者7年改稿という制作背景も話題になり得る。",
+      "publish_reason": "中国での話題作の続編が配信開始。南派三叔の制作エピソードが注目ポイントとなる。",
       "claim_refs": {
         "what_happened": [],
         "why_it_matters": [],
@@ -234,7 +236,7 @@
     "generationMeta": {
       "topic_key": "九门",
       "ledger_used": false,
-      "ledger_fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text",
+      "ledger_fallback_reason": "review_saved_ledger_missing",
       "ai_models": {
         "base": {
           "provider": "deepseek",
