@@ -1208,23 +1208,23 @@
       "rawContentLength": 1874
     },
     "summary": {
-      "title_ja": "成毅、短剧の谐音梗で話題に ファンが待機作をPR",
+      "title_ja": "俳優・成毅が“無断出演”!? 短劇の同音ネタが微博で沸騰",
       "badge": "NEWS",
-      "lead": "2026年7月23日、短剧『砵兰街行动』の台詞で「诚意」と「成毅」の同音を利用した谐音梗（同音ネタ）が発生し、微博で話題となった。成毅の代表作『莲花楼』の開播3周年とも重なり、ファンは待機作品の宣伝に活用した。",
-      "what_happened": "2026年7月23日、短剧『砵兰街行动』の台詞「我今天一个人过来，就是带着诚意」と「你别说带成毅了，带刘德华也没用！」が谐音梗（同音ネタ）として微博で拡散。話題「#成毅路过短剧#」の閲覧数は762.7万を超え、高位热搜となった。同日は成毅の代表作『莲花楼』の開播3周年でもあり、ファンは谐音梗を利用して待機作品『狩谎』『两京十五日』『英雄志』を宣伝。网友は「成毅=诚意=成亿」の谐音遊びを広め、「零片酬、零出镜、零宣传」で短剧に「客串」したと冗談した。",
+      "lead": "中国のショートドラマ『砵蘭街行動』の台詞がきっかけで、俳優・成毅の名前と「誠意」の同音をかけた諧音梗（同音ネタ）が微博で拡散し、話題となった。成毅は一切出演していないにもかかわらず、「零片酬、零出鏡、零宣伝の特別出演」と冗談される事態になっている。",
+      "what_happened": "2026年7月23日、ショートドラマ『砵蘭街行動』の台詞「我今天一個人過来，就是帯着誠意」と「你別説帯成毅了，帯劉徳華也没用！」が注目を集めた。「成毅（チェン・イー）」と「誠意（チェンイー）」が同音であることを利用した諧音梗（同音ネタ）だ。微博では「成毅が短劇に“ゲスト出演”した」と話題になり、ハッシュタグ「#成毅路過短劇#」の閲覧数は762.7万を突破し、高位熱捜（トレンド入り）となった。ファンはこのネタに乗り、成毅の待機作『狩謊』『両京十五日』『英雄志』を PR する“便乗宣伝”も展開。さらに、成毅の代表作『蓮花楼』の開播（放送開始）3周年と重なったことで、ファンの間では祝福ムードが一層高まった。",
       "reaction_view": "",
-      "why_it_matters": "「谐音梗」は中国ネットでよく使われる同音ネタのこと。今回、短剧の台詞で「诚意（誠意）」と「成毅（俳優名）」が偶然一致し、ファンが待機作品の宣伝に活用したのがポイントです。話題の閲覧数は762.7万超と、非マーケティング型の自然発生ネタとしてはかなりの規模。ファンが「零片酬、零出镜、零宣传」と冗談するなど、俳優の知名度を笑いに変える中国特有のファン文化が垣間見えます。",
-      "editor_comment": "短剧の台詞からここまで広がるとは、成毅さんの名前の浸透度がすごいですね！ファンの遊び心も見事です。",
-      "japan_context_note": "",
-      "category": "話題・トレンド",
-      "confidence": "C",
+      "why_it_matters": "本人不在なのにトレンド入り！　ファンも大喜びで待機作の宣伝にシフト。成毅のネームバリュー、すごいです！　そこに『蓮花楼』3周年が重なって、お祭り感が倍増したのも運命的でしたね。短劇のセリフからここまで遊べるのは、日本語圏ではなかなか見かけない文化かも。次の新作公開時も、ファンのあたたかいノリがどう出るか楽しみです！",
+      "editor_comment": "",
+      "japan_context_note": "日本ではそもそも『砵蘭街行動』のような短劇（ショートドラマ）の存在自体がほとんど知られていない。中国では1話数分の縦型短尺ドラマが一大ジャンルとなっており、その台詞から生まれたネットミームが俳優個人の話題にまで発展する、という現地のノリは日本語圏の読者には想像しにくいかもしれない。",
+      "category": "エンタメ・話題",
+      "confidence": "B",
       "source_type": "media_report",
       "published_date": "2026-07-24",
       "event_date": "2026-07-23",
       "freshness_label": "today",
       "newsworthiness_score": 86,
       "japan_visibility": "unknown",
-      "japan_gap": "high",
+      "japan_gap": "medium",
       "context_value": "high",
       "sns_heat": "high",
       "source_count": 1,
@@ -1237,13 +1237,14 @@
       "has_official_source": false,
       "has_multiple_sources": false,
       "has_sns_signal": false,
-      "article_type": "news_event",
+      "article_type": "sns_trend",
       "skip_reason": "",
-      "verification_status": "verified",
+      "verification_status": "verified_fact_with_source_analysis",
       "topic_key": "成毅路过短剧谐音梗",
       "main_entities": {
         "people": [
-          "成毅"
+          "成毅",
+          "刘德华"
         ],
         "works": [
           "砵兰街行动",
@@ -1265,28 +1266,31 @@
         "谐音梗",
         "短剧",
         "微博热搜",
-        "莲花楼"
+        "莲花楼",
+        "中国エンタメ",
+        "ネットミーム"
       ],
       "publish_priority": "medium",
-      "publish_reason": "中国エンタメの現地温度を伝える話題として",
+      "publish_reason": "中国SNSで拡散中の話題であり、日本語圏では見えにくい短剧（ショートドラマ）と俳優の関係性、谐音梗（同音ネタ）文化を示す好例のため。",
       "claim_refs": {
         "what_happened": [
           "C1",
           "C2",
           "C3",
           "C4",
-          "C5",
-          "C8",
-          "C9",
-          "C10"
+          "C5"
         ],
         "why_it_matters": [
           "C1",
           "C3",
+          "C4",
+          "C5",
+          "C6"
+        ],
+        "reaction_view": [
           "C8",
           "C10"
         ],
-        "reaction_view": [],
         "japan_context_note": []
       }
     },
@@ -1570,9 +1574,81 @@
         },
         "unresolved": []
       },
+      "ai_models": {
+        "base": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-flash"
+        },
+        "ledger": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "comment": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        }
+      },
+      "display_normalization": {
+        "residues": []
+      },
+      "comment_grounding": {
+        "topic_key": "成毅路过短剧谐音梗",
+        "refs": [
+          "C1",
+          "C3",
+          "C4",
+          "C5",
+          "C6"
+        ],
+        "gated_sentences_removed": [],
+        "unmatched_numbers": []
+      },
       "claim_check": {
         "topic_key": "成毅路过短剧谐音梗",
-        "violations": [],
+        "violations": [
+          {
+            "section": "lead",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "中国のショートドラマ『砵蘭街行動』の台詞がきっかけで、俳優・成毅の名前と「誠意」の同音をかけた諧音梗（同音ネタ）が微博で拡散し、話題となった。"
+          },
+          {
+            "section": "what_happened",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "2026年7月23日、ショートドラマ『砵蘭街行動』の台詞「我今天一個人過来，就是帯着誠意」と「你別説帯成毅了，帯劉徳華也没用！"
+          },
+          {
+            "section": "what_happened",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "ファンはこのネタに乗り、成毅の待機作『狩謊』『両京十五日』『英雄志』を PR する“便乗宣伝”も展開。"
+          },
+          {
+            "section": "what_happened",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "さらに、成毅の代表作『蓮花楼』の開播（放送開始）3周年と重なったことで、ファンの間では祝福ムードが一層高まった。"
+          },
+          {
+            "section": "why_it_matters",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "名前と「誠意」が同音って、しかもタイミングよく『蓮花楼』3周年と重なって、ファンが待機作まで宣伝しちゃうっていう流れ、すごい熱量です。"
+          },
+          {
+            "section": "japan_context_note",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "日本ではそもそも『砵蘭街行動』のような短劇（ショートドラマ）の存在自体がほとんど知られていない。"
+          },
+          {
+            "section": "comment",
+            "rule": "comment_entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "そこに『蓮花楼』3周年が重なって、お祭り感が倍増したのも運命的でしたね。"
+          }
+        ],
         "gated_violation_count": 0,
         "action": "none"
       },
@@ -1582,10 +1658,7 @@
         "used": true,
         "regenerated": false,
         "fallback_reason": "",
-        "exclamation_count": 1,
-        "opening": "谐音梗は中国ネットで",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 3
       }
     }
   }
