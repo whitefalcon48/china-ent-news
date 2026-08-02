@@ -97,12 +97,12 @@
       "caution_note": "Single-source topic; keep wording cautious until another source appears."
     },
     "summary": {
-      "title_ja": "AI精品短劇『北派筆記』、第2シーズンと仮想俳優計画を発表",
+      "title_ja": "AI精品短劇『北派筆記』、第二季とバーチャル俳優計画を発表",
       "badge": "NEWS",
-      "lead": "中国のニュースサイト「新京報娯楽」は7月24日、AI高品質短編ドラマ『北派筆記』の分享会が開かれ、第2シーズンと仮想俳優（バーチャル俳優）計画が披露されたと報じた。",
-      "what_happened": "新京報娯楽が2026年7月24日に伝えたところによると、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の分享会（作品報告会）が開かれた。会では第2シーズンの計画に加え、仮想俳優（バーチャル俳優）の計画も披露された。『北派筆記』がどんな作品か、仮想俳優をどう使うのかといった詳細は、今回の情報源からは確認できていない。",
+      "lead": "AIを使った高品質の短編ドラマ『北派筆記』の分享会が開かれ、第二季とバーチャル俳優計画が披露された。新京報娯楽が2026年7月24日に報じた。",
+      "what_happened": "新京報娯楽によると、『北派筆記』はAI精品短劇、つまりAIを使った高品質の短編ドラマ。7月24日に開かれた分享会（発表会）では、第二季の計画と、虚拟演員（バーチャル俳優）を起用する計画が披露された。配信時期や具体的な内容は、今回の情報源では説明されていない。",
       "reaction_view": "",
-      "why_it_matters": "AI精品短劇『北派筆記』が第2シーズンと仮想俳優の計画を発表したというニュース、気になります！ AIと仮想俳優の組み合わせ、実際どんなものになるんでしょう！ でも情報源は新京報娯楽の単独報道で、具体的な中身はまだ見えません。続報が待たれますね。",
+      "why_it_matters": "AI精品短劇『北派筆記』が早くも第二季と仮想俳優の計画を発表しました！ ただし、今回の情報源では配信時期や仮想俳優がどんな姿で登場するのかなどの詳細はまだわかっていません。まずは続報で具体的な内容が明らかになるのを待ちたいですね！",
       "editor_comment": "",
       "japan_context_note": "",
       "category": "ドラマ",
@@ -132,7 +132,7 @@
       "has_sns_signal": false,
       "article_type": "unknown",
       "skip_reason": "",
-      "verification_status": "one_source_report",
+      "verification_status": "",
       "topic_key": "北派笔记",
       "main_entities": {
         "people": [
@@ -156,13 +156,12 @@
         }
       ],
       "tags": [
-        "AI精品短劇",
-        "仮想俳優",
-        "北派筆記",
-        "新京報娯楽"
+        "AI短劇",
+        "バーチャル俳優",
+        "北派筆記"
       ],
       "publish_priority": "medium",
-      "publish_reason": "中国のAI短編ドラマと仮想俳優計画という新しい動きの観測記録として。",
+      "publish_reason": "中国現地で動きのあるAI短劇関連ニュースの記録として",
       "claim_refs": {
         "what_happened": [
           "C1",
@@ -298,48 +297,34 @@
           "C4"
         ],
         "gated_sentences_removed": [],
-        "unmatched_numbers": [
-          "一"
-        ]
+        "unmatched_numbers": []
       },
       "claim_check": {
         "topic_key": "北派笔记",
         "violations": [
           {
             "section": "lead",
-            "rule": "number_not_in_ledger",
-            "severity": "warning",
-            "detail": "中国のニュースサイト「新京報娯楽」は7月24日、AI高品質短編ドラマ『北派筆記』の分享会が開かれ、第2シーズンと仮想俳優（バーチャル俳優）計画が披露されたと報じた。"
-          },
-          {
-            "section": "lead",
             "rule": "entity_not_in_ledger",
             "severity": "warning",
-            "detail": "中国のニュースサイト「新京報娯楽」は7月24日、AI高品質短編ドラマ『北派筆記』の分享会が開かれ、第2シーズンと仮想俳優（バーチャル俳優）計画が披露されたと報じた。"
+            "detail": "AIを使った高品質の短編ドラマ『北派筆記』の分享会が開かれ、第二季とバーチャル俳優計画が披露された。"
           },
           {
             "section": "what_happened",
             "rule": "entity_not_in_ledger",
             "severity": "warning",
-            "detail": "新京報娯楽が2026年7月24日に伝えたところによると、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の分享会（作品報告会）が開かれた。"
+            "detail": "新京報娯楽によると、『北派筆記』はAI精品短劇、つまりAIを使った高品質の短編ドラマ。"
           },
           {
             "section": "what_happened",
-            "rule": "entity_not_in_ledger",
-            "severity": "warning",
-            "detail": "『北派筆記』がどんな作品か、仮想俳優をどう使うのかといった詳細は、今回の情報源からは確認できていない。"
-          },
-          {
-            "section": "why_it_matters",
             "rule": "number_not_in_ledger",
             "severity": "warning",
-            "detail": "それでも、短編ドラマと仮想俳優を一緒に打ち出す計画はすごく気になります！"
+            "detail": "7月24日に開かれた分享会（発表会）では、第二季の計画と、虚拟演員（バーチャル俳優）を起用する計画が披露された。"
           },
           {
             "section": "comment",
             "rule": "comment_entity_not_in_ledger",
             "severity": "warning",
-            "detail": "AI精品短劇『北派筆記』が第2シーズンと仮想俳優の計画を発表したというニュース、気になります！"
+            "detail": "AI精品短劇『北派筆記』が早くも第二季と仮想俳優の計画を発表しました！"
           }
         ],
         "gated_violation_count": 0,
@@ -349,7 +334,7 @@
       "comment_stage": {
         "attempted": true,
         "used": true,
-        "regenerated": true,
+        "regenerated": false,
         "fallback_reason": "",
         "exclamation_count": 2
       }
