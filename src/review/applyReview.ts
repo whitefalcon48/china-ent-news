@@ -5,6 +5,7 @@ import { formatReviewArticle } from "./buildReviewIssueBody.js";
 import { parseReviewComment, type ReviewDecision } from "./parseReviewComment.js";
 import { readReviewState, writeReviewState } from "./reviewState.js";
 import { reviseStoredArticle } from "./reviseArticle.js";
+import { rescueEmptyReview } from "./rescueEmptyReview.js";
 import type { ProcessedArticle, ReviewArticle, ReviewFeedback, ReviewState } from "../types.js";
 
 async function main() {
@@ -21,6 +22,26 @@ async function main() {
   const replies: string[] = [];
 
   for (const decision of parsed.decisions) {
+    if (decision.action === "rescue_rebuild") {
+      const rescued = await rescueEmptyReview(directory, state.date);
+      if (!rescued.ok) {
+        replies.push(`⚠️ ${rescued.message}`);
+        continue;
+      }
+      state.articles = rescued.articles.map((article, position) => ({
+        index: position + 1,
+        topic_key: article.topic?.topic_key ?? article.summary?.topic_key ?? "",
+        title: article.summary?.title_ja ?? article.raw.title,
+        status: "pending",
+        reason_tag: "",
+        comment: "",
+        revision_count: 0
+      }));
+      state.status = "pending";
+      replies.push(`🔄 救済再生成: EVS 6点の保存候補 ${rescued.articles.length}本を保留記事として作成しました。採用されるまで公開されません。`);
+      replies.push(...rescued.articles.map((article, position) => formatReviewArticle(position + 1, article)));
+      continue;
+    }
     const targets = selectTargets(state, decision);
     if (!targets.length && decision.index !== undefined) {
       parsed.invalidLines.push(`${decision.index}: 記事番号がありません`);
@@ -56,7 +77,7 @@ async function main() {
     }
   }
 
-  state.status = state.articles.every((article) => article.status === "approved" || article.status === "rejected") ? "completed" : "pending";
+  state.status = state.articles.length > 0 && state.articles.every((article) => article.status === "approved" || article.status === "rejected") ? "completed" : "pending";
   await writeReviewState(reviewPath, state);
   if (feedback.length) await appendFeedback(dataDir, feedback);
   if (parsed.invalidLines.length) replies.push(`⚠️ 解釈できなかった行\n\n${parsed.invalidLines.map((line) => `- ${line}`).join("\n")}`);
