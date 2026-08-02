@@ -2,5 +2,15 @@
   "date": "2026-07-25",
   "status": "pending",
   "issue_number": 9,
-  "articles": []
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "北派笔记",
+      "title": "AI短編ドラマ『北派筆記』、シーズン2とバーチャル俳優計画を発表",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
 }
