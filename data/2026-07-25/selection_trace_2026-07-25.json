@@ -15037,7 +15037,19 @@
   "topic_layer_note": "Topic-first generation enabled. DeepSeek input contains one representative article per selected topic.",
   "topic_selection": {
     "enabled": true,
-    "selected": [],
+    "selected": [
+      {
+        "topic_key": "北派笔记",
+        "category": "ドラマ",
+        "primary_source": "新京报 娱乐",
+        "score": 6,
+        "evidence_urls": [
+          "https://www.bjnews.com.cn/detail/1784908007169105.html",
+          "https://m.bjnews.com.cn/entertainment"
+        ],
+        "selection_reason": "saved_evs_review_rescue"
+      }
+    ],
     "dropped": [
       {
         "topic_key": "想你了",
@@ -15459,7 +15471,46 @@
     "failed": [],
     "backfilled": []
   },
-  "claim_check": [],
+  "claim_check": [
+    {
+      "topic_key": "北派笔记",
+      "ledger_used": true,
+      "ledger_fallback_reason": "",
+      "violations": [
+        {
+          "section": "lead",
+          "rule": "number_not_in_ledger",
+          "severity": "warning",
+          "detail": "新京報娯楽は7月24日、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の発表会が開かれたと報じた。"
+        },
+        {
+          "section": "lead",
+          "rule": "entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "新京報娯楽は7月24日、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の発表会が開かれたと報じた。"
+        },
+        {
+          "section": "what_happened",
+          "rule": "entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "『北派筆記』は、AI精品短劇（AI高品質短編ドラマ）と呼ばれるジャンルの作品で、AI技術を駆使して制作されている。"
+        },
+        {
+          "section": "why_it_matters",
+          "rule": "entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "AIで作る高品質な短編ドラマ『北派筆記』が、シーズン2とバーチャル俳優計画を同時に発表！"
+        },
+        {
+          "section": "comment",
+          "rule": "comment_entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "『北派筆記』の世界観に合ったキャラクターが登場するのか、今から楽しみですね！"
+        }
+      ],
+      "action": "none"
+    }
+  ],
   "information_gate": {
     "enabled": true,
     "evaluated": 41,
@@ -16177,7 +16228,17 @@
         ],
         "result": "evs_below_threshold"
       }
-    ]
+    ],
+    "review_rescue": {
+      "enabled": true,
+      "activated": true,
+      "threshold": 6,
+      "limit": 3,
+      "selected_topic_keys": [
+        "北派笔记"
+      ],
+      "reason": "zero_standard_qualified"
+    }
   },
   "publication_history": {
     "loaded_days": [
@@ -16212,7 +16273,7 @@
   },
   "llm_call_budget": {
     "limit": 60,
-    "used": 6
+    "used": 3
   },
   "source_expansion": {
     "shortlisted_topic_keys": [
@@ -16563,7 +16624,7 @@
     "items": []
   },
   "output_count_instruction": "Output every candidate item that is worth publishing; do not force a 3-5 item cap. Add publish_priority (high/medium/low) and publish_reason to every output article.",
-  "final_output_count": 0,
+  "final_output_count": 1,
   "publish_priority_counts": {
     "high": 0,
     "medium": 0,
@@ -16631,7 +16692,12 @@
       "date_pipeline_note": ""
     }
   ],
-  "final_output": [],
+  "final_output": [
+    {
+      "topic_key": "北派笔记",
+      "title_ja": "AI短編ドラマ『北派筆記』、シーズン2とバーチャル俳優計画を発表"
+    }
+  ],
   "dropped": [
     {
       "source": "1905电影网 新闻",
@@ -17985,5 +18051,12 @@
       "not_selected_reason": "count_limit",
       "reason": "count_limit"
     }
-  ]
+  ],
+  "review_rescue_rebuild": {
+    "source": "saved_topic_candidates",
+    "generated_at": "2026-08-02T02:22:08.421Z",
+    "selected_topic_keys": [
+      "北派笔记"
+    ]
+  }
 }

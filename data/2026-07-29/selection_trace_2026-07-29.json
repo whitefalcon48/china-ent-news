@@ -14031,7 +14031,20 @@
   "topic_layer_note": "Topic-first generation enabled. DeepSeek input contains one representative article per selected topic.",
   "topic_selection": {
     "enabled": true,
-    "selected": [],
+    "selected": [
+      {
+        "topic_key": "微短剧精品创作传播计划五个一批工程",
+        "category": "産業",
+        "primary_source": "国家广播电视总局",
+        "score": 6,
+        "evidence_urls": [
+          "https://www.nrta.gov.cn/art/2026/7/28/art_113_73760.html",
+          "https://m.21jingji.com/article/20260728/herald/b1d5a900a8b6e45ea98e8e0f268e3b3a.html",
+          "https://lmtw.com/mzw/content/detail/id/256630/keyword_id/-1"
+        ],
+        "selection_reason": "saved_evs_review_rescue"
+      }
+    ],
     "dropped": [
       {
         "topic_key": "想你了导演麻赢心专访",
@@ -14405,7 +14418,46 @@
     "failed": [],
     "backfilled": []
   },
-  "claim_check": [],
+  "claim_check": [
+    {
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "ledger_used": true,
+      "ledger_fallback_reason": "",
+      "violations": [
+        {
+          "section": "lead",
+          "rule": "entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "広電局（国家広播電視总局）は2026年7月28日、『微短劇精品創作伝播計画「五個一批工程」』の第1陣支援プロジェクトを公示した。"
+        },
+        {
+          "section": "why_it_matters",
+          "rule": "entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "国が『微短劇（1話数分の縦型短尺ドラマ）』をまとめて支援対象にした、というのが今回の公示の見どころです！"
+        },
+        {
+          "section": "why_it_matters",
+          "rule": "entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "短いドラマ作品を『五個一批工程』という枠組みで選び、後押しする制度の第1弾になります。"
+        },
+        {
+          "section": "why_it_matters",
+          "rule": "number_not_in_ledger",
+          "severity": "warning",
+          "detail": "選ばれた16作品がこれからどう評価されて、次の第2陣につながっていくのか、追ってみたいですね。"
+        },
+        {
+          "section": "why_it_matters",
+          "rule": "entity_not_in_ledger",
+          "severity": "warning",
+          "detail": "ただ、肝心の『五個一批工程』の詳しい中身は、今回の情報源からは説明されていなかったので、そこは今後の発表を待ちたいです！"
+        }
+      ],
+      "action": "none"
+    }
+  ],
   "information_gate": {
     "enabled": true,
     "evaluated": 25,
@@ -15028,7 +15080,17 @@
         ],
         "result": "evs_below_threshold"
       }
-    ]
+    ],
+    "review_rescue": {
+      "enabled": true,
+      "activated": true,
+      "threshold": 6,
+      "limit": 3,
+      "selected_topic_keys": [
+        "微短剧精品创作传播计划五个一批工程"
+      ],
+      "reason": "zero_standard_qualified"
+    }
   },
   "publication_history": {
     "loaded_days": [
@@ -15063,7 +15125,7 @@
   },
   "llm_call_budget": {
     "limit": 60,
-    "used": 5
+    "used": 3
   },
   "source_expansion": {
     "shortlisted_topic_keys": [
@@ -15597,7 +15659,7 @@
     "items": []
   },
   "output_count_instruction": "Output every candidate item that is worth publishing; do not force a 3-5 item cap. Add publish_priority (high/medium/low) and publish_reason to every output article.",
-  "final_output_count": 0,
+  "final_output_count": 1,
   "publish_priority_counts": {
     "high": 0,
     "medium": 0,
@@ -15665,7 +15727,12 @@
       "date_pipeline_note": ""
     }
   ],
-  "final_output": [],
+  "final_output": [
+    {
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "title_ja": "広電局（国家広播電視总局）（国家広播電視总局）、ミニドラマ支援計画「五個一批工程」第1陣16作品を公示"
+    }
+  ],
   "dropped": [
     {
       "source": "1905电影网 新闻",
@@ -16746,5 +16813,12 @@
       "not_selected_reason": "pre_ai_exclude:unknown_thin_article",
       "reason": "pre_ai_exclude:unknown_thin_article"
     }
-  ]
+  ],
+  "review_rescue_rebuild": {
+    "source": "saved_topic_candidates",
+    "generated_at": "2026-08-02T03:01:40.267Z",
+    "selected_topic_keys": [
+      "微短剧精品创作传播计划五个一批工程"
+    ]
+  }
 }

@@ -1,5 +1,98 @@
 {
   "date": "2026-07-29",
-  "generated_at": "2026-07-29T04:16:26.475Z",
-  "ledgers": []
+  "generated_at": "2026-08-02T03:01:40.267Z",
+  "ledgers": [
+    {
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "ledger": {
+        "topic_key": "微短剧精品创作传播计划五个一批工程",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家广播电视总局が「微短剧精品创作传播计划‘五个一批工程’」の第1陣支援プロジェクトを公示した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "国家广播电视总局",
+              "微短剧精品创作传播计划‘五个一批工程’"
+            ],
+            "numbers": [],
+            "quote_zh": "关于公示“微短剧精品创作传播计划‘五个一批工程’”",
+            "anchor": true
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "各地方のラジオ・テレビ行政部門と中央直属機関の推薦を経て、国家ラジオテレビ総局が専門家による審査を組織し、『開標之戦』『扁担銀行』を含む16作品が第1陣支援予定として選定された。",
+            "evidence_refs": [
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "国家广播电视总局",
+              "《开标之战》",
+              "《扁担银行》",
+              "各省级广播电视行政部门",
+              "中央直属单位"
+            ],
+            "numbers": [
+              "16",
+              "第一批"
+            ],
+            "quote_zh": "经各省级广播电视行政部门和中央直属单位推荐，广电总局组织专家",
+            "anchor": true
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "この公示は2026年7月28日に行われた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "2026-07-28"
+            ],
+            "quote_zh": "2026-07-28",
+            "anchor": false
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "この公示は国家ラジオテレビ総局弁公庁の通知として発表された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "国家广播电视总局办公厅"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广播电视总局办公厅",
+            "anchor": true
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "ミニドラマ",
+            "explain_evidence_refs": []
+          },
+          {
+            "term": "五个一批工程",
+            "gloss_ja": "5つの一括プロジェクト",
+            "explain_evidence_refs": []
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
 }

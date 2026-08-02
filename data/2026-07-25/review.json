@@ -2,5 +2,15 @@
   "date": "2026-07-25",
   "status": "pending",
   "issue_number": 9,
-  "articles": []
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "北派笔记",
+      "title": "AI精品短劇『北派筆記』、第二季とバーチャル俳優計画を発表",
+      "status": "revised_pending",
+      "reason_tag": "事実",
+      "comment": "source_listは記事本文を確認できる新京報娯楽の記事URL1件だけにしてください。新京報モバイルの娯楽indexは記事本文でも独立した裏取りでもないため、公開ソースから除外し、source_count=1、has_multiple_sources=falseとして単独報道扱いを徹底してください。「実際どんなものになるんでしょう」など根拠のない期待表現も削り、発表済み事実と今後確認すべき具体的内容だけで注目ポイントを書いてください。",
+      "revision_count": 2
+    }
+  ]
 }

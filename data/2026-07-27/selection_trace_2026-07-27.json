@@ -16456,7 +16456,18 @@
   "topic_layer_note": "Topic-first generation enabled. DeepSeek input contains one representative article per selected topic.",
   "topic_selection": {
     "enabled": true,
-    "selected": [],
+    "selected": [
+      {
+        "topic_key": "谢贤逝世",
+        "category": "訃報",
+        "primary_source": "界面新闻 影视产业",
+        "score": 6,
+        "evidence_urls": [
+          "https://www.jiemian.com/article/14798511.html"
+        ],
+        "selection_reason": "saved_evs_review_rescue"
+      }
+    ],
     "dropped": [
       {
         "topic_key": "迪丽热巴表情包功夫女足票房",
@@ -16898,7 +16909,15 @@
     "failed": [],
     "backfilled": []
   },
-  "claim_check": [],
+  "claim_check": [
+    {
+      "topic_key": "谢贤逝世",
+      "ledger_used": true,
+      "ledger_fallback_reason": "",
+      "violations": [],
+      "action": "none"
+    }
+  ],
   "information_gate": {
     "enabled": true,
     "evaluated": 45,
@@ -17571,7 +17590,17 @@
         ],
         "result": "evs_below_threshold"
       }
-    ]
+    ],
+    "review_rescue": {
+      "enabled": true,
+      "activated": true,
+      "threshold": 6,
+      "limit": 3,
+      "selected_topic_keys": [
+        "谢贤逝世"
+      ],
+      "reason": "zero_standard_qualified"
+    }
   },
   "publication_history": {
     "loaded_days": [
@@ -17617,7 +17646,7 @@
   },
   "llm_call_budget": {
     "limit": 60,
-    "used": 6
+    "used": 3
   },
   "source_expansion": {
     "shortlisted_topic_keys": [
@@ -18097,7 +18126,7 @@
     "items": []
   },
   "output_count_instruction": "Output every candidate item that is worth publishing; do not force a 3-5 item cap. Add publish_priority (high/medium/low) and publish_reason to every output article.",
-  "final_output_count": 0,
+  "final_output_count": 1,
   "publish_priority_counts": {
     "high": 0,
     "medium": 0,
@@ -18165,7 +18194,12 @@
       "date_pipeline_note": ""
     }
   ],
-  "final_output": [],
+  "final_output": [
+    {
+      "topic_key": "谢贤逝世",
+      "title_ja": "俳優の謝賢氏が死去　「生涯遊び、生涯演じた」"
+    }
+  ],
   "dropped": [
     {
       "source": "1905电影网 新闻",
@@ -19506,5 +19540,12 @@
       "not_selected_reason": "count_limit",
       "reason": "count_limit"
     }
-  ]
+  ],
+  "review_rescue_rebuild": {
+    "source": "saved_topic_candidates",
+    "generated_at": "2026-08-02T02:43:25.634Z",
+    "selected_topic_keys": [
+      "谢贤逝世"
+    ]
+  }
 }

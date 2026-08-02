@@ -1,1 +1,357 @@
-[]
+[
+  {
+    "raw": {
+      "title": "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个一批工程’”第一批拟扶持项目的通知",
+      "url": "https://www.nrta.gov.cn/art/2026/7/28/art_113_73760.html",
+      "sourceName": "国家广播电视总局",
+      "sourceUrl": "https://www.nrta.gov.cn/art/2026/7/28/art_113_73760.html",
+      "category": "救済再生成",
+      "reliability": "A",
+      "sourceType": "official",
+      "publishedDate": "2026-07-28",
+      "freshnessLabel": "yesterday",
+      "articleType": "official_announcement",
+      "excerpt": "",
+      "rawContent": "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个一批工程’”第一批拟扶持项目的通知",
+      "rawContentLength": 47,
+      "topicKey": "微短剧精品创作传播计划五个一批工程"
+    },
+    "topic": {
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "title_hint": "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个一批工程’”第一批拟扶持项目的通知",
+      "event_sentence": "国家广播电视总局が「微短剧精品創作伝播計画『五つの一工程』」の第一陣支援プロジェクトを公示した。",
+      "search_queries": [
+        "微短剧精品创作传播计划五个一批工程",
+        "微短剧精品创作传播计划",
+        "五个一批工程 扶持项目",
+        "国家广播电视总局 微短剧"
+      ],
+      "seed_source": "llm",
+      "seed_confidence": 0.95,
+      "topic_type": "policy",
+      "freshness_label": "yesterday",
+      "published_date_range": {
+        "earliest": "2026-07-28",
+        "latest": "2026-07-28"
+      },
+      "source_count": 3,
+      "source_mix": {
+        "official": 1,
+        "media_report": 2,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "evidence_articles": [
+        {
+          "title": "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个一批工程’”第一批拟扶持项目的通知",
+          "url": "https://www.nrta.gov.cn/art/2026/7/28/art_113_73760.html",
+          "source_name": "国家广播电视总局",
+          "source_type": "official",
+          "published_date": "2026-07-28",
+          "freshness_label": "yesterday",
+          "article_type": "official_announcement",
+          "reliability": "A",
+          "key_points": [
+            "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个一批工程’”第一批拟扶持项目的通知"
+          ]
+        },
+        {
+          "title": "“微短剧精品创作传播计划'五个一批工程'”第一批拟扶持项目 ...",
+          "url": "https://m.21jingji.com/article/20260728/herald/b1d5a900a8b6e45ea98e8e0f268e3b3a.html",
+          "source_name": "m.21jingji.com",
+          "source_type": "media_report",
+          "published_date": "",
+          "freshness_label": "unknown",
+          "article_type": "unknown",
+          "reliability": "C",
+          "key_points": [
+            "“微短剧精品创作传播计划'五个一批工程'”第一批拟扶持项目 ...",
+            "近期，经各省级广播电视行政部门和中央直属单位推荐，广电总局组织专家对第一批申报项目进行评审，确定《开标之战》《扁担银行》等16部作品作为第一批拟扶持 ..."
+          ]
+        },
+        {
+          "title": "“微短剧精品创作传播计划'五个一批工程'”第一批拟扶持项目 ...",
+          "url": "https://lmtw.com/mzw/content/detail/id/256630/keyword_id/-1",
+          "source_name": "lmtw.com",
+          "source_type": "media_report",
+          "published_date": "",
+          "freshness_label": "unknown",
+          "article_type": "unknown",
+          "reliability": "C",
+          "key_points": [
+            "“微短剧精品创作传播计划'五个一批工程'”第一批拟扶持项目 ...",
+            "近期，经各省级广播电视行政部门和中央直属单位推荐，广电总局组织专家对第一批申报项目进行评审，确定《开标之战》《扁担银行》等16部作品作为第一批拟扶持 ..."
+          ]
+        }
+      ],
+      "main_entities": {
+        "people": [],
+        "works": [],
+        "organizations": [
+          "国家广播电视总局"
+        ],
+        "events": [
+          "微短剧精品创作传播计划五个一批工程"
+        ]
+      },
+      "signals": {
+        "has_official_source": true,
+        "has_media_context": false,
+        "has_data_signal": false,
+        "has_hot_search_signal": false,
+        "has_multiple_sources": false
+      },
+      "newsworthiness_score": 79,
+      "japan_gap": "high",
+      "context_value": "high",
+      "publish_priority": "high",
+      "selection_reason": "official_evidence, topic_type:policy, evidence:1, expansion_evidence:2",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified."
+    },
+    "summary": {
+      "title_ja": "広電局（国家広播電視总局）（国家広播電視总局）、マイクロドラマ支援計画「五個一批工程」を発表",
+      "badge": "NEWS",
+      "lead": "広電局（広電局）は2026年7月28日、「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。",
+      "what_happened": "広電局（広電局）は2026年7月28日、弁公庁の通知として「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。各地方のラジオ・テレビ行政部門と中央直属機関の推薦を受け、広電局が専門家による審査を組織し、『開標之戦』『扁担銀行』を含む16作品を第1陣支援予定として選定した。",
+      "reaction_view": "",
+      "why_it_matters": "これは広電局による公式発表です。第1陣として16作品が選ばれました。専門家審査を経ている点もポイントですね。今後の注目は、これらの作品が実際にどう制作され、配信されるか！そして次のバッチの発表にも期待したいです！",
+      "editor_comment": "",
+      "japan_context_note": "",
+      "category": "政策・規制",
+      "confidence": "C",
+      "source_type": "official",
+      "published_date": "2026-07-28",
+      "event_date": "2026-07-28",
+      "freshness_label": "yesterday",
+      "newsworthiness_score": 79,
+      "japan_visibility": "unknown",
+      "japan_gap": "high",
+      "context_value": "medium",
+      "sns_heat": "none",
+      "source_count": 3,
+      "source_list": [
+        {
+          "name": "国家广播电视总局",
+          "url": "https://www.nrta.gov.cn/art/2026/7/28/art_113_73760.html"
+        },
+        {
+          "name": "m.21jingji.com",
+          "url": "https://m.21jingji.com/article/20260728/herald/b1d5a900a8b6e45ea98e8e0f268e3b3a.html"
+        },
+        {
+          "name": "lmtw.com",
+          "url": "https://lmtw.com/mzw/content/detail/id/256630/keyword_id/-1"
+        }
+      ],
+      "has_official_source": true,
+      "has_multiple_sources": true,
+      "has_sns_signal": false,
+      "article_type": "official_announcement",
+      "skip_reason": "",
+      "verification_status": "verified",
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "main_entities": {
+        "people": [],
+        "works": [
+          "開標之戦",
+          "扁担銀行"
+        ],
+        "organizations": [
+          "国家广播电视总局"
+        ]
+      },
+      "related_sources": [
+        {
+          "name": "国家广播电视总局",
+          "url": "https://www.nrta.gov.cn/art/2026/7/28/art_113_73760.html"
+        },
+        {
+          "name": "m.21jingji.com",
+          "url": "https://m.21jingji.com/article/20260728/herald/b1d5a900a8b6e45ea98e8e0f268e3b3a.html"
+        },
+        {
+          "name": "lmtw.com",
+          "url": "https://lmtw.com/mzw/content/detail/id/256630/keyword_id/-1"
+        }
+      ],
+      "tags": [
+        "微短剧",
+        "五个一批工程",
+        "広電局",
+        "補助金",
+        "公示"
+      ],
+      "publish_priority": "medium",
+      "publish_reason": "中国のマイクロドラマ政策の新たな動きであり、日本語圏ではあまり知られていないが、業界には影響があるため。",
+      "claim_refs": {
+        "what_happened": [
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "why_it_matters": [
+          "C1",
+          "C2"
+        ],
+        "reaction_view": [],
+        "japan_context_note": []
+      }
+    },
+    "generationMeta": {
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "ledger_used": true,
+      "ledger_fallback_reason": "",
+      "ledger": {
+        "topic_key": "微短剧精品创作传播计划五个一批工程",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家广播电视总局が「微短剧精品创作传播计划‘五个一批工程’」の第1陣支援プロジェクトを公示した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "国家广播电视总局",
+              "微短剧精品创作传播计划‘五个一批工程’"
+            ],
+            "numbers": [],
+            "quote_zh": "关于公示“微短剧精品创作传播计划‘五个一批工程’”",
+            "anchor": true
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "各地方のラジオ・テレビ行政部門と中央直属機関の推薦を経て、国家ラジオテレビ総局が専門家による審査を組織し、『開標之戦』『扁担銀行』を含む16作品が第1陣支援予定として選定された。",
+            "evidence_refs": [
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "国家广播电视总局",
+              "《开标之战》",
+              "《扁担银行》",
+              "各省级广播电视行政部门",
+              "中央直属单位"
+            ],
+            "numbers": [
+              "16",
+              "第一批"
+            ],
+            "quote_zh": "经各省级广播电视行政部门和中央直属单位推荐，广电总局组织专家",
+            "anchor": true
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "この公示は2026年7月28日に行われた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "2026-07-28"
+            ],
+            "quote_zh": "2026-07-28",
+            "anchor": false
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "この公示は国家ラジオテレビ総局弁公庁の通知として発表された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "国家广播电视总局办公厅"
+            ],
+            "numbers": [],
+            "quote_zh": "国家广播电视总局办公厅",
+            "anchor": true
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "ミニドラマ",
+            "explain_evidence_refs": []
+          },
+          {
+            "term": "五个一批工程",
+            "gloss_ja": "5つの一括プロジェクト",
+            "explain_evidence_refs": []
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "ai_models": {
+        "base": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-flash"
+        },
+        "ledger": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "comment": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        }
+      },
+      "display_normalization": {
+        "residues": []
+      },
+      "comment_grounding": {
+        "topic_key": "微短剧精品创作传播计划五个一批工程",
+        "refs": [
+          "C1",
+          "C2"
+        ],
+        "gated_sentences_removed": [],
+        "unmatched_numbers": []
+      },
+      "claim_check": {
+        "topic_key": "微短剧精品创作传播计划五个一批工程",
+        "violations": [
+          {
+            "section": "lead",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "広電局（広電局）は2026年7月28日、「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。"
+          },
+          {
+            "section": "what_happened",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "広電局（広電局）は2026年7月28日、弁公庁の通知として「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。"
+          },
+          {
+            "section": "why_it_matters",
+            "rule": "number_not_in_ledger",
+            "severity": "warning",
+            "detail": "これは広電局が2026〜2027年の重点業務として打ち出す5分類の支援計画の第一弾で、公式発表として重い意味を持ちます。"
+          }
+        ],
+        "gated_violation_count": 0,
+        "action": "none"
+      },
+      "tone_mode": "normal",
+      "comment_stage": {
+        "attempted": true,
+        "used": true,
+        "regenerated": false,
+        "fallback_reason": "",
+        "exclamation_count": 2
+      }
+    }
+  }
+]

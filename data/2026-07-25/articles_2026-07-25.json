@@ -1,1 +1,343 @@
-[]
+[
+  {
+    "raw": {
+      "title": "AI精品短剧《北派笔记》举办分享会，披露第二季及虚拟演员计划",
+      "url": "https://www.bjnews.com.cn/detail/1784908007169105.html",
+      "sourceName": "新京报 娱乐",
+      "sourceUrl": "https://www.bjnews.com.cn/detail/1784908007169105.html",
+      "category": "救済再生成",
+      "reliability": "B",
+      "sourceType": "media_report",
+      "publishedDate": "2026-07-24",
+      "freshnessLabel": "yesterday",
+      "articleType": "unknown",
+      "excerpt": "",
+      "rawContent": "AI精品短剧《北派笔记》举办分享会，披露第二季及虚拟演员计划",
+      "rawContentLength": 30,
+      "topicKey": "北派笔记"
+    },
+    "topic": {
+      "topic_key": "北派笔记",
+      "title_hint": "AI精品短剧《北派笔记》举办分享会，披露第二季及虚拟演员计划",
+      "event_sentence": "新京报 娱乐が「AI精品短剧《北派笔记》举办分享会，披露第二季及虚拟演员计划」について報じた。",
+      "search_queries": [
+        "北派笔记",
+        "北派笔记 新京报 娱乐",
+        "北派笔记 娱乐"
+      ],
+      "seed_source": "regex_fallback",
+      "seed_confidence": 0.35,
+      "topic_type": "unknown",
+      "freshness_label": "yesterday",
+      "published_date_range": {
+        "earliest": "2026-07-24",
+        "latest": "2026-07-24"
+      },
+      "source_count": 2,
+      "source_mix": {
+        "official": 0,
+        "media_report": 2,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "evidence_articles": [
+        {
+          "title": "AI精品短剧《北派笔记》举办分享会，披露第二季及虚拟演员计划",
+          "url": "https://www.bjnews.com.cn/detail/1784908007169105.html",
+          "source_name": "新京报 娱乐",
+          "source_type": "media_report",
+          "published_date": "2026-07-24",
+          "freshness_label": "yesterday",
+          "article_type": "unknown",
+          "reliability": "B",
+          "key_points": [
+            "AI精品短剧《北派笔记》举办分享会，披露第二季及虚拟演员计划"
+          ]
+        },
+        {
+          "title": "新京报",
+          "url": "https://m.bjnews.com.cn/entertainment",
+          "source_name": "m.bjnews.com.cn",
+          "source_type": "media_report",
+          "published_date": "",
+          "freshness_label": "unknown",
+          "article_type": "unknown",
+          "reliability": "C",
+          "key_points": [
+            "新京报",
+            "|娱乐. 首页 · 视频 · 深读 · 公益 · 第一看点 · 时事 · 北京 · 国际 · 政事儿 · 新京号 · 观点 · 财经 · 消费 · 娱乐 · 文化 · 体育 · 汽车 · 房产 · 教育 · 图说 · 科技."
+          ]
+        }
+      ],
+      "main_entities": {
+        "people": [
+          "计划"
+        ],
+        "works": [
+          "北派笔记"
+        ],
+        "organizations": [],
+        "events": []
+      },
+      "signals": {
+        "has_official_source": false,
+        "has_media_context": true,
+        "has_data_signal": false,
+        "has_hot_search_signal": false,
+        "has_multiple_sources": true
+      },
+      "newsworthiness_score": 82,
+      "japan_gap": "high",
+      "context_value": "high",
+      "publish_priority": "high",
+      "selection_reason": "media_context, topic_type:unknown, evidence:1, expansion_evidence:1",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears."
+    },
+    "summary": {
+      "title_ja": "AI精品短劇『北派筆記』、第二季とバーチャル俳優計画を発表",
+      "badge": "NEWS",
+      "lead": "AIを使った高品質の短編ドラマ『北派筆記』の分享会が開かれ、第二季とバーチャル俳優計画が披露された。新京報娯楽が2026年7月24日に報じた。",
+      "what_happened": "新京報娯楽によると、『北派筆記』はAI精品短劇、つまりAIを使った高品質の短編ドラマ。7月24日に開かれた分享会（発表会）では、第二季の計画と、虚拟演員（バーチャル俳優）を起用する計画が披露された。配信時期や具体的な内容は、今回の情報源では説明されていない。",
+      "reaction_view": "",
+      "why_it_matters": "AI精品短劇『北派筆記』が早くも第二季と仮想俳優の計画を発表しました！ ただし、今回の情報源では配信時期や仮想俳優がどんな姿で登場するのかなどの詳細はまだわかっていません。まずは続報で具体的な内容が明らかになるのを待ちたいですね！",
+      "editor_comment": "",
+      "japan_context_note": "",
+      "category": "ドラマ",
+      "confidence": "C",
+      "source_type": "media_report",
+      "published_date": "2026-07-24",
+      "event_date": "2026-07-24",
+      "freshness_label": "yesterday",
+      "newsworthiness_score": 82,
+      "japan_visibility": "unknown",
+      "japan_gap": "high",
+      "context_value": "high",
+      "sns_heat": "none",
+      "source_count": 2,
+      "source_list": [
+        {
+          "name": "新京报 娱乐",
+          "url": "https://www.bjnews.com.cn/detail/1784908007169105.html"
+        },
+        {
+          "name": "m.bjnews.com.cn",
+          "url": "https://m.bjnews.com.cn/entertainment"
+        }
+      ],
+      "has_official_source": false,
+      "has_multiple_sources": true,
+      "has_sns_signal": false,
+      "article_type": "unknown",
+      "skip_reason": "",
+      "verification_status": "",
+      "topic_key": "北派笔记",
+      "main_entities": {
+        "people": [
+          "计划"
+        ],
+        "works": [
+          "北派筆記"
+        ],
+        "organizations": [
+          "新京報娯楽"
+        ]
+      },
+      "related_sources": [
+        {
+          "name": "新京报 娱乐",
+          "url": "https://www.bjnews.com.cn/detail/1784908007169105.html"
+        },
+        {
+          "name": "m.bjnews.com.cn",
+          "url": "https://m.bjnews.com.cn/entertainment"
+        }
+      ],
+      "tags": [
+        "AI短劇",
+        "バーチャル俳優",
+        "北派筆記"
+      ],
+      "publish_priority": "medium",
+      "publish_reason": "中国現地で動きのあるAI短劇関連ニュースの記録として",
+      "claim_refs": {
+        "what_happened": [
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "why_it_matters": [
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "reaction_view": [],
+        "japan_context_note": []
+      }
+    },
+    "generationMeta": {
+      "topic_key": "北派笔记",
+      "ledger_used": true,
+      "ledger_fallback_reason": "",
+      "ledger": {
+        "topic_key": "北派笔记",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年7月24日、新京报娱乐は、AI精品短剧『北派笔记』の分享会が開催されたと報じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报娱乐",
+            "entities": [
+              "新京报娱乐",
+              "北派笔记"
+            ],
+            "numbers": [
+              "2026-07-24"
+            ],
+            "quote_zh": "AI精品短剧《北派笔记》举办分享会，披露第二季及虚拟演员计划",
+            "anchor": true
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "分享会では、『北派笔记』の第二季の計画が披露された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报娱乐",
+            "entities": [
+              "北派笔记"
+            ],
+            "numbers": [
+              "第二季"
+            ],
+            "quote_zh": "披露第二季及虚拟演员计划",
+            "anchor": true
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "分享会では、仮想俳優の計画も披露された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报娱乐",
+            "entities": [
+              "北派笔记"
+            ],
+            "numbers": [],
+            "quote_zh": "虚拟演员计划",
+            "anchor": true
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "『北派笔记』はAI精品短剧である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报娱乐",
+            "entities": [
+              "北派笔记"
+            ],
+            "numbers": [],
+            "quote_zh": "AI精品短剧《北派笔记》",
+            "anchor": true
+          }
+        ],
+        "terms": [
+          {
+            "term": "AI精品短剧",
+            "gloss_ja": "AI高品質短編ドラマ",
+            "explain_evidence_refs": []
+          },
+          {
+            "term": "虚拟演员",
+            "gloss_ja": "バーチャル俳優",
+            "explain_evidence_refs": []
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "ai_models": {
+        "base": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-flash"
+        },
+        "ledger": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "comment": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        }
+      },
+      "display_normalization": {
+        "residues": []
+      },
+      "comment_grounding": {
+        "topic_key": "北派笔记",
+        "refs": [
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "gated_sentences_removed": [],
+        "unmatched_numbers": []
+      },
+      "claim_check": {
+        "topic_key": "北派笔记",
+        "violations": [
+          {
+            "section": "lead",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "AIを使った高品質の短編ドラマ『北派筆記』の分享会が開かれ、第二季とバーチャル俳優計画が披露された。"
+          },
+          {
+            "section": "what_happened",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "新京報娯楽によると、『北派筆記』はAI精品短劇、つまりAIを使った高品質の短編ドラマ。"
+          },
+          {
+            "section": "what_happened",
+            "rule": "number_not_in_ledger",
+            "severity": "warning",
+            "detail": "7月24日に開かれた分享会（発表会）では、第二季の計画と、虚拟演員（バーチャル俳優）を起用する計画が披露された。"
+          },
+          {
+            "section": "comment",
+            "rule": "comment_entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "AI精品短劇『北派筆記』が早くも第二季と仮想俳優の計画を発表しました！"
+          }
+        ],
+        "gated_violation_count": 0,
+        "action": "none"
+      },
+      "tone_mode": "normal",
+      "comment_stage": {
+        "attempted": true,
+        "used": true,
+        "regenerated": false,
+        "fallback_reason": "",
+        "exclamation_count": 2
+      }
+    }
+  }
+]
