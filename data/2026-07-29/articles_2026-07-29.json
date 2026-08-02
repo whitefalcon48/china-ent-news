@@ -112,16 +112,16 @@
       "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified."
     },
     "summary": {
-      "title_ja": "広電局（国家広播電視总局）（国家広播電視总局）、ミニドラマ支援計画「五個一批工程」第1陣16作品を公示",
+      "title_ja": "広電局（国家広播電視总局）（国家広播電視总局）、マイクロドラマ支援計画「五個一批工程」を発表",
       "badge": "NEWS",
-      "lead": "広電局（国家広播電視总局）は2026年7月28日、『微短劇精品創作伝播計画「五個一批工程」』の第1陣支援プロジェクトを公示した。微短劇（1話数分の縦型短尺ドラマ）の優良作品を支援するもので、『開標之戦』『扁担銀行』など16作品が支援予定として選ばれている。",
-      "what_happened": "公示は2026年7月28日付で、広電局弁公庁の通知として発表された。各地方のラジオ・テレビ行政部門と中央直属機関の推薦をもとに、広電局が専門家審査を実施。第1陣の支援予定として『開標之戦』『扁担銀行』など16作品が選ばれている。あくまで『支援予定』の選定という段階だ。",
+      "lead": "広電局（広電局）は2026年7月28日、「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。",
+      "what_happened": "広電局（広電局）は2026年7月28日、弁公庁の通知として「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。各地方のラジオ・テレビ行政部門と中央直属機関の推薦を受け、広電局が専門家による審査を組織し、『開標之戦』『扁担銀行』を含む16作品を第1陣支援予定として選定した。",
       "reaction_view": "",
-      "why_it_matters": "微短劇はこのところ勢いがありますから、国家レベルで精品化を後押しするこの計画、流れを加速しそうでわくわくします！ でも、今回の公示はまだ「支援予定」の16作品を選んだ段階。ここから正式決定まで動きがあるかどうか、実際に作品が世に出たときの反響も含めて、続報をチェックしていきたいです！ どんな作品が話題をさらうのか、楽しみ！",
+      "why_it_matters": "これは広電局による公式発表です。第1陣として16作品が選ばれました。専門家審査を経ている点もポイントですね。今後の注目は、これらの作品が実際にどう制作され、配信されるか！そして次のバッチの発表にも期待したいです！",
       "editor_comment": "",
       "japan_context_note": "",
-      "category": "産業",
-      "confidence": "B",
+      "category": "政策・規制",
+      "confidence": "C",
       "source_type": "official",
       "published_date": "2026-07-28",
       "event_date": "2026-07-28",
@@ -160,7 +160,7 @@
           "扁担銀行"
         ],
         "organizations": [
-          "国家広播電視総局"
+          "国家广播电视总局"
         ]
       },
       "related_sources": [
@@ -178,15 +178,14 @@
         }
       ],
       "tags": [
-        "微短劇",
-        "国家広播電視総局",
-        "五個一批工程",
-        "公示",
-        "ミニドラマ",
-        "支援政策"
+        "微短剧",
+        "五个一批工程",
+        "広電局",
+        "補助金",
+        "公示"
       ],
       "publish_priority": "medium",
-      "publish_reason": "中国で急成長するミニドラマ（微短劇）分野に国家が支援制度を設けた第1弾の公示。日本語圏では見えにくい中国配信産業の政策動向として記録する。",
+      "publish_reason": "中国のマイクロドラマ政策の新たな動きであり、日本語圏ではあまり知られていないが、業界には影響があるため。",
       "claim_refs": {
         "what_happened": [
           "C1",
@@ -308,18 +307,6 @@
           "model": "deepseek-v4-pro"
         }
       },
-      "ledger_anchor": {
-        "topic_key": "微短剧精品创作传播计划五个一批工程",
-        "claims_total": 4,
-        "anchor_unverified": 1,
-        "dropped_explanations": []
-      },
-      "term_expansion": {
-        "enabled": true,
-        "attempted": [],
-        "succeeded": [],
-        "failed": []
-      },
       "display_normalization": {
         "residues": []
       },
@@ -339,31 +326,19 @@
             "section": "lead",
             "rule": "entity_not_in_ledger",
             "severity": "warning",
-            "detail": "広電局（国家広播電視总局）は2026年7月28日、『微短劇精品創作伝播計画「五個一批工程」』の第1陣支援プロジェクトを公示した。"
+            "detail": "広電局（広電局）は2026年7月28日、「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。"
           },
           {
-            "section": "why_it_matters",
+            "section": "what_happened",
             "rule": "entity_not_in_ledger",
             "severity": "warning",
-            "detail": "国が『微短劇（1話数分の縦型短尺ドラマ）』をまとめて支援対象にした、というのが今回の公示の見どころです！"
-          },
-          {
-            "section": "why_it_matters",
-            "rule": "entity_not_in_ledger",
-            "severity": "warning",
-            "detail": "短いドラマ作品を『五個一批工程』という枠組みで選び、後押しする制度の第1弾になります。"
+            "detail": "広電局（広電局）は2026年7月28日、弁公庁の通知として「微短劇精品創作伝播計画『五個一批工程』」の第1陣支援プロジェクトを公示した。"
           },
           {
             "section": "why_it_matters",
             "rule": "number_not_in_ledger",
             "severity": "warning",
-            "detail": "選ばれた16作品がこれからどう評価されて、次の第2陣につながっていくのか、追ってみたいですね。"
-          },
-          {
-            "section": "why_it_matters",
-            "rule": "entity_not_in_ledger",
-            "severity": "warning",
-            "detail": "ただ、肝心の『五個一批工程』の詳しい中身は、今回の情報源からは説明されていなかったので、そこは今後の発表を待ちたいです！"
+            "detail": "これは広電局が2026〜2027年の重点業務として打ち出す5分類の支援計画の第一弾で、公式発表として重い意味を持ちます。"
           }
         ],
         "gated_violation_count": 0,
@@ -375,10 +350,7 @@
         "used": true,
         "regenerated": false,
         "fallback_reason": "",
-        "exclamation_count": 3,
-        "opening": "微短劇はこのところ勢",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 2
       }
     }
   }
