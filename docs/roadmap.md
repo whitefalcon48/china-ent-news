@@ -1,6 +1,12 @@
 # ロードマップ & 引継ぎ指針
 
-最終更新: 2026-08-01（レビュー限定EVS救済hotfix 実装時点）
+最終更新: 2026-08-02（0件日レビュー救済とフィード完結UIの実装時点）
+
+## 2026-08-02 実装記録（Actions実測・公開反映前）
+
+- ✅ 0件レビューIssueで、保存済み `selection_trace` / `topic_candidates` のEVS 6点候補を最大3本までレビュー専用で再生成する導線を追加。採用されるまで公開せず、過去日に出た同一topicは除外し、空の記事状態を完了扱いにしない。台帳・claim check・簡体字検査をすべて通過した候補だけを書き戻す。
+- ✅ トップ／日次フィードをカード内で完結させた。「ビンタンからの補足」を根拠がある時だけ常時表示し、ヘッダーは「最終更新：日付」、カードには個別URLを共有するXボタンを置く。個別ページはシェア先の着地用途に絞った。
+- ✅ ローカル検証: `npm run check`、`npm run test:review-rescue`、`npm run test:evs`、`npm run test:kanji`、`npm run test:site-feed`、`npm run build:site` がすべて成功。GitHub Actionsでの再生成実測・公開確認は次工程。
 
 ## ゴール像
 

@@ -11,6 +11,8 @@
     "test:title": "tsx src/testSummaryTitle.ts",
     "test:sources": "tsx src/testSourceRelevance.ts",
     "test:evs": "tsx src/testEditorialValue.ts",
+    "test:review-rescue": "tsx src/testReviewRescue.ts",
+    "test:site-feed": "tsx src/testSiteFeed.ts",
     "test:kanji": "tsx src/testDisplayKanji.ts",
     "check": "tsc --noEmit",
     "audit:sources": "tsx src/auditSources.ts",

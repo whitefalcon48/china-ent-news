@@ -6,6 +6,20 @@ import { readOrCreateStoredReviewState, writeReviewState } from "./reviewState.j
 import type { ProcessedArticle, ReviewState, SourceRef } from "../types.js";
 
 export function buildReviewIssueBody(state: ReviewState, articles: ProcessedArticle[]) {
+  if (!state.articles.length) {
+    return `# 📋 ニュースレビュー ${state.date}（0本）
+
+通常のEVS 7点以上の記事はありません。保存済み候補から、EVS 6点の候補を最大3本まで**レビュー専用**で再生成できます。公開は採用判定後です。
+
+\`\`\`text
+救済再生成
+\`\`\`
+
+- この1行をOWNERとしてコメントすると、保存済みの候補・根拠を使い、台帳とclaim checkを通過した記事だけを保留状態で返信します。
+- 7点以上の記事がある日、6点未満しかない日、または過去日の同一topicは救済しません。
+- 再生成できない場合も0件のまま、理由だけを返信します。
+`;
+  }
   const header = `# 📋 ニュースレビュー ${state.date}（${state.articles.length}本）
 
 判定はこのIssueへの返信コメントで。1コメントにまとめて書けます。

@@ -2,8 +2,8 @@ import type { ReviewReasonTag } from "../types.js";
 
 export type ReviewDecision = {
   index?: number;
-  action: "approved" | "rejected" | "revision_requested" | "remaining_approved" | "remaining_rejected";
-  reasonTag: Exclude<ReviewReasonTag, "">;
+  action: "approved" | "rejected" | "revision_requested" | "remaining_approved" | "remaining_rejected" | "rescue_rebuild";
+  reasonTag: ReviewReasonTag;
   comment: string;
 };
 
@@ -18,6 +18,10 @@ export function parseReviewComment(body: string): ParsedReviewComment {
   for (const rawLine of body.split(/\r?\n/)) {
     const line = rawLine.trim();
     if (!line) continue;
+    if (line === "救済再生成") {
+      decisions.push({ action: "rescue_rebuild", reasonTag: "", comment: "" });
+      continue;
+    }
     if (line === "残り採用" || line === "全部採用") {
       decisions.push({ action: "remaining_approved", reasonTag: "その他", comment: "" });
       continue;
