@@ -1,1 +1,253 @@
-[]
+[
+  {
+    "raw": {
+      "title": "【逝者】谢贤：玩了一辈子，演了一辈子",
+      "url": "https://www.jiemian.com/article/14798511.html",
+      "sourceName": "界面新闻 影视产业",
+      "sourceUrl": "https://www.jiemian.com/article/14798511.html",
+      "category": "救済再生成",
+      "reliability": "B",
+      "sourceType": "media_report",
+      "publishedDate": "2026-07-20",
+      "freshnessLabel": "recent",
+      "articleType": "unknown",
+      "excerpt": "",
+      "rawContent": "【逝者】谢贤：玩了一辈子，演了一辈子",
+      "rawContentLength": 18,
+      "topicKey": "谢贤逝世"
+    },
+    "topic": {
+      "topic_key": "谢贤逝世",
+      "title_hint": "【逝者】谢贤：玩了一辈子，演了一辈子",
+      "event_sentence": "謝賢が死去した。生涯遊び、生涯演じた。",
+      "search_queries": [
+        "谢贤逝世",
+        "谢贤 逝世",
+        "谢贤 去世 讣告",
+        "谢贤 生平"
+      ],
+      "seed_source": "llm",
+      "seed_confidence": 0.9,
+      "topic_type": "unknown",
+      "freshness_label": "recent",
+      "published_date_range": {
+        "earliest": "2026-07-20",
+        "latest": "2026-07-20"
+      },
+      "source_count": 1,
+      "source_mix": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "evidence_articles": [
+        {
+          "title": "【逝者】谢贤：玩了一辈子，演了一辈子",
+          "url": "https://www.jiemian.com/article/14798511.html",
+          "source_name": "界面新闻 影视产业",
+          "source_type": "media_report",
+          "published_date": "2026-07-20",
+          "freshness_label": "recent",
+          "article_type": "unknown",
+          "reliability": "B",
+          "key_points": [
+            "【逝者】谢贤：玩了一辈子，演了一辈子"
+          ]
+        }
+      ],
+      "main_entities": {
+        "people": [
+          "谢贤"
+        ],
+        "works": [],
+        "organizations": [],
+        "events": []
+      },
+      "signals": {
+        "has_official_source": false,
+        "has_media_context": true,
+        "has_data_signal": false,
+        "has_hot_search_signal": false,
+        "has_multiple_sources": false
+      },
+      "newsworthiness_score": 64,
+      "japan_gap": "medium",
+      "context_value": "medium",
+      "publish_priority": "medium",
+      "selection_reason": "media_context, topic_type:unknown, evidence:1",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears."
+    },
+    "summary": {
+      "title_ja": "俳優の謝賢氏が死去　「生涯遊び、生涯演じた」",
+      "badge": "NEWS",
+      "lead": "俳優の謝賢氏が死去した。界面新聞は訃報を伝え、「生涯遊び、生涯演じた」とその人生を評している。",
+      "what_happened": "俳優の謝賢氏が死去した。界面新聞は訃報として伝え、「生涯遊び、生涯演じた」と評している。詳しい経歴や死因は今回の情報源には記載がない。",
+      "reaction_view": "",
+      "why_it_matters": "俳優の謝賢氏が亡くなりました。「生涯遊び、生涯演じた」という界面新聞の評価が、その人生を象徴しています。今回の情報源では詳しい経歴や死因は伝えられておらず、今後の追加情報が待たれます。",
+      "editor_comment": "",
+      "japan_context_note": "",
+      "category": "訃報",
+      "confidence": "C",
+      "source_type": "media_report",
+      "published_date": "2026-07-20",
+      "event_date": "",
+      "freshness_label": "recent",
+      "newsworthiness_score": 64,
+      "japan_visibility": "unknown",
+      "japan_gap": "medium",
+      "context_value": "medium",
+      "sns_heat": "none",
+      "source_count": 1,
+      "source_list": [
+        {
+          "name": "界面新闻 影视产业",
+          "url": "https://www.jiemian.com/article/14798511.html"
+        }
+      ],
+      "has_official_source": false,
+      "has_multiple_sources": false,
+      "has_sns_signal": false,
+      "article_type": "unknown",
+      "skip_reason": "",
+      "verification_status": "",
+      "topic_key": "谢贤逝世",
+      "main_entities": {
+        "people": [
+          "謝賢"
+        ],
+        "works": [],
+        "organizations": []
+      },
+      "related_sources": [
+        {
+          "name": "界面新闻 影视产业",
+          "url": "https://www.jiemian.com/article/14798511.html"
+        }
+      ],
+      "tags": [
+        "訃報",
+        "俳優",
+        "謝賢"
+      ],
+      "publish_priority": "medium",
+      "publish_reason": "俳優・謝賢氏の訃報を第一報として伝える。詳細が入り次第、経歴や追悼情報を追記する予定。",
+      "claim_refs": {
+        "what_happened": [
+          "C1",
+          "C2"
+        ],
+        "why_it_matters": [
+          "C1",
+          "C2"
+        ],
+        "reaction_view": [],
+        "japan_context_note": []
+      }
+    },
+    "generationMeta": {
+      "topic_key": "谢贤逝世",
+      "ledger_used": true,
+      "ledger_fallback_reason": "",
+      "ledger": {
+        "topic_key": "谢贤逝世",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "謝賢が死去した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "谢贤"
+            ],
+            "numbers": [],
+            "quote_zh": "【逝者】谢贤",
+            "anchor": true
+          },
+          {
+            "id": "C2",
+            "type": "source_analysis",
+            "text": "謝賢は生涯遊び、生涯演じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "谢贤"
+            ],
+            "numbers": [],
+            "quote_zh": "玩了一辈子，演了一辈子",
+            "anchor": true
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "ai_models": {
+        "base": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-flash"
+        },
+        "ledger": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "comment": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        }
+      },
+      "ledger_anchor": {
+        "topic_key": "谢贤逝世",
+        "claims_total": 2,
+        "anchor_unverified": 0,
+        "dropped_explanations": []
+      },
+      "term_expansion": {
+        "enabled": true,
+        "attempted": [],
+        "succeeded": [],
+        "failed": []
+      },
+      "display_normalization": {
+        "residues": []
+      },
+      "comment_grounding": {
+        "topic_key": "谢贤逝世",
+        "refs": [
+          "C1",
+          "C2"
+        ],
+        "gated_sentences_removed": [],
+        "unmatched_numbers": []
+      },
+      "claim_check": {
+        "topic_key": "谢贤逝世",
+        "violations": [],
+        "gated_violation_count": 0,
+        "action": "none"
+      },
+      "tone_mode": "sober",
+      "comment_stage": {
+        "attempted": true,
+        "used": true,
+        "regenerated": false,
+        "fallback_reason": "",
+        "exclamation_count": 0,
+        "opening": "俳優の謝賢氏が亡くな",
+        "regenerated_opening": false,
+        "regenerated_paraphrase": false
+      }
+    }
+  }
+]

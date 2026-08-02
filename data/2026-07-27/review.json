@@ -2,5 +2,15 @@
   "date": "2026-07-27",
   "status": "pending",
   "issue_number": 11,
-  "articles": []
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "谢贤逝世",
+      "title": "俳優の謝賢氏が死去　「生涯遊び、生涯演じた」",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
 }
