@@ -391,6 +391,46 @@ export type SourceExpansionEvidence = {
   route: string;
   query: string;
   key_points: string[];
+  /** Search/RSS discovery is never used as evidence until the linked document passes validation. */
+  validation_status?: "verified" | "rejected" | "discovered";
+  validation_reason?: string;
+  published_date?: string;
+  media_family?: string;
+  claim_coverage?: ClaimCoverage;
+  document_text_length?: number;
+};
+
+export type EvidenceRiskClass = "low" | "medium" | "high";
+
+export type ClaimCoverage = {
+  target_claim: string;
+  observed_claim: string;
+  matched: boolean;
+  reason: string;
+};
+
+/** One URL-level record, including rejected discoveries, for selection_trace diagnostics. */
+export type SourceExpansionObservation = {
+  topic_key: string;
+  query: string;
+  route_id: string;
+  url: string;
+  title: string;
+  source_name: string;
+  media_family: string;
+  status: "accepted" | "rejected" | "discovered";
+  reason: string;
+  published_date?: string;
+  claim_coverage?: ClaimCoverage;
+};
+
+export type SourceResearchCandidate = {
+  topic_key: string;
+  title_hint: string;
+  event_sentence: string;
+  risk_class: EvidenceRiskClass;
+  required_independent_evidence: number;
+  reason: "baseline_research" | "empty_day_research" | "preference_exploration";
 };
 
 export type SourceExpansionAttempt = {
@@ -404,7 +444,7 @@ export type SourceExpansionAttempt = {
   raw_count: number;
   matched_count: number;
   rejected_count?: number;
-  rejection_reasons?: Partial<Record<"missing_title_or_url" | "unsafe_url" | "weak_topic_match", number>>;
+  rejection_reasons?: Record<string, number>;
   failure_stage: string;
   source_type: SourceTypeLabel;
 };
@@ -417,6 +457,8 @@ export type SourceExpansionResult = {
   evidence_count: number;
   attempts: SourceExpansionAttempt[];
   evidence: SourceExpansionEvidence[];
+  observations?: SourceExpansionObservation[];
+  research_candidates?: SourceResearchCandidate[];
 };
 
 export type TopicSeed = {

@@ -1,13 +1,18 @@
 import Parser from "rss-parser";
+import { assessClaimCoverage, classifyEvidenceRisk, requiredIndependentEvidence } from "./evidence/claimCoverage.js";
+import { extractDocumentSnapshot } from "./evidence/documentSnapshot.js";
+import { normalizeMediaFamily } from "./evidence/mediaFamily.js";
 import type {
   SourceExpansionAttempt,
   SourceExpansionEvidence,
+  SourceExpansionObservation,
   SourceExpansionResult,
+  SourceResearchCandidate,
   SourceTypeLabel,
   TopicCandidate
 } from "./types.js";
 import { areTitlesSimilar } from "./dedupe.js";
-import { assessSourceRelevance, rankTopicSearchQueries } from "./sourceRelevance.js";
+import { assessSourceRelevance, isSafePublicationSourceUrl, rankTopicSearchQueries } from "./sourceRelevance.js";
 
 const DEFAULT_RSSHUB_BASE_URL = "https://rsshub.app";
 const DEFAULT_TIMEOUT_MS = 6000;
@@ -16,6 +21,14 @@ const DEFAULT_QUERIES_PER_TOPIC = 2;
 const MAX_ITEMS_PER_ROUTE = 8;
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const MAX_SERPER_RESULTS = 5;
+const MAX_DOCUMENT_VALIDATIONS_PER_QUERY = 3;
+
+export type SourceExpansionOptions = {
+  /** Candidate-review integration can supply up to three high-interest topics. */
+  preferenceExploration?: TopicCandidate[];
+  /** Retained separately for an empty-day Issue; it never changes a publish gate. */
+  emptyDay?: boolean;
+};
 
 type ExpansionRoute = {
   id: string;
@@ -59,15 +72,21 @@ const DEFAULT_ROUTES: ExpansionRoute[] = [
   }
 ];
 
-export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
+export async function expandTopicSources(topicCandidates: TopicCandidate[], options: SourceExpansionOptions = {}) {
   const skipRsshub = process.env.SOURCE_EXPANSION_SKIP_RSSHUB === "true";
   const routes = skipRsshub ? [] : getExpansionRoutes();
-  const topics = topicCandidates
+  const rankedTopics = topicCandidates
     .filter((topic) => ["today", "yesterday", "recent"].includes(topic.freshness_label))
     .sort((a, b) => b.newsworthiness_score - a.newsworthiness_score || a.topic_key.localeCompare(b.topic_key, "ja"))
     .slice(0, getMaxTopics());
+  const baselineExpansionKeys = new Set(rankedTopics.map((topic) => topic.topic_key));
+  // Preference exploration is a research allocation only.  It is never added
+  // to the normal selection score and cannot bypass claim or review gates.
+  const topics = uniqueTopics([...rankedTopics, ...(options.preferenceExploration ?? []).slice(0, 3)])
+    .filter((topic) => ["today", "yesterday", "recent"].includes(topic.freshness_label));
   const attempts: SourceExpansionAttempt[] = [];
   const evidenceByTopic = new Map<string, SourceExpansionEvidence[]>();
+  const observations: SourceExpansionObservation[] = [];
 
   if (!topics.length || process.env.SOURCE_EXPANSION_ENABLED === "false") {
     return {
@@ -79,7 +98,9 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
         success_route_count: 0,
         evidence_count: 0,
         attempts: [],
-        evidence: []
+        evidence: [],
+        observations: [],
+        research_candidates: buildResearchCandidates(topicCandidates, options)
       } satisfies SourceExpansionResult
     };
   }
@@ -90,6 +111,7 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
       if (skipRsshub) {
         const serperAttempt = await fetchSerperSearch(topic, query);
         attempts.push(serperAttempt.attempt);
+        observations.push(...serperAttempt.observations);
         if (serperAttempt.evidence.length) {
           evidenceByTopic.set(topic.topic_key, [...(evidenceByTopic.get(topic.topic_key) ?? []), ...serperAttempt.evidence]);
         }
@@ -100,6 +122,7 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
         const attempt = await fetchExpansionRoute(topic, query, route);
         attempts.push(attempt.attempt);
         rssAttempts.push(attempt.attempt);
+        observations.push(...attempt.observations);
         if (attempt.evidence.length) {
           evidenceByTopic.set(topic.topic_key, [...(evidenceByTopic.get(topic.topic_key) ?? []), ...attempt.evidence]);
         }
@@ -107,6 +130,7 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
       if (rssAttempts.length && rssAttempts.every((attempt) => attempt.fetch_status === "failed")) {
         const serperAttempt = await fetchSerperSearch(topic, query);
         attempts.push(serperAttempt.attempt);
+        observations.push(...serperAttempt.observations);
         if (serperAttempt.evidence.length) {
           evidenceByTopic.set(topic.topic_key, [...(evidenceByTopic.get(topic.topic_key) ?? []), ...serperAttempt.evidence]);
         }
@@ -114,8 +138,16 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
     }
   }
 
-  const evidence = [...evidenceByTopic.values()].flat();
-  const expandedTopics = topicCandidates.map((topic) => attachExpansionEvidence(topic, evidenceByTopic.get(topic.topic_key) ?? []));
+  const evidence = [...evidenceByTopic.entries()]
+    .flatMap(([topicKey, items]) => baselineExpansionKeys.has(topicKey) ? items : []);
+  // A preference-only exploration can collect URL observations, but it does
+  // not add evidence to a topic outside the baseline expansion queue. This
+  // keeps preference from changing candidate score, EVS, or publication.
+  const expandedTopics = topicCandidates.map((topic) =>
+    baselineExpansionKeys.has(topic.topic_key)
+      ? attachExpansionEvidence(topic, evidenceByTopic.get(topic.topic_key) ?? [])
+      : topic
+  );
   const expansion: SourceExpansionResult = {
     shortlisted_topic_keys: topics.map((topic) => topic.topic_key),
     attempted_topic_count: topics.length,
@@ -123,7 +155,9 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[]) {
     success_route_count: attempts.filter((attempt) => attempt.fetch_status === "success").length,
     evidence_count: evidence.length,
     attempts,
-    evidence
+    evidence,
+    observations,
+    research_candidates: buildResearchCandidates(topicCandidates, options)
   };
 
   return { topicCandidates: expandedTopics, expansion };
@@ -149,14 +183,16 @@ async function fetchSerperSearch(topic: TopicCandidate, query: string) {
         matched_count: 0,
         failure_stage: "not_configured"
       } satisfies SourceExpansionAttempt,
-      evidence: []
+      evidence: [],
+      observations: []
     };
   }
 
   try {
     const items = (await searchSerperOrganic(query)).slice(0, MAX_SERPER_RESULTS);
     const assessed = items.map((item) => toSerperEvidence(item, query)).map((item) => ({ item, assessment: assessSourceRelevance(topic, item, query) }));
-    const evidence = assessed.filter(({ assessment }) => assessment.accepted).map(({ item }) => item);
+    const validated = await validateDiscoveries(topic, assessed, query);
+    const evidence = validated.evidence;
     return {
       attempt: {
         ...common,
@@ -164,11 +200,12 @@ async function fetchSerperSearch(topic: TopicCandidate, query: string) {
         fetch_error: "",
         raw_count: items.length,
         matched_count: evidence.length,
-        rejected_count: assessed.length - evidence.length,
-        rejection_reasons: countRejectionReasons(assessed),
+        rejected_count: validated.observations.filter((item) => item.status === "rejected").length,
+        rejection_reasons: countRejectionReasons(assessed, validated.observations),
         failure_stage: items.length ? "" : "serper_empty"
       } satisfies SourceExpansionAttempt,
-      evidence
+      evidence,
+      observations: validated.observations
     };
   } catch (error) {
     return {
@@ -180,7 +217,8 @@ async function fetchSerperSearch(topic: TopicCandidate, query: string) {
         matched_count: 0,
         failure_stage: getFailureStage(error)
       } satisfies SourceExpansionAttempt,
-      evidence: []
+      evidence: [],
+      observations: []
     };
   }
 }
@@ -213,7 +251,9 @@ function toSerperEvidence(item: SerperOrganicItem, query: string): SourceExpansi
     route_id: "serper-search",
     route: SERPER_ENDPOINT,
     query,
-    key_points: [cleanText(item.title ?? ""), cleanText(item.snippet ?? "")].filter(Boolean)
+    key_points: [cleanText(item.title ?? "")].filter(Boolean),
+    validation_status: "discovered",
+    media_family: normalizeMediaFamily(url)
   };
 }
 
@@ -249,7 +289,8 @@ async function fetchExpansionRoute(topic: TopicCandidate, query: string, route: 
     const feed = await parser.parseString(xml);
     const items = ((feed.items ?? []) as RssItem[]).slice(0, MAX_ITEMS_PER_ROUTE);
     const assessed = items.map((item) => toEvidence(item, route, routePath, query)).map((item) => ({ item, assessment: assessSourceRelevance(topic, item, query) }));
-    const evidence = assessed.filter(({ assessment }) => assessment.accepted).map(({ item }) => item);
+    const validated = await validateDiscoveries(topic, assessed, query);
+    const evidence = validated.evidence;
 
     return {
       attempt: {
@@ -258,11 +299,12 @@ async function fetchExpansionRoute(topic: TopicCandidate, query: string, route: 
         fetch_error: "",
         raw_count: items.length,
         matched_count: evidence.length,
-        rejected_count: assessed.length - evidence.length,
-        rejection_reasons: countRejectionReasons(assessed),
+        rejected_count: validated.observations.filter((item) => item.status === "rejected").length,
+        rejection_reasons: countRejectionReasons(assessed, validated.observations),
         failure_stage: items.length ? "" : "rss_parse_empty"
       } satisfies SourceExpansionAttempt,
-      evidence
+      evidence,
+      observations: validated.observations
     };
   } catch (error) {
     return {
@@ -274,7 +316,8 @@ async function fetchExpansionRoute(topic: TopicCandidate, query: string, route: 
         matched_count: 0,
         failure_stage: getFailureStage(error)
       } satisfies SourceExpansionAttempt,
-      evidence: []
+      evidence: [],
+      observations: []
     };
   }
 }
@@ -299,7 +342,10 @@ function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceExpansio
   }
 
   const existingKeys = new Set(topic.evidence_articles.map((article) => article.url || `${article.source_name}:${article.title}`));
+  // Only a fetched document with a usable date and matching claim may affect
+  // the topic. Search snippets and failed pages stay visible in observations.
   const newEvidence = evidence
+    .filter((item) => item.validation_status === "verified" && item.claim_coverage?.matched)
     .filter((item) => {
       const key = item.url || `${item.source_name}:${item.title}`;
       if (existingKeys.has(key)) {
@@ -313,8 +359,8 @@ function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceExpansio
       url: item.url,
       source_name: item.source_name,
       source_type: item.source_type,
-      published_date: "",
-      freshness_label: "unknown" as const,
+      published_date: item.published_date ?? "",
+      freshness_label: item.published_date ? ("recent" as const) : ("unknown" as const),
       article_type: item.source_type === "sns" ? ("sns_trend" as const) : ("unknown" as const),
       reliability: "C" as const,
       key_points: item.key_points
@@ -349,7 +395,8 @@ function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceExpansio
 function countIndependentEvidence(evidence: TopicCandidate["evidence_articles"]) {
   const accepted: TopicCandidate["evidence_articles"] = [];
   for (const item of evidence) {
-    if (accepted.some((candidate) => candidate.source_name === item.source_name)) continue;
+    const family = normalizeMediaFamily(item.url || item.source_name);
+    if (accepted.some((candidate) => normalizeMediaFamily(candidate.url || candidate.source_name) === family)) continue;
     if (accepted.some((candidate) => areTitlesSimilar(candidate.title, item.title))) continue;
     accepted.push(item);
   }
@@ -362,12 +409,14 @@ function toEvidence(item: RssItem, route: ExpansionRoute, routePath: string, que
   return {
     title,
     url: item.link ?? "",
-    source_name: route.sourceName,
-    source_type: route.sourceType,
+    source_name: getHostname(item.link ?? "") || route.sourceName,
+    source_type: getSerperSourceType(getHostname(item.link ?? "")) || route.sourceType,
     route_id: route.id,
     route: routePath,
     query,
-    key_points: [title, description].filter(Boolean).slice(0, 2)
+    key_points: [title, description].filter(Boolean).slice(0, 2),
+    validation_status: "discovered",
+    media_family: normalizeMediaFamily(item.link ?? "")
   };
 }
 
@@ -375,14 +424,138 @@ function getTopicQueries(topic: TopicCandidate) {
   return rankTopicSearchQueries(topic);
 }
 
-function countRejectionReasons(assessed: Array<{ assessment: ReturnType<typeof assessSourceRelevance> }>) {
-  const counts: Partial<Record<"missing_title_or_url" | "unsafe_url" | "weak_topic_match", number>> = {};
+function countRejectionReasons(
+  assessed: Array<{ assessment: ReturnType<typeof assessSourceRelevance> }>,
+  observations: SourceExpansionObservation[] = []
+) {
+  const counts: Record<string, number> = {};
+  if (observations.length) {
+    for (const observation of observations) {
+      if (observation.status !== "rejected") continue;
+      counts[observation.reason] = (counts[observation.reason] ?? 0) + 1;
+    }
+    return counts;
+  }
   for (const { assessment } of assessed) {
     if (assessment.accepted) continue;
-    const reason = assessment.reason as keyof typeof counts;
+    const reason = assessment.reason;
     counts[reason] = (counts[reason] ?? 0) + 1;
   }
   return counts;
+}
+
+async function validateDiscoveries(
+  topic: TopicCandidate,
+  assessed: Array<{ item: SourceExpansionEvidence; assessment: ReturnType<typeof assessSourceRelevance> }>,
+  query: string
+) {
+  const observations: SourceExpansionObservation[] = [];
+  const accepted = assessed.filter(({ assessment }) => assessment.accepted);
+  const candidates = accepted.slice(0, MAX_DOCUMENT_VALIDATIONS_PER_QUERY);
+  for (const { item, assessment } of assessed) {
+    if (assessment.accepted) continue;
+    observations.push(toObservation(topic, item, "rejected", assessment.reason));
+  }
+  for (const { item } of accepted.slice(MAX_DOCUMENT_VALIDATIONS_PER_QUERY)) {
+    observations.push(toObservation(topic, item, "discovered", "document_validation_limit"));
+  }
+
+  const settled = await Promise.all(candidates.map(({ item }) => validateDiscoveredEvidence(topic, item, query)));
+  for (const result of settled) observations.push(result.observation);
+  return {
+    evidence: settled.flatMap((result) => (result.evidence ? [result.evidence] : [])),
+    observations
+  };
+}
+
+async function validateDiscoveredEvidence(topic: TopicCandidate, item: SourceExpansionEvidence, query: string) {
+  if (!isSafePublicationSourceUrl(item.url)) {
+    return { observation: toObservation(topic, item, "rejected", "unsafe_url") };
+  }
+  try {
+    const response = await fetch(item.url, {
+      headers: { "user-agent": "Mozilla/5.0 (compatible; ChinaEntNewsPhase2/0.2)" },
+      signal: AbortSignal.timeout(getTimeoutMs())
+    });
+    if (!response.ok) return { observation: toObservation(topic, item, "rejected", `document_http_${response.status}`) };
+    if (!isSafePublicationSourceUrl(response.url)) return { observation: toObservation(topic, item, "rejected", "unsafe_redirect_url") };
+    const contentType = response.headers.get("content-type") ?? "";
+    if (contentType && !/html|xml|text\//i.test(contentType)) return { observation: toObservation(topic, item, "rejected", "non_document_content_type") };
+    const snapshot = extractDocumentSnapshot(await response.text(), item.title);
+    if (snapshot.text.length < 80) return { observation: toObservation(topic, item, "rejected", "document_text_too_short") };
+    if (!snapshot.published_date) return { observation: toObservation(topic, item, "rejected", "missing_published_date") };
+    const relevance = assessSourceRelevance(topic, { title: snapshot.title || item.title, url: response.url, key_points: [snapshot.text.slice(0, 2000)] }, query);
+    if (!relevance.accepted) return { observation: toObservation(topic, item, "rejected", relevance.reason, snapshot.published_date) };
+    const coverage = assessClaimCoverage(topic, { title: snapshot.title || item.title, text: snapshot.text });
+    if (!coverage.matched) return { observation: toObservation(topic, item, "rejected", coverage.reason, snapshot.published_date, coverage) };
+    const evidence: SourceExpansionEvidence = {
+      ...item,
+      title: snapshot.title || item.title,
+      url: response.url,
+      source_name: getHostname(response.url) || item.source_name,
+      source_type: getSerperSourceType(getHostname(response.url)),
+      key_points: [snapshot.title || item.title, snapshot.text.slice(0, 1000)].filter(Boolean),
+      validation_status: "verified",
+      validation_reason: "document_verified",
+      published_date: snapshot.published_date,
+      media_family: normalizeMediaFamily(response.url),
+      claim_coverage: coverage,
+      document_text_length: snapshot.text.length
+    };
+    return { evidence, observation: toObservation(topic, evidence, "accepted", "document_verified", snapshot.published_date, coverage) };
+  } catch (error) {
+    return { observation: toObservation(topic, item, "rejected", getFailureStage(error)) };
+  }
+}
+
+function toObservation(
+  topic: TopicCandidate,
+  item: SourceExpansionEvidence,
+  status: SourceExpansionObservation["status"],
+  reason: string,
+  publishedDate?: string,
+  claimCoverage?: SourceExpansionEvidence["claim_coverage"]
+): SourceExpansionObservation {
+  return {
+    topic_key: topic.topic_key,
+    query: item.query,
+    route_id: item.route_id,
+    url: item.url,
+    title: item.title,
+    source_name: item.source_name,
+    media_family: item.media_family || normalizeMediaFamily(item.url || item.source_name),
+    status,
+    reason,
+    ...(publishedDate ? { published_date: publishedDate } : {}),
+    ...(claimCoverage ? { claim_coverage: claimCoverage } : {})
+  };
+}
+
+function uniqueTopics(topics: TopicCandidate[]) {
+  return [...new Map(topics.map((topic) => [topic.topic_key, topic])).values()];
+}
+
+function buildResearchCandidates(topics: TopicCandidate[], options: SourceExpansionOptions): SourceResearchCandidate[] {
+  const preferred = options.preferenceExploration ?? [];
+  const candidates = uniqueTopics([...preferred, ...topics])
+    .filter((topic) => ["today", "yesterday", "recent"].includes(topic.freshness_label))
+    .sort((a, b) => b.newsworthiness_score - a.newsworthiness_score || a.topic_key.localeCompare(b.topic_key, "ja"))
+    .slice(0, 3);
+  return candidates.map((topic) => {
+    const risk = classifyEvidenceRisk(topic);
+    return {
+      topic_key: topic.topic_key,
+      title_hint: topic.title_hint,
+      event_sentence: topic.event_sentence,
+      risk_class: risk,
+      required_independent_evidence: requiredIndependentEvidence(risk),
+      reason: preferred.some((item) => item.topic_key === topic.topic_key)
+        ? "preference_exploration"
+        : options.emptyDay
+          ? "empty_day_research"
+          : "baseline_research"
+    };
+  });
 }
 
 function getExpansionRoutes() {

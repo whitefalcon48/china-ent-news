@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "node:path";
 import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
 import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
@@ -13,6 +14,8 @@ import { writeCompareFixture } from "./compareFixture.js";
 import { renderMarkdownFile, writeArticlesJsonFile } from "./renderMarkdown.js";
 import { evaluateTopicHistory, loadPublicationHistory, type PublicationHistory, type PublicationHistoryMatch } from "./publicationHistory.js";
 import { isReviewGateEnabled, writeInitialReviewState } from "./review/reviewState.js";
+import { createCandidateReviewState, readSelectionFeedback, selectionFeedbackPath, writeCandidateReviewSnapshot } from "./preference/candidateReviewState.js";
+import { buildPreferenceResearchOrder, getPreferenceRankingMode } from "./preference/ranking.js";
 import { buildSelectionTrace, candidateKey, writeSelectionTraceFile, type SourceSelectionDiagnostic } from "./selectionTrace.js";
 import { OUTPUT_COUNT_INSTRUCTION, describeError, getAiProvider, getProviderEnvStatus, summarizeArticle, summarizeTopic } from "./summarizeWithGemini.js";
 import { createTermExpansionSession } from "./termExplainExpansion.js";
@@ -43,6 +46,7 @@ async function main() {
   const provider = getAiProvider();
   const topicFirstEnabled = process.env.TOPIC_FIRST !== "false";
   const aiEnv = getProviderEnvStatus(provider);
+  const runDate = getRunDate();
 
   console.log(`収集元: ${sources.length}件`);
   console.log(`AI_PROVIDER: ${provider}`);
@@ -61,13 +65,41 @@ async function main() {
   const topicCandidateArticlePool = classifiedArticles.map(prepareGenerationCandidate);
   const topicSeedExtraction = await extractTopicSeeds(topicCandidateArticlePool, provider, llmCallBudget);
   const baseTopicCandidates = buildTopicCandidates(topicCandidateArticlePool, topicSeedExtraction.seeds);
-  const topicExpansion = await expandTopicSources(baseTopicCandidates);
-  const topicCandidates = topicExpansion.topicCandidates;
-  const topicCandidatesPath = await writeTopicCandidatesFile(topicCandidates, undefined, {
-    topic_seed_extraction: topicSeedExtraction,
-    source_expansion: topicExpansion.expansion
+  const preferenceFeedback = await readSelectionFeedback(selectionFeedbackPath(path.resolve(process.env.SITE_DATA_DIR || "data")));
+  const preferenceShadow = buildPreferenceResearchOrder({
+    candidates: baseTopicCandidates.map((topic, index) => ({
+      topic_key: topic.topic_key,
+      title: topic.title_hint,
+      event_sentence: topic.event_sentence,
+      search_queries: topic.search_queries,
+      entities: [...topic.main_entities.people, ...topic.main_entities.works, ...topic.main_entities.organizations, ...topic.main_entities.events],
+      evidence_text: topic.evidence_articles.flatMap((article) => [article.title, ...article.key_points]),
+      baseline_rank: index + 1
+    })),
+    feedback: preferenceFeedback,
+    mode: getPreferenceRankingMode()
   });
-  const publicationHistory = await loadPublicationHistory(getRunDate());
+  const topicsByKey = new Map(baseTopicCandidates.map((topic) => [topic.topic_key, topic]));
+  // This queue is strictly for research. In shadow mode it preserves the
+  // baseline order, and in every mode it cannot affect generation or publish.
+  const preferenceExploration = preferenceShadow.mode === "off"
+    ? []
+    : preferenceShadow.candidates
+      .slice(0, 3)
+      .flatMap((candidate) => {
+        const topic = topicsByKey.get(candidate.topic_key);
+        return topic ? [topic] : [];
+      });
+  const topicExpansion = await expandTopicSources(baseTopicCandidates, { preferenceExploration });
+  const topicCandidates = topicExpansion.topicCandidates;
+  const candidateReview = createCandidateReviewState(baseTopicCandidates, runDate, 12);
+  const candidateReviewPath = await writeCandidateReviewSnapshot(candidateReview, runDate);
+  const topicCandidatesPath = await writeTopicCandidatesFile(topicCandidates, runDate, {
+    topic_seed_extraction: topicSeedExtraction,
+    source_expansion: topicExpansion.expansion,
+    preference_shadow: preferenceShadow
+  });
+  const publicationHistory = await loadPublicationHistory(runDate);
   const droppedReasons = new Map<string, string>();
   const selectionReasons = new Map<string, string>();
   markNonPublishableTraceDrops(generationCandidatePool, droppedReasons);
@@ -156,6 +188,8 @@ async function main() {
   }
   console.log(`topic_candidates出力先: ${topicCandidatesPath}`);
   console.log(`topic_candidates件数: ${topicCandidates.length}`);
+  console.log(`candidate review snapshot: ${candidateReviewPath} (${candidateReview.candidates.length}件)`);
+  console.log(`preference shadow: ${preferenceShadow.mode} / feedback ${preferenceShadow.readiness.feedback_count} / research reorder ${preferenceShadow.ranking_applied}`);
   logSourceExpansion(topicExpansion.expansion);
   logDuplicateCandidates(topicMergeResult.duplicateCandidates);
   console.log(`HOT SEARCH取得: ${hotSearch.articles.length}件`);
@@ -311,6 +345,7 @@ async function main() {
     droppedReasons
   );
   const selectionTrace = buildSelectionTrace({
+    date: runDate,
     provider,
     candidatePool: generationCandidatePool,
     deepseekInput: deepseekInputArticles,
@@ -350,6 +385,12 @@ async function main() {
       ? "Topic-first generation enabled. DeepSeek input contains one representative article per selected topic."
       : "Topic-first generation disabled. Legacy article-level selection and generation enabled.",
     sourceExpansion: topicExpansion.expansion,
+    preferenceShadow,
+    candidateReview: {
+      snapshot_created: true,
+      candidate_count: candidateReview.candidates.length,
+      max_candidates: 12
+    },
     llmCallBudget
   });
   const tracePath = await writeSelectionTraceFile(selectionTrace);

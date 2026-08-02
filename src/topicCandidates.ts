@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { createTopicKey as createSharedTopicKey, extractEventName, extractPersonName, extractWorkName } from "./topicKey.js";
+import type { PreferenceResearchOrder } from "./preference/types.js";
 import type {
   ArticleType,
   ContextValue,
@@ -46,7 +47,11 @@ export function buildTopicCandidates(articles: RawArticle[], seeds: TopicSeed[] 
 export async function writeTopicCandidatesFile(
   topicCandidates: TopicCandidate[],
   date = today(),
-  meta: { topic_seed_extraction?: TopicSeedExtractionResult; source_expansion?: SourceExpansionResult } = {}
+  meta: {
+    topic_seed_extraction?: TopicSeedExtractionResult;
+    source_expansion?: SourceExpansionResult;
+    preference_shadow?: PreferenceResearchOrder;
+  } = {}
 ) {
   const outputPath = path.resolve("output", `topic_candidates_${date}.json`);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
@@ -58,6 +63,7 @@ export async function writeTopicCandidatesFile(
         generated_at: new Date().toISOString(),
         topic_seed_extraction: meta.topic_seed_extraction,
         source_expansion: meta.source_expansion,
+        preference_shadow: meta.preference_shadow,
         topic_candidates_count: topicCandidates.length,
         topic_candidates: topicCandidates
       },

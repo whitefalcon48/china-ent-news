@@ -7,6 +7,7 @@
 - ✅ 0件レビューIssueで、保存済み `selection_trace` / `topic_candidates` のEVS 6点候補を最大3本までレビュー専用で再生成する導線を追加。採用されるまで公開せず、過去日に出た同一topicは除外し、空の記事状態を完了扱いにしない。台帳・claim check・簡体字検査をすべて通過した候補だけを書き戻す。
 - ✅ トップ／日次フィードをカード内で完結させた。「ビンタンからの補足」を根拠がある時だけ常時表示し、ヘッダーは「最終更新：日付」、カードには個別URLを共有するXボタンを置く。個別ページはシェア先の着地用途に絞った。
 - ✅ ローカル検証: `npm run check`、`npm run test:review-rescue`、`npm run test:evs`、`npm run test:kanji`、`npm run test:site-feed`、`npm run build:site` がすべて成功。GitHub Actionsでの再生成実測・公開確認は次工程。
+- ✅ 関心評価・根拠拡張のshadow導線を追加。生成前のtopic候補から最大12件の候補レビューを別保存し、未評価は負例にせず、構造化済み評価だけを追加調査順の診断に使用する。通常はshadowで既存の選定・EVS・claim・公開条件を変えない。探索URLは本文取得・日付・媒体系列・claim一致を通ったものだけ根拠へ昇格し、baseline順位・shadow理由・探索候補・URL観測をtrace／topic candidatesへ残す。`check`、`test:preference`、`test:candidate-preference`、`test:evidence-expansion`、`test:sources`、`test:evs` 成功（ローカルの `audit:sources` は外部取得失敗を診断出力）。
 
 ## ゴール像
 

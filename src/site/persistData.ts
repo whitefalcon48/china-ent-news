@@ -35,12 +35,17 @@ const targets = names.filter((name) =>
   name === `${date}-gemini.md` ||
   name === `selection_trace_${date}.json` ||
   name === `topic_candidates_${date}.json` ||
+  name === `candidate_review_${date}.json` ||
   name === `fact_ledger_${date}.json` ||
   name === `review_${date}.json` ||
   name === `compare_fixture_${date}.json`
 );
 for (const name of targets) {
-  const destinationName = name === `review_${date}.json` ? "review.json" : name;
+  const destinationName = name === `review_${date}.json`
+    ? "review.json"
+    : name === `candidate_review_${date}.json`
+      ? "candidate_review.json"
+      : name;
   await fs.copyFile(path.join(outputDir, name), path.join(destination, destinationName));
 }
 

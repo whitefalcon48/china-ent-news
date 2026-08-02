@@ -3,6 +3,7 @@ import path from "node:path";
 import type { LlmCallBudget } from "./llmCallBudget.js";
 import type { EditorialReviewRescue, EditorialValueAssessment } from "./editorialValue.js";
 import type { PublicationHistoryMatch } from "./publicationHistory.js";
+import type { PreferenceResearchOrder } from "./preference/types.js";
 import type {
   AiProvider,
   ClaimCheckResult,
@@ -128,6 +129,8 @@ type SelectionTrace = {
     used: number;
   };
   source_expansion: SourceExpansionResult | null;
+  preference_shadow: PreferenceResearchOrder | null;
+  candidate_review: { snapshot_created: boolean; candidate_count: number; max_candidates: number };
   deepseek_input: {
     count: number;
     items: TraceCandidate[];
@@ -165,6 +168,8 @@ export function buildSelectionTrace(args: {
   publicationHistory?: SelectionTrace["publication_history"];
   officialOnly?: SelectionTrace["official_only"];
   commentDiversity?: SelectionTrace["comment_diversity"];
+  preferenceShadow?: PreferenceResearchOrder;
+  candidateReview?: SelectionTrace["candidate_review"];
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -247,6 +252,8 @@ export function buildSelectionTrace(args: {
       used: args.llmCallBudget?.used ?? 0
     },
     source_expansion: args.sourceExpansion ?? null,
+    preference_shadow: args.preferenceShadow ?? null,
+    candidate_review: args.candidateReview ?? { snapshot_created: false, candidate_count: 0, max_candidates: 12 },
     deepseek_input: {
       count: args.deepseekInput.length,
       items: args.deepseekInput.map((article) =>
