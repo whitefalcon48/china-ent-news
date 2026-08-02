@@ -82,19 +82,19 @@
       "caution_note": "Single-source topic; keep wording cautious until another source appears."
     },
     "summary": {
-      "title_ja": "俳優の謝賢氏が死去　「生涯遊び、生涯演じた」",
+      "title_ja": "謝賢さん死去、界面新聞が報道",
       "badge": "NEWS",
-      "lead": "俳優の謝賢氏が死去した。界面新聞は訃報を伝え、「生涯遊び、生涯演じた」とその人生を評している。",
-      "what_happened": "俳優の謝賢氏が死去した。界面新聞は訃報として伝え、「生涯遊び、生涯演じた」と評している。詳しい経歴や死因は今回の情報源には記載がない。",
+      "lead": "界面新聞が、謝賢さんが死去したと報じた。同紙は「生涯遊び、生涯演じた」とその人生を評している。",
+      "what_happened": "界面新聞が、謝賢さんの死去を報じました。記事は「逝者」の見出しで、謝賢さんの人生を「生涯遊び、生涯演じた」と評しています。この訃報は現時点で界面新聞の単独報道として伝わっており、ほかの媒体による裏付けは確認できていません。今後の続報が、情報を整理するうえでの次の確認ポイントになります。",
       "reaction_view": "",
-      "why_it_matters": "俳優の謝賢氏が亡くなりました。「生涯遊び、生涯演じた」という界面新聞の評価が、その人生を象徴しています。今回の情報源では詳しい経歴や死因は伝えられておらず、今後の追加情報が待たれます。",
+      "why_it_matters": "界面新聞が謝賢さんの死去を報じました。現時点では他の媒体による確認が取れていないため、今後の続報で事実関係を見極める必要があります。同紙の「生涯遊び、生涯演じた」という言葉が、いま静かに響きます。",
       "editor_comment": "",
       "japan_context_note": "",
       "category": "訃報",
       "confidence": "C",
       "source_type": "media_report",
       "published_date": "2026-07-20",
-      "event_date": "",
+      "event_date": "2026-07-20",
       "freshness_label": "recent",
       "newsworthiness_score": 64,
       "japan_visibility": "unknown",
@@ -113,7 +113,7 @@
       "has_sns_signal": false,
       "article_type": "unknown",
       "skip_reason": "",
-      "verification_status": "",
+      "verification_status": "単独報道のため要確認",
       "topic_key": "谢贤逝世",
       "main_entities": {
         "people": [
@@ -130,11 +130,11 @@
       ],
       "tags": [
         "訃報",
-        "俳優",
-        "謝賢"
+        "謝賢",
+        "界面新聞"
       ],
-      "publish_priority": "medium",
-      "publish_reason": "俳優・謝賢氏の訃報を第一報として伝える。詳細が入り次第、経歴や追悼情報を追記する予定。",
+      "publish_priority": "high",
+      "publish_reason": "界面新聞の単独報道による訃報。速報として掲載する。",
       "claim_refs": {
         "what_happened": [
           "C1",
@@ -207,18 +207,6 @@
           "model": "deepseek-v4-pro"
         }
       },
-      "ledger_anchor": {
-        "topic_key": "谢贤逝世",
-        "claims_total": 2,
-        "anchor_unverified": 0,
-        "dropped_explanations": []
-      },
-      "term_expansion": {
-        "enabled": true,
-        "attempted": [],
-        "succeeded": [],
-        "failed": []
-      },
       "display_normalization": {
         "residues": []
       },
@@ -233,7 +221,14 @@
       },
       "claim_check": {
         "topic_key": "谢贤逝世",
-        "violations": [],
+        "violations": [
+          {
+            "section": "comment",
+            "rule": "comment_paraphrase",
+            "severity": "warning",
+            "detail": "注目ポイントが本文の言い換えになっています"
+          }
+        ],
         "gated_violation_count": 0,
         "action": "none"
       },
@@ -243,10 +238,7 @@
         "used": true,
         "regenerated": false,
         "fallback_reason": "",
-        "exclamation_count": 0,
-        "opening": "俳優の謝賢氏が亡くな",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 0
       }
     }
   }
