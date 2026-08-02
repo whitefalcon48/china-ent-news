@@ -1,33 +1,33 @@
 {
   "date": "2026-07-24",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 8,
   "articles": [
     {
       "index": 1,
       "topic_key": "功夫女足",
       "title": "周星馳（チャウ・シンチー）監督『功夫女足』、公開5日で興収8.55億元突破 深圳で舞台挨拶も",
-      "status": "revised_pending",
-      "reason_tag": "口調",
-      "comment": "「ビンタンのひとこと感想」を旧「ひとこと」と全く同じ、明るく親しみのある口調で再生成する。公開テキスト全体には簡体字から日本の新字体への統一ルールを適用する。",
+      "status": "approved",
+      "reason_tag": "",
+      "comment": "",
       "revision_count": 1
     },
     {
       "index": 2,
       "topic_key": "2026中国—东盟微短剧大赛",
       "title": "2026中国—ASEAN微短劇大賽、北京で推介会—AI部門新設で賞金最大100万元",
-      "status": "revised_pending",
-      "reason_tag": "口調",
-      "comment": "「ビンタンのひとこと感想」を旧「ひとこと」と全く同じ、明るく親しみのある口調で再生成する。公開テキスト全体には簡体字から日本の新字体への統一ルールを適用する。",
+      "status": "approved",
+      "reason_tag": "",
+      "comment": "",
       "revision_count": 1
     },
     {
       "index": 3,
       "topic_key": "成毅路过短剧谐音梗",
       "title": "俳優・成毅が“無断出演”!? 短劇の同音ネタが微博で沸騰",
-      "status": "revised_pending",
-      "reason_tag": "その他",
-      "comment": "全体フィードバックを反映して記事全体を再生成。公開テキストは簡体字を日本の新字体へ統一し、対応する日本字体がない文字のみ原文維持。「ビンタンのひとこと感想」は旧「ひとこと」と同じ明るく親しみのある口調にする。",
+      "status": "approved",
+      "reason_tag": "",
+      "comment": "",
       "revision_count": 1
     }
   ]
