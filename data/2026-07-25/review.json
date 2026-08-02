@@ -6,11 +6,11 @@
     {
       "index": 1,
       "topic_key": "北派笔记",
-      "title": "AI短編ドラマ『北派筆記』、シーズン2とバーチャル俳優計画を発表",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
-      "revision_count": 0
+      "title": "AI精品短劇『北派筆記』、第2シーズンと仮想俳優計画を発表",
+      "status": "revised_pending",
+      "reason_tag": "事実",
+      "comment": "「AI技術を駆使して制作」「世界観に合ったキャラクター」など台帳C1〜C4にない解釈・期待表現を削除してください。「AI精品短劇」と「仮想俳優」は発表された事実の範囲だけで書き、2つのURLは同じ新京報系で独立した裏取りではないことを情報源の注意として注目ポイントに反映してください。japan_context_noteは根拠がないため空文字を維持してください。",
+      "revision_count": 1
     }
   ]
 }

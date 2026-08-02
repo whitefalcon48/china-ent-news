@@ -97,12 +97,12 @@
       "caution_note": "Single-source topic; keep wording cautious until another source appears."
     },
     "summary": {
-      "title_ja": "AI短編ドラマ『北派筆記』、シーズン2とバーチャル俳優計画を発表",
+      "title_ja": "AI精品短劇『北派筆記』、第2シーズンと仮想俳優計画を発表",
       "badge": "NEWS",
-      "lead": "新京報娯楽は7月24日、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の発表会が開かれたと報じた。シーズン2とバーチャル俳優計画が披露された。",
-      "what_happened": "『北派筆記』は、AI精品短劇（AI高品質短編ドラマ）と呼ばれるジャンルの作品で、AI技術を駆使して制作されている。2026年7月24日に開かれた発表会では、シーズン2の制作計画と、バーチャル俳優を起用する計画が披露された。新京報娯楽が同日付で報じている。ただし、具体的な放送時期や作品内容、バーチャル俳優の詳細な仕組みは、今回の情報源では明かされていない。",
+      "lead": "中国のニュースサイト「新京報娯楽」は7月24日、AI高品質短編ドラマ『北派筆記』の分享会が開かれ、第2シーズンと仮想俳優（バーチャル俳優）計画が披露されたと報じた。",
+      "what_happened": "新京報娯楽が2026年7月24日に伝えたところによると、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の分享会（作品報告会）が開かれた。会では第2シーズンの計画に加え、仮想俳優（バーチャル俳優）の計画も披露された。『北派筆記』がどんな作品か、仮想俳優をどう使うのかといった詳細は、今回の情報源からは確認できていない。",
       "reaction_view": "",
-      "why_it_matters": "AIドラマのシーズン2にバーチャル俳優！ まだ詳細は出ていませんが、どんな姿で動くのか、技術的な仕組みも気になります。 次はビジュアルや配信時期の発表をチェックしたいです！ 『北派筆記』の世界観に合ったキャラクターが登場するのか、今から楽しみですね！",
+      "why_it_matters": "AI精品短劇『北派筆記』が第2シーズンと仮想俳優の計画を発表したというニュース、気になります！ AIと仮想俳優の組み合わせ、実際どんなものになるんでしょう！ でも情報源は新京報娯楽の単独報道で、具体的な中身はまだ見えません。続報が待たれますね。",
       "editor_comment": "",
       "japan_context_note": "",
       "category": "ドラマ",
@@ -114,7 +114,7 @@
       "newsworthiness_score": 82,
       "japan_visibility": "unknown",
       "japan_gap": "high",
-      "context_value": "medium",
+      "context_value": "high",
       "sns_heat": "none",
       "source_count": 2,
       "source_list": [
@@ -132,7 +132,7 @@
       "has_sns_signal": false,
       "article_type": "unknown",
       "skip_reason": "",
-      "verification_status": "verified",
+      "verification_status": "one_source_report",
       "topic_key": "北派笔记",
       "main_entities": {
         "people": [
@@ -156,12 +156,13 @@
         }
       ],
       "tags": [
-        "AI",
-        "短編ドラマ",
-        "バーチャル俳優"
+        "AI精品短劇",
+        "仮想俳優",
+        "北派筆記",
+        "新京報娯楽"
       ],
       "publish_priority": "medium",
-      "publish_reason": "AI短編ドラマのシーズン2とバーチャル俳優計画という独自性のある発表のため",
+      "publish_reason": "中国のAI短編ドラマと仮想俳優計画という新しい動きの観測記録として。",
       "claim_refs": {
         "what_happened": [
           "C1",
@@ -170,8 +171,10 @@
           "C4"
         ],
         "why_it_matters": [
+          "C1",
           "C2",
-          "C3"
+          "C3",
+          "C4"
         ],
         "reaction_view": [],
         "japan_context_note": []
@@ -283,29 +286,21 @@
           "model": "deepseek-v4-pro"
         }
       },
-      "ledger_anchor": {
-        "topic_key": "北派笔记",
-        "claims_total": 4,
-        "anchor_unverified": 0,
-        "dropped_explanations": []
-      },
-      "term_expansion": {
-        "enabled": true,
-        "attempted": [],
-        "succeeded": [],
-        "failed": []
-      },
       "display_normalization": {
         "residues": []
       },
       "comment_grounding": {
         "topic_key": "北派笔记",
         "refs": [
+          "C1",
           "C2",
-          "C3"
+          "C3",
+          "C4"
         ],
         "gated_sentences_removed": [],
-        "unmatched_numbers": []
+        "unmatched_numbers": [
+          "一"
+        ]
       },
       "claim_check": {
         "topic_key": "北派笔记",
@@ -314,31 +309,37 @@
             "section": "lead",
             "rule": "number_not_in_ledger",
             "severity": "warning",
-            "detail": "新京報娯楽は7月24日、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の発表会が開かれたと報じた。"
+            "detail": "中国のニュースサイト「新京報娯楽」は7月24日、AI高品質短編ドラマ『北派筆記』の分享会が開かれ、第2シーズンと仮想俳優（バーチャル俳優）計画が披露されたと報じた。"
           },
           {
             "section": "lead",
             "rule": "entity_not_in_ledger",
             "severity": "warning",
-            "detail": "新京報娯楽は7月24日、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の発表会が開かれたと報じた。"
+            "detail": "中国のニュースサイト「新京報娯楽」は7月24日、AI高品質短編ドラマ『北派筆記』の分享会が開かれ、第2シーズンと仮想俳優（バーチャル俳優）計画が披露されたと報じた。"
           },
           {
             "section": "what_happened",
             "rule": "entity_not_in_ledger",
             "severity": "warning",
-            "detail": "『北派筆記』は、AI精品短劇（AI高品質短編ドラマ）と呼ばれるジャンルの作品で、AI技術を駆使して制作されている。"
+            "detail": "新京報娯楽が2026年7月24日に伝えたところによると、AI精品短劇（AI高品質短編ドラマ）『北派筆記』の分享会（作品報告会）が開かれた。"
+          },
+          {
+            "section": "what_happened",
+            "rule": "entity_not_in_ledger",
+            "severity": "warning",
+            "detail": "『北派筆記』がどんな作品か、仮想俳優をどう使うのかといった詳細は、今回の情報源からは確認できていない。"
           },
           {
             "section": "why_it_matters",
-            "rule": "entity_not_in_ledger",
+            "rule": "number_not_in_ledger",
             "severity": "warning",
-            "detail": "AIで作る高品質な短編ドラマ『北派筆記』が、シーズン2とバーチャル俳優計画を同時に発表！"
+            "detail": "それでも、短編ドラマと仮想俳優を一緒に打ち出す計画はすごく気になります！"
           },
           {
             "section": "comment",
             "rule": "comment_entity_not_in_ledger",
             "severity": "warning",
-            "detail": "『北派筆記』の世界観に合ったキャラクターが登場するのか、今から楽しみですね！"
+            "detail": "AI精品短劇『北派筆記』が第2シーズンと仮想俳優の計画を発表したというニュース、気になります！"
           }
         ],
         "gated_violation_count": 0,
@@ -348,12 +349,9 @@
       "comment_stage": {
         "attempted": true,
         "used": true,
-        "regenerated": false,
+        "regenerated": true,
         "fallback_reason": "",
-        "exclamation_count": 3,
-        "opening": "AIドラマのシーズン",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 2
       }
     }
   }
