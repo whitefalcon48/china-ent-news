@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-03",
+  "status": "pending",
+  "created_at": "2026-08-03T04:37:12.443Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "她不是不敢离",
+      "title": "女性成长短剧《她不是不敢离》8月5日开播：挣脱婚姻内耗",
+      "event_sentence": "新浪娱乐が「女性成长短剧《她不是不敢离》8月5日开播：挣脱婚姻内耗」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 94,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "high",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [
+        "private_life_careful"
+      ],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "微短剧精品创作传播计划五个一批工程第一批拟扶持项目公示",
+      "title": "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个一批工程’”第一批拟扶持项目的通知",
+      "event_sentence": "国家广播电视总局が「微短剧精品创作传播计划『五个一批工程』」の第一陣の支援予定プロジェクトを公示した。",
+      "topic_type": "policy",
+      "baseline_rank": 2,
+      "baseline_priority": "medium",
+      "baseline_score": 73,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "微短剧发展管理办法",
+      "title": "国家广播电视总局令第16号：《微短剧发展管理办法》",
+      "event_sentence": "国家ラジオテレビ総局令第16号として『微短劇発展管理弁法』が公布された。",
+      "topic_type": "policy",
+      "baseline_rank": 3,
+      "baseline_priority": "medium",
+      "baseline_score": 73,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "电影《功夫女足》",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "映画『功夫女足』は公開3日で興行収入5億元を突破したが、評価は真っ二つに分かれている。",
+      "topic_type": "box_office",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 73,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 3,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "影视公司与新消费品牌商业模式对比",
+      "title": "不怕票房亏损的新消费品公司，和困在爆款里的影视公司",
+      "event_sentence": "新興消費財企業は興行赤字を恐れず、映画会社はヒット作に縛られているという分析記事が発表された。",
+      "topic_type": "box_office",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "林子聪",
+      "title": "林子聪回应偷票房，谈与周星驰26年兄弟情",
+      "event_sentence": "新浪娱乐が「林子聪回应偷票房，谈与周星驰26年兄弟情」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 1,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "medium",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局は『数字影院LED放映発行マスターデータパック技術要求』と『数字影院イマーシブオーディオプロセッサ技術要求と測定方法』の業界標準を発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "周星驰对电影创作的极致要求体现在哪些细节",
+      "title": "周星驰对电影创作的极致要求体现在哪些细节？",
+      "event_sentence": "新浪娱乐が「周星驰对电影创作的极致要求体现在哪些细节？」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "周星驰电影中的底层小人物形象有哪些",
+      "title": "周星驰电影中的底层小人物形象有哪些？",
+      "event_sentence": "新浪娱乐が「周星驰电影中的底层小人物形象有哪些？」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "宋威龙新头像的拍摄地点是哪里",
+      "title": "宋威龙新头像的拍摄地点是哪里？",
+      "event_sentence": "新浪娱乐が「宋威龙新头像的拍摄地点是哪里？」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "丁禹兮痛哭流涕的视频",
+      "title": "丁禹兮痛哭流涕的视频",
+      "event_sentence": "新浪娱乐が「丁禹兮痛哭流涕的视频」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "备案",
+      "title": "国家电影局关于2026年6月下全国电影剧本（梗概） 备案、立项公示的通知",
+      "event_sentence": "国家电影局が「国家电影局关于2026年6月下全国电影剧本（梗概） 备案、立项公示的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 59,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}

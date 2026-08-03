@@ -1,0 +1,11 @@
+{
+  "date": "2026-08-03",
+  "generated_at": "2026-08-03T04:42:31.739Z",
+  "ledgers": [
+    {
+      "topic_key": "微短剧精品创作传播计划五个一批工程第一批拟扶持项目公示",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text"
+    }
+  ]
+}
