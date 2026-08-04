@@ -1,0 +1,11 @@
+{
+  "date": "2026-08-04",
+  "generated_at": "2026-08-04T04:25:11.868Z",
+  "ledgers": [
+    {
+      "topic_key": "功夫女足",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text"
+    }
+  ]
+}

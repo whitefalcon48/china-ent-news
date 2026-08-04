@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-04",
+  "status": "pending",
+  "created_at": "2026-08-04T04:21:07.688Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "不止观看：澳门当代摄影展",
+      "title": "持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕",
+      "event_sentence": "新京报 娱乐が「持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕」について報じた。",
+      "topic_type": "cultural_export",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 82,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "兵自风中来",
+      "title": "《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子",
+      "event_sentence": "新京报 娱乐が「《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 82,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "最后一个道士",
+      "title": "AI拟真人短剧《最后一个道士》上线，改编自作家夏忆的经典IP",
+      "event_sentence": "新京报 娱乐が「AI拟真人短剧《最后一个道士》上线，改编自作家夏忆的经典IP」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "微短剧发展管理办法",
+      "title": "国家广播电视总局令第16号：《微短剧发展管理办法》",
+      "event_sentence": "国家广播电视总局が「国家广播电视总局令第16号：《微短剧发展管理办法》」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 73,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "不怕票房亏损的新消费品公司",
+      "title": "不怕票房亏损的新消费品公司，和困在爆款里的影视公司",
+      "event_sentence": "界面新闻 影视产业が「不怕票房亏损的新消费品公司，和困在爆款里的影视公司」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "九门",
+      "title": "《九门》在京举行看片会，南派三叔坦言剧本改了7年",
+      "event_sentence": "1905电影网 新闻が「《九门》在京举行看片会，南派三叔坦言剧本改了7年」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 2,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻",
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "功夫女足",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 2,
+        "sns": 0,
+        "data": 3,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "国家广播电视总局办公厅关于公示2026年广播电视公益广告扶持项目评审结果的通知",
+      "title": "国家广播电视总局办公厅关于公示2026年广播电视公益广告扶持项目评审结果的通知",
+      "event_sentence": "国家广播电视总局が「国家广播电视总局办公厅关于公示2026年广播电视公益广告扶持项目评审结果的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 65,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "谷店",
+      "title": "北京线下消费新观察：“谷店”从卖周边走向做空间",
+      "event_sentence": "新京报 娱乐が「北京线下消费新观察：“谷店”从卖周边走向做空间」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "国话大麦戏剧现场",
+      "title": "国家话剧院与大麦共建“国话大麦戏剧现场”，五部经典剧目将巡演",
+      "event_sentence": "新京报 娱乐が「国家话剧院与大麦共建“国话大麦戏剧现场”，五部经典剧目将巡演」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "第22届北京国际体育电影周",
+      "title": "第22届北京国际体育电影周优秀作品发布",
+      "event_sentence": "1905电影网 新闻が「第22届北京国际体育电影周优秀作品发布」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "‘頔’字生僻手写结婚证成全网独一份浪漫",
+      "title": "马頔李纯领证！‘頔’字生僻手写结婚证成全网独一份浪漫",
+      "event_sentence": "新浪娱乐が「马頔李纯领证！‘頔’字生僻手写结婚证成全网独一份浪漫」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
