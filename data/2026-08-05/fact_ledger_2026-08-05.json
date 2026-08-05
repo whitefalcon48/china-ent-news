@@ -1,0 +1,11 @@
+{
+  "date": "2026-08-05",
+  "generated_at": "2026-08-05T04:24:38.370Z",
+  "ledgers": [
+    {
+      "topic_key": "给阿嬷的情书",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:Expected ',' or ']' after array element in JSON at position 558 (line 23 column 6)"
+    }
+  ]
+}

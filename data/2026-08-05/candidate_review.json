@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-05",
+  "status": "pending",
+  "created_at": "2026-08-05T04:18:40.200Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "年会不能停！2",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "界面新闻 影视产业が「《年会不能停！2》上映4天票房破亿，但远不及市场预期」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 94,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "给阿嬷的情书",
+      "title": "豆瓣9.2分！《给阿嬷的情书》总票房突破11亿元，投资回报率或达50倍",
+      "event_sentence": "国家电影局が「《给阿嬷的情书》将亮相台湾桃园电影节」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 77,
+      "source_count": 2,
+      "source_types": {
+        "official": 1,
+        "media_report": 2,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "最后一个道士",
+      "title": "AI拟真人短剧《最后一个道士》上线，改编自作家夏忆的经典IP",
+      "event_sentence": "新京报 娱乐が「AI拟真人短剧《最后一个道士》上线，改编自作家夏忆的经典IP」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "不止观看：澳门当代摄影展",
+      "title": "持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕",
+      "event_sentence": "新京报 娱乐が「持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕」について報じた。",
+      "topic_type": "cultural_export",
+      "baseline_rank": 4,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "兵自风中来",
+      "title": "《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子",
+      "event_sentence": "新京报 娱乐が「《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 5,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "微短剧发展管理办法",
+      "title": "国家广播电视总局令第16号：《微短剧发展管理办法》",
+      "event_sentence": "国家广播电视总局が「国家广播电视总局令第16号：《微短剧发展管理办法》」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 73,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "九门",
+      "title": "《九门》在京举行看片会，南派三叔坦言剧本改了7年",
+      "event_sentence": "1905电影网 新闻が「《九门》在京举行看片会，南派三叔坦言剧本改了7年」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 2,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻",
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "功夫女足",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 69,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 3,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局が「国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "视听媒体内容生产的网络通用技术要求",
+      "title": "国家广播电视总局关于发布《视听媒体内容生产的网络通用技术要求》等2项广播电视和网络视听行业标准的通知",
+      "event_sentence": "国家广播电视总局が「国家广播电视总局关于发布《视听媒体内容生产的网络通用技术要求》等2项广播电视和网络视听行业标准的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 65,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "国话大麦戏剧现场",
+      "title": "国家话剧院与大麦共建“国话大麦戏剧现场”，五部经典剧目将巡演",
+      "event_sentence": "新京报 娱乐が「国家话剧院与大麦共建“国话大麦戏剧现场”，五部经典剧目将巡演」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "Lisa游乐园现身",
+      "title": "歌手Lisa现身游乐园， 肤白貌美 ，少女感十足！",
+      "event_sentence": "歌手のリサが遊園地に現れた。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
