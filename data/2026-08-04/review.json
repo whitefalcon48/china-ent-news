@@ -1,13 +1,13 @@
 {
   "date": "2026-08-04",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 20,
   "articles": [
     {
       "index": 1,
       "topic_key": "功夫女足",
       "title": "周星馳（チャウ・シンチー）監督『功夫女足』、興行収入20億元を突破！新人キャストの特集映像も公開",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
