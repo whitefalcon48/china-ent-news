@@ -1,0 +1,330 @@
+{
+  "date": "2026-08-06",
+  "generated_at": "2026-08-06T04:31:26.531Z",
+  "ledgers": [
+    {
+      "topic_key": "台海一九五零",
+      "ledger": {
+        "topic_key": "台海一九五零",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年8月2日、中国电影艺术研究中心主催で映画『台海一九五零』の創作研討会が北京で開催された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "中国电影艺术研究中心",
+              "台海一九五零",
+              "北京"
+            ],
+            "numbers": [
+              "2026年8月2日"
+            ],
+            "quote_zh": "8月2日，由中国电影艺术研究中心主办的电影《台海一九五零》创",
+            "anchor": true
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "映画の原型人物は朱枫烈士であり、新中国成立初期に中共中央華東局の特派として台湾に潜入し重要情報を取得した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱枫",
+              "中共中央華東局",
+              "台湾"
+            ],
+            "numbers": [],
+            "quote_zh": "朱枫同志受中共中央华东局特派……获取重要情报",
+            "anchor": false
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "映画は1950年の台海風雲を再現し、隠蔽戦線の英雄たちを称える。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "台海"
+            ],
+            "numbers": [
+              "1950年"
+            ],
+            "quote_zh": "生动再现了1950年台海风云，致敬了……隐蔽战线英雄。",
+            "anchor": false
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "創作研討会には、原型人物の家族、関係部門、業界専門家、映画主創陣が一堂に会した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱枫"
+            ],
+            "numbers": [],
+            "quote_zh": "影片原型人物朱枫烈士家属、相关单位领导、业内专家及电影主创人",
+            "anchor": true
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "中国电影艺术研究中心副主任の陸亮は、新中国は無数の革命烈士の血と命で築かれたと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "陸亮"
+            ],
+            "numbers": [],
+            "quote_zh": "新中国是无数革命先烈用鲜血和生命铸就的。",
+            "anchor": true
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "陸亮は、この映画が紅色血脈の継承に新たな動力を注入すると述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "陸亮"
+            ],
+            "numbers": [],
+            "quote_zh": "为红色血脉的赓续传承注入新的动能",
+            "anchor": true
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "家属代表で朱枫烈士の孫娘の朱容瑢が、朱枫の革命経歴を紹介した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱容瑢",
+              "朱枫"
+            ],
+            "numbers": [],
+            "quote_zh": "家属代表、朱枫烈士的孙女朱容瑢女士介绍了朱枫赴台前的革命经历",
+            "anchor": true
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "朱枫は1925年から反帝反封建の愛国運動に参加し、1937年に抗日救亡、1938年に正式に革命に身を投じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱枫"
+            ],
+            "numbers": [
+              "1925年",
+              "1937年",
+              "1938年"
+            ],
+            "quote_zh": "她从1925年起便投身反帝反封建的爱国运动，1937年参加抗",
+            "anchor": true
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "朱枫は重慶大爆撃の際に掩護工作、上海などで情報工作に従事し、日本憲兵隊の水牢で拷問を受けて手に障害が残った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱枫",
+              "重慶",
+              "上海",
+              "日本憲兵隊"
+            ],
+            "numbers": [],
+            "quote_zh": "在重庆大轰炸期间，她担任掩护工作；在上海等地，她参与情报工作",
+            "anchor": true
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "朱容瑢は、この映画が早く公開され、隠蔽戦線の先輩たちの革命の血が無駄でなかったことを多くの人に知ってもらいたいと語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱容瑢"
+            ],
+            "numbers": [],
+            "quote_zh": "希望这部电影尽快面世，让更多人知道，那些在隐秘战线上的先辈，",
+            "anchor": true
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "編集の簡宁は、朱枫を江姐や趙一曼と同様の偉大な時代の英雄と評した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "簡宁",
+              "朱枫",
+              "江姐",
+              "趙一曼"
+            ],
+            "numbers": [],
+            "quote_zh": "朱枫烈士是与江姐、赵一曼同样伟大的时代英雄。",
+            "anchor": true
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "簡宁によると、1949年11月、全国が解放を祝う中、朱枫は単身香港から台湾へ向かい、呉石将軍と情報工作を展開した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "簡宁",
+              "朱枫",
+              "香港",
+              "台湾",
+              "呉石"
+            ],
+            "numbers": [
+              "1949年11月"
+            ],
+            "quote_zh": "1949年11月，她只身从香港前往台湾，配合吴石将军开展情报",
+            "anchor": false
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "監督の阿年は、国民党側が朱枫に敬服し、処刑にあたり六七発の銃弾を撃ったが急所を外し、翻意を促したが朱楓は振り向かなかったと語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "阿年",
+              "朱枫",
+              "国民党"
+            ],
+            "numbers": [
+              "六七発"
+            ],
+            "quote_zh": "国民党方面对朱枫十分钦佩，即便最后行刑时，也连开六七枪避开要",
+            "anchor": true
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "阿年は、もともと個人主義者だったが隠蔽戦線の英雄たちの物語に震撼し、脚本を書いていて涙したと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "阿年"
+            ],
+            "numbers": [],
+            "quote_zh": "阿年说，在剧本写到此处时，他也泪流满面。",
+            "anchor": true
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "北師大芸術・伝媒学院院長の胡智鋒は、『台海一九五零』を「大女主」物語として描けば映画の語り方により合うと提案した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "胡智鋒",
+              "台海一九五零"
+            ],
+            "numbers": [],
+            "quote_zh": "可以借势打造一个“大女主”的故事，更符合电影的叙事方式",
+            "anchor": true
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "中国电影制片人協会理事長の焦宏奮は、情報取得や情報伝達のプロットをより多く見せるべきだと提案した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "焦宏奮"
+            ],
+            "numbers": [],
+            "quote_zh": "影片可以更多展现获取情报、传递情报的情节，以增强故事的紧张感",
+            "anchor": true
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "中国电影家協会副主席で清華大学教授の尹鸿は、映画『沉默的荣耀』の成功は台海関係を描いたからではなく、特殊な状況下で信念を持つ人々の選択に焦点を当てたからだと分析した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "尹鸿",
+              "沉默的荣耀"
+            ],
+            "numbers": [],
+            "quote_zh": "《沉默的荣耀》之所以成功，并非因为写了台海关系，而是在那样特",
+            "anchor": true
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "尹鸿は、『台海一九五零』のストーリーも「人」の角度から切り込み、宏大な語りを少なくし、個人の理想と信仰の描写を多くするよう望んだ。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "1905电影网",
+            "entities": [
+              "尹鸿",
+              "台海一九五零"
+            ],
+            "numbers": [],
+            "quote_zh": "希望《台海一九五零》的故事也能从“人”的角度切入，少一些宏大",
+            "anchor": true
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "映画は朱枫烈士の実話に基づいており、製作目標として「立得住、传得开、留得下」の優秀作品を目指すことが掲げられた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱枫"
+            ],
+            "numbers": [],
+            "quote_zh": "力求打造一部立得住、传得开、留得下的优秀作品",
+            "anchor": true
+          }
+        ],
+        "terms": [
+          {
+            "term": "大女主",
+            "gloss_ja": "女性主人公が中心の物語",
+            "explain_evidence_refs": []
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": []
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
