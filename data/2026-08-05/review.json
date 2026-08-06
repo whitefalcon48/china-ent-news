@@ -1,13 +1,13 @@
 {
   "date": "2026-08-05",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 21,
   "articles": [
     {
       "index": 1,
       "topic_key": "给阿嬷的情书",
       "title": "潮汕方言映画『給阿嬷的情書』、台湾・桃園映画祭で初上映へ",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
