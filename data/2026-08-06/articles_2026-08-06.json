@@ -49,7 +49,7 @@
       "lead": "2026年8月2日、北京で中国映画芸術研究センター主催の映画『台海一九五〇』創作研討会が開かれた。新中国成立初期に台湾へ潜入し、重要情報を入手した朱楓烈士の実話に基づく作品で、1950年の台海情勢と隠蔽戦線の英雄を描く。遺族や専門家が出席し、描き方を議論した。",
       "what_happened": "研討会には朱楓烈士の遺族、関係部門、業界専門家、映画主創陣が出席。作品は1950年の台海情勢を描き、中共中央華東局の特派として台湾へ潜入し重要情報を入手した朱楓烈士の実話に基づく。中国映画芸術研究センター副主任の陸亮氏は「新中国は無数の革命烈士の血と命で築かれた」と述べた。孫娘の朱容瑢氏は、朱楓が上海などで情報工作に従事し、日本憲兵隊の水牢で拷問を受けて手に障害が残ったと紹介し、映画の早期公開を望んだ。1949年11月に香港から台湾へ渡り、呉石将軍と情報工作を展開した。監督の阿年氏は、国民党側が朱楓に敬服し、処刑時も六七発撃って急所を外し翻意を促したが、振り向かなかったと明かした。編集の簡寧氏は「江姐や趙一曼と同様の英雄」と評した。",
       "reaction_view": "",
-      "why_it_matters": "今回の研討会では、朱楓烈士を「大女主」として個人の信念から描く提案が専門家から出ていました！胡智鋒氏や尹鸿氏の意見が創作に反映されれば、歴史実話に深みが増し、観客の心に響く作品になるかもしれません。脚本のアップデートが待たれます！",
+      "why_it_matters": "革命歴史ものに「大女主」の提案が出てくるとは！ 専門家から、主人公・朱楓の個人の信念にフォーカスする方が映画的に映えると指摘が相次ぎました。特に尹鸿氏は「人」の角度から描く重要性を強調。これはただのプロパガンダ映画にならないかも！ 製作陣がこの声をどう受け止めて仕上げるのか、公開が楽しみです。",
       "editor_comment": "",
       "japan_context_note": "",
       "category": "映画",
@@ -541,6 +541,18 @@
           "model": "deepseek-v4-pro"
         }
       },
+      "ledger_anchor": {
+        "topic_key": "台海一九五零",
+        "claims_total": 19,
+        "anchor_unverified": 3,
+        "dropped_explanations": []
+      },
+      "term_expansion": {
+        "enabled": true,
+        "attempted": [],
+        "succeeded": [],
+        "failed": []
+      },
       "display_normalization": {
         "residues": []
       },
@@ -557,16 +569,22 @@
         "topic_key": "台海一九五零",
         "violations": [
           {
-            "section": "comment",
-            "rule": "unverified_speculation",
+            "section": "why_it_matters",
+            "rule": "number_not_in_ledger",
             "severity": "warning",
-            "detail": "胡智鋒氏や尹鸿氏の意見が創作に反映されれば、歴史実話に深みが増し、観客の心に響く作品になるかもしれません。"
+            "detail": "1905電影網によると、北京師範大学芸術・伝媒学院院長の胡智鋒氏は『大女主（女性主人公が中心の物語）として描けば映画の語り方により合う』と提案し、中国映画家協会副主席の尹鸿氏も『人』の角度から切り込むよう望んだそうです。"
           },
           {
-            "section": "comment",
-            "rule": "hedged_verified_fact",
+            "section": "why_it_matters",
+            "rule": "entity_not_in_ledger",
             "severity": "warning",
-            "detail": "胡智鋒氏や尹鸿氏の意見が創作に反映されれば、歴史実話に深みが増し、観客の心に響く作品になるかもしれません。"
+            "detail": "1905電影網によると、北京師範大学芸術・伝媒学院院長の胡智鋒氏は『大女主（女性主人公が中心の物語）として描けば映画の語り方により合う』と提案し、中国映画家協会副主席の尹鸿氏も『人』の角度から切り込むよう望んだそうです。"
+          },
+          {
+            "section": "why_it_matters",
+            "rule": "japan_comparison_no_claim",
+            "severity": "warning",
+            "detail": "お堅い戦争ものより、個人の信仰を丁寧に描く方向に動いている気がして、これは日本の感覚にも近いかも。"
           }
         ],
         "gated_violation_count": 0,
@@ -578,7 +596,10 @@
         "used": true,
         "regenerated": false,
         "fallback_reason": "",
-        "exclamation_count": 2
+        "exclamation_count": 2,
+        "opening": "革命歴史ものに大女主",
+        "regenerated_opening": false,
+        "regenerated_paraphrase": false
       }
     }
   }
