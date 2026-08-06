@@ -1,13 +1,13 @@
 {
   "date": "2026-08-06",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 22,
   "articles": [
     {
       "index": 1,
       "topic_key": "台海一九五零",
       "title": "『台海一九五〇』創作研討会 実在の女性烈士を描く革命スパイ映画",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
