@@ -328,7 +328,7 @@ function pip(kind: string, label: string, count: number) {
 function renderBingtangComment(main: string, closing = "") {
   if (!main && !closing) return "";
   return `<section class="bingtang-comment">
-    ${renderAvatar("avatar-36")}
+    ${renderAvatar("avatar-36", selectCommentAvatar(main || closing))}
     <div><h3>ビンタンの注目ポイント</h3>${main ? `<p>${escapeHtml(main)}</p>` : ""}${closing ? `<hr><p>${escapeHtml(closing)}</p>` : ""}</div>
   </section>`;
 }
@@ -336,13 +336,18 @@ function renderBingtangComment(main: string, closing = "") {
 function renderBingtangSupplement(text: string) {
   if (!text) return "";
   return `<section class="bingtang-comment bingtang-supplement">
-    ${renderAvatar("avatar-36")}
+    ${renderAvatar("avatar-36", "bingtang-avatar-focus.png")}
     <div><h3>ビンタンからの補足</h3><p>${escapeHtml(text)}</p></div>
   </section>`;
 }
 
+function selectCommentAvatar(seed: string) {
+  const hash = Array.from(seed).reduce((sum, character) => sum + character.codePointAt(0)!, 0);
+  return hash % 2 === 0 ? "bingtang-avatar.png" : "bingtang-avatar-wink.png";
+}
+
 function renderShareLink(currentUrl: string, title: string) {
-  return `<p class="feed-actions"><a class="share" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}">Xでシェア</a></p>`;
+  return `<p class="feed-actions"><a class="share" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}" target="_blank" rel="noopener noreferrer">Xでシェア</a></p>`;
 }
 
 function renderTextSection(title: string, text: string) {
@@ -377,12 +382,14 @@ function renderFooterBanner() {
   return `<aside class="footer-banner">${renderAvatar("avatar-48")}<p>気になるニュースは「しっかり読む」から全文をどうぞ。過去の記事はアーカイブにありますよ！</p><a href="${href("/about/")}">このサイトについて →</a></aside>`;
 }
 
-function renderAvatar(sizeClass: string) {
-  return `<span class="avatar ${sizeClass}"><img src="${href("/assets/bingtang-avatar.png")}" alt="ビンタン（AI秘書）" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="avatar-fallback" hidden aria-hidden="true">🧊</span></span>`;
+function renderAvatar(sizeClass: string, imageName = "bingtang-avatar.png") {
+  return `<span class="avatar ${sizeClass}"><img src="${href(`/assets/${imageName}`)}" alt="ビンタン（AI秘書）" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="avatar-fallback" hidden aria-hidden="true">🧊</span></span>`;
 }
 
 function renderLayout(options: { title: string; description: string; canonicalPath: string; currentNav: "latest" | "archive" | "about" | ""; body: string; fullHeader: boolean; headerDate?: string; articleDate?: string }) {
-  return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(options.title)}</title><meta name="description" content="${escapeAttr(options.description)}"><link rel="canonical" href="${absoluteUrl(options.canonicalPath)}"><meta property="og:type" content="${options.fullHeader ? "website" : "article"}"><meta property="og:title" content="${escapeAttr(options.title)}"><meta property="og:description" content="${escapeAttr(options.description)}"><meta property="og:url" content="${absoluteUrl(options.canonicalPath)}"><meta property="og:image" content="${absoluteUrl("/assets/ogp-default.png")}"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="${href("/assets/favicon-32.png")}"><style>${CSS}</style></head><body>
+  const canonicalUrl = absoluteUrl(options.canonicalPath);
+  const ogImageUrl = absoluteUrl("/assets/ogp-default.png");
+  return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(options.title)}</title><meta name="description" content="${escapeAttr(options.description)}"><link rel="canonical" href="${canonicalUrl}"><meta property="og:type" content="${options.fullHeader ? "website" : "article"}"><meta property="og:site_name" content="${SITE_NAME}"><meta property="og:title" content="${escapeAttr(options.title)}"><meta property="og:description" content="${escapeAttr(options.description)}"><meta property="og:url" content="${canonicalUrl}"><meta property="og:image" content="${ogImageUrl}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${SITE_NAME}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeAttr(options.title)}"><meta name="twitter:description" content="${escapeAttr(options.description)}"><meta name="twitter:image" content="${ogImageUrl}"><meta name="twitter:image:alt" content="${SITE_NAME}"><link rel="icon" href="${href("/assets/favicon-32.png")}"><style>${CSS}</style></head><body>
   ${options.fullHeader ? renderHeader(options.currentNav, options.headerDate) : renderArticleHeader(options.articleDate || "")}
   ${options.body}${renderFooter()}</body></html>`;
 }

@@ -34,21 +34,40 @@ try {
   const home = await readPage("index.html");
   const daily = await readPage(`archive/${date}/index.html`);
   const detail = await readPage(`t/${date}/1/index.html`);
+  const detailSecond = await readPage(`t/${date}/2/index.html`);
+  const about = await readPage("about/index.html");
 
   assertIncludes(home, "最終更新：2026年8月1日", "トップの日付ラベル");
   assertNotIncludes(home, "<details", "トップの折りたたみ");
   assertNotIncludes(home, "<summary", "トップの折りたたみ見出し");
   assertIncludes(home, "フィクスチャ本文 A", "トップの本文全文");
   assertCount(home, "twitter.com/intent/tweet?url=", 2, "トップのカードごとのシェアリンク");
+  assertCount(home, 'target="_blank" rel="noopener noreferrer">Xでシェア', 2, "トップのシェアリンクの新規タブ属性");
+  assertIncludes(home, '<meta property="og:image" content="https://example.test/assets/ogp-default.png">', "共通OGP画像の絶対URL");
+  assertIncludes(home, '<meta property="og:image:width" content="1200">', "共通OGP画像の幅");
+  assertIncludes(home, '<meta property="og:image:height" content="630">', "共通OGP画像の高さ");
+  assertIncludes(home, '<meta name="twitter:card" content="summary_large_image">', "Xカード形式");
+  assertIncludes(home, '<meta name="twitter:image" content="https://example.test/assets/ogp-default.png">', "Xカード画像の絶対URL");
   assertCount(home, "ビンタンからの補足", 2, "トップの補足ラベル");
+  assertCount(home, "/assets/bingtang-avatar.png", 2, "トップの通常顔（注目ポイント1件＋フッター）");
+  assertCount(home, "/assets/bingtang-avatar-wink.png", 1, "トップのウインク顔");
+  assertCount(home, "/assets/bingtang-avatar-focus.png", 2, "トップの補足用集中顔");
   assertNotIncludes(home, "<h2><a href=", "トップから個別ページへのタイトル導線");
   assertCount(daily, "twitter.com/intent/tweet?url=", 2, "日次フィードのカードごとのシェアリンク");
+  assertCount(daily, 'target="_blank" rel="noopener noreferrer">Xでシェア', 2, "日次フィードのシェアリンクの新規タブ属性");
   assertCount(daily, "ビンタンからの補足", 2, "日次フィードの補足ラベル");
   assertNotIncludes(detail, "Xでシェア", "個別ページのシェアUI");
   assertNotIncludes(detail, "<nav class=\"article-nav\"", "個別ページの前後記事導線");
   assertNotIncludes(detail, "前の記事", "個別ページの前記事導線");
   assertNotIncludes(detail, "次の記事", "個別ページの次記事導線");
   assertIncludes(detail, "ビンタンからの補足", "個別ページの補足ラベル");
+  assertIncludes(detail, "/assets/bingtang-avatar.png", "1件目の注目ポイント通常顔");
+  assertNotIncludes(detail, "/assets/bingtang-avatar-wink.png", "1件目の注目ポイントで不一致のウインク顔");
+  assertIncludes(detailSecond, "/assets/bingtang-avatar-wink.png", "2件目の注目ポイントウインク顔");
+  assertIncludes(detail, "/assets/bingtang-avatar-focus.png", "個別ページの補足用集中顔");
+  assertIncludes(about, "/assets/bingtang-avatar.png", "サイト紹介の通常顔");
+  assertNotIncludes(about, "/assets/bingtang-avatar-wink.png", "サイト紹介のウインク顔");
+  assertNotIncludes(about, "/assets/bingtang-avatar-focus.png", "サイト紹介の集中顔");
 
   console.log("site feed: ok");
 } finally {
