@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-09",
+  "status": "pending",
+  "created_at": "2026-08-09T03:07:37.237Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "年会不能停！2",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "界面新闻 影视产业が「《年会不能停！2》上映4天票房破亿，但远不及市场预期」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "不止观看：澳门当代摄影展",
+      "title": "持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕",
+      "event_sentence": "新京报 娱乐が「持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕」について報じた。",
+      "topic_type": "cultural_export",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "兵自风中来",
+      "title": "《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子",
+      "event_sentence": "新京报 娱乐が「《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "红果",
+      "title": "短剧演员日薪不能超过4万？红果回应",
+      "event_sentence": "界面新闻 影视产业が「短剧演员日薪不能超过4万？红果回应」について報じた。",
+      "topic_type": "gossip_rumor",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 74,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 1,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "high",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "《欢迎来龙餐馆》定档8月11日，8月8日至10日超前点映",
+      "event_sentence": "1905电影网 新闻が「《欢迎来龙餐馆》定档 IMAX特制拍摄异国烟火气」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 3,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "功夫女足",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 69,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 3,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "黄子韬徐艺洋互扇巴掌",
+      "title": "网友如何看待黄子韬徐艺洋互扇巴掌事件？",
+      "event_sentence": "黄子韬と徐艺洋が互いに平手打ちした事件について、ネットユーザーの反応が話題になっている。",
+      "topic_type": "unknown",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局が「国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "戚薇",
+      "title": "【专访】戚薇回应“韩清夏”：我要张开双臂抱AI时代一个满怀",
+      "event_sentence": "界面新闻 影视产业が「【专访】戚薇回应“韩清夏”：我要张开双臂抱AI时代一个满怀」について報じた。",
+      "topic_type": "gossip_rumor",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "high",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [
+        "audiovisual_ai_technology"
+      ],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "但方向盘还在自己手里",
+      "title": "戚薇：我把脸交给了AI，但方向盘还在自己手里｜专访",
+      "event_sentence": "新京报 娱乐が「戚薇：我把脸交给了AI，但方向盘还在自己手里｜专访」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "八仙！",
+      "title": "动画《八仙！》发布配音特辑 真实诠释市井烟火气",
+      "event_sentence": "1905电影网 新闻が「动画《八仙！》发布配音特辑 真实诠释市井烟火气」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "平安的女儿",
+      "title": "电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”",
+      "event_sentence": "1905电影网 新闻が「电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
