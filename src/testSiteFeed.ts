@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import sharp from "sharp";
 
 const repoRoot = path.resolve(".");
 const date = "2026-08-01";
@@ -36,6 +37,9 @@ try {
   const detail = await readPage(`t/${date}/1/index.html`);
   const detailSecond = await readPage(`t/${date}/2/index.html`);
   const about = await readPage("about/index.html");
+  const articleOgpPath = path.join(outputRoot, "og", date, "1.png");
+  const articleOgp = await sharp(articleOgpPath).metadata();
+  const defaultOgp = await sharp(path.join(outputRoot, "assets", "ogp-default.png")).metadata();
 
   assertIncludes(home, "最終更新：2026年8月1日", "トップの日付ラベル");
   assertNotIncludes(home, "<details", "トップの折りたたみ");
@@ -48,10 +52,21 @@ try {
   assertIncludes(home, '<meta property="og:image:height" content="630">', "共通OGP画像の高さ");
   assertIncludes(home, '<meta name="twitter:card" content="summary_large_image">', "Xカード形式");
   assertIncludes(home, '<meta name="twitter:image" content="https://example.test/assets/ogp-default.png">', "Xカード画像の絶対URL");
+  assertIncludes(home, "/assets/bingtang-logo-horizontal.png", "本番横長ロゴ");
+  assertIncludes(home, "/assets/bingtang-hero-v2.png", "本番ヘッダーキャラクター");
+  assertNotIncludes(home, "中国エンタメの現地温度を、日本語で。", "削除したキャッチコピー");
+  assertNotIncludes(home, "今日のわたしが気になる", "削除した吹き出し文言");
+  assertNotIncludes(home, "ビンタンちゃんデイリー", "旧サイト読み");
+  assertNotIncludes(home, "確度B", "確度ラベル");
+  assertNotIncludes(home, ">本日<", "鮮度ラベル");
   assertCount(home, "ビンタンからの補足", 2, "トップの補足ラベル");
-  assertCount(home, "/assets/bingtang-avatar.png", 2, "トップの通常顔（注目ポイント1件＋フッター）");
-  assertCount(home, "/assets/bingtang-avatar-wink.png", 1, "トップのウインク顔");
-  assertCount(home, "/assets/bingtang-avatar-focus.png", 2, "トップの補足用集中顔");
+  assertCount(home, "反応・見られ方", 1, "反応・見られ方は値がある記事だけに表示");
+  assertCount(home, "関連角度のソース", 1, "関連角度のソースは使用した記事だけに表示する");
+  assertIncludes(home, "関連媒体", "関連角度の媒体を別表示する");
+  assertIncludes(home, "/assets/bingtang-avatar-serious-", "訃報記事の真剣な表情");
+  assertCount(home, '<span class="avatar avatar-comment">', 2, "注目ポイントだけに出す専用アバター");
+  assertNotIncludes(home, "bingtang-avatar-focus.png", "補足用の旧アバター");
+  assertIncludes(home, '<section class="bingtang-supplement">\n    <div>', "補足ブロックは顔なし");
   assertNotIncludes(home, "<h2><a href=", "トップから個別ページへのタイトル導線");
   assertCount(daily, "twitter.com/intent/tweet?url=", 2, "日次フィードのカードごとのシェアリンク");
   assertCount(daily, 'target="_blank" rel="noopener noreferrer">Xでシェア', 2, "日次フィードのシェアリンクの新規タブ属性");
@@ -61,13 +76,15 @@ try {
   assertNotIncludes(detail, "前の記事", "個別ページの前記事導線");
   assertNotIncludes(detail, "次の記事", "個別ページの次記事導線");
   assertIncludes(detail, "ビンタンからの補足", "個別ページの補足ラベル");
-  assertIncludes(detail, "/assets/bingtang-avatar.png", "1件目の注目ポイント通常顔");
-  assertNotIncludes(detail, "/assets/bingtang-avatar-wink.png", "1件目の注目ポイントで不一致のウインク顔");
-  assertIncludes(detailSecond, "/assets/bingtang-avatar-wink.png", "2件目の注目ポイントウインク顔");
-  assertIncludes(detail, "/assets/bingtang-avatar-focus.png", "個別ページの補足用集中顔");
-  assertIncludes(about, "/assets/bingtang-avatar.png", "サイト紹介の通常顔");
-  assertNotIncludes(about, "/assets/bingtang-avatar-wink.png", "サイト紹介のウインク顔");
-  assertNotIncludes(about, "/assets/bingtang-avatar-focus.png", "サイト紹介の集中顔");
+  assertIncludes(detail, "関連角度のソース", "個別ページでも関連角度を別表示する");
+  assertNotIncludes(detail, "/assets/bingtang-avatar-serious-", "通常記事に真剣な表情を固定しない");
+  assertIncludes(detailSecond, "/assets/bingtang-avatar-serious-", "訃報記事は真剣な表情に固定");
+  assertNotIncludes(detail, "bingtang-avatar-focus.png", "個別ページの補足アバター");
+  assertIncludes(about, "/assets/bingtang-avatar-smile-left.png", "サイト紹介の自然な笑顔");
+  assertIncludes(detail, `<meta property="og:image" content="https://example.test/og/${date}/1.png">`, "記事別OGP画像URL");
+  assertIncludes(detail, `<meta name="twitter:image" content="https://example.test/og/${date}/1.png">`, "記事別Xカード画像URL");
+  if (articleOgp.width !== 1200 || articleOgp.height !== 630) throw new Error(`記事別OGPは1200x630のはずですが ${articleOgp.width}x${articleOgp.height} です`);
+  if (defaultOgp.width !== 1200 || defaultOgp.height !== 630) throw new Error(`共通OGPは1200x630のはずですが ${defaultOgp.width}x${defaultOgp.height} です`);
 
   console.log("site feed: ok");
 } finally {
@@ -80,14 +97,16 @@ async function readPage(relativePath: string) {
 
 function fixtureArticle(index: number) {
   const suffix = index === 1 ? "A" : "B";
+  const category = index === 1 ? "ドラマ" : "訃報";
   const url = `https://example.com/article-${index}`;
+  const relatedUrl = `https://example.com/angle-${index}`;
   return {
     raw: {
       title: `フィクスチャ記事 ${suffix}`,
       url,
       sourceName: "テスト媒体",
       sourceUrl: url,
-      category: "ドラマ",
+      category,
       reliability: "B",
       sourceType: "media_report"
     },
@@ -97,10 +116,10 @@ function fixtureArticle(index: number) {
       lead: `フィクスチャのリード ${suffix}`,
       what_happened: `フィクスチャ本文 ${suffix}`,
       why_it_matters: `ビンタンの注目ポイント ${suffix}！`,
-      reaction_view: `フィクスチャの反応 ${suffix}`,
+      reaction_view: index === 1 ? `フィクスチャの反応 ${suffix}` : "",
       editor_comment: "",
       japan_context_note: `日本語読者向けの補足 ${suffix}！`,
-      category: "ドラマ",
+      category,
       confidence: "B",
       source_type: "media_report",
       published_date: date,
@@ -121,12 +140,18 @@ function fixtureArticle(index: number) {
       verification_status: "verified",
       topic_key: `fixture-${index}`,
       main_entities: { people: [], works: [], organizations: [] },
-      related_sources: [{ name: "テスト媒体", url }],
+      related_sources: index === 1 ? [{ name: "関連媒体", url: relatedUrl }] : [],
       tags: [],
       publish_priority: "medium",
       publish_reason: "fixture",
       claim_refs: { what_happened: [], why_it_matters: [], reaction_view: [], japan_context_note: [] }
-    }
+    },
+    ...(index === 1 ? {
+      topic: {
+        evidence_articles: [{ url, source_name: "テスト媒体", source_type: "media_report" }],
+        related_evidence_articles: [{ url: relatedUrl, source_name: "関連媒体", source_type: "media_report" }]
+      }
+    } : {})
   };
 }
 

@@ -112,6 +112,10 @@ export type RawArticle = {
   japanGap?: LevelLabel;
   contextValue?: ContextValue;
   snsHeat?: SnsHeat;
+  /** Evidence role is only for fact-ledger provenance. It never changes selection. */
+  evidenceRole?: EvidenceRole;
+  /** Present only for a verified, non-corroborating angle on the same root topic. */
+  angleKind?: RelatedAngleKind;
 };
 
 export type SummarizedArticle = {
@@ -164,6 +168,15 @@ export type MainEntities = {
 
 export type ClaimType = "verified_fact" | "source_analysis" | "unsupported";
 
+export type EvidenceRole = "root_corroboration" | "related_angle";
+
+export type RelatedAngleKind =
+  | "person_response"
+  | "career_retrospective"
+  | "audience_reaction"
+  | "work_context"
+  | "other";
+
 export type FactLedgerClaim = {
   id: string;
   type: ClaimType;
@@ -174,6 +187,9 @@ export type FactLedgerClaim = {
   numbers: string[];
   quote_zh?: string;
   anchor?: boolean;
+  /** A related angle may enrich an article, but never corroborates the root event. */
+  scope?: "root_event" | "related_angle";
+  angle_kind?: RelatedAngleKind;
 };
 
 export type FactLedgerTerm = {
@@ -199,6 +215,8 @@ export type FactLedger = {
   terms: FactLedgerTerm[];
   japan_availability: JapanAvailability;
   unresolved: string[];
+  /** Provenance is assigned from validated input evidence, never model output. */
+  evidence_roles?: Record<string, EvidenceRole>;
 };
 
 export type TermExpansionTrace = {
@@ -217,6 +235,7 @@ export type ClaimRefs = {
 
 export type ClaimCheckRule =
   | "japan_availability_unverified"
+  | "japan_context_note_without_claim_ref"
   | "predictive_assertion_certain"
   | "number_not_in_ledger"
   | "entity_not_in_ledger"
@@ -235,6 +254,9 @@ export type ClaimCheckRule =
   | "comment_number_not_in_ledger"
   | "comment_entity_not_in_ledger"
   | "comment_ungrounded_background"
+  | "related_claim_missing_related_evidence"
+  | "root_claim_uses_related_evidence"
+  | "claim_evidence_ref_unknown"
   | "simplified_char_residue"
   | "hedged_verified_fact"
   | "long_sentence"
@@ -363,6 +385,22 @@ export type TopicCandidate = {
     article_type: ArticleType;
     reliability: Reliability;
     key_points: string[];
+    /** Normalized publisher family; optional so saved candidate data remains readable. */
+    media_family?: string;
+  }>;
+  /** Verified documents on the same canonical person/work but a different angle.
+   * They deliberately do not contribute to source_count, source_mix, signals, EVS, or selection. */
+  related_evidence_articles?: Array<{
+    title: string;
+    url: string;
+    source_name: string;
+    source_type: SourceTypeLabel;
+    published_date: string;
+    freshness_label: FreshnessLabel;
+    article_type: ArticleType;
+    reliability: Reliability;
+    key_points: string[];
+    angle_kind: RelatedAngleKind;
   }>;
   main_entities: MainEntities & {
     events: string[];
@@ -390,6 +428,9 @@ export type SourceExpansionEvidence = {
   route_id: string;
   route: string;
   query: string;
+  /** Corroboration can support the topic claim. Related-angle research is discovery-only. */
+  evidence_role?: "corroboration" | "related_angle";
+  angle_kind?: RelatedAngleKind;
   key_points: string[];
   /** Search/RSS discovery is never used as evidence until the linked document passes validation. */
   validation_status?: "verified" | "rejected" | "discovered";
@@ -414,6 +455,7 @@ export type SourceExpansionObservation = {
   topic_key: string;
   query: string;
   route_id: string;
+  evidence_role?: "corroboration" | "related_angle";
   url: string;
   title: string;
   source_name: string;
@@ -437,6 +479,7 @@ export type SourceExpansionAttempt = {
   topic_key: string;
   query: string;
   route_id: string;
+  evidence_role?: "corroboration" | "related_angle";
   route: string;
   rsshub_base_url: string;
   fetch_status: "success" | "failed" | "empty" | "skipped";
@@ -455,6 +498,8 @@ export type SourceExpansionResult = {
   attempted_route_count: number;
   success_route_count: number;
   evidence_count: number;
+  corroboration_evidence_count?: number;
+  related_angle_evidence_count?: number;
   attempts: SourceExpansionAttempt[];
   evidence: SourceExpansionEvidence[];
   observations?: SourceExpansionObservation[];
