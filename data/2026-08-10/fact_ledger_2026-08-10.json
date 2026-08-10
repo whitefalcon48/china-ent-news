@@ -1,0 +1,11 @@
+{
+  "date": "2026-08-10",
+  "generated_at": "2026-08-10T03:23:48.248Z",
+  "ledgers": [
+    {
+      "topic_key": "披荆斩棘2026",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text"
+    }
+  ]
+}
