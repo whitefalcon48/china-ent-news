@@ -2,7 +2,7 @@
   "schema_version": 1,
   "date": "2026-08-07",
   "status": "pending",
-  "created_at": "2026-08-07T03:56:00.914Z",
+  "created_at": "2026-08-10T07:23:41.711Z",
   "completed_at": "",
   "candidates": [
     {
@@ -37,71 +37,11 @@
     },
     {
       "index": 2,
-      "topic_key": "不止观看：澳门当代摄影展",
-      "title": "持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕",
-      "event_sentence": "新京报 娱乐が「持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕」について報じた。",
-      "topic_type": "cultural_export",
-      "baseline_rank": 2,
-      "baseline_priority": "high",
-      "baseline_score": 76,
-      "source_count": 1,
-      "source_types": {
-        "official": 0,
-        "media_report": 0,
-        "sns": 0,
-        "data": 1,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "新京报 娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 3,
-      "topic_key": "兵自风中来",
-      "title": "《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子",
-      "event_sentence": "新京报 娱乐が「《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子」について報じた。",
-      "topic_type": "unknown",
-      "baseline_rank": 3,
-      "baseline_priority": "high",
-      "baseline_score": 76,
-      "source_count": 1,
-      "source_types": {
-        "official": 0,
-        "media_report": 1,
-        "sns": 0,
-        "data": 0,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "新京报 娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 4,
       "topic_key": "红果",
       "title": "短剧演员日薪不能超过4万？红果回应",
       "event_sentence": "界面新闻 影视产业が「短剧演员日薪不能超过4万？红果回应」について報じた。",
       "topic_type": "gossip_rumor",
-      "baseline_rank": 4,
+      "baseline_rank": 2,
       "baseline_priority": "medium",
       "baseline_score": 74,
       "source_count": 1,
@@ -126,106 +66,14 @@
       "similar_topics": []
     },
     {
-      "index": 5,
-      "topic_key": "欢迎来龙餐馆",
-      "title": "《欢迎来龙餐馆》定档 IMAX特制拍摄异国烟火气",
-      "event_sentence": "1905电影网 新闻が「《欢迎来龙餐馆》定档 IMAX特制拍摄异国烟火气」について報じた。",
-      "topic_type": "release",
-      "baseline_rank": 5,
-      "baseline_priority": "medium",
-      "baseline_score": 73,
-      "source_count": 2,
-      "source_types": {
-        "official": 0,
-        "media_report": 2,
-        "sns": 0,
-        "data": 0,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "1905电影网 新闻",
-        "新京报 娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 6,
-      "topic_key": "微短剧发展管理办法",
-      "title": "国家广播电视总局令第16号：《微短剧发展管理办法》",
-      "event_sentence": "国家广播电视总局が「国家广播电视总局令第16号：《微短剧发展管理办法》」について報じた。",
-      "topic_type": "policy",
-      "baseline_rank": 6,
-      "baseline_priority": "medium",
-      "baseline_score": 73,
-      "source_count": 1,
-      "source_types": {
-        "official": 1,
-        "media_report": 0,
-        "sns": 0,
-        "data": 0,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "国家广播电视总局"
-      ],
-      "risk_class": "low",
-      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 7,
-      "topic_key": "功夫女足",
-      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
-      "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
-      "topic_type": "box_office",
-      "baseline_rank": 7,
-      "baseline_priority": "medium",
-      "baseline_score": 69,
-      "source_count": 2,
-      "source_types": {
-        "official": 0,
-        "media_report": 1,
-        "sns": 0,
-        "data": 3,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "界面新闻 影视产业",
-        "1905电影网 新闻"
-      ],
-      "risk_class": "low",
-      "caution_note": "",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 8,
-      "topic_key": "萧敬腾为什么17岁就出去驻唱赚钱",
-      "title": "萧敬腾为什么17岁就出去驻唱赚钱？",
-      "event_sentence": "新浪娱乐が「萧敬腾为什么17岁就出去驻唱赚钱？」について報じた。",
+      "index": 3,
+      "topic_key": "演员",
+      "title": "演过爆款剧的他们，如今在景区当NPC",
+      "event_sentence": "ヒットドラマに出演した俳優たちが観光地でNPCとして働いていることについて話題になっている。",
       "topic_type": "unknown",
-      "baseline_rank": 8,
+      "baseline_rank": 3,
       "baseline_priority": "medium",
-      "baseline_score": 68,
+      "baseline_score": 70,
       "source_count": 1,
       "source_types": {
         "official": 0,
@@ -248,18 +96,79 @@
       "similar_topics": []
     },
     {
-      "index": 9,
-      "topic_key": "大众电影百花奖",
-      "title": "百花奖发布宣传片《百花燕归 万象京华》，绘就中国电影灿烂未来",
-      "event_sentence": "新京报 娱乐が「百花奖发布宣传片《百花燕归 万象京华》，绘就中国电影灿烂未来」について報じた。",
-      "topic_type": "release",
-      "baseline_rank": 9,
+      "index": 4,
+      "topic_key": "功夫女足",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 4,
       "baseline_priority": "medium",
-      "baseline_score": 67,
+      "baseline_score": 69,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局が「国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "第18届华语青年电影周",
+      "title": "第18届华语青年电影周荣誉揭晓，三大板块助力青年影人圆梦",
+      "event_sentence": "新京报 娱乐が「第18届华语青年电影周荣誉揭晓，三大板块助力青年影人圆梦」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
       "source_count": 1,
       "source_types": {
         "official": 0,
-        "media_report": 3,
+        "media_report": 1,
         "sns": 0,
         "data": 0,
         "pr_like": 0,
@@ -278,12 +187,12 @@
       "similar_topics": []
     },
     {
-      "index": 10,
-      "topic_key": "平安的女儿",
-      "title": "电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”",
-      "event_sentence": "1905电影网 新闻が「电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”」について報じた。",
+      "index": 7,
+      "topic_key": "八仙！",
+      "title": "动画《八仙！》发布配音特辑 真实诠释市井烟火气",
+      "event_sentence": "1905电影网 新闻が「动画《八仙！》发布配音特辑 真实诠释市井烟火气」について報じた。",
       "topic_type": "release",
-      "baseline_rank": 10,
+      "baseline_rank": 7,
       "baseline_priority": "medium",
       "baseline_score": 62,
       "source_count": 1,
@@ -308,10 +217,100 @@
       "similar_topics": []
     },
     {
+      "index": 8,
+      "topic_key": "平安的女儿",
+      "title": "电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”",
+      "event_sentence": "1905电影网 新闻が「电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”」について報じた。",
+      "topic_type": "release",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "欧阳娜娜天猫七夕氧气少女感",
+      "title": "欧阳娜娜天猫七夕氧气少女感，不同光线镜头演绎青春叙事",
+      "event_sentence": "新浪娱乐が「欧阳娜娜天猫七夕氧气少女感，不同光线镜头演绎青春叙事」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "岳云鹏",
+      "title": "岳云鹏合肥专场解锁德云社安徽渊源",
+      "event_sentence": "岳云鹏が合肥で専場公演を行い、徳云社と安徽の関係について語った。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
       "index": 11,
-      "topic_key": "希拉里达芙纽约演唱会带三女上台吃披萨",
-      "title": "希拉里达芙纽约演唱会带三女上台吃披萨，女儿受伤急诊缝针",
-      "event_sentence": "新浪娱乐が「希拉里达芙纽约演唱会带三女上台吃披萨，女儿受伤急诊缝针」について報じた。",
+      "topic_key": "华晨宇",
+      "title": "网友如何评价华晨宇飞碟舞台的现场表现？",
+      "event_sentence": "华晨宇のUFOステージでのパフォーマンスに対するネット民の評価が話題になっている。",
       "topic_type": "unknown",
       "baseline_rank": 11,
       "baseline_priority": "medium",
@@ -339,10 +338,10 @@
     },
     {
       "index": 12,
-      "topic_key": "李老称十个勤天为自家好娃娃",
-      "title": "李老称十个勤天为自家好娃娃",
-      "event_sentence": "新浪娱乐が「李老称十个勤天为自家好娃娃」について報じた。",
-      "topic_type": "unknown",
+      "topic_key": "蚝油的鲜味传奇",
+      "title": "纪录片《蚝油的鲜味传奇》8月12日腾讯视频首播，讲述寻鲜之路",
+      "event_sentence": "新京报 娱乐が「纪录片《蚝油的鲜味传奇》8月12日腾讯视频首播，讲述寻鲜之路」について報じた。",
+      "topic_type": "platform_trend",
       "baseline_rank": 12,
       "baseline_priority": "medium",
       "baseline_score": 60,
@@ -357,7 +356,7 @@
         "mixed": 0
       },
       "source_names": [
-        "新浪娱乐"
+        "新京报 娱乐"
       ],
       "risk_class": "low",
       "caution_note": "Single-source topic; keep wording cautious until another source appears.",

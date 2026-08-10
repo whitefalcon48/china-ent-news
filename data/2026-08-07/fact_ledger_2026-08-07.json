@@ -1,5 +1,369 @@
 {
   "date": "2026-08-07",
-  "generated_at": "2026-08-07T03:57:01.306Z",
-  "ledgers": []
+  "generated_at": "2026-08-10T07:39:35.365Z",
+  "ledgers": [
+    {
+      "topic_key": "年会不能停！2",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text after 2 attempts"
+    },
+    {
+      "topic_key": "红果",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:Expected ',' or ']' after array element in JSON at position 1972 (line 69 column 6)"
+    },
+    {
+      "topic_key": "歌手2026",
+      "ledger": {
+        "topic_key": "歌手2026",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "《歌手2026》歌王之战が2026年8月7日19時30分より湖南衛視と芒果TVで放送される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《歌手2026》",
+              "湖南卫视",
+              "芒果TV"
+            ],
+            "numbers": [
+              "2026-08-07",
+              "19:30"
+            ],
+            "quote_zh": "将于今天19:30在湖南卫视、芒果TV播出",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "歌王候補は齐豫、胡彦斌、张远、万妮达、尤长靖、窦靖童、艾略特·詹姆斯·雷（Elliot James Reay）の7名である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "齐豫",
+              "胡彦斌",
+              "张远",
+              "万妮达",
+              "尤长靖",
+              "窦靖童",
+              "艾略特·詹姆斯·雷"
+            ],
+            "numbers": [
+              "7"
+            ],
+            "quote_zh": "齐豫、胡彦斌、张远、万妮达、尤长靖、窦靖童、艾略特·詹姆斯·",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "齐豫と毛阿敏がデュエットで「相思」を歌唱する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "齐豫",
+              "毛阿敏",
+              "《相思》"
+            ],
+            "numbers": [],
+            "quote_zh": "齐豫与毛阿敏两代“时代之声”共唱《相思》",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "胡彦斌と韓磊が「走四方」を歌唱する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "胡彦斌",
+              "韩磊",
+              "《走四方》"
+            ],
+            "numbers": [],
+            "quote_zh": "胡彦斌与韩磊强强高歌《走四方》",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "张远と韋礼安が「巴别塔庆典」を歌唱する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "张远",
+              "韦礼安",
+              "《巴别塔庆典》"
+            ],
+            "numbers": [],
+            "quote_zh": "张远与韦礼安借《巴别塔庆典》献唱决赛之夜",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "万妮达と呉碧霞が「花田错」を歌唱する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万妮达",
+              "吴碧霞",
+              "《花田错》"
+            ],
+            "numbers": [],
+            "quote_zh": "万妮达与吴碧霞挑战流行金曲《花田错》",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "尤长靖と龔琳娜が「平日快乐」とマレー民謡「Rasa Sayang」を融合した曲を披露する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "尤长靖",
+              "龚琳娜",
+              "《平日快乐》",
+              "《Rasa Sayang》"
+            ],
+            "numbers": [],
+            "quote_zh": "尤长靖与龚琳娜将《平日快乐》与马来民谣《Rasa Sayan",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "竇靖童と欧陽娜娜が「被驯服的象」を歌唱する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "窦靖童",
+              "欧阳娜娜",
+              "《被驯服的象》"
+            ],
+            "numbers": [],
+            "quote_zh": "窦靖童与欧阳娜娜焕新吟唱《被驯服的象》",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "艾略特と黄子弘凡が「Somewhere Only We Know」を歌唱する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "艾略特·詹姆斯·雷",
+              "黄子弘凡",
+              "《Somewhere Only We Know》"
+            ],
+            "numbers": [],
+            "quote_zh": "艾略特与黄子弘凡携英文金曲《Somewhere Only W",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "独唱曲として、齐豫は「外婆的澎湖湾+光阴的故事」を歌唱する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "齐豫",
+              "《外婆的澎湖湾》",
+              "《光阴的故事》"
+            ],
+            "numbers": [],
+            "quote_zh": "齐豫将以《外婆的澎湖湾+光阴的故事》收尾",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "胡彦斌の独唱曲は「生死未定」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "胡彦斌",
+              "《生死未定》"
+            ],
+            "numbers": [],
+            "quote_zh": "胡彦斌将《生死未定》焕新重绎",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "张远の独唱曲は「无所求必满载而归」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "张远",
+              "《无所求必满载而归》"
+            ],
+            "numbers": [],
+            "quote_zh": "张远选择《无所求必满载而归》",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "万妮达の独唱曲は「再见」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万妮达",
+              "《再见》"
+            ],
+            "numbers": [],
+            "quote_zh": "万妮达选择《再见》收尾",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "尤长靖の独唱曲は「闭嘴跳舞」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "尤长靖",
+              "《闭嘴跳舞》"
+            ],
+            "numbers": [],
+            "quote_zh": "尤长靖携《闭嘴跳舞》致敬收官舞台",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "竇靖童の独唱曲は「空中飞人」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "窦靖童",
+              "《空中飞人》"
+            ],
+            "numbers": [],
+            "quote_zh": "窦靖童透过《空中飞人》作为竞演终章",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "艾略特の独唱曲は「I Think They Call This Love」である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "艾略特·詹姆斯·雷",
+              "《I Think They Call This Love》"
+            ],
+            "numbers": [],
+            "quote_zh": "艾略特带来《I Think They Call This L",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "新京报は、齐豫と毛阿敏の共演を「空灵与醇厚交织」と評した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "齐豫",
+              "毛阿敏"
+            ],
+            "numbers": [],
+            "quote_zh": "空灵与醇厚交织",
+            "anchor": true,
+            "scope": "root_event"
+          }
+        ],
+        "terms": [
+          {
+            "term": "歌王之战",
+            "gloss_ja": "歌王決定戦",
+            "what_is": "番組の最終決戦で年間最優秀歌手を決める",
+            "why_now": "2026年8月7日に放送され歌王が決定する",
+            "explain_quote_zh": "《歌手2026》歌王之战今晚打响",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "时代之声",
+            "gloss_ja": "時代の声",
+            "what_is": "異なる世代を象徴する歌手の称号",
+            "why_now": "齊豫と毛阿敏の世代を超えた共演が実現",
+            "explain_quote_zh": "两代“时代之声”共唱《相思》",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "花腔女高音",
+            "gloss_ja": "コロラトゥーラ・ソプラノ",
+            "what_is": "華やかな装飾唱法を駆使するソプラノ",
+            "why_now": "万妮达の说唱と呉碧霞の花腔が融合し話題",
+            "explain_quote_zh": "炸裂说唱与花腔女高音激烈碰撞",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "歌王候选人",
+            "gloss_ja": "歌王候補",
+            "what_is": "歌王戦に進出した出演者",
+            "why_now": "7名が最終戦に進出",
+            "explain_quote_zh": "七位歌王候选人齐聚终极赛场",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
 }

@@ -1,6 +1,34 @@
 {
   "date": "2026-08-07",
   "status": "pending",
-  "issue_number": 23,
-  "articles": []
+  "issue_number": 27,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "年会不能停！2",
+      "title": "『年会不能停！2』公開4日で興収1億元突破も市場予想に届かず",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 2,
+      "topic_key": "红果",
+      "title": "紅果短劇、俳優日給4万元上限の噂を否定—短劇業界では収入減が加速",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 3,
+      "topic_key": "歌手2026",
+      "title": "「歌手2026」歌王戦が本日放送 斉豫と毛阿敏が『相思』を共演",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
 }
