@@ -5,6 +5,11 @@ on:
     - cron: "0 1 * * *"
   workflow_dispatch:
     inputs:
+      run_date:
+        description: "Optional archive date to regenerate (YYYY-MM-DD; blank = today in Shanghai)"
+        required: false
+        default: ""
+        type: string
       provider:
         description: "AI provider"
         required: true
@@ -14,7 +19,7 @@ on:
           - gemini
           - deepseek
       refresh_review:
-        description: "Replace today's stored candidates and create a fresh review issue"
+        description: "Replace the selected date's stored candidates and create a fresh review issue"
         required: false
         default: false
         type: boolean
@@ -34,7 +39,7 @@ env:
   REVIEW_GATE: "true"
 
 concurrency:
-  group: pages
+  group: generate-news-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -74,33 +79,39 @@ jobs:
           EVS_REVIEW_RESCUE_THRESHOLD: "6"
           EVS_REVIEW_RESCUE_LIMIT: "3"
           WRITE_COMPARE_FIXTURE: ${{ inputs.write_compare_fixture == true && 'true' || 'false' }}
+          RUN_DATE: ${{ inputs.run_date }}
 
       - name: Upload generated Markdown
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: generated-news-markdown-${{ inputs.provider || 'deepseek' }}
           path: output/*.md
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Upload selection trace
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: selection-trace-${{ inputs.provider || 'deepseek' }}
           path: output/selection_trace_*.json
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Upload topic candidates
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: topic-candidates-${{ inputs.provider || 'deepseek' }}
           path: output/topic_candidates_*.json
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Persist daily data
         id: persist
         run: npm run persist:data
         env:
           ALLOW_DATA_OVERWRITE: ${{ inputs.refresh_review == true && 'true' || 'false' }}
+          RUN_DATE: ${{ inputs.run_date }}
+          ARCHIVE_DATE: ${{ inputs.run_date }}
 
       - name: Create review issue
         if: env.REVIEW_GATE != 'false'
@@ -108,6 +119,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REVIEW_DATE: ${{ steps.persist.outputs.date }}
+          RUN_DATE: ${{ inputs.run_date }}
 
       - name: Commit daily data
         run: |
@@ -118,8 +130,24 @@ jobs:
             echo "Daily data is already committed."
           else
             git commit -m "Archive news data ${{ steps.persist.outputs.date }}"
-            git push origin HEAD:${GITHUB_REF_NAME}
+            for attempt in 1 2 3; do
+              if git push origin HEAD:${GITHUB_REF_NAME}; then
+                exit 0
+              fi
+              if [ "$attempt" = "3" ]; then
+                echo "Daily data push failed after ${attempt} attempts."
+                exit 1
+              fi
+              git pull --rebase origin "${GITHUB_REF_NAME}"
+            done
           fi
+
+      - name: Mark generation failure after archival
+        run: npm run check:generation-status
+        env:
+          GENERATION_STATUS_DATE: ${{ steps.persist.outputs.date }}
+          ARCHIVE_DATE: ${{ steps.persist.outputs.date }}
+          RUN_DATE: ${{ inputs.run_date }}
 
       - name: Build static site
         if: env.REVIEW_GATE == 'false'
