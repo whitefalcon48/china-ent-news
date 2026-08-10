@@ -2,7 +2,7 @@
   "schema_version": 1,
   "date": "2026-08-08",
   "status": "pending",
-  "created_at": "2026-08-08T03:00:55.451Z",
+  "created_at": "2026-08-10T07:50:51.764Z",
   "completed_at": "",
   "candidates": [
     {
@@ -37,71 +37,11 @@
     },
     {
       "index": 2,
-      "topic_key": "不止观看：澳门当代摄影展",
-      "title": "持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕",
-      "event_sentence": "新京报 娱乐が「持续向外突破传统影像边界，《不止观看：澳门当代摄影展》开幕」について報じた。",
-      "topic_type": "cultural_export",
-      "baseline_rank": 2,
-      "baseline_priority": "high",
-      "baseline_score": 76,
-      "source_count": 1,
-      "source_types": {
-        "official": 0,
-        "media_report": 0,
-        "sns": 0,
-        "data": 1,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "新京报 娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 3,
-      "topic_key": "兵自风中来",
-      "title": "《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子",
-      "event_sentence": "新京报 娱乐が「《兵自风中来》热播，蓝盈莹：女性的力量不只有一种样子」について報じた。",
-      "topic_type": "unknown",
-      "baseline_rank": 3,
-      "baseline_priority": "high",
-      "baseline_score": 76,
-      "source_count": 1,
-      "source_types": {
-        "official": 0,
-        "media_report": 1,
-        "sns": 0,
-        "data": 0,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "新京报 娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 4,
       "topic_key": "红果",
       "title": "短剧演员日薪不能超过4万？红果回应",
       "event_sentence": "界面新闻 影视产业が「短剧演员日薪不能超过4万？红果回应」について報じた。",
       "topic_type": "gossip_rumor",
-      "baseline_rank": 4,
+      "baseline_rank": 2,
       "baseline_priority": "medium",
       "baseline_score": 74,
       "source_count": 1,
@@ -126,12 +66,12 @@
       "similar_topics": []
     },
     {
-      "index": 5,
+      "index": 3,
       "topic_key": "功夫女足",
       "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
       "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
       "topic_type": "box_office",
-      "baseline_rank": 5,
+      "baseline_rank": 3,
       "baseline_priority": "medium",
       "baseline_score": 69,
       "source_count": 2,
@@ -139,7 +79,7 @@
         "official": 0,
         "media_report": 1,
         "sns": 0,
-        "data": 3,
+        "data": 1,
         "pr_like": 0,
         "rumor": 0,
         "mixed": 0
@@ -157,12 +97,12 @@
       "similar_topics": []
     },
     {
-      "index": 6,
+      "index": 4,
       "topic_key": "数字影院LED放映发行母版和数据包技术要求",
       "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
       "event_sentence": "国家电影局が「国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知」について報じた。",
       "topic_type": "policy",
-      "baseline_rank": 6,
+      "baseline_rank": 4,
       "baseline_priority": "medium",
       "baseline_score": 68,
       "source_count": 1,
@@ -187,14 +127,74 @@
       "similar_topics": []
     },
     {
-      "index": 7,
+      "index": 5,
+      "topic_key": "第18届华语青年电影周",
+      "title": "第18届华语青年电影周荣誉揭晓，三大板块助力青年影人圆梦",
+      "event_sentence": "新京报 娱乐が「第18届华语青年电影周荣誉揭晓，三大板块助力青年影人圆梦」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
       "topic_key": "八仙！",
       "title": "动画《八仙！》发布配音特辑 真实诠释市井烟火气",
       "event_sentence": "1905电影网 新闻が「动画《八仙！》发布配音特辑 真实诠释市井烟火气」について報じた。",
       "topic_type": "release",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "平安的女儿",
+      "title": "电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”",
+      "event_sentence": "1905电影网 新闻が「电影《平安的女儿》宁德首映 聚焦国家级非遗“马仙信俗”」について報じた。",
+      "topic_type": "release",
       "baseline_rank": 7,
       "baseline_priority": "medium",
-      "baseline_score": 68,
+      "baseline_score": 62,
       "source_count": 1,
       "source_types": {
         "official": 0,
@@ -218,44 +218,13 @@
     },
     {
       "index": 8,
-      "topic_key": "欢迎来龙餐馆",
-      "title": "《欢迎来龙餐馆》释出特辑 剧组专门组建美食团队",
-      "event_sentence": "1905电影网 新闻が「沈腾蒋奇明带中餐闯中东 《欢迎来龙餐馆》定档8.11」について報じた。",
-      "topic_type": "release",
+      "topic_key": "欧阳娜娜天猫七夕氧气少女感",
+      "title": "欧阳娜娜天猫七夕氧气少女感，不同光线镜头演绎青春叙事",
+      "event_sentence": "新浪娱乐が「欧阳娜娜天猫七夕氧气少女感，不同光线镜头演绎青春叙事」について報じた。",
+      "topic_type": "unknown",
       "baseline_rank": 8,
       "baseline_priority": "medium",
-      "baseline_score": 64,
-      "source_count": 2,
-      "source_types": {
-        "official": 0,
-        "media_report": 3,
-        "sns": 0,
-        "data": 0,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "1905电影网 新闻",
-        "新京报 娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 9,
-      "topic_key": "重器",
-      "title": "《重器》看片会在京举行，以法治精神致敬时代守护者",
-      "event_sentence": "新京报 娱乐が「《重器》看片会在京举行，以法治精神致敬时代守护者」について報じた。",
-      "topic_type": "unknown",
-      "baseline_rank": 9,
-      "baseline_priority": "medium",
-      "baseline_score": 64,
+      "baseline_score": 60,
       "source_count": 1,
       "source_types": {
         "official": 0,
@@ -267,7 +236,7 @@
         "mixed": 0
       },
       "source_names": [
-        "新京报 娱乐"
+        "新浪娱乐"
       ],
       "risk_class": "low",
       "caution_note": "Single-source topic; keep wording cautious until another source appears.",
@@ -278,14 +247,46 @@
       "similar_topics": []
     },
     {
+      "index": 9,
+      "topic_key": "郭晶晶霍启刚子女",
+      "title": "郭晶晶和霍启刚一共有几个孩子？",
+      "event_sentence": "郭晶晶と霍启刚の子供の数についての話題。",
+      "topic_type": "unknown",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "high",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [
+        "private_life_careful"
+      ],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
       "index": 10,
-      "topic_key": "明昊即将",
-      "title": "侯明昊即将亮相李佳琦直播间，预热视频展示夏日冰脆吃法",
-      "event_sentence": "新浪娱乐が「侯明昊即将亮相李佳琦直播间，预热视频展示夏日冰脆吃法」について報じた。",
+      "topic_key": "郭晶晶霍启刚带娃",
+      "title": "郭晶晶夫妇带三娃街头被偶遇，大女儿书不离手获赞",
+      "event_sentence": "郭晶晶と霍启刚が3人の子供と街で目撃され、長女が本を手放さなかったと称賛された。",
       "topic_type": "unknown",
       "baseline_rank": 10,
       "baseline_priority": "medium",
-      "baseline_score": 64,
+      "baseline_score": 60,
       "source_count": 1,
       "source_types": {
         "official": 0,
@@ -309,17 +310,17 @@
     },
     {
       "index": 11,
-      "topic_key": "大众电影百花奖",
-      "title": "百花奖开幕式节目单揭晓，观众可在北京“超现场”16处场所观看",
-      "event_sentence": "新京报 娱乐が「百花奖开幕式节目单揭晓，观众可在北京“超现场”16处场所观看」について報じた。",
-      "topic_type": "release",
+      "topic_key": "金智秀",
+      "title": "哎哟金智秀你好甜",
+      "event_sentence": "金智秀の可愛らしさについての話題。",
+      "topic_type": "unknown",
       "baseline_rank": 11,
       "baseline_priority": "medium",
-      "baseline_score": 62,
+      "baseline_score": 60,
       "source_count": 1,
       "source_types": {
         "official": 0,
-        "media_report": 4,
+        "media_report": 1,
         "sns": 0,
         "data": 0,
         "pr_like": 0,
@@ -327,7 +328,7 @@
         "mixed": 0
       },
       "source_names": [
-        "新京报 娱乐"
+        "新浪娱乐"
       ],
       "risk_class": "low",
       "caution_note": "Single-source topic; keep wording cautious until another source appears.",
@@ -339,9 +340,9 @@
     },
     {
       "index": 12,
-      "topic_key": "王楚然颜值变化",
-      "title": "王楚然从小到大的颜值变化有多大？",
-      "event_sentence": "王楚然の幼少期から現在までのルックスの変化についての話題。",
+      "topic_key": "御廷谣",
+      "title": "《御廷谣》秋千吻出圈！严知有理即兴共创甜到炸",
+      "event_sentence": "ドラマ『御廷謡』の秋千キスシーンが話題になり、嚴知有理の即興共演が好評を博した。",
       "topic_type": "unknown",
       "baseline_rank": 12,
       "baseline_priority": "medium",
