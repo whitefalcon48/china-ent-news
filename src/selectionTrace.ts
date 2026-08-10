@@ -136,6 +136,13 @@ type SelectionTrace = {
     items: TraceCandidate[];
   };
   output_count_instruction: string | null;
+  generation_status: {
+    status: "succeeded" | "no_candidate" | "generation_failed";
+    selected_count: number;
+    output_count: number;
+    failed_topic_keys: string[];
+    errors: string[];
+  };
   final_output_count: number;
   publish_priority_counts: PublishPriorityCounts;
   non_official_source_diagnostics: SourceSelectionDiagnostic[];
@@ -170,6 +177,7 @@ export function buildSelectionTrace(args: {
   commentDiversity?: SelectionTrace["comment_diversity"];
   preferenceShadow?: PreferenceResearchOrder;
   candidateReview?: SelectionTrace["candidate_review"];
+  generationStatus?: SelectionTrace["generation_status"];
 }) {
   const deepseekInputKeys = new Set(args.deepseekInput.map(candidateKey));
   const selectionRanks = new Map<string, number>();
@@ -266,6 +274,13 @@ export function buildSelectionTrace(args: {
       )
     },
     output_count_instruction: args.outputCountInstruction,
+    generation_status: args.generationStatus ?? {
+      status: args.deepseekInput.length ? (finalOutput.length ? "succeeded" : "generation_failed") : "no_candidate",
+      selected_count: args.deepseekInput.length,
+      output_count: finalOutput.length,
+      failed_topic_keys: [],
+      errors: []
+    },
     final_output_count: finalOutput.length,
     publish_priority_counts: countPublishPriorities(finalOutput),
     non_official_source_diagnostics: args.nonOfficialSourceDiagnostics ?? [],

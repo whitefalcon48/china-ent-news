@@ -1,4 +1,4 @@
-import { areTitlesSimilar } from "./dedupe.js";
+import { getIndependentEvidence as getIndependentEvidenceByFamily } from "./evidence/independentEvidence.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, type LlmCallBudget } from "./llmCallBudget.js";
 import { describeError, getAiProvider, getProviderEnvStatus } from "./summarizeWithGemini.js";
 import type { PublicationHistoryMatch } from "./publicationHistory.js";
@@ -47,14 +47,18 @@ type LlmScore = {
 
 export function selectEditorialReviewRescue(
   assessments: EditorialValueAssessment[],
-  options: { enabled: boolean; threshold?: number; limit?: number }
+  options: { enabled: boolean; threshold?: number; limit?: number; allowQualifiedFallback?: boolean }
 ): EditorialReviewRescue {
   const threshold = clampInteger(options.threshold, 1, 6, 6);
   const limit = clampInteger(options.limit, 1, 10, 3);
   if (!options.enabled) {
     return { enabled: false, activated: false, threshold, limit, selected_topic_keys: [], reason: "review_gate_disabled" };
   }
-  if (assessments.some((assessment) => assessment.total >= 7)) {
+  // Normally a standard-qualified topic means the empty-day rescue must not
+  // lower the publication bar.  A caller may explicitly override this after
+  // that qualified topic has already failed generation; it must not block the
+  // next EVS-6 candidate forever.
+  if (!options.allowQualifiedFallback && assessments.some((assessment) => assessment.total >= 7)) {
     return { enabled: true, activated: false, threshold, limit, selected_topic_keys: [], reason: "standard_qualified" };
   }
   const selectedTopicKeys = assessments
@@ -108,13 +112,7 @@ export function isOfficialOnlyTopic(topic: TopicCandidate) {
 }
 
 export function getIndependentEvidence(topic: TopicCandidate) {
-  const accepted: TopicCandidate["evidence_articles"] = [];
-  for (const evidence of topic.evidence_articles) {
-    if (accepted.some((item) => item.source_name === evidence.source_name)) continue;
-    if (accepted.some((item) => areTitlesSimilar(item.title, evidence.title))) continue;
-    accepted.push(evidence);
-  }
-  return accepted;
+  return getIndependentEvidenceByFamily(topic.evidence_articles);
 }
 
 function evaluateDeterministicAxes(topic: TopicCandidate, historyMatch?: PublicationHistoryMatch) {

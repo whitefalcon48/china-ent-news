@@ -33,6 +33,23 @@ export const BACKGROUND_GROUNDING_THRESHOLD = 0.35;
 
 export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): ClaimCheckResult {
   const violations: ClaimCheckViolation[] = [];
+  const evidenceRoles = ledger.evidence_roles ?? {};
+  if (Object.keys(evidenceRoles).length) {
+    for (const claim of ledger.claims.filter((item) => item.type !== "unsupported")) {
+      const roles = claim.evidence_refs.map((ref) => evidenceRoles[ref]);
+      if (roles.some((role) => !role)) {
+        violations.push(toViolation("fact_ledger", "claim_evidence_ref_unknown", "gate", `${claim.id}: ${claim.evidence_refs.join(", ")}`));
+        continue;
+      }
+      if (claim.scope === "related_angle") {
+        if (!roles.length || roles.some((role) => role !== "related_angle")) {
+          violations.push(toViolation("fact_ledger", "related_claim_missing_related_evidence", "gate", `${claim.id}: ${claim.evidence_refs.join(", ")}`));
+        }
+      } else if (!roles.length || roles.some((role) => role !== "root_corroboration")) {
+        violations.push(toViolation("fact_ledger", "root_claim_uses_related_evidence", "gate", `${claim.id}: ${claim.evidence_refs.join(", ")}`));
+      }
+    }
+  }
   const ledgerNumbers = new Set(
     ledger.claims.flatMap((claim) => [
       ...claim.numbers,
@@ -42,6 +59,19 @@ export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): C
     ]).flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean)
   );
   const ledgerEntities = ledger.claims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
+  const japanContextNote = summary.japan_context_note ?? "";
+
+  if (
+    japanContextNote.trim()
+    && referencedClaims(summary, "japan_context_note", ledger).length === 0
+  ) {
+    violations.push(toViolation(
+      "japan_context_note",
+      "japan_context_note_without_claim_ref",
+      "gate",
+      japanContextNote.trim()
+    ));
+  }
 
   for (const section of SECTION_NAMES) {
     const text = summary[section];
@@ -115,10 +145,21 @@ export function removeGatedViolationSentences(
   for (const section of SECTION_NAMES) {
     const sectionViolations = gated.filter((violation) => violation.section === section);
     if (!sectionViolations.length) continue;
+    if (
+      section === "japan_context_note"
+      && sectionViolations.some((violation) => violation.rule === "japan_context_note_without_claim_ref")
+    ) {
+      next.japan_context_note = "";
+      next.claim_refs = { ...summary.claim_refs, japan_context_note: [] };
+      continue;
+    }
     next[section] = splitSentences(summary[section])
       .filter((sentence) => !sectionViolations.some((violation) => sentence.includes(violation.detail) || violation.detail.includes(sentence.trim())))
       .join("")
       .trim();
+    if (section === "japan_context_note" && !next.japan_context_note) {
+      next.claim_refs = { ...summary.claim_refs, japan_context_note: [] };
+    }
   }
   return next;
 }

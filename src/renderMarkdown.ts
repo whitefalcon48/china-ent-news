@@ -49,6 +49,7 @@ function renderArticle(article: ProcessedArticle, index: number) {
 
   const title = resolveSummaryTitle(summary.title_ja, raw.title);
   const sources = summary.source_list.length ? summary.source_list : [{ name: raw.sourceName, url: raw.url }];
+  const relatedSources = (summary.related_sources ?? []).filter((source) => !sources.some((root) => root.name === source.name && (!root.url || !source.url || root.url === source.url)));
   const freshness = formatFreshness(summary.event_date || summary.published_date, summary.freshness_label);
   const sections = [
     summary.lead,
@@ -58,7 +59,8 @@ function renderArticle(article: ProcessedArticle, index: number) {
     summary.why_it_matters ? `### ビンタンの注目ポイント\n${summary.why_it_matters}` : "",
     summary.reaction_view ? `### 反応・見られ方\n${summary.reaction_view}` : "",
     summary.japan_context_note ? `### ビンタンからの補足\n${summary.japan_context_note}` : "",
-    `ソース：${sources.map(formatSourceLink).join("、")}`
+    `ソース：${sources.map(formatSourceLink).join("、")}`,
+    relatedSources.length ? `関連角度のソース：${relatedSources.map(formatSourceLink).join("、")}` : ""
   ].filter(Boolean);
 
   return `## 【${summary.badge}｜${summary.category || raw.category}｜確度${summary.confidence || raw.reliability}｜${freshness}】${title}

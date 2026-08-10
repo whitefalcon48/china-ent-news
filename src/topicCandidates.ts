@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { createTopicKey as createSharedTopicKey, extractEventName, extractPersonName, extractWorkName } from "./topicKey.js";
+import { getIndependentEvidence } from "./evidence/independentEvidence.js";
+import { normalizeMediaFamily } from "./evidence/mediaFamily.js";
+import { extractEventName, extractPersonName, extractWorkName, getCanonicalTopicKey } from "./topicKey.js";
 import type { PreferenceResearchOrder } from "./preference/types.js";
 import type {
   ArticleType,
@@ -33,7 +35,13 @@ export function buildTopicCandidates(articles: RawArticle[], seeds: TopicSeed[] 
 
   for (const article of articles) {
     const seed = seedByUrl.get(article.url);
-    const topicKey = seed?.topic_key || createTopicKey(article);
+    const topicKey = getCanonicalTopicKey({
+      topicKey: seed?.topic_key || article.topicKey,
+      title: article.title,
+      excerpt: article.excerpt,
+      people: [...(seed?.entities.people ?? []), ...(article.mainEntities?.people ?? [])],
+      works: [...(seed?.entities.works ?? []), ...(article.mainEntities?.works ?? [])]
+    });
     const group = groups.get(topicKey) ?? [];
     group.push({ article, seed });
     groups.set(topicKey, group);
@@ -81,8 +89,9 @@ function buildTopicCandidate(topicKey: string, entries: TopicEntry[]): TopicCand
   const representativeSeed = chooseRepresentativeSeed(seeds);
   const sortedArticles = [...articles].sort(compareEvidenceArticles);
   const representative = sortedArticles[0];
+  const independentArticles = getIndependentEvidence(sortedArticles.map(toEvidenceArticle));
   const dates = sortedArticles.map((article) => article.publishedDate).filter(Boolean).sort();
-  const sourceTypes = sortedArticles.map((article) => getSourceType(article));
+  const sourceTypes = independentArticles.map((article) => article.source_type);
   const sourceMix = countSourceTypes(sourceTypes);
   const topicType = inferTopicType(sortedArticles);
   const signals = {
@@ -90,7 +99,7 @@ function buildTopicCandidate(topicKey: string, entries: TopicEntry[]): TopicCand
     has_media_context: sourceTypes.includes("media_report") || sourceTypes.includes("data"),
     has_data_signal: sourceTypes.includes("data") || sortedArticles.some((article) => article.articleType === "data_report"),
     has_hot_search_signal: sourceTypes.includes("sns") || sortedArticles.some((article) => article.badge === "HOT SEARCH" || article.articleType === "sns_trend"),
-    has_multiple_sources: new Set(sortedArticles.map((article) => article.sourceName)).size > 1
+    has_multiple_sources: independentArticles.length > 1
   };
   const score = getTopicScore(sortedArticles, signals, topicType);
 
@@ -107,7 +116,7 @@ function buildTopicCandidate(topicKey: string, entries: TopicEntry[]): TopicCand
       earliest: dates[0] ?? "",
       latest: dates.at(-1) ?? ""
     },
-    source_count: new Set(sortedArticles.map((article) => article.sourceName)).size,
+    source_count: independentArticles.length,
     source_mix: sourceMix,
     evidence_articles: sortedArticles.map(toEvidenceArticle),
     main_entities: mergeEntities(sortedArticles, topicKey, seeds),
@@ -119,10 +128,6 @@ function buildTopicCandidate(topicKey: string, entries: TopicEntry[]): TopicCand
     selection_reason: getSelectionReason(sortedArticles, signals, topicType),
     caution_note: getCautionNote(sortedArticles, signals)
   };
-}
-
-function createTopicKey(article: RawArticle) {
-  return article.topicKey || createSharedTopicKey(article.title, article.excerpt ?? "");
 }
 
 function chooseRepresentativeSeed(seeds: TopicSeed[]) {
@@ -183,7 +188,8 @@ function toEvidenceArticle(article: RawArticle) {
     freshness_label: article.freshnessLabel ?? "unknown",
     article_type: article.articleType ?? "unknown",
     reliability: article.reliability,
-    key_points: buildKeyPoints(article)
+    key_points: buildKeyPoints(article),
+    media_family: normalizeMediaFamily(article.url || article.sourceName)
   };
 }
 
@@ -265,13 +271,15 @@ function getPublishPriority(score: number): PublishPriority {
 
 function getSelectionReason(articles: RawArticle[], signals: TopicCandidate["signals"], topicType: TopicType) {
   const reasons: string[] = [];
+  const independentEvidenceCount = getIndependentEvidence(articles.map(toEvidenceArticle)).length;
   if (signals.has_multiple_sources) reasons.push("multiple_sources");
   if (signals.has_official_source) reasons.push("official_evidence");
   if (signals.has_media_context) reasons.push("media_context");
   if (signals.has_data_signal) reasons.push("data_signal");
   if (signals.has_hot_search_signal) reasons.push("hot_search_signal");
   reasons.push(`topic_type:${topicType}`);
-  reasons.push(`evidence:${articles.length}`);
+  reasons.push(`root_evidence:${independentEvidenceCount}`);
+  if (articles.length > independentEvidenceCount) reasons.push(`syndicated_urls:${articles.length}`);
   return reasons.join(", ");
 }
 

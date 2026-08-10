@@ -1,5 +1,6 @@
 import "dotenv/config";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
 import { dedupeArticles } from "./dedupe.js";
 import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
@@ -39,6 +40,9 @@ const MIN_RAW_CONTENT_LENGTH = 180;
 const MIN_OFFICIAL_RAW_CONTENT_LENGTH = 80;
 
 async function main() {
+  // `RUN_DATE` is intentionally resolved before any fetch or LLM work. A
+  // manual rerun must never silently write its artifacts under today's date.
+  const runDate = getRunDate();
   const llmCallBudget = createLlmCallBudget();
   const maxArticles = Number(process.env.MAX_DEEPSEEK_INPUT_CANDIDATES || process.env.MAX_AI_INPUT_CANDIDATES || process.env.MAX_ARTICLES || 10);
   const sources = await loadSources();
@@ -46,7 +50,6 @@ async function main() {
   const provider = getAiProvider();
   const topicFirstEnabled = process.env.TOPIC_FIRST !== "false";
   const aiEnv = getProviderEnvStatus(provider);
-  const runDate = getRunDate();
 
   console.log(`収集元: ${sources.length}件`);
   console.log(`AI_PROVIDER: ${provider}`);
@@ -331,11 +334,21 @@ async function main() {
         topic_key: article.topic?.topic_key ?? article.generationMeta?.topic_key ?? "",
         ledger: article.generationMeta?.ledger ?? null,
         fallback_reason: article.generationMeta?.ledger_fallback_reason ?? ""
-      }))
+      })),
+    runDate
   );
-  const outputPath = await renderMarkdownFile(processed, provider);
-  const articlesJsonPath = await writeArticlesJsonFile(processed);
-  const reviewPath = isReviewGateEnabled() ? await writeInitialReviewState(processed) : "";
+  // Keep a recoverable identity for every all-failed run.  The review rescue
+  // uses this list to consider the next saved candidate, while the workflow
+  // status check decides whether the GitHub Actions job should be red.
+  const failedTopicKeys = new Set(topicFailures.map((failure) => failure.topic_key));
+  if (generationItems.length > 0 && processed.length === 0) {
+    for (const item of generationItems) {
+      failedTopicKeys.add(item.topic?.topic_key || item.article.topicKey || candidateKey(item.article));
+    }
+  }
+  const outputPath = await renderMarkdownFile(processed, provider, runDate);
+  const articlesJsonPath = await writeArticlesJsonFile(processed, runDate);
+  const reviewPath = isReviewGateEnabled() ? await writeInitialReviewState(processed, runDate) : "";
   const nonOfficialSourceDiagnostics = buildNonOfficialSourceDiagnostics(
     sources,
     diagnostics,
@@ -391,6 +404,13 @@ async function main() {
       candidate_count: candidateReview.candidates.length,
       max_candidates: 12
     },
+    generationStatus: {
+      status: generationItems.length ? (processed.length ? "succeeded" : "generation_failed") : "no_candidate",
+      selected_count: generationItems.length,
+      output_count: processed.length,
+      failed_topic_keys: [...failedTopicKeys],
+      errors: aiErrors
+    },
     llmCallBudget
   });
   const tracePath = await writeSelectionTraceFile(selectionTrace);
@@ -420,6 +440,10 @@ async function main() {
   console.log(`- Fact ledger: ${factLedgerPath}`);
   console.log(`- Selection trace: ${tracePath}`);
   console.log(`candidates: ${selectionTrace.candidate_pool.length} -> deepseek_input: ${selectionTrace.deepseek_input.count} -> output: ${selectionTrace.final_output.length}`);
+
+  if (selectionTrace.generation_status.status === "generation_failed") {
+    console.warn("generation_failed: selected candidates produced no publishable output. Trace, articles JSON, and review state were written; the workflow status check will mark this run failed after archival.");
+  }
 
   if (errors.length) {
     console.log("- エラーがあった収集元:");
@@ -1053,13 +1077,32 @@ function isSnsOnlySingleEvidence(topic: TopicCandidate) {
   return evidence.length === 1 && evidence[0]?.source_type === "sns" && !topic.signals.has_official_source && !topic.signals.has_media_context && !topic.signals.has_data_signal;
 }
 
-function getRunDate() {
+export function getRunDate(requestedDate = process.env.RUN_DATE, now = new Date()) {
+  if (requestedDate !== undefined && requestedDate !== "") {
+    if (!isValidRunDate(requestedDate)) {
+      throw new Error(`RUN_DATE must be a real calendar date in YYYY-MM-DD format: ${requestedDate}`);
+    }
+    return requestedDate;
+  }
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Shanghai",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
-  }).format(new Date());
+  }).format(now);
+}
+
+function isValidRunDate(value: string) {
+  const matched = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!matched) return false;
+  const year = Number(matched[1]);
+  const month = Number(matched[2]);
+  const day = Number(matched[3]);
+  if (year === 0 || month < 1 || month > 12 || day < 1) return false;
+  const daysInMonth = month === 2
+    ? ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28)
+    : [4, 6, 9, 11].includes(month) ? 30 : 31;
+  return day <= daysInMonth;
 }
 
 async function buildTopicEvidenceBundles(selectedTopics: SelectedTopic[], articlePool: RawArticle[]) {
@@ -1323,7 +1366,8 @@ function logSourceExpansion(expansion: Awaited<ReturnType<typeof expandTopicSour
   console.log(`- attempted topics: ${expansion.attempted_topic_count}`);
   console.log(`- attempted routes: ${expansion.attempted_route_count}`);
   console.log(`- success routes: ${expansion.success_route_count}`);
-  console.log(`- evidence: ${expansion.evidence_count}`);
+  console.log(`- root corroboration evidence: ${expansion.corroboration_evidence_count ?? expansion.evidence.filter((item) => item.evidence_role !== "related_angle").length}`);
+  console.log(`- related-angle evidence: ${expansion.related_angle_evidence_count ?? expansion.evidence.filter((item) => item.evidence_role === "related_angle").length}`);
   for (const attempt of expansion.attempts.slice(0, 12)) {
     console.log(
       `- ${attempt.route_id} ${attempt.fetch_status}: topic=${attempt.topic_key} query=${attempt.query} raw=${attempt.raw_count} matched=${attempt.matched_count}${attempt.failure_stage ? ` stage=${attempt.failure_stage}` : ""}`
@@ -1373,8 +1417,10 @@ function logFinalCategoryDistribution(articles: RawArticle[], heading: string) {
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error(`実行に失敗しました: ${message}`);
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`実行に失敗しました: ${message}`);
+    process.exitCode = 1;
+  });
+}

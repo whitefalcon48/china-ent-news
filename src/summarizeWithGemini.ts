@@ -34,6 +34,7 @@ const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 export const OUTPUT_COUNT_INSTRUCTION = "Output every candidate item that is worth publishing; do not force a 3-5 item cap. Add publish_priority (high/medium/low) and publish_reason to every output article.";
 
 let editorialCharacterCache: string | undefined;
+let bingtangCharacterCache: string | undefined;
 
 type CommentGenerationContext = { angleHint?: string; usedOpenings?: string[]; termExpansionSession?: TermExpansionSession };
 
@@ -51,6 +52,20 @@ async function loadEditorialCharacter() {
   return editorialCharacterCache;
 }
 
+async function loadBingtangCharacter() {
+  if (bingtangCharacterCache !== undefined) {
+    return bingtangCharacterCache;
+  }
+
+  try {
+    bingtangCharacterCache = await fs.readFile(path.resolve("docs", "character-bingtang-v2.md"), "utf8");
+  } catch {
+    bingtangCharacterCache = "Use a polite but lively assistant voice. Do not use character preferences as facts or selection evidence.";
+  }
+
+  return bingtangCharacterCache;
+}
+
 export async function summarizeArticle(article: RawArticle, provider = getAiProvider(), budget?: LlmCallBudget): Promise<SummarizedArticle> {
   const text = await generateJson(provider, await buildPrompt(article), budget);
   return clearEditorComment(await applyTerminology(mergeInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), article)));
@@ -63,6 +78,7 @@ export async function summarizeTopic(
   budget?: LlmCallBudget,
   commentContext: CommentGenerationContext = {}
 ): Promise<{ summary: SummarizedArticle; meta: TopicGenerationMeta }> {
+  evidence = withTopicRelatedEvidence(topic, evidence);
   const aiModels = resolveAiModels(provider);
   const ledgerAi = resolveStageAi("ledger", provider);
   const commentAi = resolveStageAi("comment", provider);
@@ -451,45 +467,41 @@ async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget, mode
     throw new Error("DEEPSEEK_API_KEY is not set. .envまたはGitHub SecretsにAPIキーを設定してください。");
   }
 
-  if (budget) consumeLlmCall(budget);
+  // DeepSeek occasionally acknowledges a valid request with an empty choice.
+  // Retry only that transient response once; HTTP/network failures remain
+  // fail-fast so we do not hide a broken provider configuration.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (budget) consumeLlmCall(budget);
+    let response: Response;
+    try {
+      response = await fetch(DEEPSEEK_ENDPOINT, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${apiKey}`,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          model,
+          temperature: 0.1,
+          response_format: { type: "json_object" },
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+    } catch (error) {
+      throw new Error(`DeepSeek network error: ${describeError(error)}`);
+    }
 
-  let response: Response;
-  try {
-    response = await fetch(DEEPSEEK_ENDPOINT, {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${apiKey}`,
-        "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        model,
-        temperature: 0.1,
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "user",
-            content: prompt
-          }
-        ]
-      })
-    });
-  } catch (error) {
-    throw new Error(`DeepSeek network error: ${describeError(error)}`);
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`DeepSeek API error: HTTP ${response.status} ${response.statusText} ${safePreview(text)}`);
+    }
+
+    const payload = (await response.json()) as DeepSeekResponse;
+    const text = payload.choices?.[0]?.message?.content ?? "";
+    if (text.trim()) return text;
   }
 
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`DeepSeek API error: HTTP ${response.status} ${response.statusText} ${safePreview(text)}`);
-  }
-
-  const payload = (await response.json()) as DeepSeekResponse;
-  const text = payload.choices?.[0]?.message?.content ?? "";
-
-  if (!text.trim()) {
-    throw new Error("DeepSeek API error: empty response text");
-  }
-
-  return text;
+  throw new Error("DeepSeek API error: empty response text after 2 attempts");
 }
 
 async function buildPrompt(article: RawArticle) {
@@ -521,7 +533,7 @@ publish_priority rules:
 編集キャラクター:
 - このサイトは中国語記事の翻訳・要約サイトではない。
 - 中国現地で評価され、語られ、消費されているエンタメと、日本語圏で見えている中国エンタメ像のズレを埋める。
-- 架空の中立ニュースキャスターではなく、運営者の分身としての編集者キャラで書く。
+- 架空の中立ニュースキャスターを装わず、明示された編集軸に基づく編集視点で書く。
 - 何が起きたかだけでなく、なぜそれが面白いのかを拾う。
 - 日本語圏では見えにくい文脈がある場合だけ、短く補足する。
 - 公式発表は確度Aでも中立とは限らない。官製PR、文化輸出、対外発信、国策文脈は一歩引いて見る。
@@ -657,6 +669,8 @@ Use the document above as the highest-priority editorial policy.
 
 evidenceの扱い方:
 - [E1] が代表記事。出来事の骨格は代表記事と official evidence から組み立てる。
+- role=root_corroboration は中心出来事の根拠、role=related_angle は同じ人物・作品を別の角度から報じた検証済み資料である。related_angle は中心出来事の裏付け、複数ソース扱い、一般的な反応の根拠にしない。
+- related_angle を使う場合は、その資料が直接述べる別角度としてだけ書く。root_corroboration と一文の根拠に混ぜない。
 - official は事実の骨格に使うが、官製PR・文化輸出の文脈は一歩引いて見る。
 - media_report は文脈・詳細・業界的な見られ方に使う。
 - data の数字は data/official evidence にあるものだけ使う。
@@ -711,7 +725,9 @@ export function formatEvidenceForPrompt(evidence: RawArticle[]): string {
   return evidence
     .map((article, index) => {
       const content = index === 0 ? (article.rawContent || article.excerpt || "なし").slice(0, 5000) : (article.rawContent || article.excerpt || "なし").slice(0, 1500);
-      return `[E${index + 1}]${index === 0 ? "（代表）" : ""} source: ${article.sourceName} / type: ${article.sourceType ?? "media_report"} / 確度: ${article.reliability} / 日付: ${article.publishedDate ?? "不明"}\nタイトル: ${article.title}\nURL: ${article.url}\n本文: ${content}`;
+      const role = article.evidenceRole ?? "root_corroboration";
+      const angle = role === "related_angle" ? ` / angle_kind: ${article.angleKind ?? "other"}` : "";
+      return `[E${index + 1}]${index === 0 ? "（代表）" : ""} role: ${role}${angle} / source: ${article.sourceName} / type: ${article.sourceType ?? "media_report"} / 確度: ${article.reliability} / 日付: ${article.publishedDate ?? "不明"}\nタイトル: ${article.title}\nURL: ${article.url}\n本文: ${content}`;
     })
     .join("\n\n");
 }
@@ -740,6 +756,9 @@ ${terminology}
 最重要ルール:
 - 台帳のclaimsにある情報だけで書く。台帳に無い数字・日付・人物・作品・出来事・背景説明を足さない。
 - type: unsupported のclaimは本文に使わない。
+- scope=root_event のclaimは中心出来事としてだけ使い、scope=related_angle のclaimは検証済みの別角度としてだけ使う。両者を同じ事実の裏付け・同じ反応の根拠として混ぜない。
+- related_angle のclaimが無い場合、家族コメント・生涯回顧・周辺の反応などを一般知識で足さない。
+- source_list には root_corroboration の根拠だけを入れる。related_angle を実際に本文で使った時だけ、その根拠を related_sources に入れる。両方に同じソースを入れない。
 - type: source_analysis のclaimを使う文は、必ずsource_nameの媒体名を主語または出典として明示し、断定しない（「〜と見ています」「〜と報じています」）。業界全体の事実のように書かない。
 - 日本での公開・配信・字幕は、japan_availability.status が "verified" の場合だけ、detailの範囲で書く。"not_in_evidence" の場合は「日本では未公開」と書かず、触れないか「日本での公開情報は今回の情報源からは確認できていない」とする。
 - 予測を「確実」と断定しない。
@@ -755,12 +774,12 @@ ${terminology}
 
 文体:
 - lead / what_happened / reaction_view は通常の報道文体。ただし一文は60字以内を目安に短く切る。
-- why_it_matters（見出し「ビンタンの注目ポイント」）と japan_context_note（見出し「ビンタンからの補足」）は、docs/editorial-character.md の口調規定に従い、旧「ひとこと」と同じ明るく親しみのあるビンタンの声で書く。
+- why_it_matters（見出し「ビンタンの注目ポイント」）と japan_context_note（見出し「ビンタンからの補足」）は、docs/editorial-character.md で定めた公開記事向けの明るく親しみのある編集トーンで書く。
 
 構成ルール:
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
-- why_it_matters: 100〜250字。ビンタンの注目ポイント。旧「ひとこと」と同じ口調で短い感想・リアクションを必ず混ぜる。本文の言い換え・要約をせず、「用語・制度の噛み砕き説明（termsに説明がある場合だけ）」「なぜ今気になるか」「次に確認する数字・発表・反応」「これまでの流れとの関係」「情報源の見方・注意点」のうち、この記事に最も価値のある角度を1つ選んで書く。日本語読者向けの背景・公開状況・ファン文化は japan_context_note 専用にし、両方がある場合は同じ事実・角度を繰り返さない。
+- why_it_matters: 100〜250字。ビンタンの注目ポイント。docs/editorial-character.md で定めた公開記事向けの編集トーンで、短い感想・リアクションを必ず混ぜる。本文の言い換え・要約をせず、「用語・制度の噛み砕き説明（termsに説明がある場合だけ）」「なぜ今気になるか」「次に確認する数字・発表・反応」「これまでの流れとの関係」「情報源の見方・注意点」のうち、この記事に最も価値のある角度を1つ選んで書く。日本語読者向けの背景・公開状況・ファン文化は japan_context_note 専用にし、両方がある場合は同じ事実・角度を繰り返さない。
 - reaction_view: SNS由来または複数媒体のclaimがある場合のみ100〜200字。無ければ空文字。
 - japan_context_note: 日本語圏の読者に補足する価値がある文脈のclaimがある場合だけ、100〜200字でビンタンの声で書く。why_it_matters と同じ角度・言い換えにしない。日本側の受け止めや公開状況を述べる場合は、その内容を裏付けるclaimがあるときだけ。無ければ空文字。
 - editor_comment: 常に空文字 "" を返す（旧「ビンタンからのひとこと」枠は廃止。公開上は「ビンタンの注目ポイント」と、根拠がある時だけの「ビンタンからの補足」の2役とし、独立した3枠目は作らない）。
@@ -781,7 +800,7 @@ ${JSON.stringify(normalizeSummary({}), null, 2)}
 ${JSON.stringify(ledger, null, 2)}${violationInstruction}`;
 }
 
-async function buildBingtangCommentPrompt(
+export async function buildBingtangCommentPrompt(
   topic: TopicCandidate,
   ledger: FactLedger,
   summary: SummarizedArticle,
@@ -791,9 +810,12 @@ async function buildBingtangCommentPrompt(
   commentContext: CommentGenerationContext = {}
 ) {
   const editorialCharacter = await loadEditorialCharacter();
+  const bingtangCharacter = await loadBingtangCharacter();
   const needsTermExplanation = getNeedsTermExplanation(ledger, summary);
   const toneInstruction = toneMode === "normal"
     ? `- 明るく、少し前のめりな、話し言葉に近い「です・ます調」。短いくだけた感想を混ぜてよい。
+- 事実台帳にある具体的な一点を選び、「これを見せたかった」という期待が少し漏れる短いリアクションを1文必ず入れる。公開コメントでFalさんへ直接呼びかける必要はない。
+- 前のめりさは、確認済みの具体的な出来事・数字・言葉への反応で出す。未確認情報を断定したり、実際に観た・聴いた・現地で見たように書いたりしない。
 - 使ってよい表現の例: 「〜かも！」「〜みたい！」「すごい！」「これは気になる！」「ちょっと待って！」「ここ、大事です！」「〜なんです！」「〜でしたね〜！」
 - 「かも」「みたい」はビンタンの見方・可能性にだけ使う。事実台帳で確認できた事実は、です・ます調で明確に言い切る。
 - 「すごい！」「これは気になる！」のような短い感想は、1つのコメントにつき1回まで。
@@ -810,9 +832,18 @@ ${editorialCharacter}
 
 Use the document above as the highest-priority editorial policy.
 
+Character voice document (docs/character-bingtang-v2.md):
+${bingtangCharacter}
+
+Character document boundary:
+- この文書は、ビンタンの声・人格・Falさんとの関係性を表現するためだけに参照する。
+- 記事選定、事実認定、根拠要件、安全規則、重大話題のトーンは editorial-character.md を正本とし、キャラクター設定で上書きしない。
+- Falさんの好みやビンタンの関心を、記事の価値・事実・現地の反応の根拠にしない。
+- 外見・衣装・表情などのビジュアル設定は、コメント本文へ持ち込まない。
+
 あなたの仕事:
 - 記事本文はすでに完成しています。あなたが書くのは「ビンタンの注目ポイント」（why_it_matters）の1つだけです。根拠がある時には別に「ビンタンからの補足」（japan_context_note）が表示されますが、あなたはそれを言い換えません。
-- 口調は、旧「ビンタンからのひとこと」と全く同じです。明るく親しみのある話し言葉で、ビンタン自身の短い感想・リアクションを必ず含めます。
+- 口調は、docs/editorial-character.md で定めた公開記事向けの明るく親しみのある編集トーンに従います。ビンタン自身の短い感想・リアクションを必ず含めます。
 - コメント欄は、本文や「ビンタンからの補足」の言い換え・要約をする場所ではありません。この記事でなぜ今気になるか、次に何を見るか、台帳に根拠のある用語・制度、または情報源の注意のいずれかを、前提知識のない読者に分かる言葉で渡す場所です。
 - 本文と事実台帳にある情報だけを使います。新しい数字・人物名・作品名・出来事・背景知識を足しません。あなた自身の知識で賞・制度・人物の説明を補完してはいけません。
 
@@ -1044,22 +1075,23 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
   };
 }
 
-function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCandidate, evidence: RawArticle[]): SummarizedArticle {
-  const availableSources = dedupeEvidenceSources(evidence);
-  const requestedSources = summary.source_list.filter((source) =>
-    availableSources.some((available) => available.name === source.name && (!source.url || source.url === available.url))
-  );
-  const selectedSources = requestedSources.length === summary.source_list.length && requestedSources.length
-    ? requestedSources
-    : availableSources;
-  const sourceList = selectedSources.map((source) => ({
-    ...source,
-    url: source.url || availableSources.find((available) => available.name === source.name)?.url
-  }));
+export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCandidate, evidence: RawArticle[]): SummarizedArticle {
+  const rootEvidence = evidence.filter((article) => (article.evidenceRole ?? "root_corroboration") === "root_corroboration");
+  const relatedEvidence = evidence.filter((article) => article.evidenceRole === "related_angle");
+  const availableRootSources = dedupeEvidenceSources(rootEvidence);
+  const availableRelatedSources = dedupeEvidenceSources(relatedEvidence);
+  const requestedSources = dedupeSourceRefs([...summary.source_list, ...summary.related_sources]);
+  const requestedRootSources = selectRequestedEvidenceSources(requestedSources, availableRootSources);
+  const requestedRelatedSources = selectRequestedEvidenceSources(requestedSources, availableRelatedSources);
+  // Root sources fall back to the validated root evidence. Related sources do
+  // not: absence from model output means the angle was not actually used.
+  const sourceList = requestedRootSources.length ? requestedRootSources : availableRootSources;
+  const relatedSourceList = requestedRelatedSources.filter((related) => !sourceList.some((root) => sameSource(root, related)));
   const representative = evidence[0];
-  const usedEvidence = evidence.filter((article) => sourceList.some((source) => source.name === article.sourceName));
-  const hasSnsSignal = usedEvidence.some((article) => article.sourceType === "sns" || article.articleType === "sns_trend");
-  const hasOfficialSource = usedEvidence.some((article) => article.sourceType === "official" || article.sourceType === "pr_like" || article.reliability === "A");
+  const usedRootEvidence = rootEvidence.filter((article) => sourceList.some((source) => sameSource(source, { name: article.sourceName, url: article.url })));
+  const hasSnsSignal = usedRootEvidence.some((article) => article.sourceType === "sns" || article.articleType === "sns_trend");
+  const hasOfficialSource = usedRootEvidence.some((article) => article.sourceType === "official" || article.sourceType === "pr_like" || article.reliability === "A");
+  const rootSourceCount = dedupeEvidenceSources(usedRootEvidence).length;
   const sourceType = summary.source_type === "media_report" && representative?.sourceType && representative.sourceType !== "media_report"
     ? representative.sourceType
     : summary.source_type;
@@ -1075,12 +1107,12 @@ function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCand
     japan_gap: summary.japan_gap === "unknown" ? topic.japan_gap : summary.japan_gap,
     context_value: summary.context_value === "low" ? topic.context_value : summary.context_value,
     publish_priority: topic.publish_priority === "low" ? "low" : summary.publish_priority,
-    source_count: sourceList.length,
+    source_count: rootSourceCount || topic.source_count,
     source_list: sourceList,
     has_official_source: hasOfficialSource,
-    has_multiple_sources: sourceList.length > 1,
+    has_multiple_sources: rootSourceCount > 1,
     has_sns_signal: hasSnsSignal,
-    reaction_view: hasSnsSignal || sourceList.length > 1 ? summary.reaction_view : "",
+    reaction_view: hasSnsSignal || rootSourceCount > 1 ? summary.reaction_view : "",
     article_type: summary.article_type === "unknown" && representative?.articleType ? representative.articleType : summary.article_type,
     topic_key: topic.topic_key,
     main_entities: {
@@ -1088,7 +1120,7 @@ function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCand
       works: summary.main_entities.works.length ? summary.main_entities.works : topic.main_entities.works,
       organizations: summary.main_entities.organizations.length ? summary.main_entities.organizations : topic.main_entities.organizations
     },
-    related_sources: sourceList
+    related_sources: relatedSourceList
   };
 }
 
@@ -1176,6 +1208,51 @@ function ensureSourceRefs(value: unknown) {
 
 function safePreview(value: string, maxLength = 500) {
   return value.replace(/\s+/g, " ").trim().slice(0, maxLength);
+}
+
+function dedupeSourceRefs(sources: SummarizedArticle["source_list"]) {
+  const unique: SummarizedArticle["source_list"] = [];
+  for (const source of sources) {
+    if (unique.some((existing) => sameSource(existing, source))) continue;
+    unique.push(source);
+  }
+  return unique;
+}
+
+function selectRequestedEvidenceSources(requested: SummarizedArticle["source_list"], available: SummarizedArticle["source_list"]) {
+  return requested
+    .map((source) => available.find((candidate) => sameSource(candidate, source)))
+    .filter((source): source is { name: string; url?: string } => Boolean(source));
+}
+
+function sameSource(left: { name: string; url?: string }, right: { name: string; url?: string }) {
+  return left.name === right.name && (!left.url || !right.url || left.url === right.url);
+}
+
+function withTopicRelatedEvidence(topic: TopicCandidate, evidence: RawArticle[]) {
+  const root = evidence.map((article) => ({ ...article, evidenceRole: article.evidenceRole ?? "root_corroboration" as const }));
+  const knownUrls = new Set(root.map((article) => article.url));
+  const related = (topic.related_evidence_articles ?? [])
+    .filter((article) => !knownUrls.has(article.url))
+    .map((article) => ({
+      title: article.title,
+      url: article.url,
+      sourceName: article.source_name,
+      sourceUrl: article.url,
+      category: "関連角度",
+      reliability: article.reliability,
+      sourceType: article.source_type,
+      publishedDate: article.published_date,
+      freshnessLabel: article.freshness_label,
+      articleType: article.article_type,
+      excerpt: article.key_points.slice(1).join("\n"),
+      rawContent: article.key_points.join("\n"),
+      rawContentLength: article.key_points.join("\n").length,
+      topicKey: topic.topic_key,
+      evidenceRole: "related_angle" as const,
+      angleKind: article.angle_kind
+    }));
+  return [...root, ...related];
 }
 
 function appendDisplayResidueViolations(

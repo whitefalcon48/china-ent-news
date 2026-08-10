@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { assessClaimCoverage, classifyEvidenceRisk, requiredIndependentEvidence } from "./evidence/claimCoverage.js";
 import { extractDocumentSnapshot } from "./evidence/documentSnapshot.js";
 import { normalizeMediaFamily } from "./evidence/mediaFamily.js";
-import type { TopicCandidate } from "./types.js";
+import { attachExpansionEvidence } from "./expandSources.js";
+import { buildTopicCandidates } from "./topicCandidates.js";
+import type { RawArticle, TopicCandidate } from "./types.js";
 
 const delayTopic = topic({
   title_hint: "群星闪耀时撤档延期",
@@ -14,6 +16,37 @@ assert.equal(classifyEvidenceRisk(delayTopic), "medium");
 assert.equal(requiredIndependentEvidence("high"), 2);
 assert.equal(normalizeMediaFamily("https://k.sina.com.cn/article/a"), "sina");
 assert.equal(normalizeMediaFamily("https://ent.sina.com.cn/a"), "sina");
+
+// 成毅の同一ミーム記事が新浪系の別URLに転載されても、独立した
+// 二根拠にはならない。URL数ではなく媒体系列で数える回帰fixture。
+const sinaCandidates = buildTopicCandidates([
+  rawArticle("新浪娱乐", "https://ent.sina.com.cn/tv/2026-07-24/doc-chengyi.html"),
+  rawArticle("新浪看点", "https://k.sina.com.cn/article_123456.html")
+]);
+const sinaTopic = sinaCandidates[0];
+assert.ok(sinaTopic, "新浪系fixture creates one topic");
+assert.equal(sinaTopic.source_count, 1, "新浪系2 URL are one independent media family");
+assert.equal(sinaTopic.signals.has_multiple_sources, false, "syndication does not set the multi-source signal");
+assert.deepEqual(sinaTopic.evidence_articles.map((item) => item.media_family), ["sina", "sina"], "root evidence retains the normalized family");
+
+const sinaExpansion = attachExpansionEvidence(
+  buildTopicCandidates([rawArticle("新浪娱乐", "https://ent.sina.com.cn/tv/2026-07-24/doc-chengyi.html")])[0]!,
+  [{
+    title: "成毅短劇ミームが話題に",
+    url: "https://k.sina.com.cn/article_123456.html",
+    source_name: "新浪看点",
+    source_type: "media_report",
+    route_id: "fixture",
+    route: "fixture",
+    query: "成毅 短劇 ミーム",
+    validation_status: "verified",
+    claim_coverage: { target_claim: "成毅の短劇ミームが話題", observed_claim: "成毅の短劇ミームが話題", matched: true, reason: "fixture" },
+    key_points: ["成毅短劇ミームが話題"],
+    media_family: "sina"
+  }]
+);
+assert.equal(sinaExpansion.source_count, 1, "expansion also keeps same-family reposts out of source_count");
+assert.equal(sinaExpansion.signals.has_multiple_sources, false, "expansion does not inflate EVS corroboration");
 
 const unrelatedScreening = assessClaimCoverage(delayTopic, {
   title: "《群星闪耀时》特别放映活动举行",
@@ -60,5 +93,23 @@ function topic(overrides: Partial<TopicCandidate>): TopicCandidate {
     selection_reason: "test",
     caution_note: "",
     ...overrides
+  };
+}
+
+function rawArticle(sourceName: string, url: string): RawArticle {
+  return {
+    title: "成毅の短劇ミーム、ファンの間で話題に",
+    url,
+    sourceName,
+    sourceUrl: url,
+    category: "entertainment",
+    reliability: "B",
+    sourceType: "media_report",
+    publishedDate: "2026-07-24",
+    freshnessLabel: "today",
+    articleType: "sns_trend",
+    topicKey: "成毅短劇ミーム",
+    excerpt: "成毅の短劇ミームがファンの間で話題になっている。",
+    newsworthinessScore: 72
   };
 }

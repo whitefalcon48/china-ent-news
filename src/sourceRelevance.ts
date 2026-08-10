@@ -1,4 +1,4 @@
-import type { TopicCandidate } from "./types.js";
+import type { RelatedAngleKind, TopicCandidate } from "./types.js";
 
 type EvidenceLike = {
   title: string;
@@ -21,13 +21,27 @@ const TERM_GROUPS: Array<{ test: RegExp; match: RegExp }> = [
 export type SourceRelevanceReason =
   | "accepted_title_match"
   | "accepted_query_match"
+  | "accepted_related_entity_and_angle"
   | "missing_title_or_url"
   | "unsafe_url"
-  | "weak_topic_match";
+  | "weak_topic_match"
+  | "related_missing_canonical_entity"
+  | "related_missing_angle";
 
-export function assessSourceRelevance(topic: TopicCandidate, evidence: EvidenceLike, query?: string): { accepted: boolean; reason: SourceRelevanceReason } {
+export type SourceResearchLane = "corroboration" | "related_angle";
+
+export function assessSourceRelevance(
+  topic: TopicCandidate,
+  evidence: EvidenceLike,
+  query?: string,
+  lane: SourceResearchLane = "corroboration"
+): { accepted: boolean; reason: SourceRelevanceReason } {
   if (!evidence.title.trim() || !evidence.url.trim()) return { accepted: false, reason: "missing_title_or_url" };
   if (!isSafePublicationSourceUrl(evidence.url)) return { accepted: false, reason: "unsafe_url" };
+
+  if (lane === "related_angle") {
+    return assessRelatedAngleRelevance(topic, evidence, query);
+  }
   if (hasStrongTitleMatch(topic.title_hint, evidence.title)) return { accepted: true, reason: "accepted_title_match" };
 
   const queries = query ? [query] : rankTopicSearchQueries(topic);
@@ -70,6 +84,44 @@ export function rankTopicSearchQueries(topic: TopicCandidate) {
   return ranked.length ? ranked : [topic.topic_key].filter(Boolean);
 }
 
+/**
+ * Builds bounded, discovery-only queries for another angle on the same person
+ * or work. These queries are deliberately kept separate from corroboration:
+ * their results can never make a factual claim multi-source.
+ */
+export function rankRelatedAngleSearchQueries(topic: TopicCandidate) {
+  const entityCandidates = isObituaryRoot(topic)
+    ? [...topic.main_entities.people, ...topic.main_entities.works]
+    : [...topic.main_entities.works, ...topic.main_entities.people];
+  const entities = entityCandidates
+    .map((value) => value.trim())
+    .filter((value, index, values) => value.length >= 2 && values.indexOf(value) === index)
+    .slice(0, 2);
+  const angles = relatedAngleTerms(topic);
+  const unique = new Map<string, string>();
+  for (const entity of entities) {
+    for (const angle of angles) {
+      const query = `${entity} ${angle}`;
+      const normalized = normalizeText(query);
+      if (!unique.has(normalized)) unique.set(normalized, query);
+    }
+  }
+  return [...unique.values()];
+}
+
+/**
+ * This label describes the supplementary document itself.  It must not be
+ * used as a proxy for corroboration of the root event.
+ */
+export function inferRelatedAngleKind(query: string, title = ""): RelatedAngleKind {
+  const text = normalizeText(`${query} ${title}`);
+  if (/回应|发声|悼念|追忆|回忆|谈及|称|表示/.test(text)) return "person_response";
+  if (/生涯|从影|代表作|回顾|影史|评价/.test(text)) return "career_retrospective";
+  if (/粉丝|热议|争议|口碑|热搜|讨论/.test(text)) return "audience_reaction";
+  if (/票房|幕后|上映|公映|点映|制作|作品/.test(text)) return "work_context";
+  return "other";
+}
+
 export function normalizeSourceHostname(value: string) {
   try {
     return normalizeHostname(new URL(value).hostname);
@@ -103,6 +155,38 @@ function matchesSpecificQuery(topic: TopicCandidate, query: string, normalizedTe
   return entityMatches === 0 && contextMatches >= 2;
 }
 
+function assessRelatedAngleRelevance(topic: TopicCandidate, evidence: EvidenceLike, query?: string) {
+  const text = normalizeText(`${evidence.title} ${evidence.key_points.join(" ")}`);
+  const canonicalEntities = [...topic.main_entities.people, ...topic.main_entities.works]
+    .map(normalizeText)
+    .filter((value, index, values) => value.length >= 2 && values.indexOf(value) === index);
+  if (!canonicalEntities.length || !canonicalEntities.some((entity) => text.includes(entity))) {
+    return { accepted: false, reason: "related_missing_canonical_entity" as const };
+  }
+  const angleTerms = query ? splitQuery(query).filter((term) => !isEntityTerm(term, canonicalEntities)) : relatedAngleTerms(topic).map(normalizeText);
+  if (!angleTerms.some((term) => matchesTerm(text, term))) {
+    return { accepted: false, reason: "related_missing_angle" as const };
+  }
+  return { accepted: true, reason: "accepted_related_entity_and_angle" as const };
+}
+
+function relatedAngleTerms(topic: TopicCandidate) {
+  const candidates = topic.search_queries.flatMap(splitQuery)
+    .filter((term) => !isEntityTerm(term, getEntityTokens(topic)))
+    .filter((term) => !RELATED_EVENT_TERMS.has(term))
+    .filter((term) => !RELATED_GENERIC_TERMS.has(term));
+  const defaults = isObituaryRoot(topic)
+    ? ["回应", "生涯", "悼念", "回顾"]
+    : topic.main_entities.works.length
+      ? ["口碑", "票房", "幕后", "争议"]
+      : ["作品", "粉丝", "回应", "动态"];
+  return [...new Set([...defaults, ...candidates])].slice(0, 4);
+}
+
+function isObituaryRoot(topic: Pick<TopicCandidate, "topic_key" | "title_hint" | "event_sentence">) {
+  return /逝世|去世|离世|讣告|病逝|死去|死亡/.test(`${topic.topic_key} ${topic.title_hint} ${topic.event_sentence}`);
+}
+
 function splitQuery(query: string) {
   return query
     .split(/[\s,，、/|]+/)
@@ -130,6 +214,12 @@ function matchesTerm(text: string, term: string) {
 function normalizeText(value: string) {
   return value.toLowerCase().replace(/[^\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}a-z0-9]/gu, "");
 }
+
+const RELATED_EVENT_TERMS = new Set([
+  "撤档", "延期", "改档", "延后", "推迟", "逝世", "去世", "离世", "讣告", "上映", "公映", "点映", "展映", "宣布", "发布", "官宣"
+].map(normalizeText));
+
+const RELATED_GENERIC_TERMS = new Set(["电影", "影视", "短剧", "新闻", "作品", "演员"].map(normalizeText));
 
 function hasStrongTitleMatch(left: string, right: string) {
   const normalizedLeft = normalizeText(left);

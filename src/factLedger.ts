@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { consumeLlmCall, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { describeError, formatEvidenceForPrompt } from "./summarizeWithGemini.js";
-import type { AiProvider, ClaimType, FactLedger, FactLedgerClaim, RawArticle, TopicCandidate } from "./types.js";
+import type { AiProvider, ClaimType, EvidenceRole, FactLedger, FactLedgerClaim, RawArticle, TopicCandidate } from "./types.js";
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
@@ -37,7 +37,7 @@ export async function extractFactLedger(
       anchor_unverified: 0,
       dropped_explanations: [] as Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>
     };
-    const ledger = normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence), anchor);
+    const ledger = normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence), anchor, getEvidenceRoles(evidence));
     anchor.claims_total = ledger.claims.length;
     anchor.anchor_unverified = ledger.claims.filter((claim) => claim.anchor === false).length;
     return {
@@ -84,7 +84,9 @@ claimの分類（type）:
 - claimは1件1文。重要な順に最大20件。
 - entities（人物・作品・組織の固有名詞）とnumbers（数字・日付）は原文の表記のまま入れる。claimの文中に出てくる数字・日付・序数（第八届など）は必ずnumbersにも入れる。
 - quote_zhには、そのclaimの根拠となるevidence原文の該当箇所を、原文の文字列のまま30字以内で抜き出して入れる。要約・言い換えをせず、原文にある文字列をそのまま写す。
-- evidence_refsには根拠のevidence番号（"E1"など）を必ず入れる。
+ - evidence_refsには根拠のevidence番号（"E1"など）を必ず入れる。
+ - claimのscopeは必ず "root_event" または "related_angle"。role=root_corroboration のEだけで支えられる出来事は root_event、role=related_angle のEだけで支えられる別角度は related_angle にする。
+ - related_angle は中心出来事の裏付け・反応一般化・複数ソース化には絶対に使わない。root_event のclaimに related_angle のEを混ぜず、related_angle のclaimに root_corroboration のEを混ぜない。
 - このトピックの中心にある制度・仕組み・業界用語について、evidenceが「それが何か」「なぜ問題・重要なのか」「どう機能するのか」を説明している場合、その説明を必ずclaimとして拾う。
 - 制度・賞・仕組みの説明は、evidenceに書かれている範囲を1字も超えないこと。例: evidenceに「観客投票でノミネートを選ぶ」とだけ書かれている場合、「観客投票で受賞者が決まる」と書いてはいけない。選考方式・決定主体・段階は、evidenceの記述と厳密に一致させる。
 - 日本での公開・配信・日本語字幕に関する情報がevidenceに明示されている場合のみ、japan_availabilityのstatusを "verified" にし、detailに内容、evidence_refsに根拠を入れる。evidenceに無ければ status は "not_in_evidence"、detailは空文字。推測で "verified" にしない。日本に関する言及が無いことは「日本未公開」を意味しない。
@@ -101,7 +103,7 @@ claimの分類（type）:
 返すJSON:
 {
   "topic_key": "<入力値をそのまま>",
-  "claims": [{ "id": "C1", "type": "verified_fact", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
+  "claims": [{ "id": "C1", "type": "verified_fact", "scope": "root_event", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
   "terms": [{ "term": "", "gloss_ja": "", "what_is": "", "why_now": "", "explain_quote_zh": "", "explain_evidence_refs": [] }],
   "japan_availability": { "status": "not_in_evidence", "detail": "", "evidence_refs": [] },
   "unresolved": []
@@ -120,12 +122,13 @@ export function normalizeFactLedger(
   value: unknown,
   topicKey: string,
   evidence: string,
-  anchorDiagnostics?: { dropped_explanations: Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }> }
+  anchorDiagnostics?: { dropped_explanations: Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }> },
+  evidenceRoles: Record<string, EvidenceRole> = {}
 ): FactLedger {
   const object = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
   const rawClaims = Array.isArray(object.claims) ? object.claims : [];
   const normalizedEvidence = normalizeAnchorText(evidence);
-  const claims = rawClaims.slice(0, 20).map((item, index) => normalizeClaim(item, index, normalizedEvidence));
+  const claims = rawClaims.slice(0, 20).map((item, index) => normalizeClaim(item, index, normalizedEvidence, evidenceRoles));
   const rawTerms = Array.isArray(object.terms) ? object.terms : [];
   const terms = rawTerms
     .slice(0, 8)
@@ -170,7 +173,8 @@ export function normalizeFactLedger(
     claims,
     terms,
     japan_availability: japanAvailability,
-    unresolved: toStringArray(object.unresolved)
+    unresolved: toStringArray(object.unresolved),
+    evidence_roles: evidenceRoles
   };
 }
 
@@ -178,24 +182,35 @@ function evidenceText(evidence: RawArticle[]) {
   return evidence.map((article) => `${article.title}\n${article.rawContent || ""}\n${article.excerpt || ""}`).join("\n");
 }
 
-function normalizeClaim(value: unknown, index: number, normalizedEvidence: string): FactLedgerClaim {
+function normalizeClaim(value: unknown, index: number, normalizedEvidence: string, evidenceRoles: Record<string, EvidenceRole>): FactLedgerClaim {
   const claim = value && typeof value === "object" ? value as Record<string, unknown> : {};
   let type = normalizeClaimType(claim.type);
   const sourceName = toText(claim.source_name);
   if (type === "source_analysis" && !sourceName) type = "unsupported";
   const quote = toText(claim.quote_zh).slice(0, 30) || undefined;
   const normalizedQuote = normalizeAnchorText(quote || "");
+  const evidenceRefs = toStringArray(claim.evidence_refs);
+  const requestedScope = claim.scope === "related_angle" ? "related_angle" : claim.scope === "root_event" ? "root_event" : "";
+  const inferredScope = evidenceRefs.length > 0 && evidenceRefs.every((ref) => evidenceRoles[ref] === "related_angle")
+    ? "related_angle"
+    : "root_event";
   return {
     id: toText(claim.id) || `C${index + 1}`,
     type,
     text: toText(claim.text),
-    evidence_refs: toStringArray(claim.evidence_refs),
+    evidence_refs: evidenceRefs,
     source_name: sourceName || undefined,
     entities: toStringArray(claim.entities),
     numbers: toStringArray(claim.numbers),
     quote_zh: quote,
-    anchor: Boolean(normalizedQuote && normalizedEvidence.includes(normalizedQuote))
+    anchor: Boolean(normalizedQuote && normalizedEvidence.includes(normalizedQuote)),
+    scope: requestedScope || inferredScope,
+    ...(claim.angle_kind === "person_response" || claim.angle_kind === "career_retrospective" || claim.angle_kind === "audience_reaction" || claim.angle_kind === "work_context" || claim.angle_kind === "other" ? { angle_kind: claim.angle_kind } : {})
   };
+}
+
+function getEvidenceRoles(evidence: RawArticle[]): Record<string, EvidenceRole> {
+  return Object.fromEntries(evidence.map((article, index) => [`E${index + 1}`, article.evidenceRole ?? "root_corroboration"]));
 }
 
 export function normalizeAnchorText(value: string) {
@@ -235,28 +250,30 @@ async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget, mode
   const apiKey = process.env.DEEPSEEK_API_KEY;
   const model = modelOverride || process.env.DEEPSEEK_MODEL || "deepseek-v4-flash";
   if (!apiKey?.trim()) throw new Error("DEEPSEEK_API_KEY is not set");
-  if (budget) consumeLlmCall(budget);
-  let response: Response;
-  try {
-    response = await fetch(DEEPSEEK_ENDPOINT, {
-      method: "POST",
-      headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
-      body: JSON.stringify({
-        model,
-        temperature: 0,
-        max_tokens: 8000,
-        response_format: { type: "json_object" },
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-  } catch (error) {
-    throw new Error(`DeepSeek fact ledger network error: ${describeError(error)}`);
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (budget) consumeLlmCall(budget);
+    let response: Response;
+    try {
+      response = await fetch(DEEPSEEK_ENDPOINT, {
+        method: "POST",
+        headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+        body: JSON.stringify({
+          model,
+          temperature: 0,
+          max_tokens: 8000,
+          response_format: { type: "json_object" },
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+    } catch (error) {
+      throw new Error(`DeepSeek fact ledger network error: ${describeError(error)}`);
+    }
+    if (!response.ok) throw new Error(`DeepSeek fact ledger API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
+    const payload = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
+    const text = payload.choices?.[0]?.message?.content ?? "";
+    if (text.trim()) return text;
   }
-  if (!response.ok) throw new Error(`DeepSeek fact ledger API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
-  const payload = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
-  const text = payload.choices?.[0]?.message?.content ?? "";
-  if (!text.trim()) throw new Error("DeepSeek fact ledger API error: empty response text");
-  return text;
+  throw new Error("DeepSeek fact ledger API error: empty response text after 2 attempts");
 }
 
 function parseJsonFromModelText(text: string) {

@@ -48,22 +48,30 @@ export function formatReviewArticle(index: number, article: ProcessedArticle, re
   const summary = article.summary;
   if (!summary) return `## ${index}. ⚠️ 要約なし`;
   const sources = summary.source_list.length ? summary.source_list : [{ name: article.raw.sourceName, url: article.raw.url }];
+  const relatedSources = (summary.related_sources ?? []).filter((source) => !sources.some((root) => root.name === source.name && (!root.url || !source.url || root.url === source.url)));
   const prefix = revised ? `🔄 修正版 ${index}` : `${index}. 【${summary.badge}｜${summary.category || article.raw.category}｜確度${summary.confidence || article.raw.reliability}】${summary.title_ja || article.raw.title}`;
+  const supplement = summary.japan_context_note?.trim();
+  const supplementSection = supplement ? `\n\n**ビンタンからの補足**: ${supplement}` : "";
   return `## ${prefix}
 
 ${summary.lead}
 
 ${summary.what_happened}
 
-**ビンタンの注目ポイント**: ${summary.why_it_matters}
+**ビンタンの注目ポイント**: ${summary.why_it_matters}${supplementSection}
 
-ソース: ${sources.map(formatSource).join(" / ")}`;
+ソース: ${sources.map(formatSource).join(" / ")}${relatedSources.length ? `\n\n関連角度のソース: ${relatedSources.map(formatSource).join(" / ")}` : ""}`;
 }
 
 async function main() {
   if (process.env.REVIEW_GATE === "false") return;
   const dataDir = path.resolve(process.env.SITE_DATA_DIR || "data");
-  const date = process.env.REVIEW_DATE || await latestDate(dataDir);
+  const runDate = process.env.RUN_DATE;
+  const reviewDate = process.env.REVIEW_DATE;
+  if (runDate && reviewDate && runDate !== reviewDate) {
+    throw new Error(`RUN_DATE and REVIEW_DATE must match: ${runDate} !== ${reviewDate}`);
+  }
+  const date = reviewDate || runDate || await latestDate(dataDir);
   const directory = path.join(dataDir, date);
   const reviewPath = path.join(directory, "review.json");
   const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);

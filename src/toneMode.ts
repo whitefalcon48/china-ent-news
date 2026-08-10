@@ -4,6 +4,9 @@ const CHINESE_SOBER = /违纪|违法|被查|被捕|逮捕|拘留|起诉|判决|�
 const JAPANESE_SOBER = /規律違反|審査調査|起訴|判決|訴訟|脱税|性加害|性暴力|死去|死亡|訃報|自殺|被害|事故/;
 
 export function getToneMode(topic: TopicCandidate, ledger?: FactLedger): ToneMode {
-  const text = [topic.topic_key, topic.event_sentence, ...(ledger?.claims.map((claim) => claim.text) || [])].join("\n");
+  const rootClaims = ledger?.claims
+    .filter((claim) => (claim.scope ?? "root_event") === "root_event")
+    .map((claim) => claim.text) ?? [];
+  const text = [topic.topic_key, topic.title_hint, topic.event_sentence, ...rootClaims].join("\n");
   return CHINESE_SOBER.test(text) || JAPANESE_SOBER.test(text) ? "sober" : "normal";
 }

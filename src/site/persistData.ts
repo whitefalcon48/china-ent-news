@@ -3,7 +3,12 @@ import path from "node:path";
 
 const outputDir = path.resolve(process.env.PIPELINE_OUTPUT_DIR || "output");
 const dataDir = path.resolve(process.env.SITE_DATA_DIR || "data");
-const requestedDate = process.env.ARCHIVE_DATE;
+const runDate = process.env.RUN_DATE;
+const archiveDate = process.env.ARCHIVE_DATE;
+if (runDate && archiveDate && runDate !== archiveDate) {
+  throw new Error(`RUN_DATE and ARCHIVE_DATE must match: ${runDate} !== ${archiveDate}`);
+}
+const requestedDate = archiveDate || runDate;
 
 const names = await fs.readdir(outputDir);
 const articlesFiles = names.filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort();

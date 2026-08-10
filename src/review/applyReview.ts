@@ -23,6 +23,10 @@ async function main() {
 
   for (const decision of parsed.decisions) {
     if (decision.action === "rescue_rebuild") {
+      if (state.status === "completed") {
+        replies.push("⚠️ このレビューは完了済みのため、救済再生成では自動的に再オープンしませんでした。");
+        continue;
+      }
       const rescued = await rescueEmptyReview(directory, state.date);
       if (!rescued.ok) {
         replies.push(`⚠️ ${rescued.message}`);

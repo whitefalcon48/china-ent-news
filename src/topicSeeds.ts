@@ -260,41 +260,36 @@ async function generateDeepSeekJson(prompt: string) {
     throw new Error("DEEPSEEK_API_KEY is not set");
   }
 
-  let response: Response;
-  try {
-    response = await fetch(DEEPSEEK_ENDPOINT, {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${apiKey}`,
-        "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        model,
-        temperature: 0,
-        max_tokens: 8000,
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "user",
-            content: prompt
-          }
-        ]
-      })
-    });
-  } catch (error) {
-    throw new Error(`DeepSeek topic seed network error: ${describeError(error)}`);
-  }
+  for (let attempt = 0; attempt < 2; attempt++) {
+    let response: Response;
+    try {
+      response = await fetch(DEEPSEEK_ENDPOINT, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${apiKey}`,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          model,
+          temperature: 0,
+          max_tokens: 8000,
+          response_format: { type: "json_object" },
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+    } catch (error) {
+      throw new Error(`DeepSeek topic seed network error: ${describeError(error)}`);
+    }
 
-  if (!response.ok) {
-    throw new Error(`DeepSeek topic seed API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
-  }
+    if (!response.ok) {
+      throw new Error(`DeepSeek topic seed API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
+    }
 
-  const payload = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
-  const text = payload.choices?.[0]?.message?.content ?? "";
-  if (!text.trim()) {
-    throw new Error("DeepSeek topic seed API error: empty response text");
+    const payload = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
+    const text = payload.choices?.[0]?.message?.content ?? "";
+    if (text.trim()) return text;
   }
-  return text;
+  throw new Error("DeepSeek topic seed API error: empty response text after 2 attempts");
 }
 
 function parseJsonFromModelText(text: string) {

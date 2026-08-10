@@ -5,6 +5,28 @@ const KNOWN_TOPICS: Array<{ pattern: RegExp; key: string }> = [
 
 const KNOWN_EVENTS = ["上海国际电影节", "北京国际电影节", "白玉兰奖", "华表奖", "金鸡奖", "微博电影之夜", "微博视界大会"];
 
+const DEATH_EVENT_PATTERN = /逝世|去世|离世|辞世|病逝/;
+// These terms mean that the article's primary claim is an angle that follows the
+// death report (a reaction, estate story, or funeral), rather than the death
+// report itself.  Such an article may be related, but must not become an
+// additional confirmation of the root death claim merely through topic grouping.
+const DEATH_FOLLOW_UP_ANGLE_PATTERN = /回应|发声|谈及|透露|辟谣|否认|澄清|悼念|追忆|回忆|遗产|遗嘱|争产|葬礼|丧礼|出殡|告别式|追思会/;
+const DEATH_FOLLOW_UP_ANGLE_LABELS: Array<[RegExp, string]> = [
+  [/回应|发声|谈及|透露/, "回应"],
+  [/辟谣|否认|澄清/, "回应"],
+  [/悼念|追忆|回忆|追思会/, "悼念"],
+  [/遗产|遗嘱|争产/, "遗产"],
+  [/葬礼|丧礼|出殡|告别式/, "葬礼"]
+];
+
+export type TopicKeyInput = {
+  topicKey?: string;
+  title: string;
+  excerpt?: string;
+  people?: string[];
+  works?: string[];
+};
+
 type ComparableTopic = {
   topic_key: string;
   topic_type: string;
@@ -31,6 +53,11 @@ export function getTopicMatchSpecificity(a: ComparableTopic, b: ComparableTopic)
 
 export function createTopicKey(title: string, excerpt = "") {
   const text = `${title} ${excerpt}`;
+
+  const deathEvent = getCanonicalDeathEventKey(text);
+  if (deathEvent) {
+    return deathEvent.key;
+  }
 
   const known = KNOWN_TOPICS.find((topic) => topic.pattern.test(text));
   if (known) {
@@ -63,6 +90,84 @@ export function createTopicKey(title: string, excerpt = "") {
   }
 
   return cleanTopicKey(extractTitleKeywords(title) || title);
+}
+
+/**
+ * Resolves the stable key used to group evidence into a topic candidate.
+ *
+ * Topic-seed LLM output remains authoritative for normal topics.  The one
+ * exception is a direct death report: synonymous event words such as 去世 and
+ * 逝世 are normalized to "<person>逝世".  Follow-up angles deliberately retain a
+ * more specific key, so a family's reaction or an inheritance story cannot be
+ * counted as corroboration of the death itself.
+ */
+export function getCanonicalTopicKey(input: TopicKeyInput) {
+  const suppliedKey = input.topicKey ?? "";
+  const text = [suppliedKey, input.title, input.excerpt ?? ""].filter(Boolean).join(" ");
+  const people = uniqueCleanValues(input.people ?? []);
+  const deathEvent = getCanonicalDeathEventKey(text, people);
+  if (deathEvent) {
+    const followUp = getDeathFollowUpAngle(text, deathEvent.person, people);
+    return followUp ? cleanTopicKey(`${deathEvent.key}-${followUp}`) : deathEvent.key;
+  }
+  return cleanTopicKey(suppliedKey || createTopicKey(input.title, input.excerpt ?? ""));
+}
+
+type CanonicalDeathEvent = {
+  key: string;
+  person: string;
+};
+
+function getCanonicalDeathEventKey(text: string, suppliedPeople: string[] = []): CanonicalDeathEvent | null {
+  if (!DEATH_EVENT_PATTERN.test(text)) return null;
+  const person = extractDeathEventPerson(text, suppliedPeople);
+  return person ? { person, key: cleanTopicKey(`${person}逝世`) } : null;
+}
+
+function extractDeathEventPerson(text: string, suppliedPeople: string[]) {
+  const directSuppliedPerson = suppliedPeople.find((person) => isDirectDeathSubject(text, person));
+  if (directSuppliedPerson) return directSuppliedPerson;
+
+  const match = text.match(/(?:^|[^\p{Script=Han}])([\p{Script=Han}]{2,12})(?:因病)?(?:逝世|去世|离世|辞世|病逝)/u);
+  const candidate = stripPersonRolePrefix(match?.[1] ?? "");
+  return isLikelyPersonName(candidate) ? candidate : "";
+}
+
+function isDirectDeathSubject(text: string, person: string) {
+  return new RegExp(`${escapeRegExp(person)}(?:因病)?(?:逝世|去世|离世|辞世|病逝)`).test(text);
+}
+
+function getDeathFollowUpAngle(text: string, deceased: string, people: string[]) {
+  if (!DEATH_FOLLOW_UP_ANGLE_PATTERN.test(text)) return "";
+  const label = DEATH_FOLLOW_UP_ANGLE_LABELS.find(([pattern]) => pattern.test(text))?.[1] ?? "后续";
+  const actor = people.find((person) => person !== deceased && isDeathFollowUpActor(text, person)) || extractDeathFollowUpActor(text, deceased);
+  return actor ? `${actor}${label}` : label;
+}
+
+function isDeathFollowUpActor(text: string, person: string) {
+  return new RegExp(`${escapeRegExp(person)}(?:就|对|称|发文|本人)?(?:回应|发声|谈及|透露|悼念|追忆|回忆|否认|澄清)`).test(text);
+}
+
+function extractDeathFollowUpActor(text: string, deceased: string) {
+  const match = text.match(/([\p{Script=Han}]{2,12})(?:就|对|称|发文|本人)?(?:回应|发声|谈及|透露|悼念|追忆|回忆|否认|澄清)/u);
+  const candidate = stripPersonRolePrefix(match?.[1] ?? "");
+  return candidate && candidate !== deceased && isLikelyPersonName(candidate) ? candidate : "";
+}
+
+function stripPersonRolePrefix(value: string) {
+  return value.replace(/^(?:著名|香港|港|中国|内地|资深|老牌|老戏骨|演员|艺人|影星|导演|歌手|其子|其女|儿子|女儿)+/u, "");
+}
+
+function isLikelyPersonName(value: string) {
+  return /^[\p{Script=Han}]{2,4}$/u.test(value) && !isLikelyInvalidPersonName(value);
+}
+
+function uniqueCleanValues(values: string[]) {
+  return [...new Set(values.map(cleanTopicKey).filter(isLikelyPersonName))];
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 export function extractWorkName(text: string) {
