@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: review-issue-${{ github.event.issue.number }}
   cancel-in-progress: false
 
 jobs:
@@ -52,6 +52,7 @@ jobs:
           DEEPSEEK_MODEL: deepseek-v4-flash
           LEDGER_AI_MODEL: deepseek-v4-pro
           COMMENT_AI_MODEL: deepseek-v4-pro
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
 
       - name: Commit review data
         run: |
