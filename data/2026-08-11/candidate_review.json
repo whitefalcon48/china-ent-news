@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-11",
+  "status": "pending",
+  "created_at": "2026-08-11T03:20:33.655Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿",
+      "event_sentence": "1905电影网 新闻が「《欢迎来龙餐馆》定档 IMAX特制拍摄异国烟火气」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 91,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "年会不能停！2",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "界面新闻 影视产业が「《年会不能停！2》上映4天票房破亿，但远不及市场预期」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "大众电影百花奖",
+      "title": "第38届大众电影百花奖系列活动在京开幕",
+      "event_sentence": "国家电影局が「第38届大众电影百花奖系列活动在京开幕」について報じた。",
+      "topic_type": "award",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 2,
+      "source_types": {
+        "official": 1,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局",
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "红果",
+      "title": "短剧演员日薪不能超过4万？红果回应",
+      "event_sentence": "界面新闻 影视产业が「短剧演员日薪不能超过4万？红果回应」について報じた。",
+      "topic_type": "gossip_rumor",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 74,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 1,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "high",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "御廷谣",
+      "title": "《御廷谣》吴谨言：角色的“瑕疵”比“完美”更让我着迷｜专访",
+      "event_sentence": "新京报 娱乐が「《御廷谣》吴谨言：角色的“瑕疵”比“完美”更让我着迷｜专访」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局が「国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "第38届大众电影百花奖",
+      "title": "第38届“百花奖”昨晚揭晓，各“花”有主",
+      "event_sentence": "第38回百花奨が昨夜発表され、各賞の受賞者が決まった。",
+      "topic_type": "unknown",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "功夫女足",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 67,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "国家广播电视总局直属事业单位2026年度公开招聘公告（第二批）",
+      "title": "国家广播电视总局直属事业单位2026年度公开招聘公告（第二批）",
+      "event_sentence": "国家广播电视总局が「国家广播电视总局直属事业单位2026年度公开招聘公告（第二批）」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 65,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "国家广播电视总局办公厅关于2026年7月全国国产电视动画片制作备案公示的通知",
+      "title": "国家广播电视总局办公厅关于2026年7月全国国产电视动画片制作备案公示的通知",
+      "event_sentence": "国家广播电视总局が「国家广播电视总局办公厅关于2026年7月全国国产电视动画片制作备案公示的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 65,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "奥德赛",
+      "title": "《奥德赛》观影活动 皇甫宜川李道新解析诺兰新作",
+      "event_sentence": "1905电影网 新闻が「《奥德赛》观影活动 皇甫宜川李道新解析诺兰新作」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "第18届华语青年电影周",
+      "title": "第18届华语青年电影周荣誉揭晓，三大板块助力青年影人圆梦",
+      "event_sentence": "新京报 娱乐が「第18届华语青年电影周荣誉揭晓，三大板块助力青年影人圆梦」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}

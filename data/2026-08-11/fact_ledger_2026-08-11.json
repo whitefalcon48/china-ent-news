@@ -1,0 +1,16 @@
+{
+  "date": "2026-08-11",
+  "generated_at": "2026-08-11T03:37:34.689Z",
+  "ledgers": [
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text after 2 attempts"
+    },
+    {
+      "topic_key": "第38届大众电影百花奖",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:DeepSeek fact ledger API error: empty response text after 2 attempts"
+    }
+  ]
+}
