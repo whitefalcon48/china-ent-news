@@ -44,6 +44,16 @@ class LolipopDeployTest(unittest.TestCase):
             self.assertEqual(ordered[0], "assets/site.css")
             self.assertEqual(ordered[-1], "index.html")
 
+    def test_collect_files_ignores_github_pages_nojekyll_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source = Path(temp_dir)
+            (source / ".nojekyll").write_text("", encoding="utf-8")
+            (source / "index.html").write_text("home", encoding="utf-8")
+
+            ordered = [path.relative_to(source).as_posix() for path in collect_files(source)]
+
+            self.assertEqual(ordered, ["index.html"])
+
     def test_deploy_creates_directories_and_uploads_root_index_last(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             source = Path(temp_dir)

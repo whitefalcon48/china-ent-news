@@ -49,6 +49,8 @@ def collect_files(source: Path) -> list[Path]:
         if candidate.is_symlink():
             raise ValueError(f"symlinks are not allowed in the deploy artifact: {candidate}")
         if candidate.is_file():
+            if candidate.relative_to(source).as_posix() == ".nojekyll":
+                continue
             files.append(candidate)
 
     if not files:
