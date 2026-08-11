@@ -1,13 +1,13 @@
 {
   "date": "2026-08-09",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 29,
   "articles": [
     {
       "index": 1,
       "topic_key": "欢迎来龙餐馆",
       "title": "沈騰主演『歓迎来竜餐館』公開前から異例の盛り上がり 前売り1.34億元、関連企業の株もストップ高",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
