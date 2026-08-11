@@ -1,5 +1,11 @@
 {
   "date": "2026-08-09",
-  "generated_at": "2026-08-09T03:12:22.571Z",
-  "ledgers": []
+  "generated_at": "2026-08-11T03:14:38.404Z",
+  "ledgers": [
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:Expected ',' or ']' after array element in JSON at position 754 (line 25 column 6)"
+    }
+  ]
 }
