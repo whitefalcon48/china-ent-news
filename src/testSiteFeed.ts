@@ -104,8 +104,8 @@ try {
   assertIncludes(home, "記事はAIが収集・生成しています。運営については", "フッターの運営説明");
   assertIncludes(home, '>「このサイトについて」</a>をご覧ください。', "フッターからAboutへのリンク");
   assertNotIncludes(home, "記事はAIが収集・生成し、人間が監修しています。", "フッターの旧監修表現");
-  assertIncludes(detail, `<meta property="og:image" content="https://example.test/og/${date}/1.png">`, "記事別OGP画像URL");
-  assertIncludes(detail, `<meta name="twitter:image" content="https://example.test/og/${date}/1.png">`, "記事別Xカード画像URL");
+  assertIncludes(detail, `<meta property="og:image" content="https://example.test/og/${date}/1.png?v=`, "記事別OGP画像URL");
+  assertIncludes(detail, `<meta name="twitter:image" content="https://example.test/og/${date}/1.png?v=`, "記事別Xカード画像URL");
   if (articleOgp.width !== 1200 || articleOgp.height !== 630) throw new Error(`記事別OGPは1200x630のはずですが ${articleOgp.width}x${articleOgp.height} です`);
   if (defaultOgp.width !== 1200 || defaultOgp.height !== 630) throw new Error(`共通OGPは1200x630のはずですが ${defaultOgp.width}x${defaultOgp.height} です`);
 
