@@ -1,42 +1,10 @@
 # ロードマップ & 引継ぎ指針
 
-最終更新: 2026-08-10（ビンタンV2コメント生成接続）
+最終更新: 2026-08-11（公開UIのフォント・アクセント調整）
 
-## 2026-08-10 実装: 過去日再実行の固定
+## 2026-08-11 完了メモ（公開UIのフォント・アクセント調整）
 
-- `generate-news` の手動実行に `run_date`（`YYYY-MM-DD`、未指定時のみ上海当日）を追加。`RUN_DATE` を生成・永続化・レビューIssue・generation status check に一貫して渡し、日付不一致は早期失敗にした。
-- `src/index.ts` は不正な暦日（例: `2026-02-29`）を取得前に拒否し、出力 Markdown / articles / fact ledger / review state を指定日の名前で保存する。`npm run check`、`npm run test:run-date`、`npm run test:generation-status` 成功。
-
-## 2026-08-10 完了メモ（ビンタンV2コメント生成接続）
-
-- ✅ コメント専用プロンプトだけで `docs/character-bingtang-v2.md` を読み込み、声・人格・Falさんとの関係性に限定して参照する境界を明示した。記事選定・事実認定・根拠要件・重大話題のトーンは編集方針を正本とし、通常記事では台帳内の具体一点に「見せたかった期待」が少し漏れる短いリアクションを求める。関連角度の重大語だけで通常記事が sober にならないよう、tone判定はタイトル・中心出来事・root claimに限定した。
-
-## 2026-08-09 完了メモ（topic recovery・実データ検証待ち）
-
-- ✅ 事故・訃報系の同義表現を canonical topic key に統一し、`謝賢去世` と `謝賢逝世` のような表記差で関連報道が分断されないようにした。人物の追悼・本人コメント・キャリア回顧は root とは別の関連角度として扱う。
-- ✅ source expansion を2レーン化。root 事実の裏取り（corroboration）と、同一人物・作品の関連角度（related angle）を分離して収集・記録し、後者は root のソース数・source mix・EVSを水増ししない。記事、台帳、レビューIssue、公開表示も root / 関連角度のソースを分け、補足で使う関連角度の根拠参照を claim check で必須化した。
-- ✅ 系列媒体の転載を独立根拠として数えない `media_family` 判定を追加。関連ソースの探索ログも root corroboration と related angle の件数を別々に残す。
-- ✅ 救済再生成を候補単位・部分成功保持へ変更。既存記事を消さず未生成候補だけ追加し、失敗 topic は次回から除外する。EVS 7点候補の生成失敗時は6点救済候補へフォールバックし、DeepSeek の空応答だけは1回再試行する。
-- ✅ `generation_failed` でも articles / trace / review state を先に保存し、その後に専用チェックでActionsを赤にする。`no_candidate` は従来どおり正常終了。generate側data pushは最大3回のrebase再試行を行う。
-- ✅ 統合確認: `npm run check`、topic canonicalization / source relevance / evidence expansion / related evidence / EVS / review rescue / generation status / review presentation / supplement claim / site feed / preference / candidate preference / title / kanji が成功。`npm run build:site` は実データ8日分・30記事・41ページで成功（OGP生成の `sharp` 依存を package.json / lock に登録）。
-- ⏳ Actions実測待ち: Serper / DeepSeek を用いて 8/7〜8/9 と、謝賢・成毅・功夫女足の各topicで、関連報道の収集、root/related分離、部分救済、公開品質を確認する。
-- 残課題: EvidenceRequest の永続化、複数 review workflow が同時にPagesをdeployした場合の stale deploy競合。
-
-## 2026-08-09 完了メモ（ビンタンV2サイト反映）
-
-- ✅ サイトUIは比較B、OGPは比較Cを基準に本番化。A案ロゴ（冰=水色、糖=赤、日报=濃紺、読みは「ビンタンデイリー」）の横長版・コンパクト版と、片手を上げたヘッダー立ち絵を公開素材へ追加した。キャッチコピーと吹き出しは削除し、ヘッダーはロゴ・最終更新日・V2キャラクターだけに整理した。
-- ✅ カードはPC・スマホとも1列を維持。確度・鮮度ラベルを削除し、種別・カテゴリ・日付・ソース構成・ソースリンクを残した。「反応・見られ方」は独立・条件付き表示を維持し、「ビンタンからの補足」は顔なし、「ビンタンの注目ポイント」だけ頭〜肩アバターを表示する。承認モックとの実画面比較後、透明余白を除去し、PC 92px・スマホ 76pxへ確定した。
-- ✅ 注目ポイントの表情×向き10種を実装。訃報等だけ真剣な2種に固定し、それ以外は笑顔・喜び・驚き・考え中の8種から記事キーで決定的に選ぶ。同じ表情を記事カード・個別ページ・記事別OGPで共有する。
-- ✅ 記事別OGPを1200×630 PNGで自動生成。記事タイトルのみ最大3行・自動縮小、右下にカードと同じアバターを配置し、共通OGPもV2ロゴ・立ち絵へ更新した。`npm run check`、`npm run test:site-feed`、`npm run build:site` 成功。実データ8日分・30記事・41ページ、記事別OGP 30枚＋共通OGP 1枚を生成確認。
-
-## 2026-08-09 完了メモ（ビンタンV2正本化）
-
-- ✅ V2正本画像3枚（全身・表情・方向）を `docs/assets/character-v2/` に保存し、人格・関係性・話し方・外見を独立設定書 [`docs/character-bingtang-v2.md`](character-bingtang-v2.md) に正本化した。2026-07のV1は決定経緯として残し、現行正本には使わない。
-- ✅ V2独立後の境界監査として `docs/editorial-character.md` を調整。旧V1の人格定義と「運営者の分身」という記述を除き、記事選定、事実確認、根拠要件、公開コメントの編集トーン、重大記事の扱いに責務を限定した。人格・関係性・一般的な話し方・外見・表情はV2設定書を参照する。
-- ✅ 境界の連動修正として、要約プロンプトから旧V1の「運営者の分身」と旧「ひとこと」参照を除き、公開記事向け編集トーンへ統一。Aboutのビンタン紹介とX運用チェックもV2の境界に合わせた。
-- ✅ 「ビンタンからの補足」（`japan_context_note`）を、レビューIssue初回本文・修正版返信・0件救済再掲・ローカルレビューUIの全経路に同じ文面で表示。補足が非空の場合は有効な claim ref を1件以上必須とし、0件なら記事全体は維持して補足だけを削除するフォールバックを追加した。`npm run test:review-presentation`・`npm run test:supplement-claim` で表示契約と根拠ゲートを回帰検証する。
-- 制約: 補足専用の再生成は未実装で、修正単位は引き続き記事全体。`data/` 内のMarkdownは初回生成時のスナップショットで、公開の正本は `articles_YYYY-MM-DD.json` とする。Markdown同期は別課題。
-- ✅ サイトのV2差し替えまで完了。公開用ロゴ・ヘッダー立ち絵・表情×向き10種と記事別OGPを静的ビルドへ組み込んだ。
+- ✅ 記事タイトルを Kosugi Maru、本文を Zen Kaku Gothic New に変更。記事配置と条件付き表示は維持し、元モックの青い見出しアイコン、赤い注目ポイント、薄い水色の補足、青いソースリンクを追加した。「記事ページから全文」の旧案内も削除。`npm run check`、`npm run test:site-feed`、`npm run build:site` 成功（8日分・30記事・41ページ）。PC 1024px・スマホ 390pxで表示確認し、横スクロールなし。
 
 ## 2026-08-07 実装記録（週末公開UI調整）
 
@@ -239,13 +207,13 @@ official-only 減点(-15)と备案ボーナス削除、`src/topicKey.ts` への�
 **設計正本: `docs/design-phase4-site.html`**（実データモック込みのHTML設計書。Fable 設計）
 
 - 目的は **X bot 化（スピード優先）**。サイトは X ポストのリンク先（ナルエビ方式の導線）
-- 構成: 既存 Actions を1本に拡張 — pipeline → `data/YYYY-MM-DD/` コミット → 静的ビルド（`src/site/build.ts`、OGP PNG生成に sharp を使用）→ GitHub Pages → X 日次ダイジェスト投稿（`src/site/postToX.ts`）
+- 構成: 既存 Actions を1本に拡張 — pipeline → `data/YYYY-MM-DD/` コミット → 静的ビルド（新規 `src/site/build.ts`, zero-dep）→ GitHub Pages → X 日次ダイジェスト投稿（新規 `src/site/postToX.ts`）
 - パイプライン側の改修は articles JSON 書き出し1点のみ（renderMarkdown と同じ構造化データを JSON でも出す）
 - X API は2026年2月から従量課金（URL付きポスト $0.20/本・**要一次確認**）→ リンクは日次ダイジェスト1本に集約（月額目安 $6）
 - 段階導入: 4a MVP（自動でサイト更新+投稿1本）→ 4b 個別投稿+OGP画像+RSS → 4c 表示量切替/絞込/検索 → 4d WebMCP/計測
 - 未決事項: X 課金の一次確認 / LICENSE・引用ポリシー整備 / 確定キャラクターの公開用素材化
 - キャラクター設計: ✅ **承認済み（2026-07-15）**。設計正本 `docs/design-phase4-character.md`。
-  確定: 冰糖（ビンタン）／サイト名「冰糖日报（ビンタンデイリー）」／です・ます調＋「ね」「よ」語尾／
+  確定: 冰糖（ビンタン）／サイト名「冰糖日报（ビンタンちゃんデイリー）」／です・ます調＋「ね」「よ」語尾／
   運営者呼称「Falさん」／Xハンドル @bingtang_chan 仮置き。反映手順（V1・C1〜C6）は同文書に記載。
   旧A案（ミーシュ/パンダ）は棄却。外見は `docs/assets/bingtang-character-final-reference.png` で最終確定（2026-07-16）。
   公開用の透過立ち絵・丸型アバター・ヘッダー用素材への展開は Phase 4a UI差分設計後に行う。
@@ -268,8 +236,8 @@ official-only 減点(-15)と备案ボーナス削除、`src/topicKey.ts` への�
   写真なしカード（種別色トップバー＋チップ列＋アバター吹き出し）、フィード=全幅1列コンパクトカード→個別ページで全文、
   キャラ大型表示はヘッダのみ。B案のカテゴリタブと相対時刻表示は不採用（絞込は 4c 送り・データにない表示はしない）。
   design-phase4-character.md の V1 完了反映と design-phase4-site.html への確定注記も適用済み。
-- Phase 4a UIユーザー確認: ✅ **承認済み（2026-07-17、2026-08-09のV2再設計で一部更新）**。確定: PCも1列／トップは最新10件＋アーカイブ／
-  カテゴリタブなし／個別ページは小アバターのみ。ヘッダーの旧吹き出し文言はV2再設計で削除し、ロゴ・最終更新日・片手を上げたキャラクターへ更新／
+- Phase 4a UIユーザー確認: ✅ **承認済み（2026-07-17）**。確定: PCも1列／トップは最新10件＋アーカイブ／
+  カテゴリタブなし／個別ページは小アバターのみ／ヘッダ文言「今日のわたしが気になる中国エンタメ情報です！」／
   Phase 4aでは全記事で同じ標準表情。一覧はPC・スマホとも「ビンタンの注目ポイント」枠を必須表示し、個別ページは
   `why_it_matters` と `editor_comment` を1つの注目ポイント枠に統合（データ項目は維持・独立した「ひとこと」枠は廃止）。
   モック承認時の最終調整: 一覧カード内のアバターは注目ポイント枠の1つだけ（タイトル横の重複表示なし）。

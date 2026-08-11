@@ -59,6 +59,12 @@ try {
   assertNotIncludes(home, "ビンタンちゃんデイリー", "旧サイト読み");
   assertNotIncludes(home, "確度B", "確度ラベル");
   assertNotIncludes(home, ">本日<", "鮮度ラベル");
+  assertIncludes(home, "family=Kosugi+Maru&family=Zen+Kaku+Gothic+New", "タイトルと本文のWebフォント");
+  assertIncludes(home, 'class="section-icon section-icon-source"', "ソース構成のアイコン");
+  assertIncludes(home, 'class="section-icon section-icon-event"', "何が起きたのアイコン");
+  assertIncludes(home, 'class="section-icon section-icon-reaction"', "反応・見られ方のアイコン");
+  assertIncludes(home, 'class="section-icon section-icon-point"', "注目ポイントのアイコン");
+  assertIncludes(home, 'class="section-icon section-icon-supplement"', "補足のアイコン");
   assertCount(home, "ビンタンからの補足", 2, "トップの補足ラベル");
   assertCount(home, "反応・見られ方", 1, "反応・見られ方は値がある記事だけに表示");
   assertCount(home, "関連角度のソース", 1, "関連角度のソースは使用した記事だけに表示する");
