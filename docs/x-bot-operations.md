@@ -10,7 +10,7 @@
 
 - [ ] X アカウント作成: ハンドル `@bingtang_chan`（仮置き）の空きを確認して作成。
       アイコン・ヘッダーは Phase 4a の公開用素材が揃うまで仮でよい
-- [ ] プロフィールにサイト URL（`https://<owner>.github.io/china-ent-news/`）を固定リンクとして設定
+- [ ] プロフィールにサイト URL（`https://bingtangnews.0-w-0.net/`）を固定リンクとして設定
       （個別投稿は URL を含めないため、誘導はこのリンクが担う）
 - 半手動フェーズでは **X API キー・Developer 設定は不要**（費用ゼロ）
 

@@ -9,6 +9,7 @@ on:
       - ".github/workflows/deploy-site.yml"
       - "src/site/**"
       - "src/testSiteFeed.ts"
+      - "scripts/deploy_lolipop.py"
       - "docs/assets/site/**"
       - "data/**"
       - "package.json"
@@ -20,7 +21,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: china-ent-news-production
   cancel-in-progress: false
 
 jobs:
@@ -28,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://bingtangnews.0-w-0.net/
 
     steps:
       - name: Checkout
@@ -46,11 +47,22 @@ jobs:
       - name: Check site build
         run: npm run check
 
-      - name: Build static site
+      - name: Build production site
+        run: npm run build:site
+        env:
+          SITE_URL: https://bingtangnews.0-w-0.net
+          SITE_BASE_PATH: ""
+          SITE_OUTPUT_DIR: dist/lolipop-site
+
+      - name: Validate production artifact
+        run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews --check
+
+      - name: Build Pages fallback
         run: npm run build:site
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
           SITE_BASE_PATH: /${{ github.event.repository.name }}
+          SITE_OUTPUT_DIR: dist/site
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -63,3 +75,10 @@ jobs:
       - name: Deploy GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Deploy production site to Lolipop
+        run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews
+        env:
+          LOLIPOP_FTPS_HOST: ${{ secrets.LOLIPOP_FTPS_HOST }}
+          LOLIPOP_FTPS_USER: ${{ secrets.LOLIPOP_FTPS_USER }}
+          LOLIPOP_FTPS_PASSWORD: ${{ secrets.LOLIPOP_FTPS_PASSWORD }}

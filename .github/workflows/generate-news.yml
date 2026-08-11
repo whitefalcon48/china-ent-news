@@ -39,7 +39,7 @@ env:
   REVIEW_GATE: "true"
 
 concurrency:
-  group: generate-news-${{ github.ref }}
+  group: china-ent-news-production
   cancel-in-progress: false
 
 jobs:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://bingtangnews.0-w-0.net/
 
     steps:
       - name: Checkout
@@ -149,12 +149,25 @@ jobs:
           ARCHIVE_DATE: ${{ steps.persist.outputs.date }}
           RUN_DATE: ${{ inputs.run_date }}
 
-      - name: Build static site
+      - name: Build production site
+        if: env.REVIEW_GATE == 'false'
+        run: npm run build:site
+        env:
+          SITE_URL: https://bingtangnews.0-w-0.net
+          SITE_BASE_PATH: ""
+          SITE_OUTPUT_DIR: dist/lolipop-site
+
+      - name: Validate production artifact
+        if: env.REVIEW_GATE == 'false'
+        run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews --check
+
+      - name: Build Pages fallback
         if: env.REVIEW_GATE == 'false'
         run: npm run build:site
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
           SITE_BASE_PATH: /${{ github.event.repository.name }}
+          SITE_OUTPUT_DIR: dist/site
 
       - name: Configure GitHub Pages
         if: env.REVIEW_GATE == 'false'
@@ -171,12 +184,20 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
+      - name: Deploy production site to Lolipop
+        if: env.REVIEW_GATE == 'false'
+        run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews
+        env:
+          LOLIPOP_FTPS_HOST: ${{ secrets.LOLIPOP_FTPS_HOST }}
+          LOLIPOP_FTPS_USER: ${{ secrets.LOLIPOP_FTPS_USER }}
+          LOLIPOP_FTPS_PASSWORD: ${{ secrets.LOLIPOP_FTPS_PASSWORD }}
+
       - name: Check X daily digest
         if: env.REVIEW_GATE == 'false'
         run: npm run post:x
         env:
-          SITE_URL: https://${{ github.repository_owner }}.github.io
-          SITE_BASE_PATH: /${{ github.event.repository.name }}
+          SITE_URL: https://bingtangnews.0-w-0.net
+          SITE_BASE_PATH: ""
           POST_DATE: ${{ steps.persist.outputs.date }}
 
       - name: Upload X post texts
@@ -191,8 +212,8 @@ jobs:
         if: ${{ env.REVIEW_GATE == 'false' && vars.X_POSTING_ENABLED == 'true' }}
         run: npm run post:x
         env:
-          SITE_URL: https://${{ github.repository_owner }}.github.io
-          SITE_BASE_PATH: /${{ github.event.repository.name }}
+          SITE_URL: https://bingtangnews.0-w-0.net
+          SITE_BASE_PATH: ""
           POST_DATE: ${{ steps.persist.outputs.date }}
           X_POST_LIVE: "true"
           X_API_KEY: ${{ secrets.X_API_KEY }}

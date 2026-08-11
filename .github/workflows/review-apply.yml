@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: review-issue-${{ github.event.issue.number }}
+  group: china-ent-news-production
   cancel-in-progress: false
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://bingtangnews.0-w-0.net/
     env:
       REVIEW_GATE: "true"
     steps:
@@ -67,12 +67,25 @@ jobs:
             git push origin "HEAD:${GITHUB_REF_NAME}" || { git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; }
           fi
 
-      - name: Build approved site
+      - name: Build approved production site
+        if: steps.review.outputs.completed == 'true'
+        run: npm run build:site
+        env:
+          SITE_URL: https://bingtangnews.0-w-0.net
+          SITE_BASE_PATH: ""
+          SITE_OUTPUT_DIR: dist/lolipop-site
+
+      - name: Validate production artifact
+        if: steps.review.outputs.completed == 'true'
+        run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews --check
+
+      - name: Build Pages fallback
         if: steps.review.outputs.completed == 'true'
         run: npm run build:site
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
           SITE_BASE_PATH: /${{ github.event.repository.name }}
+          SITE_OUTPUT_DIR: dist/site
 
       - name: Configure GitHub Pages
         if: steps.review.outputs.completed == 'true'
@@ -89,12 +102,20 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
+      - name: Deploy production site to Lolipop
+        if: steps.review.outputs.completed == 'true'
+        run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews
+        env:
+          LOLIPOP_FTPS_HOST: ${{ secrets.LOLIPOP_FTPS_HOST }}
+          LOLIPOP_FTPS_USER: ${{ secrets.LOLIPOP_FTPS_USER }}
+          LOLIPOP_FTPS_PASSWORD: ${{ secrets.LOLIPOP_FTPS_PASSWORD }}
+
       - name: Generate approved X texts
         if: steps.review.outputs.completed == 'true'
         run: npm run post:x
         env:
-          SITE_URL: https://${{ github.repository_owner }}.github.io
-          SITE_BASE_PATH: /${{ github.event.repository.name }}
+          SITE_URL: https://bingtangnews.0-w-0.net
+          SITE_BASE_PATH: ""
           POST_DATE: ${{ steps.review.outputs.date }}
 
       - name: Upload X post texts
