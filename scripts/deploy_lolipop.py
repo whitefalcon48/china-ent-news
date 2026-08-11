@@ -107,6 +107,7 @@ def connect_and_deploy(config: DeployConfig) -> int:
         client.login(config.username, config.password)
         client.prot_p()
         client.set_pasv(True)
+        client.cwd("/")
         return deploy_files(client, config.source, config.remote_dir)
     finally:
         try:
