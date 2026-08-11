@@ -42,6 +42,8 @@ try {
   const defaultOgp = await sharp(path.join(outputRoot, "assets", "ogp-default.png")).metadata();
 
   assertIncludes(home, "最終更新：2026年8月1日", "トップの日付ラベル");
+  assertIncludes(home, "8月1日のピックアップ", "フィード見出しはピックアップの単位を示す");
+  assertIncludes(home, "参考記事公開日：2026/8/1", "カードの日付は参考記事公開日として示す");
   assertNotIncludes(home, "<details", "トップの折りたたみ");
   assertNotIncludes(home, "<summary", "トップの折りたたみ見出し");
   assertIncludes(home, "フィクスチャ本文 A", "トップの本文全文");

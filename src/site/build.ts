@@ -273,7 +273,7 @@ function renderHome(items: Array<{ date: string; article: ProcessedArticle }>) {
   let lastDate = "";
   const cards = items.map(({ date, article }) => {
     const position = findArticlePosition(date, article);
-    const heading = date !== lastDate ? `<h1 class="date-heading"><a href="${href(`/archive/${date}/`)}">${escapeHtml(formatShortDate(date))}</a></h1>` : "";
+    const heading = date !== lastDate ? `<h1 class="date-heading"><a href="${href(`/archive/${date}/`)}">${escapeHtml(formatPickupDate(date))}のピックアップ</a></h1>` : "";
     lastDate = date;
     return `${heading}${renderCard(date, position, article)}`;
   }).join("");
@@ -298,8 +298,9 @@ function renderCard(date: string, position: number, article: ProcessedArticle) {
   const summary = requireSummary(article);
   const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
   const currentUrl = absoluteUrl(`/t/${date}/${position}/`);
+  const referenceArticleDate = summary.published_date || date;
   return `<article class="news-card card-${badgeClass(summary.badge)}">
-    <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(date)}">${escapeHtml(formatNumericDate(summary.event_date || summary.published_date || date))}</time></div>
+    <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(referenceArticleDate)}">参考記事公開日：${escapeHtml(formatNumericDate(referenceArticleDate))}</time></div>
     <h2>${escapeHtml(title)}</h2>
     <p class="lead">${escapeHtml(summary.lead)}</p>
     ${renderSourceMix(article)}
@@ -498,6 +499,11 @@ function formatUpdatedDate(date: string) {
 function formatShortDate(date: string) {
   const parsed = parseDate(date);
   return new Intl.DateTimeFormat("ja-JP", { timeZone: "Asia/Shanghai", month: "long", day: "numeric", weekday: "short" }).format(parsed).replace(/\((.)\)$/, "（$1）");
+}
+
+function formatPickupDate(date: string) {
+  const parsed = parseDate(date);
+  return new Intl.DateTimeFormat("ja-JP", { timeZone: "Asia/Shanghai", month: "long", day: "numeric" }).format(parsed);
 }
 
 function formatNumericDate(date: string) {
