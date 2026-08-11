@@ -556,7 +556,7 @@
       "lead": "中国の人気音楽番組『歌手2026』の最終決戦「歌王戦」が8月7日夜、湖南衛視と芒果TVで放送される。",
       "what_happened": "『歌手2026』の年間王者を決める歌王戦が8月7日19時30分から湖南衛視と芒果TVで放送される。デュエットでは、斉豫×毛阿敏が『相思』を披露。胡彦斌×韓磊は『走四方』、張遠×韋礼安は『巴別塔慶典』、万妮達×呉碧霞は『花田錯』を歌う。尤長靖×龔琳娜は『平日快樂』とマレー民謡『Rasa Sayang』を融合させる。竇靖童×欧陽娜娜は『被馴服的象』、艾略特×黄子弘凡は『Somewhere Only We Know』を届ける。",
       "reaction_view": "",
-      "why_it_matters": "歌王戦にふさわしい豪華なデュエットが並びましたね！斉豫と毛阿敏の『相思』は、新京報も「空灵与醇厚が交錯する」と絶賛。世代を超えた響き合い、とても気になります！今夜の放送で、誰が栄冠をつかむのか、私もどきどきです！",
+      "why_it_matters": "今夜放送の『歌手2026』歌王戦、斉豫さんと毛阿敏さんが『相思』を披露するそうです！ 二世代の“時代の声”が重なる瞬間、これは期待が高まります。万妮達さんと呉碧霞さんのラップ×コロラトゥーラもどうなるのか気になりますね。放送後はWeiboの話題ランキングや視聴率、そして誰が歌王に選ばれるかをじっくり追いかけたいです。",
       "editor_comment": "",
       "japan_context_note": "",
       "category": "音楽",
@@ -642,8 +642,9 @@
           "C9"
         ],
         "why_it_matters": [
+          "C1",
           "C3",
-          "C17"
+          "C6"
         ],
         "reaction_view": [],
         "japan_context_note": []
@@ -1082,26 +1083,15 @@
           "model": "deepseek-v4-pro"
         }
       },
-      "ledger_anchor": {
-        "topic_key": "歌手2026",
-        "claims_total": 17,
-        "anchor_unverified": 0,
-        "dropped_explanations": []
-      },
-      "term_expansion": {
-        "enabled": true,
-        "attempted": [],
-        "succeeded": [],
-        "failed": []
-      },
       "display_normalization": {
         "residues": []
       },
       "comment_grounding": {
         "topic_key": "歌手2026",
         "refs": [
+          "C1",
           "C3",
-          "C17"
+          "C6"
         ],
         "gated_sentences_removed": [],
         "unmatched_numbers": []
@@ -1141,7 +1131,7 @@
           }
         ],
         "gated_violation_count": 0,
-        "action": "text_removed"
+        "action": "none"
       },
       "tone_mode": "normal",
       "comment_stage": {
@@ -1149,10 +1139,7 @@
         "used": true,
         "regenerated": false,
         "fallback_reason": "",
-        "exclamation_count": 3,
-        "opening": "歌王戦にふさわしい豪",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 1
       }
     }
   }
