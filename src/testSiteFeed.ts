@@ -86,7 +86,17 @@ try {
   assertNotIncludes(detail, "/assets/bingtang-avatar-serious-", "通常記事に真剣な表情を固定しない");
   assertIncludes(detailSecond, "/assets/bingtang-avatar-serious-", "訃報記事は真剣な表情に固定");
   assertNotIncludes(detail, "bingtang-avatar-focus.png", "個別ページの補足アバター");
-  assertIncludes(about, "/assets/bingtang-avatar-smile-left.png", "サイト紹介の自然な笑顔");
+  assertIncludes(about, "/assets/bingtang-about-fullbody.png", "サイト紹介専用の全身イラスト");
+  assertIncludes(about, "中国エンタメニュース収集担当AI", "ビンタンの役割");
+  assertIncludes(about, "私が集めた情報の中から", "ビンタン自身が収集している説明");
+  assertIncludes(about, "運営者はニュース選定方針の設計とサイト運用を行い、必要に応じて記事の確認や修正をしています。", "運営者の役割");
+  assertIncludes(about, "人間が裏取りや個別の事実確認を行っているわけではありません。", "個別の事実確認に関する免責");
+  assertIncludes(about, "公式発表、現地媒体、SNS、データは性質の異なる情報として扱います。", "情報種別の扱い");
+  assertIncludes(about, "噂やSNS上の反応は事実と区別し、未確認情報を断定しません。", "未確認情報の扱い");
+  assertIncludes(about, 'href="https://x.com/fal48" target="_blank" rel="noopener noreferrer">@fal48</a>', "問い合わせ先Xリンク");
+  assertNotIncludes(about, "記事はAIが収集・生成し、人間が監修しています。", "実態と異なる一律監修表現");
+  assertIncludes(home, "記事はAIが収集・生成しています。運営については「このサイトについて」をご覧ください。", "フッターの運営説明");
+  assertNotIncludes(home, "記事はAIが収集・生成し、人間が監修しています。", "フッターの旧監修表現");
   assertIncludes(detail, `<meta property="og:image" content="https://example.test/og/${date}/1.png">`, "記事別OGP画像URL");
   assertIncludes(detail, `<meta name="twitter:image" content="https://example.test/og/${date}/1.png">`, "記事別Xカード画像URL");
   if (articleOgp.width !== 1200 || articleOgp.height !== 630) throw new Error(`記事別OGPは1200x630のはずですが ${articleOgp.width}x${articleOgp.height} です`);
