@@ -18,6 +18,7 @@
     "test:run-date": "tsx src/testRunDate.ts",
     "check:generation-status": "tsx src/checkGenerationStatus.ts",
     "test:review-presentation": "tsx src/testReviewPresentation.ts",
+    "test:lightweight-review-edit": "tsx src/testLightweightReviewEdit.ts",
     "test:supplement-claim": "tsx src/testSupplementClaimGate.ts",
     "test:related-evidence": "tsx src/testRelatedEvidencePipeline.ts",
     "test:topic-canonicalization": "tsx src/testTopicCanonicalization.ts",
