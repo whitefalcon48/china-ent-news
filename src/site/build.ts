@@ -91,6 +91,7 @@ async function main() {
     body: renderAbout(),
     fullHeader: true
   }));
+  await writePage("robots.txt", `User-agent: *\nAllow: /\n`);
   await fs.writeFile(path.join(OUTPUT_DIR, ".nojekyll"), "", "utf8");
 
   const articleCount = days.reduce((sum, day) => sum + day.articles.length, 0);
