@@ -7,7 +7,7 @@ import { getToneMode } from "../toneMode.js";
 import { applyLightweightWhyItMattersEdit } from "./lightweightWhyItMattersEdit.js";
 import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, SummarizedArticle, TopicCandidate } from "../types.js";
 
-export async function reviseStoredArticle(directory: string, index: number, comment: string, reasonTag = "???") {
+export async function reviseStoredArticle(directory: string, index: number, comment: string, reasonTag = "その他") {
   const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
   if (!articleFile) throw new Error(`articles JSON not found: ${directory}`);
   const articlePath = path.join(directory, articleFile);
@@ -32,7 +32,7 @@ export async function reviseStoredArticle(directory: string, index: number, comm
           used: false,
           regenerated: false,
           fallback_reason: "review_literal_edit",
-          exclamation_count: (lightweight.summary.why_it_matters.match(/[?!]/g) ?? []).length
+          exclamation_count: (lightweight.summary.why_it_matters.match(/[！!]/g) ?? []).length
         }
       }
     };
@@ -40,7 +40,7 @@ export async function reviseStoredArticle(directory: string, index: number, comm
     return articles[index - 1];
   }
   const evidence = rebuildEvidence(article);
-  const revised = await reviseTopicFromSavedData(article.topic, evidence, ledger, comment, undefined, undefined, article.summary, reasonTag === "??");
+  const revised = await reviseTopicFromSavedData(article.topic, evidence, ledger, comment, undefined, undefined, article.summary, reasonTag === "口調");
   articles[index - 1] = { ...article, summary: revised.summary, generationMeta: revised.meta };
   await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
   return articles[index - 1];
@@ -121,6 +121,6 @@ function rebuildEvidence(article: ProcessedArticle): RawArticle[] {
     publishedDate: item.published_date,
     freshnessLabel: item.freshness_label,
     articleType: item.article_type,
-    excerpt: item.key_points.join("?")
+    excerpt: item.key_points.join("。")
   }));
 }
