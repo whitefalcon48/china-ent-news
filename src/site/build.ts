@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { Resvg } from "@resvg/resvg-js";
 import sharp from "sharp";
 import { getPublishableArticles } from "../renderMarkdown.js";
 import { isRelevantEvidenceForTopic, isSafePublicationSourceUrl, normalizeSourceHostname } from "../sourceRelevance.js";
@@ -11,6 +12,8 @@ type SourceMix = { official: number; media: number; sns: number; data: number };
 
 const DATA_DIR = path.resolve(process.env.SITE_DATA_DIR || "data");
 const OUTPUT_DIR = path.resolve(process.env.SITE_OUTPUT_DIR || "dist/site");
+const OGP_TITLE_FONT_PATH = path.resolve(process.env.SITE_OGP_TITLE_FONT || "docs/assets/fonts/KosugiMaru-Regular.ttf");
+const OGP_FALLBACK_FONT_PATH = path.resolve(process.env.SITE_OGP_FALLBACK_FONT || "docs/assets/fonts/NotoSansCJKjp-Regular.otf");
 const SITE_URL = (process.env.SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 const BASE_PATH = normalizeBasePath(process.env.SITE_BASE_PATH || "");
 const SITE_NAME = "冰糖日报（ビンタンデイリー）";
@@ -564,12 +567,20 @@ async function generateArticleOgp(sitePath: string, title: string, avatarName: s
   const logo = await readAsset("bingtang-logo-horizontal.png");
   const avatar = await readAsset(avatarName);
   const { fontSize, lines } = fitOgpTitle(title);
+  await Promise.all([fs.access(OGP_TITLE_FONT_PATH), fs.access(OGP_FALLBACK_FONT_PATH)]);
   const titleMarkup = lines.map((line, index) => `<text x="82" y="${244 + index * (fontSize * 1.43)}" class="title">${xmlEscape(line)}</text>`).join("");
-  const svg = ogpBackgroundSvg("article", `<style>.title{font-family:'Noto Serif JP','Yu Mincho','Hiragino Mincho ProN',serif;font-size:${fontSize}px;font-weight:700;fill:#18375F;letter-spacing:.01em}</style>${titleMarkup}`);
+  const svg = ogpBackgroundSvg("article", `<style>.title{font-family:'Kosugi Maru','Noto Sans CJK JP';font-size:${fontSize}px;font-weight:400;fill:#18375F;letter-spacing:.01em}</style>${titleMarkup}`);
+  const background = new Resvg(svg, {
+    font: {
+      fontFiles: [OGP_TITLE_FONT_PATH, OGP_FALLBACK_FONT_PATH],
+      loadSystemFonts: false,
+      defaultFontFamily: "Kosugi Maru"
+    }
+  }).render().asPng();
   const composites: sharp.OverlayOptions[] = [];
   if (logo) composites.push({ input: await sharp(logo).resize({ width: 430, height: 110, fit: "inside" }).png().toBuffer(), left: 70, top: 54 });
   if (avatar) composites.push({ input: await sharp(avatar).resize({ width: 164, height: 164, fit: "contain" }).png().toBuffer(), left: 982, top: 424 });
-  await sharp(Buffer.from(svg)).composite(composites).png().toFile(destination);
+  await sharp(background).composite(composites).png().toFile(destination);
 }
 
 function ogpBackgroundSvg(kind: "default" | "article", content = "") {
@@ -664,7 +675,7 @@ const V2_CSS = String.raw`
 .section-icon{display:inline-block;flex:none;width:18px;height:18px;color:var(--ice)}html{font-family:"Zen Kaku Gothic New","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif}.source-mix{background:#EEF8FD}.source-mix strong,.feed-details h3,.bingtang-comment h3,.bingtang-supplement h3,.article-section h2{display:flex;align-items:center;gap:7px}.feed-details h3{color:#12549A}.feed-details section+section{padding-top:14px;border-top:1px solid #E2EFF6}.bingtang-comment{background:#FFF4F3;border-color:#F0D0CD}.bingtang-comment .section-icon-point{color:var(--red)}.bingtang-supplement{background:#EEF8FD}.sources a{color:#1576C9}.share{color:var(--red);border-color:var(--red)}
 .bingtang-comment{grid-template-columns:94px minmax(0,1fr);gap:12px;padding:14px 16px}.avatar-comment{width:92px;height:92px;font-size:46px}.avatar-comment img{transform:none}
 .about{width:min(820px,calc(100% - 28px))}.about section{margin:38px 0}.about h2{font:400 1.16rem/1.55 "Kosugi Maru","Hiragino Maru Gothic ProN",sans-serif;color:var(--navy);margin:0 0 14px}.about p{margin:0 0 14px}.about-hero{display:grid;grid-template-columns:minmax(240px,290px) minmax(0,1fr);align-items:center;gap:42px}.about-character{align-self:end;display:flex;align-items:flex-end;justify-content:center}.about-character img{display:block;width:100%;max-width:280px;height:420px;object-fit:contain;object-position:center bottom}.about-intro h2{font-size:1.3rem}.about-intro p{font-size:.93rem}.about-section,.about-contact{border-top:1px solid var(--line);padding-top:28px}.about ul{margin:0;padding-left:1.4em}.about li+li{margin-top:8px}.about-contact a{font-weight:700}.site-footer p{max-width:760px}
-@media(max-width:640px){.bingtang-comment{grid-template-columns:78px minmax(0,1fr);gap:10px;padding:12px}.avatar-comment{width:76px;height:76px}.about-hero{grid-template-columns:1fr;gap:18px}.about-character img{width:240px;height:350px}.about-intro h2{font-size:1.18rem}.about-section,.about-contact{padding-top:24px}}
+@media(max-width:640px){.bingtang-comment{position:relative;display:block;padding:12px}.bingtang-comment>.avatar-comment{position:absolute;top:12px;right:12px}.bingtang-comment>div{display:block}.bingtang-comment h3{min-height:76px;padding-right:86px;align-items:flex-start}.avatar-comment{width:76px;height:76px}.about-hero{grid-template-columns:1fr;gap:18px}.about-character img{width:240px;height:350px}.about-intro h2{font-size:1.18rem}.about-section,.about-contact{padding-top:24px}}
 `;
 
 main().catch((error) => {
