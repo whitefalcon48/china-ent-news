@@ -70,6 +70,7 @@ try {
   const manualDetail = await readPage(`t/${manualDate}/m-987654321/index.html`);
   const manualPost = await fs.readFile(path.join(manualPostOutput, "manual_x_post_987654321.md"), "utf8");
   const about = await readPage("about/index.html");
+  const htaccess = await readPage(".htaccess");
   const articleOgpPath = path.join(outputRoot, "og", date, "1.png");
   const articleOgp = await sharp(articleOgpPath).metadata();
   const defaultOgp = await sharp(path.join(outputRoot, "assets", "ogp-default.png")).metadata();
@@ -140,6 +141,7 @@ try {
   assertNotIncludes(home, "記事はAIが収集・生成し、人間が監修しています。", "フッターの旧監修表現");
   assertIncludes(detail, `<meta property="og:image" content="https://example.test/og/${date}/1.png?v=`, "記事別OGP画像URL");
   assertIncludes(detail, `<meta name="twitter:image" content="https://example.test/og/${date}/1.png?v=`, "記事別Xカード画像URL");
+  assertIncludes(htaccess, "AddDefaultCharset UTF-8", "HTTP文字コード指定");
   assertIncludes(manualDetail, `https://example.test/og/${manualDate}/m-987654321.png?v=`, "持ち込み記事の固有OGPとcache bust");
   assertIncludes(manualDetail, "フィクスチャ記事 B", "持ち込み記事の本文");
   assertIncludes(manualPost, `https://example.test/t/${manualDate}/m-987654321/`, "持ち込み公開URL付きX文面");
