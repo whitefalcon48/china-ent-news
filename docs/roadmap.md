@@ -1,5 +1,11 @@
 # ?????? & ?????
 
+## 2026-08-11 Production subdomain launch
+
+- ✅ `https://bingtangnews.0-w-0.net/` is live on Lolipop via explicit FTPS; deploy run `31482941507` published 100 files for 10 days / 33 articles / 46 pages.
+- ✅ HTTPS returns 200 with certificate verification result 0; canonical URL, favicon, logo, and hero image all return 200.
+- ✅ GitHub Pages remains available as an independent fallback at `https://whitefalcon48.github.io/china-ent-news/`; the temporary Pages custom-domain assignment was removed.
+
 ????: 2026-08-11???UI??????????????
 
 ## 2026-08-11 ??????????????
