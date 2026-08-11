@@ -12,6 +12,13 @@ class FakeFtps:
     def __init__(self) -> None:
         self.directories: set[str] = set()
         self.uploads: list[tuple[str, bytes]] = []
+        self.current_directory = ""
+
+    def cwd(self, dirname: str) -> str:
+        if dirname not in self.directories:
+            raise error_perm("550 directory does not exist")
+        self.current_directory = dirname
+        return dirname
 
     def mkd(self, dirname: str) -> str:
         if dirname in self.directories:
@@ -65,8 +72,9 @@ class LolipopDeployTest(unittest.TestCase):
             count = deploy_files(client, source, "bingtangnews")
 
             self.assertEqual(count, 2)
-            self.assertIn("bingtangnews/assets", client.directories)
-            self.assertEqual(client.uploads[-1][0], "STOR bingtangnews/index.html")
+            self.assertEqual(client.current_directory, "bingtangnews")
+            self.assertIn("assets", client.directories)
+            self.assertEqual(client.uploads[-1][0], "STOR index.html")
 
 
 if __name__ == "__main__":

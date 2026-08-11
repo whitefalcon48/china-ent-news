@@ -16,6 +16,8 @@ RETRYABLE_ERRORS = (*all_errors, ssl.SSLError, TimeoutError)
 
 
 class FtpsClient(Protocol):
+    def cwd(self, dirname: str) -> str: ...
+
     def mkd(self, dirname: str) -> str: ...
 
     def storbinary(self, command: str, fp: BinaryIO) -> str: ...
@@ -81,13 +83,14 @@ def ensure_remote_directory(client: FtpsClient, remote_path: str) -> None:
 def deploy_files(client: FtpsClient, source: Path, remote_dir: str) -> int:
     files = collect_files(source)
     ensure_remote_directory(client, remote_dir)
-    created_directories = {remote_dir}
+    client.cwd(remote_dir)
+    created_directories: set[str] = set()
 
     for local_path in files:
         relative = local_path.relative_to(source).as_posix()
-        remote_path = posixpath.join(remote_dir, relative)
+        remote_path = relative
         parent = posixpath.dirname(remote_path)
-        if parent not in created_directories:
+        if parent and parent not in created_directories:
             ensure_remote_directory(client, parent)
             created_directories.add(parent)
         with local_path.open("rb") as source_file:
