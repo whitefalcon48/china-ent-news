@@ -1,0 +1,211 @@
+name: manual-news-intake
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+# This must match generate-news/review-apply/deploy-site because every route
+# writes or deploys the same data tree.
+concurrency:
+  group: china-ent-news-production
+  cancel-in-progress: false
+
+jobs:
+  process:
+    if: >-
+      github.event.issue.pull_request == null &&
+      github.event.comment.author_association == 'OWNER' &&
+      contains(github.event.issue.labels.*.name, 'manual-news-intake') &&
+      format('{0}', github.event.issue.number) == vars.NEWS_INTAKE_ISSUE_NUMBER
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Acknowledge intake comment
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}/reactions" -f content=eyes
+
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Process intake comment
+        id: intake
+        continue-on-error: true
+        run: node --import tsx src/intake/processManualIntake.ts
+        env:
+          MANUAL_COMMENT_ID: ${{ github.event.comment.id }}
+          MANUAL_COMMENT_BODY: ${{ github.event.comment.body }}
+          MANUAL_COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          MANUAL_COMMENT_ASSOCIATION: ${{ github.event.comment.author_association }}
+          SITE_DATA_DIR: data
+          AI_PROVIDER: deepseek
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_MODEL: deepseek-v4-flash
+          LEDGER_AI_MODEL: deepseek-v4-pro
+          COMMENT_AI_MODEL: deepseek-v4-pro
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          SOURCE_EXPANSION_SKIP_RSSHUB: "true"
+          SOURCE_EXPANSION_MAX_TOPICS: "1"
+
+      - name: Commit intake state before review creation
+        id: persist_initial
+        continue-on-error: true
+        shell: bash
+        env:
+          COMMENT_ID: ${{ github.event.comment.id }}
+          TARGET_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          intake_dir="data/manual-intake/${COMMENT_ID}"
+          if [ -d "$intake_dir" ]; then
+            git add -- "$intake_dir"
+          fi
+          if git diff --cached --quiet; then
+            echo "No initial intake state changes."
+            exit 0
+          fi
+          git commit -m "Archive manual intake ${COMMENT_ID}"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${TARGET_BRANCH}"; then
+              exit 0
+            fi
+            if [ "$attempt" = "3" ]; then
+              echo "Initial intake push failed after ${attempt} attempts."
+              exit 1
+            fi
+            git pull --rebase origin "$TARGET_BRANCH"
+          done
+
+      - name: Find or create dedicated review issue
+        id: review
+        if: >-
+          steps.intake.outputs.result == 'review_ready' &&
+          steps.persist_initial.outcome == 'success'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMENT_ID: ${{ steps.intake.outputs.comment_id }}
+          STORED_ISSUE_NUMBER: ${{ steps.intake.outputs.review_issue_number }}
+          REVIEW_BODY_PATH: ${{ steps.intake.outputs.review_body_path }}
+          REVIEW_TITLE: "持ち込みニュース レビュー #${{ steps.intake.outputs.comment_id }}"
+        run: |
+          set -euo pipefail
+          if [ "$STORED_ISSUE_NUMBER" != "0" ]; then
+            review_url="https://github.com/${GITHUB_REPOSITORY}/issues/${STORED_ISSUE_NUMBER}"
+            echo "url=${review_url}" >> "$GITHUB_OUTPUT"
+            echo "number=${STORED_ISSUE_NUMBER}" >> "$GITHUB_OUTPUT"
+            echo "needs_link=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          search_json="${RUNNER_TEMP}/manual-review-search.json"
+          gh issue list --state all --limit 100 --search "${REVIEW_TITLE} in:title" --json number,title,url > "$search_json"
+          review_url=$(node -e 'const fs=require("fs"); const rows=JSON.parse(fs.readFileSync(process.argv[1],"utf8")); const row=rows.find(x=>x.title===process.env.REVIEW_TITLE); if(row) process.stdout.write(row.url);' "$search_json")
+          if [ -z "$review_url" ]; then
+            review_url=$(gh issue create --title "$REVIEW_TITLE" --body-file "$REVIEW_BODY_PATH")
+          fi
+          issue_number="${review_url##*/}"
+          if ! [[ "$issue_number" =~ ^[0-9]+$ ]]; then
+            echo "Review issue number could not be resolved."
+            exit 1
+          fi
+          echo "url=${review_url}" >> "$GITHUB_OUTPUT"
+          echo "number=${issue_number}" >> "$GITHUB_OUTPUT"
+          echo "needs_link=true" >> "$GITHUB_OUTPUT"
+
+      - name: Link new review issue to intake state
+        id: link
+        if: steps.review.outputs.needs_link == 'true'
+        continue-on-error: true
+        run: node --import tsx src/intake/linkManualReviewIssue.ts
+        env:
+          MANUAL_COMMENT_ID: ${{ steps.intake.outputs.comment_id }}
+          REVIEW_ISSUE_NUMBER: ${{ steps.review.outputs.number }}
+          REVIEW_ISSUE_URL: ${{ steps.review.outputs.url }}
+          SITE_DATA_DIR: data
+
+      - name: Commit linked review state
+        id: persist_link
+        if: steps.review.outputs.needs_link == 'true' && steps.link.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        env:
+          COMMENT_ID: ${{ steps.intake.outputs.comment_id }}
+          TARGET_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          git add -- "data/manual-intake/${COMMENT_ID}"
+          if git diff --cached --quiet; then
+            echo "No linked review state changes."
+            exit 0
+          fi
+          git commit -m "Link manual intake review ${COMMENT_ID}"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${TARGET_BRANCH}"; then
+              exit 0
+            fi
+            if [ "$attempt" = "3" ]; then
+              echo "Linked review state push failed after ${attempt} attempts."
+              exit 1
+            fi
+            git pull --rebase origin "$TARGET_BRANCH"
+          done
+
+      - name: Enable review comment handling
+        id: label_review
+        if: >-
+          steps.review.outcome == 'success' &&
+          (steps.review.outputs.needs_link == 'false' ||
+            (steps.link.outcome == 'success' &&
+             steps.persist_link.outcome == 'success'))
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_ISSUE_NUMBER: ${{ steps.review.outputs.number }}
+        run: |
+          gh label create manual-news-review --description "Manual generated-news review" --color C12B23 --force
+          gh issue edit "$REVIEW_ISSUE_NUMBER" --add-label manual-news-review
+
+      - name: Reply with review URL
+        id: success_reply
+        if: >-
+          always() &&
+          steps.intake.outputs.result == 'review_ready' &&
+          steps.persist_initial.outcome == 'success' &&
+          steps.review.outcome == 'success' &&
+          steps.label_review.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INTAKE_ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REVIEW_URL: ${{ steps.review.outputs.url }}
+        run: |
+          gh issue comment "$INTAKE_ISSUE_NUMBER" --body "持ち込みニュースのレビューを作成しました: ${REVIEW_URL}"
+
+      - name: Reply with safe failure message
+        if: always() && steps.success_reply.outcome != 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INTAKE_ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$INTAKE_ISSUE_NUMBER" --body "持ち込みニュースの処理に失敗しました。詳細はActionsログを確認してください。"
+          exit 1

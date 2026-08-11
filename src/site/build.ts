@@ -6,9 +6,11 @@ import sharp from "sharp";
 import { getPublishableArticles } from "../renderMarkdown.js";
 import { isRelevantEvidenceForTopic, isSafePublicationSourceUrl, normalizeSourceHostname } from "../sourceRelevance.js";
 import { resolveSummaryTitle } from "../summaryTitle.js";
+import { manualArticleSlug, manualIntakeRoot, readManualIntakeRecord } from "../review/manualPublication.js";
 import type { ProcessedArticle, ReviewState, SourceRef, SourceTypeLabel, SummarizedArticle } from "../types.js";
 
-type DayData = { date: string; articles: ProcessedArticle[] };
+type SiteArticle = { article: ProcessedArticle; slug: string };
+type DayData = { date: string; articles: SiteArticle[] };
 type SourceMix = { official: number; media: number; sns: number; data: number };
 
 const DATA_DIR = path.resolve(process.env.SITE_DATA_DIR || "data");
@@ -27,7 +29,6 @@ const LOSS_PATTERN = /訃報|死去|逝去|死亡|亡くな|急逝|お別れ|追
 
 async function main() {
   const days = await loadDays();
-  for (const day of days) loadedDayPositions.set(day.date, day.articles);
   await fs.rm(OUTPUT_DIR, { recursive: true, force: true });
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
   await copySiteAssets();
@@ -35,7 +36,7 @@ async function main() {
 
   const nonEmptyDays = days.filter((day) => day.articles.length > 0);
   const newestDate = nonEmptyDays[0]?.date;
-  const latest = nonEmptyDays.flatMap((day) => day.articles.map((article) => ({ date: day.date, article }))).slice(0, 10);
+  const latest = nonEmptyDays.flatMap((day) => day.articles.map((item) => ({ date: day.date, ...item }))).slice(0, 10);
 
   await writePage("index.html", renderLayout({
     title: SITE_NAME,
@@ -58,15 +59,15 @@ async function main() {
       fullHeader: true
     }));
 
-    await Promise.all(day.articles.map(async (article, index) => {
+    await Promise.all(day.articles.map(async ({ article, slug }) => {
       const summary = requireSummary(article);
       const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
-      const ogImagePath = `/og/${day.date}/${index + 1}.png`;
+      const ogImagePath = `/og/${day.date}/${slug}.png`;
       const ogImageVersion = await generateArticleOgp(ogImagePath, title, selectCommentAvatar(article));
-      return writePage(`t/${day.date}/${index + 1}/index.html`, renderLayout({
+      return writePage(`t/${day.date}/${slug}/index.html`, renderLayout({
         title: `${title}｜${SITE_NAME}`,
         description: summary.lead,
-        canonicalPath: `/t/${day.date}/${index + 1}/`,
+        canonicalPath: `/t/${day.date}/${slug}/`,
         ogImagePath: `${ogImagePath}?v=${ogImageVersion}`,
         currentNav: "",
         body: renderArticlePage(day.date, article),
@@ -111,7 +112,7 @@ async function loadDays(): Promise<DayData[]> {
     throw error;
   }
 
-  const days: DayData[] = [];
+  const dayByDate = new Map<string, DayData>();
   for (const entry of entries.filter((item) => item.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(item.name))) {
     const directory = path.join(DATA_DIR, entry.name);
     const files = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort();
@@ -125,9 +126,52 @@ async function loadDays(): Promise<DayData[]> {
       ? getPublishableArticles(reviewedArticles)
       : reviewedArticles.filter((article) => article.summary);
     validateArticles(articles, entry.name);
-    days.push({ date: entry.name, articles });
+    dayByDate.set(entry.name, { date: entry.name, articles: articles.map((article, index) => ({ article, slug: String(index + 1) })) });
   }
-  return days.sort((left, right) => right.date.localeCompare(left.date));
+  for (const manual of await loadPublishedManualArticles()) {
+    const day = dayByDate.get(manual.date) ?? { date: manual.date, articles: [] };
+    day.articles.push({ article: manual.article, slug: manual.slug });
+    dayByDate.set(manual.date, day);
+  }
+  return [...dayByDate.values()].sort((left, right) => right.date.localeCompare(left.date));
+}
+
+async function loadPublishedManualArticles(): Promise<Array<{ date: string; article: ProcessedArticle; slug: string }>> {
+  let entries: import("node:fs").Dirent[];
+  try {
+    entries = await fs.readdir(manualIntakeRoot(DATA_DIR), { withFileTypes: true });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw error;
+  }
+  const published: Array<{ date: string; article: ProcessedArticle; slug: string }> = [];
+  for (const entry of entries.filter((item) => item.isDirectory() && /^\d+$/.test(item.name))) {
+    const directory = path.join(manualIntakeRoot(DATA_DIR), entry.name);
+    let intake: Awaited<ReturnType<typeof readManualIntakeRecord>>;
+    let review: ReviewState;
+    try {
+      [intake, review] = await Promise.all([
+        readManualIntakeRecord(directory),
+        fs.readFile(path.join(directory, "review.json"), "utf8").then((value) => JSON.parse(value) as ReviewState)
+      ]);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") continue;
+      throw error;
+    }
+    const publishedDate = typeof intake.published_date === "string" ? intake.published_date : "";
+    if (intake.status !== "published" || !/^\d{4}-\d{2}-\d{2}$/.test(publishedDate) || review.status !== "completed") continue;
+    const approvedIndex = review.articles.find((item) => item.status === "approved")?.index;
+    if (!approvedIndex) continue;
+    const articleFiles = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort();
+    const articleFile = articleFiles.at(-1);
+    if (!articleFile) continue;
+    const raw = JSON.parse(await fs.readFile(path.join(directory, articleFile), "utf8")) as unknown;
+    if (!Array.isArray(raw)) throw new Error(`${articleFile}: JSONルートは配列である必要があります`);
+    const article = normalizeStoredArticle(raw[approvedIndex - 1], `manual ${entry.name}`, approvedIndex - 1);
+    validateArticles([article], `manual ${entry.name}`);
+    published.push({ date: publishedDate, article, slug: manualArticleSlug(entry.name) });
+  }
+  return published;
 }
 
 async function filterReviewedArticles(directory: string, articles: ProcessedArticle[]): Promise<ProcessedArticle[] | null> {
@@ -268,36 +312,28 @@ function sourceTypeToMix(type: SourceTypeLabel): SourceMix {
   };
 }
 
-function renderHome(items: Array<{ date: string; article: ProcessedArticle }>) {
+function renderHome(items: Array<{ date: string; article: ProcessedArticle; slug: string }>) {
   if (!items.length) return `<main class="feed"><section class="empty">この日は記事をお届けできませんでした。収集または生成に失敗したためです。前日までの記事はアーカイブからどうぞ。</section></main>`;
   let lastDate = "";
-  const cards = items.map(({ date, article }) => {
-    const position = findArticlePosition(date, article);
+  const cards = items.map(({ date, article, slug }) => {
     const heading = date !== lastDate ? `<h1 class="date-heading"><a href="${href(`/archive/${date}/`)}">${escapeHtml(formatPickupDate(date))}のピックアップ</a></h1>` : "";
     lastDate = date;
-    return `${heading}${renderCard(date, position, article)}`;
+    return `${heading}${renderCard(date, slug, article)}`;
   }).join("");
   return `<main class="feed">${cards}<p class="archive-cta"><a href="${href("/archive/")}">過去の記事はアーカイブへ →</a></p>${renderLegend()}${renderFooterBanner()}</main>`;
 }
 
-function findArticlePosition(date: string, article: ProcessedArticle) {
-  const day = loadedDayPositions.get(date);
-  return day ? day.indexOf(article) + 1 : 1;
-}
-
-const loadedDayPositions = new Map<string, ProcessedArticle[]>();
-
 function renderDaily(day: DayData) {
   const content = day.articles.length
-    ? day.articles.map((article, index) => renderCard(day.date, index + 1, article)).join("")
+    ? day.articles.map(({ article, slug }) => renderCard(day.date, slug, article)).join("")
     : `<section class="empty">この日は記事をお届けできませんでした。収集または生成に失敗したためです。前日までの記事はアーカイブからどうぞ。</section>`;
   return `<main class="feed"><h1 class="page-title">${escapeHtml(formatLongDate(day.date))}の記事</h1>${content}${renderLegend()}${renderFooterBanner()}</main>`;
 }
 
-function renderCard(date: string, position: number, article: ProcessedArticle) {
+function renderCard(date: string, slug: string, article: ProcessedArticle) {
   const summary = requireSummary(article);
   const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
-  const currentUrl = absoluteUrl(`/t/${date}/${position}/`);
+  const currentUrl = absoluteUrl(`/t/${date}/${slug}/`);
   const referenceArticleDate = summary.published_date || date;
   return `<article class="news-card card-${badgeClass(summary.badge)}">
     <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(referenceArticleDate)}">参考記事公開日：${escapeHtml(formatNumericDate(referenceArticleDate))}</time></div>

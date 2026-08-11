@@ -4,6 +4,7 @@ import { runClaimCheck, runCommentCheck } from "../claimCheck.js";
 import { applyDisplayKanji } from "../displayKanji.js";
 import { reviseTopicFromSavedData } from "../summarizeWithGemini.js";
 import { getToneMode } from "../toneMode.js";
+import { ToneOnlyRevisionContractError } from "../toneOnlyRevision.js";
 import { applyLightweightWhyItMattersEdit } from "./lightweightWhyItMattersEdit.js";
 import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, SummarizedArticle, TopicCandidate } from "../types.js";
 
@@ -15,6 +16,12 @@ export async function reviseStoredArticle(directory: string, index: number, comm
   const article = articles[index - 1];
   if (!article?.topic) throw new Error(`topic data not found for article ${index}`);
   const ledger = await findLedger(directory, article.topic.topic_key);
+  if (reasonTag === "口調" && !article.summary) {
+    throw new ToneOnlyRevisionContractError("元の要約が見つからないため比較できません");
+  }
+  if (reasonTag === "口調" && !ledger) {
+    throw new ToneOnlyRevisionContractError("事実台帳が見つからないため claim refs を固定できません");
+  }
   const lightweight = tryApplyLightweightWhyItMattersEdit(article.summary, article.topic, ledger, comment);
   if (lightweight) {
     articles[index - 1] = {
@@ -100,7 +107,7 @@ function gateKeys(result: ClaimCheckResult | ReturnType<typeof runCommentCheck>)
     .map((violation) => `${violation.section}:${violation.rule}:${violation.detail}`));
 }
 
-async function findLedger(directory: string, topicKey: string): Promise<FactLedger | null> {
+export async function findLedger(directory: string, topicKey: string): Promise<FactLedger | null> {
   const ledgerFile = (await fs.readdir(directory)).filter((name) => /^fact_ledger_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
   if (!ledgerFile) return null;
   const stored = JSON.parse(await fs.readFile(path.join(directory, ledgerFile), "utf8")) as { ledgers?: Array<{ topic_key: string; ledger: FactLedger | null }> };

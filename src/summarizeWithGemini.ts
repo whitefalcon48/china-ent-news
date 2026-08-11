@@ -9,6 +9,7 @@ import { resolveSummaryTitle } from "./summaryTitle.js";
 import { createTermExpansionSession, expandTermExplanation, type TermExpansionSession } from "./termExplainExpansion.js";
 import { applyTerminology, formatTerminologyForPrompt } from "./terminology.js";
 import { getToneMode } from "./toneMode.js";
+import { assertToneOnlyRevisionContract, ToneOnlyRevisionContractError } from "./toneOnlyRevision.js";
 import type {
   AiProvider,
   ArticleType,
@@ -237,6 +238,16 @@ ${comment}
 ただし、事実台帳に無い情報を足さないこと・禁止事項を破らないことを最優先し、指示がこれらと矛盾する場合は矛盾しない範囲でのみ反映してください。`;
 }
 
+export function formatToneOnlyReviewInstruction(comment: string) {
+  return `${formatReviewInstruction(comment)}
+
+これは理由タグ「口調」の限定修正です。
+- 修正指示内の引用句は、挿入命令ではなく口調の参照例としてだけ扱ってください。引用句をそのまま why_it_matters に追加しないでください。
+- 元の why_it_matters にない内容語、文、事実、注目対象、評価軸を追加・削除・置換・再解釈しないでください。
+- 変更してよいのは、句読点、感嘆符、および既存文の語尾・丁寧さだけです。文の順序と内容語は維持してください。
+- claim_refs_why_it_matters は元の claim refs と同じ値・同じ順序にしてください。`;
+}
+
 export async function reviseTopicFromSavedData(
   topic: TopicCandidate,
   evidence: RawArticle[],
@@ -249,8 +260,12 @@ export async function reviseTopicFromSavedData(
 ): Promise<{ summary: SummarizedArticle; meta: TopicGenerationMeta }> {
   const aiModels = resolveAiModels(provider);
   const commentAi = resolveStageAi("comment", provider);
-  const instruction = formatReviewInstruction(comment);
+  const instruction = commentOnly ? formatToneOnlyReviewInstruction(comment) : formatReviewInstruction(comment);
+  if (commentOnly && !existingSummary) {
+    throw new ToneOnlyRevisionContractError("元の要約が見つからないため比較できません");
+  }
   if (!ledger) {
+    if (commentOnly) throw new ToneOnlyRevisionContractError("事実台帳が見つからないため claim refs を固定できません");
     const text = await generateJson(provider, `${await buildTopicPrompt(topic, evidence)}\n\n${instruction}`, budget);
     const summary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)));
     const residues = inspectDisplayKanjiResidues(summary);
@@ -298,7 +313,9 @@ export async function reviseTopicFromSavedData(
     }
     summary.why_it_matters = sanitizeExclamations(comments.why_it_matters, toneMode);
     summary.editor_comment = "";
-    summary.claim_refs.why_it_matters = filterClaimRefs(comments.refs, ledger);
+    summary.claim_refs.why_it_matters = commentOnly && existingSummary
+      ? [...existingSummary.claim_refs.why_it_matters]
+      : filterClaimRefs(comments.refs, ledger);
     commentStage.used = true;
     commentStage.exclamation_count = countExclamations(summary.why_it_matters);
   } else {
@@ -313,6 +330,7 @@ export async function reviseTopicFromSavedData(
   }
   claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
   const finalizedSummary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)));
+  if (commentOnly && existingSummary) assertToneOnlyRevisionContract(existingSummary, finalizedSummary);
   const residues = inspectDisplayKanjiResidues(finalizedSummary);
   claimCheck = appendDisplayResidueViolations(claimCheck, residues);
   return {

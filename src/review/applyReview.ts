@@ -3,9 +3,11 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { formatReviewArticle } from "./buildReviewIssueBody.js";
 import { parseReviewComment, type ReviewDecision } from "./parseReviewComment.js";
-import { readReviewState, writeReviewState } from "./reviewState.js";
+import { readReviewState, today, writeReviewState } from "./reviewState.js";
 import { reviseStoredArticle } from "./reviseArticle.js";
 import { rescueEmptyReview } from "./rescueEmptyReview.js";
+import { ToneOnlyRevisionContractError } from "../toneOnlyRevision.js";
+import { captureManualPublication, findManualReviewPath, markManualIntakePublished } from "./manualPublication.js";
 import type { ProcessedArticle, ReviewArticle, ReviewFeedback, ReviewState } from "../types.js";
 
 async function main() {
@@ -14,9 +16,11 @@ async function main() {
   if (!body.trim()) throw new Error("REVIEW_COMMENT is required");
   const issueNumber = Number(process.env.REVIEW_ISSUE_NUMBER || process.env.ISSUE_NUMBER || 0);
   const dataDir = path.resolve(process.env.SITE_DATA_DIR || "data");
-  const reviewPath = await findReviewPath(dataDir, issueNumber, process.env.REVIEW_DATE);
+  const locatedReview = await findReviewPath(dataDir, issueNumber, process.env.REVIEW_DATE, process.env.MANUAL_COMMENT_ID);
+  const reviewPath = locatedReview.reviewPath;
   const directory = path.dirname(reviewPath);
   const state = await readReviewState(reviewPath);
+  const wasCompleted = state.status === "completed";
   const parsed = parseReviewComment(body);
   const feedback: ReviewFeedback[] = [];
   const replies: string[] = [];
@@ -76,6 +80,10 @@ async function main() {
         replies.push(formatReviewArticle(target.index, revised, true));
       } catch (error) {
         target.status = "pending";
+        if (error instanceof ToneOnlyRevisionContractError) {
+          replies.push(`⚠️ ${target.index}番は、口調だけの修正として安全に確認できなかったため、元の記事を保持して保留に戻しました。\n\n${error.message}`);
+          continue;
+        }
         replies.push(`⚠️ ${target.index}番の再生成に失敗しました。元の記事を維持して未判定に戻します。\n\n${error instanceof Error ? error.message : String(error)}`);
       }
     }
@@ -86,9 +94,17 @@ async function main() {
   if (feedback.length) await appendFeedback(dataDir, feedback);
   if (parsed.invalidLines.length) replies.push(`⚠️ 解釈できなかった行\n\n${parsed.invalidLines.map((line) => `- ${line}`).join("\n")}`);
   if (state.status === "completed") replies.push(buildCompletionSummary(state));
+  const hasApprovedManualArticle = Boolean(!wasCompleted && locatedReview.commentId && state.articles.some((article) => article.status === "approved"));
+  const manualPublication = hasApprovedManualArticle && locatedReview.commentId
+    ? captureManualPublication(locatedReview.commentId, process.env.SITE_URL || "https://bingtangnews.0-w-0.net", today)
+    : undefined;
+  if (state.status === "completed" && locatedReview.commentId && manualPublication) {
+    await markManualIntakePublished(dataDir, locatedReview.commentId, manualPublication.publishedDate, manualPublication.publishedUrl);
+    replies.push(`🧊 持ち込み記事を公開キューに追加しました。公開後、このIssueにURLとX投稿文面を返信します。`);
+  }
   await postReplies(issueNumber || state.issue_number, replies);
   if (process.env.GITHUB_OUTPUT) {
-    await fs.appendFile(process.env.GITHUB_OUTPUT, `completed=${state.status === "completed"}\ndate=${state.date}\n`, "utf8");
+    await fs.appendFile(process.env.GITHUB_OUTPUT, `completed=${state.status === "completed"}\ndate=${state.date}\nmanual=${Boolean(locatedReview.commentId)}\nmanual_id=${locatedReview.commentId || ""}\nmanual_published=${Boolean(manualPublication)}\npublished_date=${manualPublication?.publishedDate || ""}\n`, "utf8");
   }
   console.log(`review apply: ${state.date} / ${state.status}`);
 }
@@ -131,14 +147,18 @@ async function appendFeedback(dataDir: string, records: ReviewFeedback[]) {
   await fs.appendFile(path.join(dataDir, "review-feedback.jsonl"), records.map((record) => JSON.stringify(record)).join("\n") + "\n", "utf8");
 }
 
-async function findReviewPath(dataDir: string, issueNumber: number, requestedDate?: string) {
-  if (requestedDate) return path.join(dataDir, requestedDate, "review.json");
+async function findReviewPath(dataDir: string, issueNumber: number, requestedDate?: string, requestedManualCommentId?: string): Promise<{ reviewPath: string; commentId?: string }> {
+  if (requestedManualCommentId || process.env.MANUAL_REVIEW === "true") {
+    const located = await findManualReviewPath(dataDir, issueNumber, requestedManualCommentId);
+    return located;
+  }
+  if (requestedDate) return { reviewPath: path.join(dataDir, requestedDate, "review.json") };
   const entries = await fs.readdir(dataDir, { withFileTypes: true });
   for (const entry of entries.filter((item) => item.isDirectory()).sort((a, b) => b.name.localeCompare(a.name))) {
     const candidate = path.join(dataDir, entry.name, "review.json");
     try {
       const state = await readReviewState(candidate);
-      if (!issueNumber || state.issue_number === issueNumber) return candidate;
+      if (!issueNumber || state.issue_number === issueNumber) return { reviewPath: candidate };
     } catch {
       // 別形式のディレクトリは無視する。
     }

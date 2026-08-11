@@ -18,6 +18,24 @@ try {
     JSON.stringify([fixtureArticle(1), fixtureArticle(2)], null, 2),
     "utf8"
   );
+  const manualDate = "2026-08-02";
+  const manualDirectory = path.join(dataRoot, "manual-intake", "987654321");
+  await fs.mkdir(manualDirectory, { recursive: true });
+  await fs.writeFile(path.join(manualDirectory, "intake-state.json"), JSON.stringify({
+    version: 1,
+    comment_id: "987654321",
+    source_url: "https://example.com/manual",
+    note: "速報",
+    status: "published",
+    published_date: manualDate
+  }, null, 2), "utf8");
+  await fs.writeFile(path.join(manualDirectory, `articles_${manualDate}.json`), JSON.stringify([fixtureArticle(3)], null, 2), "utf8");
+  await fs.writeFile(path.join(manualDirectory, "review.json"), JSON.stringify({
+    date: manualDate,
+    status: "completed",
+    issue_number: 123,
+    articles: [{ index: 1, topic_key: "fixture-3", title: "手動フィクスチャ", status: "approved", reason_tag: "", comment: "", revision_count: 0 }]
+  }, null, 2), "utf8");
 
   execFileSync(process.execPath, ["--import", "tsx", "src/site/build.ts"], {
     cwd: repoRoot,
@@ -31,24 +49,40 @@ try {
     },
     stdio: "pipe"
   });
+  const manualPostOutput = path.join(tempRoot, "manual-post-output");
+  execFileSync(process.execPath, ["--import", "tsx", "src/site/manualXPost.ts"], {
+    cwd: repoRoot,
+    env: {
+      ...process.env,
+      SITE_DATA_DIR: dataRoot,
+      SITE_OUTPUT_DIR: manualPostOutput,
+      SITE_URL: "https://example.test",
+      MANUAL_COMMENT_ID: "987654321",
+      MANUAL_PUBLISHED_DATE: manualDate
+    },
+    stdio: "pipe"
+  });
 
   const home = await readPage("index.html");
   const daily = await readPage(`archive/${date}/index.html`);
   const detail = await readPage(`t/${date}/1/index.html`);
   const detailSecond = await readPage(`t/${date}/2/index.html`);
+  const manualDetail = await readPage(`t/${manualDate}/m-987654321/index.html`);
+  const manualPost = await fs.readFile(path.join(manualPostOutput, "manual_x_post_987654321.md"), "utf8");
   const about = await readPage("about/index.html");
   const articleOgpPath = path.join(outputRoot, "og", date, "1.png");
   const articleOgp = await sharp(articleOgpPath).metadata();
   const defaultOgp = await sharp(path.join(outputRoot, "assets", "ogp-default.png")).metadata();
 
-  assertIncludes(home, "最終更新：2026年8月1日", "トップの日付ラベル");
-  assertIncludes(home, "8月1日のピックアップ", "フィード見出しはピックアップの単位を示す");
+  assertIncludes(home, "最終更新：2026年8月2日", "トップの日付ラベル");
+  assertIncludes(home, "8月2日のピックアップ", "持ち込み承認日をフィード見出しに使う");
+  assertIncludes(home, "8月1日のピックアップ", "通常記事のフィード見出しを維持する");
   assertIncludes(home, "参考記事公開日：2026/8/1", "カードの日付は参考記事公開日として示す");
   assertNotIncludes(home, "<details", "トップの折りたたみ");
   assertNotIncludes(home, "<summary", "トップの折りたたみ見出し");
   assertIncludes(home, "フィクスチャ本文 A", "トップの本文全文");
-  assertCount(home, "twitter.com/intent/tweet?url=", 2, "トップのカードごとのシェアリンク");
-  assertCount(home, 'target="_blank" rel="noopener noreferrer">Xでシェア', 2, "トップのシェアリンクの新規タブ属性");
+  assertCount(home, "twitter.com/intent/tweet?url=", 3, "トップのカードごとのシェアリンク");
+  assertCount(home, 'target="_blank" rel="noopener noreferrer">Xでシェア', 3, "トップのシェアリンクの新規タブ属性");
   assertIncludes(home, '<meta property="og:image" content="https://example.test/assets/ogp-default.png">', "共通OGP画像の絶対URL");
   assertIncludes(home, '<meta property="og:image:width" content="1200">', "共通OGP画像の幅");
   assertIncludes(home, '<meta property="og:image:height" content="630">', "共通OGP画像の高さ");
@@ -67,12 +101,12 @@ try {
   assertIncludes(home, 'class="section-icon section-icon-reaction"', "反応・見られ方のアイコン");
   assertIncludes(home, 'class="section-icon section-icon-point"', "注目ポイントのアイコン");
   assertIncludes(home, 'class="section-icon section-icon-supplement"', "補足のアイコン");
-  assertCount(home, "ビンタンからの補足", 2, "トップの補足ラベル");
+  assertCount(home, "ビンタンからの補足", 3, "トップの補足ラベル");
   assertCount(home, "反応・見られ方", 1, "反応・見られ方は値がある記事だけに表示");
   assertCount(home, "関連角度のソース", 1, "関連角度のソースは使用した記事だけに表示する");
   assertIncludes(home, "関連媒体", "関連角度の媒体を別表示する");
   assertIncludes(home, "/assets/bingtang-avatar-serious-", "訃報記事の真剣な表情");
-  assertCount(home, '<span class="avatar avatar-comment">', 2, "注目ポイントだけに出す専用アバター");
+  assertCount(home, '<span class="avatar avatar-comment">', 3, "注目ポイントだけに出す専用アバター");
   assertNotIncludes(home, "bingtang-avatar-focus.png", "補足用の旧アバター");
   assertIncludes(home, '<section class="bingtang-supplement">\n    <div>', "補足ブロックは顔なし");
   assertNotIncludes(home, "<h2><a href=", "トップから個別ページへのタイトル導線");
@@ -106,6 +140,9 @@ try {
   assertNotIncludes(home, "記事はAIが収集・生成し、人間が監修しています。", "フッターの旧監修表現");
   assertIncludes(detail, `<meta property="og:image" content="https://example.test/og/${date}/1.png?v=`, "記事別OGP画像URL");
   assertIncludes(detail, `<meta name="twitter:image" content="https://example.test/og/${date}/1.png?v=`, "記事別Xカード画像URL");
+  assertIncludes(manualDetail, `https://example.test/og/${manualDate}/m-987654321.png?v=`, "持ち込み記事の固有OGPとcache bust");
+  assertIncludes(manualDetail, "フィクスチャ記事 B", "持ち込み記事の本文");
+  assertIncludes(manualPost, `https://example.test/t/${manualDate}/m-987654321/`, "持ち込み公開URL付きX文面");
   if (articleOgp.width !== 1200 || articleOgp.height !== 630) throw new Error(`記事別OGPは1200x630のはずですが ${articleOgp.width}x${articleOgp.height} です`);
   if (defaultOgp.width !== 1200 || defaultOgp.height !== 630) throw new Error(`共通OGPは1200x630のはずですが ${defaultOgp.width}x${defaultOgp.height} です`);
 

@@ -6,6 +6,15 @@
 - ✅ HTTPS returns 200 with certificate verification result 0; canonical URL, favicon, logo, and hero image all return 200.
 - ✅ GitHub Pages remains available as an independent fallback at `https://whitefalcon48.github.io/china-ent-news/`; the temporary Pages custom-domain assignment was removed.
 
+## 2026-08-11 実装・ローカル検証完了（持ち込みニュース即時生成）
+
+- ✅ 常設Issue（`manual-news-intake`）へのOWNERコメントを即時処理する専用Workflowを追加。1コメント1 URL＋任意理由を受け取り、URL安全検査、topic化、root / related source expansion、fact ledger、claim / comment / 表記ゲートを通過した1記事だけを `manual-news-review` Issueへ出す。日次ランキングとカテゴリ枠だけを免除し、根拠条件と人間レビューは免除しない。
+- ✅ `data/manual-intake/<comment-id>/` を独立正本とし、同一commentの再実行・Issue作成後の再実行でもレビューIssueを二重作成しない。日次 `data/YYYY-MM-DD/` へ直接マージしないため、通常の日次生成・レビュー状態を壊さない。
+- ✅ 持ち込みレビューの採用後だけ、承認日のフィードへ安定URL `/t/<date>/m-<comment-id>/` で合成し、OGP・トップのXシェアを生成。日次Xダイジェストは再生成せず、公開URLと個別X投稿候補を専用レビューIssueへ返信する。
+- ✅ userinfo、localhost、private / link-local / reserved IP、非標準port、危険なredirectを拒否し、production取得は検査済みIPへ接続を固定。raw HTML、URL query/hash、秘密値は永続化しない。
+- ✅ 日次生成・日次レビュー・持ち込み・Pages deployのconcurrencyを同一groupへ統一。`npm run check`、`npm run test:manual-intake`、`npm run test:site-feed`、`npm run test:review-presentation`、`npm run test:review-rescue`、`npm run build:site`成功。Actions実測と常設Issue作成はmain反映後に行う。
+- 設計正本: [`docs/design-manual-news-intake.md`](design-manual-news-intake.md)
+
 ????: 2026-08-11???UI??????????????
 
 ## 2026-08-11 ??????????????

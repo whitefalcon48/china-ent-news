@@ -18,7 +18,7 @@ jobs:
   apply:
     if: >-
       github.event.comment.author_association == 'OWNER' &&
-      contains(github.event.issue.labels.*.name, 'daily-review')
+      (contains(github.event.issue.labels.*.name, 'daily-review') || contains(github.event.issue.labels.*.name, 'manual-news-review'))
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -47,6 +47,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REVIEW_ISSUE_NUMBER: ${{ github.event.issue.number }}
           REVIEW_COMMENT: ${{ github.event.comment.body }}
+          MANUAL_REVIEW: ${{ contains(github.event.issue.labels.*.name, 'manual-news-review') && 'true' || 'false' }}
+          SITE_URL: https://bingtangnews.0-w-0.net
           AI_PROVIDER: deepseek
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           DEEPSEEK_MODEL: deepseek-v4-flash
@@ -111,7 +113,7 @@ jobs:
           LOLIPOP_FTPS_PASSWORD: ${{ secrets.LOLIPOP_FTPS_PASSWORD }}
 
       - name: Generate approved X texts
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
         run: npm run post:x
         env:
           SITE_URL: https://bingtangnews.0-w-0.net
@@ -119,12 +121,26 @@ jobs:
           POST_DATE: ${{ steps.review.outputs.date }}
 
       - name: Upload X post texts
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: x-post-texts-${{ steps.review.outputs.date }}
           path: output/x_posts_*.md
           if-no-files-found: error
+
+      - name: Generate manual X text
+        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        run: node --import tsx src/site/manualXPost.ts
+        env:
+          SITE_URL: https://bingtangnews.0-w-0.net
+          MANUAL_COMMENT_ID: ${{ steps.review.outputs.manual_id }}
+          MANUAL_PUBLISHED_DATE: ${{ steps.review.outputs.published_date }}
+
+      - name: Reply with manual publication and X text
+        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        run: gh issue comment "${{ github.event.issue.number }}" --body-file "output/manual_x_post_${{ steps.review.outputs.manual_id }}.md"
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Close completed review issue
         if: steps.review.outputs.completed == 'true'
