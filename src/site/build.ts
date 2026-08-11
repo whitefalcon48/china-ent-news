@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 import sharp from "sharp";
@@ -61,12 +62,12 @@ async function main() {
       const summary = requireSummary(article);
       const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
       const ogImagePath = `/og/${day.date}/${index + 1}.png`;
-      await generateArticleOgp(ogImagePath, title, selectCommentAvatar(article));
+      const ogImageVersion = await generateArticleOgp(ogImagePath, title, selectCommentAvatar(article));
       return writePage(`t/${day.date}/${index + 1}/index.html`, renderLayout({
         title: `${title}｜${SITE_NAME}`,
         description: summary.lead,
         canonicalPath: `/t/${day.date}/${index + 1}/`,
-        ogImagePath,
+        ogImagePath: `${ogImagePath}?v=${ogImageVersion}`,
         currentNav: "",
         body: renderArticlePage(day.date, article),
         fullHeader: false,
@@ -582,6 +583,8 @@ async function generateArticleOgp(sitePath: string, title: string, avatarName: s
   if (logo) composites.push({ input: await sharp(logo).resize({ width: 430, height: 110, fit: "inside" }).png().toBuffer(), left: 70, top: 54 });
   if (avatar) composites.push({ input: await sharp(avatar).resize({ width: 164, height: 164, fit: "contain" }).png().toBuffer(), left: 982, top: 424 });
   await sharp(background).composite(composites).png().toFile(destination);
+  const image = await fs.readFile(destination);
+  return createHash("sha256").update(image).digest("hex").slice(0, 12);
 }
 
 function ogpBackgroundSvg(kind: "default" | "article", content = "") {
