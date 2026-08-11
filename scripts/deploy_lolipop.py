@@ -151,7 +151,12 @@ def main() -> int:
             return 0
         except RETRYABLE_ERRORS as error:
             if attempt == 3:
-                print(f"Lolipop FTPS deploy failed after {attempt} attempts: {type(error).__name__}", file=sys.stderr)
+                safe_detail = str(error).replace(config.username, "***").replace(config.password, "***")
+                print(
+                    f"Lolipop FTPS deploy failed after {attempt} attempts: "
+                    f"{type(error).__name__}: {safe_detail}",
+                    file=sys.stderr,
+                )
                 return 1
             print(f"Lolipop FTPS attempt {attempt} failed; retrying.", file=sys.stderr)
             time.sleep(attempt * 2)
