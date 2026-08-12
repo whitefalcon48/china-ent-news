@@ -59,10 +59,13 @@ jobs:
           AI_PROVIDER: deepseek
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           DEEPSEEK_MODEL: deepseek-v4-flash
-          # The intake route needs a reliable, bounded model. Flash is already
-          # used successfully for the topic seed; the same grounding gates run
-          # after ledger generation, so this does not relax publish safety.
-          LEDGER_AI_MODEL: deepseek-v4-flash
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-2.5-flash-lite
+          # DeepSeek returned empty ledger responses for this intake. Use the
+          # separately configured Gemini route for the fact-only stage; the
+          # same ledger and claim gates still decide review eligibility.
+          LEDGER_AI_PROVIDER: gemini
+          LEDGER_AI_MODEL: gemini-2.5-flash-lite
           COMMENT_AI_MODEL: deepseek-v4-pro
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           SOURCE_EXPANSION_SKIP_RSSHUB: "true"
