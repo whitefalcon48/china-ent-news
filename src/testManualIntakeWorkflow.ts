@@ -28,6 +28,7 @@ async function main() {
   const issueCreateLine = workflow.split(/\r?\n/u).find((line) => line.includes("gh issue create")) ?? "";
   assert.ok(issueCreateLine && !issueCreateLine.includes("--label"), "review Issue must be created without a label");
   assert.match(workflow, /REVIEW_TITLE: "持ち込みニュース レビュー #\$\{\{/u);
+  assert.match(workflow, /LEDGER_AI_MODEL: deepseek-v4-flash/u, "持ち込み用の事実台帳は検証済みのFlashを使う");
   assert.match(workflow, /持ち込みニュースの処理に失敗しました。詳細はActionsログを確認してください。[\s\S]*?exit 1/u);
   assert.match(workflow, /steps\.review\.outputs\.needs_link == 'false'[\s\S]*?steps\.label_review\.outcome == 'success'/u, "既存レビューIssueの再実行でもラベルを復旧する");
   console.log("manual intake workflow tests passed");
