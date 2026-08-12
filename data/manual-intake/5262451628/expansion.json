@@ -1,0 +1,544 @@
+{
+  "shortlisted_topic_keys": [
+    "2026年暑期档电影票房"
+  ],
+  "attempted_topic_count": 1,
+  "attempted_route_count": 4,
+  "success_route_count": 4,
+  "evidence_count": 7,
+  "corroboration_evidence_count": 5,
+  "related_angle_evidence_count": 2,
+  "attempts": [
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影产业 产值 3800亿",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 3,
+      "rejected_count": 1,
+      "rejection_reasons": {
+        "weak_topic_match": 1
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影经济促进年 补贴",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 2,
+      "rejected_count": 3,
+      "rejection_reasons": {
+        "weak_topic_match": 3
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 1,
+      "rejected_count": 4,
+      "rejection_reasons": {
+        "related_missing_angle": 4
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 1,
+      "rejected_count": 4,
+      "rejection_reasons": {
+        "related_missing_canonical_entity": 3,
+        "unsafe_url": 1
+      },
+      "failure_stage": ""
+    }
+  ],
+  "evidence": [
+    {
+      "title": "1元撬动15.77元！今年以来电影全产业链产值已突破3800亿元",
+      "url": "https://www.hxdsb.com/html/content/wl/e4f41e92d1b943f0a750f499acfc74c5.shtml",
+      "source_name": "hxdsb.com",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "电影产业 产值 3800亿",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "1元撬动15.77元！今年以来电影全产业链产值已突破3800亿元",
+        "// 页面加载完成后立即设置分享信息 (function() { console.log('🔄 开始设置动态分享信息...'); // 获取页面基本信息 var currentUrl = window.location.href.split('#')[0]; // 从隐藏字段获取文章信息 var articleTitle = document.getElementById('articleTitle') ? document.getElementById('articleTitle').value : ''; var articleThumb = document.getElementById('articleThumb') ? document.getElementById('articleThumb').value : ''; var articleDescription = document.getElementById('articleDescription') ? document.getElementById('articleDescription').value : ''; // 标题：优先使用文章标题，否则使用页面标题 var pageTitle = articleTitle || (document.querySelector('h3') ? document.querySelector('h3').textContent.trim() : document.title); // 描述：优先使用文章描述，否则从内容提取 var description = ''; if (articleDescription && articleDescription.trim() !== '') { // 使用文章描述字段 description = articleDescription.trim(); if (description.length > 120) { description = description.substring(0, 120) + '...'; } } else { // 从文章内容提取 var contentElement = document.querySelector('.detail__content'); if (conten"
+      ],
+      "validation_status": "verified",
+      "media_family": "hxdsb.com",
+      "validation_reason": "document_verified",
+      "published_date": "2026-08-10",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "stage_or_festival",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 12000
+    },
+    {
+      "title": "中国电影全产业链产值破3800亿，电影IP游戏联动如何撬动银幕外千亿市场？",
+      "url": "https://k.sina.com.cn/article_7879922977_1d5ae152106801i3q4.html?from=tech",
+      "source_name": "k.sina.com.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "电影产业 产值 3800亿",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "中国电影全产业链产值破3800亿，电影IP游戏联动如何撬动银幕外千亿市场？",
+        "(sinaads = window.sinaads || []).push({}); .video-2017 .play-video-area img {width: 100%;height: 360px;object-fit: contain;} 根据央视新闻客户端报道[1]，截至2026年8月10日，中国电影全产业链产值已突破3800亿元，暑期档票房超过86亿元。国家电影局数据显示[2]，每1元电影票房可带动上下游关联产业15.77元产值。银幕之外，由电影IP、游戏联动和“票根经济”共同撬动的一个超千亿级消费市场正在全面爆发。 这一轮爆发的背景是：2026年被定为“电影经济促进年”，官方投放不少于12亿元惠民观影补贴，并在16个城市开展“电影+消费”综合试点[1]。从数据看，截至8月9日，暑期档电影票房（含预售）达85.24亿元，同比增长3.47%；放映场次3046.3万场，同比增长7%；观影人次2.34亿，同比增长6.85%；平均票价36.3元，同比下降3.2%[1]。从7月11日起，市场连续30天单日票房破亿[1]，年度总票房已超过242亿元[1]。与此同时，全国全年净增影院363家、银幕2215块[1]。市场热度的溢出效应正在重塑电影产业的价值链。 电影IP与游戏联动有哪些成功案例？ 影游联动已跑通多个成熟模式，从“电影世界观+游戏交互”到“游戏IP反哺动画”，再到“影游互文”，均实现了跨媒介的价值放大。以下三个案例最具代表性： 案例一：《哈利·波特》与《霍格沃茨之遗》 2023年发售的开放世界游戏《霍格沃茨之遗》并非直接改编电影，而是以《哈利·波特》电影IP的世界观为蓝本，允许玩家自由探索魔法学校。这种“高自由度探索+经典魔法场景还原”的做法，精准击中了粉丝的情怀需求。据公开资料，游戏全球销量突破1500万份，带动电影IP二次商业化。游戏上线当月，相关电影周边搜索量暴涨200%，验证了“电影世界观+游戏交互”的可行性。 从财经视角看，这一案例的启示在于：电影IP的变现路径已从“票房+衍生品”的线性模式，升级为“世界观授权+跨媒介互动”的指数模式。游戏不仅为IP贡献了直接收入，更通过延长IP生命周期，反哺了原著的流媒体点击与主题乐园客流。 案例二：《赛博朋克：边缘行者》 2022年Netflix动画《赛博朋克：边缘行者》改编自游戏《赛博朋克2077》，但动"
+      ],
+      "validation_status": "verified",
+      "media_family": "sina",
+      "validation_reason": "document_verified",
+      "published_date": "2026-08-11",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "ai_event",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 7153
+    },
+    {
+      "title": "全产业链产值破3800亿！“电影+”撬动文旅全域消费活力",
+      "url": "https://www.163.com/dy/article/L3U2FEPR0514R9KQ.html",
+      "source_name": "163.com",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "电影产业 产值 3800亿",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "全产业链产值破3800亿！“电影+”撬动文旅全域消费活力",
+        "网易首页 应用 网易新闻 网易公开课 网易红彩 网易严选 邮箱大师 网易云课堂 快速导航 新闻 国内 国际 王三三 体育 NBA CBA 综合 中超 国际足球 英超 西甲 意甲 娱乐 明星 电影 电视 音乐 封面故事 财经 股票 原创 智库 汽车 购车 车型库 科技 网易智能 原创 IT 互联网 通信 时尚 艺术 旅游 手机 / 数码 惊奇科技 易评机 家电 房产 / 家居 北京房产 上海房产 广州房产 楼盘库 设计师库 案例库 教育 留学 高考 查看网易地图 登录 注册免费邮箱 注册VIP邮箱（特权邮箱，付费） 免费下载网易官方手机邮箱应用 安全退出 移动端 网易公开课 TED 中国大学视频公开课 国际名校公开课 赏课·纪录片 付费精品课程 北京大学公开课 英语课程学习 网易严选 新人特价 9.9专区 新品热卖 人气好物 居家生活 服饰鞋包 母婴亲子 美食酒水 支付 一卡通充值 一卡通购买 我的网易支付 网易跨境支付 邮箱 免费邮箱 VIP邮箱 企业邮箱 免费注册 客户端下载 网易首页 > 网易号 > 正文 申请入驻 window.UID_TARGET = ['0', '1', '2', '3', '4', '5', '6', '7'] 全产业链产值破3800亿！“电影+”撬动文旅全域消费活力 2026-08-09 22:16:07 来源: 北青网-北京青年报 北京 举报 0 分享至 用微信扫码二维码 分享至好友和朋友圈 据网络平台数据2026年暑期档电影票房已超85亿元全年票房已超242亿元中外影片陆续上映观影人次和放映场次双创新高今年暑期档影片类型丰富、题材多元，超120部中外影片陆续上映，已连续一个月单日票房超亿元。其中，国产动画电影《八仙！》票房已突破14亿元，暂列全年动画电影票房榜第一。该片还将登陆全球多个国家和地区。进口影片《蜘蛛侠：崭新之日》目前位列暑期档票房榜第三位。影片于7月29日在中国内地领先全球上映，比北美提前两天，体现了好莱坞对中国市场的高度重视。职场喜剧《年会不能停！2》延续前作轻松搞笑风格，讲述新老打工人相见，整活不能停的爆笑喜剧故事。此外，电影《欢迎来龙餐馆》仅点映及预售票房就取得超8000万元的成绩，该片将于8月11日上映，影片讲述了远赴海外担任中餐馆主厨的徐福，与大堂经理马俊生将“龙餐馆”经营得蒸蒸日上，却突遭战争爆发的一系列故事"
+      ],
+      "validation_status": "verified",
+      "media_family": "netease",
+      "validation_reason": "document_verified",
+      "published_date": "2026-08-09",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "obituary",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 12000
+    },
+    {
+      "title": "“2026电影经济促进年”正式启动！超12亿元补贴，速速领取→",
+      "url": "https://finance.sina.com.cn/jjxw/2026-02-12/doc-inhmqrvx6585402.shtml",
+      "source_name": "finance.sina.com.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "电影经济促进年 补贴",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "“2026电影经济促进年”正式启动！超12亿元补贴，速速领取→",
+        "(sinaads = window.sinaads || []).push({}) 截至目前，2026年春节档电影预售票房已突破1.6亿元。《惊蛰无声》《镖人：风起大漠》《飞驰人生3》《星河入梦》《熊猫计划之部落奇遇记》《熊出没·年年有熊》等多部影片锁定春节档。你计划去看哪部电影呢？告诉你一个好消息，观影消费补贴来了！2月12日，“2026电影经济促进年”在北京正式启动。活动由国家电影局、中央广播电视总台主办。启动仪式上，国家电影专资办、中国工商银行、中国建设银行、中国银联、招商银行、猫眼娱乐、大麦娱乐、抖音生活服务等联合宣布，全年预计投放不少于12亿元惠民观影补贴。中国工商银行、中国建设银行等机构将通过刮刮乐、买一赠一、购票立减、积分兑换、电影票根抽奖等多元形式，为广大观众带来实实在在的观影优惠。🎉🎉🎉观影优惠怎么领？实用攻略来了！01中国工商银行电影刮刮乐活动在“工银e生活”App或“e生活plus”小程序参与“电影刮刮乐”活动，有机会至高享受18元电影优惠。登录工银e生活App，进入影票专区。点击上方活动banner，进入活动页面。参与电影刮刮乐活动，抽取电影刷卡金。在工银e生活App“影票专区”选择想看的电影和场次，并点击“确认支付”。在工银e支付收银台完成符合刷卡金核销门槛的消费。完成满足条件的消费后，刷卡金将立即汇入客户的消费账户中，可以通过工银e生活App消息中心查看入账信息。猫眼App、微信小程序满减互动登录猫眼App或微信小程序，进入电影频道，进行影院/影票/场次选择，随后进入订单页，确认后选择用微信支付，并用绑定的工行卡结账可确认最终优惠信息（用户在此步骤才能看到实际优惠）。02中国建设银行即日起至2026年10月31日，办理龙卡龙标电影信用卡消费达标月月可享“电影票买一赠一券”，通过建行生活App或建行手机银行App订购2张电影票时可用，单笔至高优惠50元。建行手机银行App搜索“龙标”了解详情。2026年2月1日至2026年3月31日，持卡人在指定活动门店出示云闪付APP、建行生活APP付款码并选择建行龙卡信用卡银联单标卡（卡号62开头）全额支付，有机会享影院小食满36元立减16元优惠。具体活动门店可通过云闪付APP搜索“建行影院”查询。03中国银联用户可以通过云闪付App“2026电影经济促进年”专题页面进行领取观影福利以及参加票根抽"
+      ],
+      "validation_status": "verified",
+      "media_family": "sina",
+      "validation_reason": "document_verified",
+      "published_date": "2026-02-12",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "stage_or_festival",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 7388
+    },
+    {
+      "title": "“2026电影经济促进年”启动，预计投放超12亿观影补贴",
+      "url": "https://m.sohu.com/a/986890371_114760?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "source_name": "m.sohu.com",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "电影经济促进年 补贴",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "“2026电影经济促进年”启动，预计投放超12亿观影补贴",
+        "IT之家 2 月 13 日消息，据国家电影局官方，2 月 12 日，“2026 电影经济促进年”在北京启动，活动由国家电影局、中央广播电视总台主办。中宣部副部长、中央广播电视总台台长慎海雄，商务部副部长鄢东等出席并共同启动“2026 电影经济促进年”。 启动仪式上，国家电影专资办、中国工商银行、中国建设银行、中国银联、招商银行、猫眼娱乐、大麦娱乐、抖音生活服务等联合宣布，全年预计投放不少于 12 亿元惠民观影补贴。中国电影集团、华夏电影发行有限责任公司以及西部电影集团有限公司、河南广播电视台，分别发布 LED 电影屏和虚拟现实影厅增长计划。 中国电影科学技术研究所与华夏电影发行有限责任公司共同发起设立国家电影数智资产平台，培育电影新质生产力。现场还公布了全国 16 个“电影 +”消费综合试点城市名单，并为“跟着电影逛市集”活动开市。“2026 电影经济促进年”鼓励各地开展各具特色的电影经济促进活动，积极扩大观影消费。 IT之家注意到，2026 春节档电影片单此前已经在京发布，影片种类多样、题材多元，涵盖喜剧、动作、动画、科幻等类型，《飞驰人生 3》《熊出没 · 年年有熊》《惊蛰无声》《镖人：风起大漠》《星河入梦》《熊猫计划之部落奇遇记》等在列。 发布于：山东省"
+      ],
+      "validation_status": "verified",
+      "media_family": "sohu",
+      "validation_reason": "document_verified",
+      "published_date": "2026-02-13",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "general",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 538
+    },
+    {
+      "title": "120余件大师作品讲述北京故事，展示首都焕新面貌",
+      "url": "https://xinwen.bjd.com.cn/content/s68f0df96e4b02424b0c1a4da.html",
+      "source_name": "xinwen.bjd.com.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "北京 作品",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "120余件大师作品讲述北京故事，展示首都焕新面貌",
+        "var site = {\"uuid\":\"5b165687a010550e5ddc0e6a\",\"created\":\"2019-11-05T17:18:31.000+08:00\",\"createdBy\":\"system\",\"updated\":\"2026-05-20T14:20:24.000+08:00\",\"updatedBy\":\"64afc908d5de6cfed75146b1\",\"deleted\":false,\"type\":\"NEWSAPP\",\"name\":\"\\u5317\\u4EAC\\u65E5\\u62A5APP\\u65B0\\u95FB\",\"displayOrder\":1,\"comment\":\"\",\"siteId\":\"649a3361d5de5604717426ed\",\"schema\":\"https\",\"domain\":\"xinwen.bjd.com.cn\",\"port\":443,\"indexTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"indexTemplateName\":\"share\",\"indexTemplateFile\":\"index\",\"columnTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"columnTemplateName\":\"share\",\"columnTemplateFile\":\"column-replace\",\"specialTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"specialTemplateName\":\"share\",\"specialTemplateFile\":\"special-share\",\"contentTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"contentTemplateName\":\"share\",\"contentTemplateFile\":\"content-share\",\"seoTitle\":\"\",\"seoKeywords\":\"\",\"seoDescription\":\"\",\"cacheEnabled\":false,\"indexMaxAge\":5,\"columnMaxAge\":5,\"contentMaxAge\":5,\"contentUrlPattern\":0,\"payToRe"
+      ],
+      "validation_status": "verified",
+      "media_family": "xinwen.bjd.com.cn",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2019-11-05",
+      "document_text_length": 12000,
+      "angle_kind": "work_context"
+    },
+    {
+      "title": "英媒：北京扰乱江泽民粉丝祝寿会 - BBC News 中文",
+      "url": "https://www.bbc.com/zhongwen/simp/press_review/2016/08/160815_press_review",
+      "source_name": "bbc.com",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "北京 粉丝",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "英媒：北京扰乱江泽民粉丝祝寿会 - BBC News 中文",
+        "英媒：北京扰乱江泽民粉丝祝寿会图像来源，ReutersPublished 2016年8月15日《金融时报》周一（8月15日）报道中国前领导人江泽民被视为“威胁”，当局担心维权律师和工运人士等公民社会团体将利用前领导人江泽民90岁生日进行潜在的“颠覆”活动。“虽然周三满90岁的江泽民身体虚弱，却被现任领导人习近平视为有政治上的威胁。习近平在第二个任期之前，正在准备明年晚些时候大规模调整高级官员。”“除此之外，本次打压的原因也是为了压制人们对更为开明的1990年代的怀念。”报道提及中国一些自称江泽民粉丝的“蛤丝”们很希望为他举办生日庆祝，却遭到警方的阻止。中国与印度《金融时报》周一还报道了中国外长王毅对印度的访问，认为两国“在紧张中希望重建关系”。报道提及现任总理莫迪自2014年上任后，曾希望中国领导人习近平的印度之行能帮助推动印度的现代化。之后，中国与印度也签署了价值200亿美元的投资协议。不过，中印之间的经济合作谈判却因在有争议边界地区的两军对峙而蒙上阴影。“两国虽然在公开场合仍然表现出友好和经济合作的愿望，但是两国在地缘政治以及构织战略关系时形成的紧张一直在增长。”Skip 热读 and continue reading热读中国单身男性陷“闪婚”骗局：在孤独与婚姻焦虑中受害“我被朝鲜绑架，还被迫嫁给美国士兵”太阳前所未有的清晰：迄今最详细的观测影像曝光芬兰海底天然气管道受损，案件为何在香港审理？End of 热读王毅正是在这样的大背景下访问印度，“分析人士认为，他此行恰好在一个关键的契机”。最近，中国与巴基斯坦在巴控克什米尔地区进行了前所未有过的联合军事巡逻令印度不解，而中国也不满印度对南海仲裁案结果的支持。“虽然两国之间的差异不大可能因为王毅的访问或者莫迪与习近平即将在国际峰会上的见面机会而得以沟通解决，但是分析人士表示，高层的接触能够给不断升温的紧张封顶。”中国与日本图像来源，Reuters图像加注文字，安倍晋三2015年没有在日本投降纪念日参拜靖国神社，送去了供奉祭品《泰晤士报》周一报道了日本“闪躲”参拜靖国神社问题引发的中国危机。报道称，在二战日本投降日，日本试图避免国际事件，匆忙派遣强硬派新任防卫大臣稻田朋美前往东非国家吉布提访问。报道引述日本不具名官员的话说，这样“为维护脸面”安排的行程，就像是晴天霹雳，正值中国数以百计船只靠近有争议的钓鱼岛附近水域，"
+      ],
+      "validation_status": "verified",
+      "media_family": "bbc.com",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2016-08-15",
+      "document_text_length": 1366,
+      "angle_kind": "audience_reaction"
+    }
+  ],
+  "observations": [
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影产业 产值 3800亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://stcn.com/article/detail/1539123.html",
+      "title": "3800亿！阿里重大宣布 - 证券时报",
+      "source_name": "stcn.com",
+      "media_family": "stcn.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影产业 产值 3800亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://k.sina.com.cn/article_7879922977_1d5ae152106801i3vq.html?from=finance",
+      "title": "电影全产业链产值突破3800亿：1元票房如何撬动15.77元？ - 新浪",
+      "source_name": "k.sina.com.cn",
+      "media_family": "sina",
+      "status": "discovered",
+      "reason": "document_validation_limit"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影产业 产值 3800亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.hxdsb.com/html/content/wl/e4f41e92d1b943f0a750f499acfc74c5.shtml",
+      "title": "1元撬动15.77元！今年以来电影全产业链产值已突破3800亿元",
+      "source_name": "hxdsb.com",
+      "media_family": "hxdsb.com",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2026-08-10",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "stage_or_festival",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影产业 产值 3800亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://k.sina.com.cn/article_7879922977_1d5ae152106801i3q4.html?from=tech",
+      "title": "中国电影全产业链产值破3800亿，电影IP游戏联动如何撬动银幕外千亿市场？",
+      "source_name": "k.sina.com.cn",
+      "media_family": "sina",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2026-08-11",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "ai_event",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影产业 产值 3800亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.163.com/dy/article/L3U2FEPR0514R9KQ.html",
+      "title": "全产业链产值破3800亿！“电影+”撬动文旅全域消费活力",
+      "source_name": "163.com",
+      "media_family": "netease",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2026-08-09",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "obituary",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影经济促进年 补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.chinafilm.gov.cn/xwzx/ywxx/202602/t20260211_949849.html",
+      "title": "“2026电影经济促进年”正式启动-要闻信息 - 国家电影局",
+      "source_name": "chinafilm.gov.cn",
+      "media_family": "chinafilm.gov.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影经济促进年 补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://baike.baidu.com/item/2026%E7%94%B5%E5%BD%B1%E7%BB%8F%E6%B5%8E%E4%BF%83%E8%BF%9B%E5%B9%B4/67378271",
+      "title": "2026电影经济促进年_百度百科",
+      "source_name": "baike.baidu.com",
+      "media_family": "baike.baidu.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影经济促进年 补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.cctv.com/2026/02/12/ARTIXoMdoAlayUdiRVgUryuQ260212.shtml",
+      "title": "光影驰骋惠万家！“2026电影经济促进年”启动 - 央视网",
+      "source_name": "cctv.com",
+      "media_family": "cctv.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影经济促进年 补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://finance.sina.com.cn/jjxw/2026-02-12/doc-inhmqrvx6585402.shtml",
+      "title": "“2026电影经济促进年”正式启动！超12亿元补贴，速速领取→",
+      "source_name": "finance.sina.com.cn",
+      "media_family": "sina",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2026-02-12",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "stage_or_festival",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "电影经济促进年 补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://m.sohu.com/a/986890371_114760?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "title": "“2026电影经济促进年”启动，预计投放超12亿观影补贴",
+      "source_name": "m.sohu.com",
+      "media_family": "sohu",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2026-02-13",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "general",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://artouch.com/art-news/content-3422.html",
+      "title": "藝術北京 - 典藏ARTouch.com",
+      "source_name": "artouch.com",
+      "media_family": "artouch.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.beijingcommune.com/?ref=addtabs&lang=zh-cn",
+      "title": "北京公社",
+      "source_name": "beijingcommune.com",
+      "media_family": "beijingcommune.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.news.cn/shuhua/20251228/7c34104a89a049daa92716857515c950/c.html",
+      "title": "精彩看点！第十届中国北京国际美术双年展上有哪些佳作亮相【组图】",
+      "source_name": "news.cn",
+      "media_family": "news.cn",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://beijingdangdaiartfair.com/zh/artworks/",
+      "title": "艺术品– 北京当代艺术博览会 - Beijing Dangdai Art Fair",
+      "source_name": "beijingdangdaiartfair.com",
+      "media_family": "beijingdangdaiartfair.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://xinwen.bjd.com.cn/content/s68f0df96e4b02424b0c1a4da.html",
+      "title": "120余件大师作品讲述北京故事，展示首都焕新面貌",
+      "source_name": "xinwen.bjd.com.cn",
+      "media_family": "xinwen.bjd.com.cn",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2019-11-05"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://wb.beijing.gov.cn/home/index/wsjx/202411/t20241120_3946726.html",
+      "title": "年度粉丝活动来袭！_外事简讯",
+      "source_name": "wb.beijing.gov.cn",
+      "media_family": "wb.beijing.gov.cn",
+      "status": "rejected",
+      "reason": "related_missing_canonical_entity"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.douyin.com/search/%E5%8C%97%E4%BA%AC%E7%B2%89%E4%B8%9D%E8%A7%81%E9%9D%A2%E4%BC%9A%E5%AE%8C%E6%95%B4%E7%89%88",
+      "title": "北京粉丝见面会完整版 - 抖音",
+      "source_name": "douyin.com",
+      "media_family": "douyin.com",
+      "status": "rejected",
+      "reason": "unsafe_url"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.chinanews.com.cn/gn/2011/04-14/2974060.shtml",
+      "title": "北京政府部门热衷开微博\"平安北京\"粉丝超百万 - 中国新闻网",
+      "source_name": "chinanews.com.cn",
+      "media_family": "chinanews.com.cn",
+      "status": "rejected",
+      "reason": "related_missing_canonical_entity",
+      "published_date": "2011-04-14"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "http://news.cnr.cn/native/gd/20220203/t20220203_525732818.shtml",
+      "title": "中俄粉丝隔空祝福：“欢迎来到北京福地”“感动到流泪” - 新闻",
+      "source_name": "news.cnr.cn",
+      "media_family": "news.cnr.cn",
+      "status": "rejected",
+      "reason": "related_missing_canonical_entity",
+      "published_date": "2022-02-03"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.bbc.com/zhongwen/simp/press_review/2016/08/160815_press_review",
+      "title": "英媒：北京扰乱江泽民粉丝祝寿会 - BBC News 中文",
+      "source_name": "bbc.com",
+      "media_family": "bbc.com",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2016-08-15"
+    }
+  ],
+  "research_candidates": [
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "title_hint": "1元撬动15.77元！银幕之外，千亿级市场全面爆发！-中新网",
+      "event_sentence": "2026年夏の映画興行収入は85.24億元に達し、産業全体の生産額は3800億元を超えた。",
+      "risk_class": "low",
+      "required_independent_evidence": 1,
+      "reason": "baseline_research"
+    }
+  ]
+}
