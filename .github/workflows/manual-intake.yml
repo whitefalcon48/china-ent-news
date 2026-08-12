@@ -56,7 +56,10 @@ jobs:
           MANUAL_COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
           MANUAL_COMMENT_ASSOCIATION: ${{ github.event.comment.author_association }}
           SITE_DATA_DIR: data
-          AI_PROVIDER: deepseek
+          # The manual route is a one-item, grounding-first workflow. Gemini
+          # has returned the ledger for this source, while DeepSeek's summary
+          # response was empty, so use the available Gemini path consistently.
+          AI_PROVIDER: gemini
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           DEEPSEEK_MODEL: deepseek-v4-flash
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -66,7 +69,8 @@ jobs:
           # same ledger and claim gates still decide review eligibility.
           LEDGER_AI_PROVIDER: gemini
           LEDGER_AI_MODEL: gemini-2.5-flash-lite
-          COMMENT_AI_MODEL: deepseek-v4-pro
+          COMMENT_AI_PROVIDER: gemini
+          COMMENT_AI_MODEL: gemini-2.5-flash-lite
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           SOURCE_EXPANSION_SKIP_RSSHUB: "true"
           SOURCE_EXPANSION_MAX_TOPICS: "1"
