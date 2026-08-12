@@ -29,9 +29,22 @@ export async function extractFactLedger(
 ): Promise<FactLedgerExtractionResult> {
   try {
     const prompt = buildFactLedgerPrompt(topic, evidence);
-    const text = provider === "deepseek"
-      ? await generateDeepSeekJson(prompt, budget, model)
-      : await generateGeminiJson(prompt, budget, model);
+    let text: string;
+    try {
+      text = provider === "deepseek"
+        ? await generateDeepSeekJson(prompt, budget, model)
+        : await generateGeminiJson(prompt, budget, model);
+    } catch (error) {
+      // The manually supplied route can receive an empty response from Flash
+      // even though the same facts are valid. Retry its fact-only request once
+      // with the Pro model already proven by the daily generator. This retains
+      // the exact ledger, claim-reference, and gate contract.
+      if (provider === "deepseek" && model === "deepseek-v4-flash" && isEmptyDeepSeekResponse(error)) {
+        text = await generateDeepSeekJson(prompt, budget, "deepseek-v4-pro");
+      } else {
+        throw error;
+      }
+    }
     const anchor = {
       topic_key: topic.topic_key,
       claims_total: 0,
@@ -54,6 +67,10 @@ export async function extractFactLedger(
       error: error instanceof LlmCallBudgetExceededError ? `llm_call_budget_exceeded: ${detail}` : detail
     };
   }
+}
+
+function isEmptyDeepSeekResponse(error: unknown) {
+  return error instanceof Error && /DeepSeek fact ledger API error: empty response text after 2 attempts/u.test(error.message);
 }
 
 export async function writeFactLedgerFile(
