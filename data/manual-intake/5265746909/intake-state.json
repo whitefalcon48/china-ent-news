@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "comment_id": "5265746909",
+  "source_url": "https://www.chinanews.com.cn/cul/2026/08-10/10675240.shtml",
+  "note": "気になった理由：今年の暑期档はかなり変化が激しいと思っており、それについてデータベースの記事なので",
+  "status": "failed",
+  "created_at": "2026-08-12T10:54:26.711Z",
+  "updated_at": "2026-08-12T10:55:54.184Z",
+  "error": "fact_ledger_api_error"
+}
