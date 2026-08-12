@@ -189,7 +189,6 @@ async function filterReviewedArticles(directory: string, articles: ProcessedArti
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return articles;
     throw error;
   }
-  if (review.status !== "completed") return null;
   return review.articles
     .filter((item) => item.status === "approved")
     .map((item) => articles[item.index - 1])

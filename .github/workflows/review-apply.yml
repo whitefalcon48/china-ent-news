@@ -70,7 +70,7 @@ jobs:
           fi
 
       - name: Build approved production site
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish == 'true'
         run: npm run build:site
         env:
           SITE_URL: https://bingtangnews.0-w-0.net
@@ -78,11 +78,11 @@ jobs:
           SITE_OUTPUT_DIR: dist/lolipop-site
 
       - name: Validate production artifact
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish == 'true'
         run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews --check
 
       - name: Build Pages fallback
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish == 'true'
         run: npm run build:site
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
@@ -90,22 +90,22 @@ jobs:
           SITE_OUTPUT_DIR: dist/site
 
       - name: Configure GitHub Pages
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/site
 
       - name: Deploy GitHub Pages
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
 
       - name: Deploy production site to Lolipop
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish == 'true'
         run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews
         env:
           LOLIPOP_FTPS_HOST: ${{ secrets.LOLIPOP_FTPS_HOST }}
@@ -113,7 +113,7 @@ jobs:
           LOLIPOP_FTPS_PASSWORD: ${{ secrets.LOLIPOP_FTPS_PASSWORD }}
 
       - name: Generate approved X texts
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        if: steps.review.outputs.publish == 'true' && steps.review.outputs.manual != 'true'
         run: npm run post:x
         env:
           SITE_URL: https://bingtangnews.0-w-0.net
@@ -121,7 +121,7 @@ jobs:
           POST_DATE: ${{ steps.review.outputs.date }}
 
       - name: Upload X post texts
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        if: steps.review.outputs.publish == 'true' && steps.review.outputs.manual != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: x-post-texts-${{ steps.review.outputs.date }}
@@ -129,7 +129,7 @@ jobs:
           if-no-files-found: error
 
       - name: Generate manual X text
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        if: steps.review.outputs.publish == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
         run: node --import tsx src/site/manualXPost.ts
         env:
           SITE_URL: https://bingtangnews.0-w-0.net
@@ -137,7 +137,7 @@ jobs:
           MANUAL_PUBLISHED_DATE: ${{ steps.review.outputs.published_date }}
 
       - name: Reply with manual publication and X text
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        if: steps.review.outputs.publish == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
         run: gh issue comment "${{ github.event.issue.number }}" --body-file "output/manual_x_post_${{ steps.review.outputs.manual_id }}.md"
         env:
           GH_TOKEN: ${{ github.token }}

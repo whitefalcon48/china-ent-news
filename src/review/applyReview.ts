@@ -21,6 +21,7 @@ async function main() {
   const directory = path.dirname(reviewPath);
   const state = await readReviewState(reviewPath);
   const wasCompleted = state.status === "completed";
+  const approvedBefore = new Set(state.articles.filter((article) => article.status === "approved").map((article) => article.index));
   const parsed = parseReviewComment(body);
   const feedback: ReviewFeedback[] = [];
   const replies: string[] = [];
@@ -104,7 +105,8 @@ async function main() {
   }
   await postReplies(issueNumber || state.issue_number, replies);
   if (process.env.GITHUB_OUTPUT) {
-    await fs.appendFile(process.env.GITHUB_OUTPUT, `completed=${state.status === "completed"}\ndate=${state.date}\nmanual=${Boolean(locatedReview.commentId)}\nmanual_id=${locatedReview.commentId || ""}\nmanual_published=${Boolean(manualPublication)}\npublished_date=${manualPublication?.publishedDate || ""}\n`, "utf8");
+    const newlyApproved = state.articles.some((article) => article.status === "approved" && !approvedBefore.has(article.index));
+    await fs.appendFile(process.env.GITHUB_OUTPUT, `completed=${state.status === "completed"}\npublish=${newlyApproved}\ndate=${state.date}\nmanual=${Boolean(locatedReview.commentId)}\nmanual_id=${locatedReview.commentId || ""}\nmanual_published=${Boolean(manualPublication)}\npublished_date=${manualPublication?.publishedDate || ""}\n`, "utf8");
   }
   console.log(`review apply: ${state.date} / ${state.status}`);
 }
