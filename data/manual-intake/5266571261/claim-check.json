@@ -1,0 +1,105 @@
+{
+  "status": "discarded",
+  "violations": [
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "related_claim_missing_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "lead",
+      "rule": "number_not_in_ledger",
+      "severity": "gate"
+    },
+    {
+      "section": "what_happened",
+      "rule": "number_not_in_ledger",
+      "severity": "gate"
+    },
+    {
+      "section": "why_it_matters",
+      "rule": "number_not_in_ledger",
+      "severity": "gate"
+    },
+    {
+      "section": "why_it_matters",
+      "rule": "number_not_in_ledger",
+      "severity": "gate"
+    },
+    {
+      "section": "why_it_matters",
+      "rule": "number_not_in_ledger",
+      "severity": "gate"
+    },
+    {
+      "section": "japan_context_note",
+      "rule": "number_not_in_ledger",
+      "severity": "gate"
+    }
+  ]
+}
