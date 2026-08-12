@@ -1,0 +1,458 @@
+{
+  "date": "2026-08-12",
+  "generated_at": "2026-08-12T12:15:49.646Z",
+  "ledgers": [
+    {
+      "topic_key": "2026年中国电影暑期档票房破85亿",
+      "ledger": {
+        "topic_key": "2026年中国电影暑期档票房破85亿",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年暑期档电影票房（含预售）截至8月9日18时30分达到85.24亿元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "2026年暑期档电影"
+            ],
+            "numbers": [
+              "8月9日18时30分",
+              "85.24亿元"
+            ],
+            "quote_zh": "截至8月9日18时30分，2026年暑期档电影票房",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年暑期档电影票房同比增长3.47%。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "2026年暑期档电影"
+            ],
+            "numbers": [
+              "3.47%"
+            ],
+            "quote_zh": "同比增长3.47%",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "2026年暑期档电影放映场次为3046.3万场，同比增长7%。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "2026年暑期档电影"
+            ],
+            "numbers": [
+              "3046.3万场",
+              "7%"
+            ],
+            "quote_zh": "放映场次3046.3万场，同比增长7%",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "2026年暑期档电影观影人次为2.34亿，同比增长6.85%。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "2026年暑期档电影"
+            ],
+            "numbers": [
+              "2.34亿",
+              "6.85%"
+            ],
+            "quote_zh": "观影人次2.34亿，同比增长6.85%",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "2026年暑期档电影平均票价为36.3元，同比下降3.2%。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "2026年暑期档电影"
+            ],
+            "numbers": [
+              "36.3元",
+              "3.2%"
+            ],
+            "quote_zh": "平均票价36.3元，同比下降3.2%",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "截至7月底，全国全年净增影院363家、银幕2215块。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "全国"
+            ],
+            "numbers": [
+              "7月底",
+              "363家",
+              "2215块"
+            ],
+            "quote_zh": "截至今年7月底，全国全年净增影院363家、银幕2215块",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "国家电影局数据显示，每1元票房收入可带动15.77元的全链条相关产业产值。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [],
+            "numbers": [
+              "1元",
+              "15.77元"
+            ],
+            "quote_zh": "每1元票房收入可带动15.77元的全链条相关产业产值",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "据测算，2026年以来电影全产业链产值已突破3800亿元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "电影"
+            ],
+            "numbers": [
+              "3800亿元"
+            ],
+            "quote_zh": "今年以来电影全产业链产值已突破3800亿元",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "2026年是“电影经济促进年”，12亿元惠民观影补贴陆续投放。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "电影经济促进年"
+            ],
+            "numbers": [
+              "2026年",
+              "12亿元"
+            ],
+            "quote_zh": "2026年是“电影经济促进年”，12亿元惠民观影补贴陆续投放",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "截至8月8日，2026年电影平均票价为39.6元，较去年同期的43.9元，下降4.3元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "电影"
+            ],
+            "numbers": [
+              "8月8日",
+              "2026年",
+              "39.6元",
+              "43.9元",
+              "4.3元"
+            ],
+            "quote_zh": "截至8月8日，2026年电影平均票价为39.6元，较去年同期",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "暑期档电影平均票价降至36.3元，为2022年以来暑期档最低票价。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "暑期档电影"
+            ],
+            "numbers": [
+              "36.3元",
+              "2022年"
+            ],
+            "quote_zh": "暑期档电影平均票价降至36.3元，为2022年以来暑期档最低",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "全国16个城市被列为“电影+”消费综合试点城市。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "全国",
+              "电影+"
+            ],
+            "numbers": [
+              "16个"
+            ],
+            "quote_zh": "全国16个城市被列为“电影+”消费综合试点城市",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "北京以“政府补贴+平台让利”模式，投放补贴2000万元，单票优惠力度2元至60元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "北京",
+              "政府补贴+平台让利"
+            ],
+            "numbers": [
+              "2000万元",
+              "2元",
+              "60元"
+            ],
+            "quote_zh": "以“政府补贴+平台让利”模式，投放补贴2000万元，单票优惠",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "截至8月2日24时，北京的补贴活动累计核销优惠券45.36万张，累计核销总额455.46万元，累计带动票房2195.90万元，累计惠及观影群众53.55万人次。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "北京"
+            ],
+            "numbers": [
+              "8月2日24时",
+              "45.36万张",
+              "455.46万元",
+              "2195.90万元",
+              "53.55万人次"
+            ],
+            "quote_zh": "截至8月2日24时，此次补贴活动累计核销优惠券45.36万张",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "截至今年7月底，全国全年净增影院363家、银幕2215块。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "全国"
+            ],
+            "numbers": [
+              "今年7月底",
+              "363家",
+              "2215块"
+            ],
+            "quote_zh": "截至今年7月底，全国全年净增影院363家、银幕2215块",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "多地电影院打破传统单一观影经营模式，积极推进“电影+”多业态融合。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "电影院",
+              "电影+"
+            ],
+            "numbers": [],
+            "quote_zh": "多地电影院打破传统单一观影经营模式，积极推进“电影+”多业态",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "国家电影局数据显示，我国票房拉动系数约为1:15.77，每创造1元电影票房，便可带动上下游关联产业产出15.77元产值。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "中国"
+            ],
+            "numbers": [
+              "1:15.77",
+              "1元",
+              "15.77元"
+            ],
+            "quote_zh": "我国票房拉动系数约为1:15.77，每创造1元电影票房，便可",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "2026年以来国内电影全产业链产值突破3800亿元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "中国",
+              "电影"
+            ],
+            "numbers": [
+              "3800亿元"
+            ],
+            "quote_zh": "今年国内电影全产业链产值突破3800亿元",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "湖北武汉的武商梦时代摩尔影城推出“一张票根联动百业”的运营模式，观影将顾客在商场的停留时长从2.5小时提升至4-6小时。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "湖北武汉",
+              "武商梦时代摩尔影城"
+            ],
+            "numbers": [
+              "2.5小时",
+              "4-6小时"
+            ],
+            "quote_zh": "“一张票根联动百业”的运营模式，观影将顾客在商场的停留时长从",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "电影《八仙！》的热映带动了四川青城山到山东蓬莱的旅游。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "电影《八仙！》",
+              "四川青城山",
+              "山东蓬莱"
+            ],
+            "numbers": [],
+            "quote_zh": "《八仙！》热映，从四川青城山到山东蓬莱，都迎来大批游客",
+            "anchor": true,
+            "scope": "root_event"
+          }
+        ],
+        "terms": [
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏の映画興行期間",
+            "what_is": "中国で夏休み期間中の映画興行市場のこと。",
+            "why_now": "2026年の興行収入が85.24億元を突破し、前年比増となったため。",
+            "explain_quote_zh": "2026年暑期档电影票房",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "预售",
+            "gloss_ja": "事前販売",
+            "what_is": "映画公開前のチケット事前販売のこと。",
+            "why_now": "興行収入に事前販売分が含まれているため。",
+            "explain_quote_zh": "2026年暑期档电影票房(含预售)",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "电影+",
+            "gloss_ja": "映画プラス",
+            "what_is": "映画館が飲食やVR体験など多様な業態と融合すること。",
+            "why_now": "映画館の新たな収益源や顧客体験創出のため。",
+            "explain_quote_zh": "积极推进“电影+”多业态融合",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "全产业链",
+            "gloss_ja": "産業チェーン全体",
+            "what_is": "映画の企画、制作、配給、興行、関連産業を含む全体。",
+            "why_now": "映画産業全体の経済効果が3800億元を超えたため。",
+            "explain_quote_zh": "今年以来电影全产业链产值",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "惠民观影补贴",
+            "gloss_ja": "市民向け鑑賞補助金",
+            "what_is": "観客の映画鑑賞費用を軽減するための補助金。",
+            "why_now": "2026年は「映画経済促進年」で12億元の補助金が投入されたため。",
+            "explain_quote_zh": "12亿元惠民观影补贴陆续投放",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "票房拉动系数",
+            "gloss_ja": "興行収入の波及効果",
+            "what_is": "映画興行収入が関連産業に与える経済効果の比率。",
+            "why_now": "1元あたり15.77元の経済効果があり、高い水準にあるため。",
+            "explain_quote_zh": "票房拉动系数约为1:15.77",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "文创",
+            "gloss_ja": "文化クリエイティブ",
+            "explain_evidence_refs": []
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
