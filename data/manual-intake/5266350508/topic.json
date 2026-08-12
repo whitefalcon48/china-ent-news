@@ -1,0 +1,89 @@
+{
+  "topic_key": "2026年暑期档电影市场与产业带动",
+  "title_hint": "1元撬动15.77元！银幕之外，千亿级市场全面爆发！-中新网",
+  "event_sentence": "2026年夏休みシーズンの映画興行収入は85.24億元に達し、1元の興行収入が15.77元の産業価値を生み出した。",
+  "search_queries": [
+    "2026年暑期档电影市场与产业带动",
+    "2026暑期档电影票房",
+    "电影产业链产值",
+    "惠民观影补贴"
+  ],
+  "seed_source": "llm",
+  "seed_confidence": 0.9,
+  "topic_type": "policy",
+  "freshness_label": "recent",
+  "published_date_range": {
+    "earliest": "2026-08-10",
+    "latest": "2026-08-10"
+  },
+  "source_count": 1,
+  "source_mix": {
+    "official": 0,
+    "media_report": 0,
+    "sns": 0,
+    "data": 1,
+    "pr_like": 0,
+    "rumor": 0,
+    "mixed": 0
+  },
+  "evidence_articles": [
+    {
+      "title": "1元撬动15.77元！银幕之外，千亿级市场全面爆发！-中新网",
+      "url": "https://www.chinanews.com.cn/cul/2026/08-10/10675240.shtml",
+      "source_name": "www.chinanews.com.cn",
+      "source_type": "data",
+      "published_date": "2026-08-10",
+      "freshness_label": "recent",
+      "article_type": "data_report",
+      "reliability": "C",
+      "key_points": [
+        "1元撬动15.77元！银幕之外，千亿级市场全面爆发！-中新网",
+        "1元撬动15.77元！银幕之外，千亿级市场全面爆发！ 2026-08-10 16:44:44 来源：央视新闻客户端 作者：刘欢 责任编辑：刘欢 2026年08月10日 16:44 来源：央视新闻客户端 大字体 小字体 分享到： 根据网络平台数据，截至8月9日18时30分，2026年暑期档电影票房(含预售)达85.24亿元，同比增长3.47%；放映场次3046.3万场，同比增长7%；观影人次2.34亿，同比增长6.85%。平均票价36.3元，同比下降3.2%。截至7月底，全国全年净增影院363家、银幕2215块。 电影市场的火热，也撬动了产业链发展。国家电影局数据显示，每1元票房收入可带动15.77元的全链条相关产业产值。据测算，今年以来电影全产业链产值已突破3800亿元。 12亿元补贴陆续投放 今年暑期档五年来票价最低 票房节节攀升，但电影票价不升反降。据猫眼专业版数据，截至8月8日，2026年电影平均票价为39.6元，较去年同期的43.9元，下降4.3元。暑期档电影平均票价降至36.3元，为2022年以来暑期档最低票价，彰显出惠民观影政策的显著成效。 2026年是“电影经济促进年”，12亿元惠民观影补贴陆续投放，实实在在降低观众的观影成本。全国16个城市被列为“电影+”消费综合试点城市，推动打造电影消费新业态新模式新场景。 日前，北京发布夏季惠民观影消费举措，以“政府补贴+平台让利”模式，投放补贴2000万元，单票优惠力度2元至60元。同时，各影院推出不同形式的促消费活动，给观众带来真金白银的实惠。 北京市文化产业促进中心数据显示：截至8月2日24时，此次补贴活动累计核销优惠券45.36万张，累计核销总额455.46万元，累计带动票房2195.90万元，累计惠及观影群众53.55万人次。 新增影院超360家、银幕超2200块 影院向多元文化休闲空间转型 数据显示，截至今年7月底，全国全年净增影院363家、银幕2215块。与此同时，多地电影院打破传统单一观影经营模式，积极推进“电影+”多业态融合。餐饮、桌游、VR体验、主题活动纷纷入驻影院，推动影院从“观影场所”向“城市公共文化空间、青年社交空间、全民休闲体验空间”转型。 浙江杭州上城区，一家电影院推出“电影+餐饮”的运营模式，观众可以扫码下单，边看电影边用餐。影院5个用餐影厅，50多种菜品供选择，还根据热门电影推出"
+      ],
+      "media_family": "chinanews.com.cn"
+    }
+  ],
+  "main_entities": {
+    "people": [
+      "北京"
+    ],
+    "works": [],
+    "organizations": [
+      "国家电影局",
+      "猫眼专业版"
+    ],
+    "events": [
+      "2026年暑期档"
+    ]
+  },
+  "signals": {
+    "has_official_source": false,
+    "has_media_context": true,
+    "has_data_signal": true,
+    "has_hot_search_signal": false,
+    "has_multiple_sources": false
+  },
+  "newsworthiness_score": 100,
+  "japan_gap": "unknown",
+  "context_value": "high",
+  "publish_priority": "high",
+  "selection_reason": "media_context, data_signal, topic_type:policy, root_evidence:1",
+  "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+  "related_evidence_articles": [
+    {
+      "title": "120余件大师作品讲述北京故事，展示首都焕新面貌",
+      "url": "https://xinwen.bjd.com.cn/content/s68f0df96e4b02424b0c1a4da.html",
+      "source_name": "xinwen.bjd.com.cn",
+      "source_type": "media_report",
+      "published_date": "2019-11-05",
+      "freshness_label": "recent",
+      "article_type": "unknown",
+      "reliability": "C",
+      "key_points": [
+        "120余件大师作品讲述北京故事，展示首都焕新面貌",
+        "var site = {\"uuid\":\"5b165687a010550e5ddc0e6a\",\"created\":\"2019-11-05T17:18:31.000+08:00\",\"createdBy\":\"system\",\"updated\":\"2026-05-20T14:20:24.000+08:00\",\"updatedBy\":\"64afc908d5de6cfed75146b1\",\"deleted\":false,\"type\":\"NEWSAPP\",\"name\":\"\\u5317\\u4EAC\\u65E5\\u62A5APP\\u65B0\\u95FB\",\"displayOrder\":1,\"comment\":\"\",\"siteId\":\"649a3361d5de5604717426ed\",\"schema\":\"https\",\"domain\":\"xinwen.bjd.com.cn\",\"port\":443,\"indexTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"indexTemplateName\":\"share\",\"indexTemplateFile\":\"index\",\"columnTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"columnTemplateName\":\"share\",\"columnTemplateFile\":\"column-replace\",\"specialTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"specialTemplateName\":\"share\",\"specialTemplateFile\":\"special-share\",\"contentTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"contentTemplateName\":\"share\",\"contentTemplateFile\":\"content-share\",\"seoTitle\":\"\",\"seoKeywords\":\"\",\"seoDescription\":\"\",\"cacheEnabled\":false,\"indexMaxAge\":5,\"columnMaxAge\":5,\"contentMaxAge\":5,\"contentUrlPattern\":0,\"payToRe"
+      ],
+      "angle_kind": "work_context"
+    }
+  ]
+}
