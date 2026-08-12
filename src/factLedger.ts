@@ -208,8 +208,11 @@ function normalizeClaim(value: unknown, index: number, normalizedEvidence: strin
   const quote = toText(claim.quote_zh).slice(0, 30) || undefined;
   const normalizedQuote = normalizeAnchorText(quote || "");
   const evidenceRefs = toStringArray(claim.evidence_refs);
-  const requestedScope = claim.scope === "related_angle" ? "related_angle" : claim.scope === "root_event" ? "root_event" : "";
-  const inferredScope = evidenceRefs.length > 0 && evidenceRefs.every((ref) => evidenceRoles[ref] === "related_angle")
+  const referencedRoles = evidenceRefs.map((ref) => evidenceRoles[ref]).filter((role): role is EvidenceRole => Boolean(role));
+  // Scope is determined by the actual evidence roles, never by an LLM label.
+  // This avoids a single root article being incorrectly marked as a related
+  // angle and then failing the grounding gate despite having no such evidence.
+  const inferredScope = referencedRoles.length > 0 && referencedRoles.every((role) => role === "related_angle")
     ? "related_angle"
     : "root_event";
   return {
@@ -222,7 +225,7 @@ function normalizeClaim(value: unknown, index: number, normalizedEvidence: strin
     numbers: toStringArray(claim.numbers),
     quote_zh: quote,
     anchor: Boolean(normalizedQuote && normalizedEvidence.includes(normalizedQuote)),
-    scope: requestedScope || inferredScope,
+    scope: inferredScope,
     ...(claim.angle_kind === "person_response" || claim.angle_kind === "career_retrospective" || claim.angle_kind === "audience_reaction" || claim.angle_kind === "work_context" || claim.angle_kind === "other" ? { angle_kind: claim.angle_kind } : {})
   };
 }
