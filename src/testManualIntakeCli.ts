@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { linkManualReviewIssue } from "./intake/linkManualReviewIssue.js";
-import { classifyManualIntakeError, requireManualGenerationLedger, runManualIntakeCli } from "./intake/processManualIntake.js";
+import { classifyManualIntakeError, preserveManualIntakeRootEvidence, requireManualGenerationLedger, runManualIntakeCli } from "./intake/processManualIntake.js";
 import { writeManualIntakeState } from "./intake/intakeState.js";
 import { findLedger } from "./review/reviseArticle.js";
 import { writeReviewState } from "./review/reviewState.js";
@@ -42,6 +42,50 @@ async function main() {
   assert.equal(classifyManualIntakeError(new Error("claim_check_gate: number_not_in_ledger: secret text"), "generating"), "claim_check_failed");
   assert.equal(classifyManualIntakeError(new Error("DeepSeek API: secret response body"), "generating"), "summary_generation_failed");
   assert.equal(classifyManualIntakeError(new Error("disk write failed"), "persisting"), "intake_persistence_failed");
+
+  const rootTopic = {
+    topic_key: "manual-topic",
+    title_hint: "root",
+    event_sentence: "root event",
+    search_queries: [],
+    seed_source: "regex_fallback" as const,
+    seed_confidence: 1,
+    topic_type: "policy" as const,
+    freshness_label: "recent" as const,
+    published_date_range: { earliest: "2026-08-10", latest: "2026-08-10" },
+    source_count: 1,
+    source_mix: { official: 0, media_report: 1, sns: 0, data: 0, pr_like: 0, rumor: 0, mixed: 0 },
+    evidence_articles: [],
+    main_entities: { people: [], works: [], organizations: [], events: [] },
+    signals: { has_official_source: false, has_media_context: true, has_data_signal: false, has_hot_search_signal: false, has_multiple_sources: false },
+    newsworthiness_score: 1,
+    japan_gap: "unknown" as const,
+    context_value: "low" as const,
+    publish_priority: "low" as const,
+    selection_reason: "root",
+    caution_note: "",
+    related_evidence_articles: []
+  };
+  const researchedTopic = {
+    ...rootTopic,
+    freshness_label: "today" as const,
+    published_date_range: { earliest: "2026-08-12", latest: "2026-08-12" },
+    related_evidence_articles: [{
+      title: "unrelated result",
+      url: "https://example.com/unrelated",
+      source_name: "Example",
+      source_type: "media_report" as const,
+      published_date: "2020-01-01",
+      freshness_label: "recent" as const,
+      article_type: "unknown" as const,
+      reliability: "C" as const,
+      key_points: ["unrelated"],
+      angle_kind: "other" as const
+    }]
+  };
+  const manualTopic = preserveManualIntakeRootEvidence(rootTopic, researchedTopic);
+  assert.deepEqual(manualTopic.related_evidence_articles, [], "manual intake must not mix an unrelated research angle into the user-supplied article");
+  assert.deepEqual(manualTopic.published_date_range, rootTopic.published_date_range, "manual intake keeps the supplied article date");
 
   const temporary = await fs.mkdtemp(path.join(os.tmpdir(), "manual-intake-cli-"));
   const outputPath = path.join(temporary, "github-output.txt");

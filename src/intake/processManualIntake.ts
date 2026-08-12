@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { ClaimCheckDiscardError } from "../claimCheck.js";
 import { classifyArticle, loadFilterConfig } from "../classifyArticle.js";
 import { expandTopicSources } from "../expandSources.js";
 import { createReviewStateFromStoredArticles, writeReviewState } from "../review/reviewState.js";
@@ -93,7 +94,7 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     processingStage = "researching";
     state = await updateManualIntakeState(state, { status: "researching", error: "" }, dataRoot);
     const research = await expandManualTopic(initialTopic);
-    const topic = preserveRootDate(initialTopic, research.topic);
+    const topic = preserveManualIntakeRootEvidence(initialTopic, research.topic);
     const evidence = collectEvidence(root, topic);
     await writeManualIntakeArtifact(parsed.commentId, "topic.json", topic, dataRoot);
     await writeManualIntakeArtifact(parsed.commentId, "expansion.json", research.expansion, dataRoot);
@@ -125,6 +126,14 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     await updateManualIntakeState(state, { status: "review_ready", error: "" }, dataRoot);
     return { ok: true, idempotent: false, commentId: parsed.commentId, directory, reviewBodyPath, reviewIssueNumber: 0 };
   } catch (error) {
+    if (error instanceof ClaimCheckDiscardError) {
+      // Keep a small, non-sensitive diagnostic. Model responses and the
+      // rejected sentences must not be persisted in manual intake data.
+      await writeManualIntakeArtifact(parsed.commentId, "claim-check.json", {
+        status: "discarded",
+        violations: error.violations.map(({ section, rule, severity }) => ({ section, rule, severity }))
+      }, dataRoot);
+    }
     const safeError = classifyManualIntakeError(error, processingStage);
     await updateManualIntakeState(state, { status: "failed", error: safeError }, dataRoot);
     return { ok: false, commentId: parsed.commentId, error: safeError };
@@ -179,11 +188,17 @@ async function expandManualTopic(topic: TopicCandidate): Promise<{ topic: TopicC
   }
 }
 
-function preserveRootDate(initial: TopicCandidate, researched: TopicCandidate) {
+export function preserveManualIntakeRootEvidence(initial: TopicCandidate, researched: TopicCandidate) {
   return {
     ...researched,
     freshness_label: initial.freshness_label,
-    published_date_range: initial.published_date_range
+    published_date_range: initial.published_date_range,
+    // A manual intake is anchored to the user-supplied document. Related
+    // angles are optional research hints, but they must not enter the draft
+    // unless they independently corroborate the same event. In this route the
+    // root article is sufficient evidence, so excluding them prevents an
+    // unrelated search match from being treated as article context.
+    related_evidence_articles: []
   };
 }
 
