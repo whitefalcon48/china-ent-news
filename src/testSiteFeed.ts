@@ -70,6 +70,7 @@ try {
   const manualDetail = await readPage(`t/${manualDate}/m-987654321/index.html`);
   const manualPost = await fs.readFile(path.join(manualPostOutput, "manual_x_post_987654321.md"), "utf8");
   const about = await readPage("about/index.html");
+  const archive = await readPage("archive/index.html");
   const htaccess = await readPage(".htaccess");
   const xCardTestA = await readPage("x-card-test/a/index.html");
   const xCardTestB = await readPage("x-card-test/b/index.html");
@@ -77,6 +78,9 @@ try {
   const articleOgpPath = path.join(outputRoot, "og", date, "1.png");
   const articleOgp = await sharp(articleOgpPath).metadata();
   const defaultOgp = await sharp(path.join(outputRoot, "assets", "ogp-default.png")).metadata();
+  const homeOgp = await sharp(path.join(outputRoot, "og", "home.png")).metadata();
+  const archiveOgp = await sharp(path.join(outputRoot, "og", "archive.png")).metadata();
+  const aboutOgp = await sharp(path.join(outputRoot, "og", "about.png")).metadata();
   const xCardTestJpeg = await sharp(path.join(outputRoot, "x-card-test", "fixture.jpg")).metadata();
   const xCardTestPng = await sharp(path.join(outputRoot, "x-card-test", "fixture.png")).metadata();
 
@@ -89,11 +93,15 @@ try {
   assertIncludes(home, "フィクスチャ本文 A", "トップの本文全文");
   assertCount(home, "twitter.com/intent/tweet?url=", 3, "トップのカードごとのシェアリンク");
   assertCount(home, 'target="_blank" rel="noopener noreferrer">Xでシェア', 3, "トップのシェアリンクの新規タブ属性");
-  assertIncludes(home, '<meta property="og:image" content="https://example.test/assets/ogp-default.png">', "共通OGP画像の絶対URL");
+  assertIncludes(home, '<meta property="og:image" content="https://example.test/og/home.png?v=', "トップ専用OGP画像の絶対URL");
   assertIncludes(home, '<meta property="og:image:width" content="1200">', "共通OGP画像の幅");
   assertIncludes(home, '<meta property="og:image:height" content="630">', "共通OGP画像の高さ");
   assertIncludes(home, '<meta name="twitter:card" content="summary_large_image">', "Xカード形式");
-  assertIncludes(home, '<meta name="twitter:image" content="https://example.test/assets/ogp-default.png">', "Xカード画像の絶対URL");
+  assertIncludes(home, '<meta name="twitter:image" content="https://example.test/og/home.png?v=', "トップのXカード画像の絶対URL");
+  assertIncludes(archive, '<meta property="og:image" content="https://example.test/og/archive.png?v=', "アーカイブ専用OGP画像の絶対URL");
+  assertIncludes(archive, '<meta name="twitter:image" content="https://example.test/og/archive.png?v=', "アーカイブのXカード画像の絶対URL");
+  assertIncludes(about, '<meta property="og:image" content="https://example.test/og/about.png?v=', "このサイトについて専用OGP画像の絶対URL");
+  assertIncludes(about, '<meta name="twitter:image" content="https://example.test/og/about.png?v=', "このサイトについてのXカード画像の絶対URL");
   assertIncludes(home, "/assets/bingtang-logo-horizontal.png", "本番横長ロゴ");
   assertIncludes(home, "/assets/bingtang-hero-v2.png", "本番ヘッダーキャラクター");
   assertNotIncludes(home, "中国エンタメの現地温度を、日本語で。", "削除したキャッチコピー");
@@ -164,6 +172,9 @@ try {
   assertIncludes(manualPost, `https://example.test/t/${manualDate}/m-987654321/`, "持ち込み公開URL付きX文面");
   if (articleOgp.width !== 1200 || articleOgp.height !== 630) throw new Error(`記事別OGPは1200x630のはずですが ${articleOgp.width}x${articleOgp.height} です`);
   if (defaultOgp.width !== 1200 || defaultOgp.height !== 630) throw new Error(`共通OGPは1200x630のはずですが ${defaultOgp.width}x${defaultOgp.height} です`);
+  for (const [name, ogp] of [["トップ", homeOgp], ["アーカイブ", archiveOgp], ["このサイトについて", aboutOgp]] as const) {
+    if (ogp.width !== 1200 || ogp.height !== 630) throw new Error(`${name}のOGPは1200x630のはずですが ${ogp.width}x${ogp.height} です`);
+  }
   if (xCardTestJpeg.format !== "jpeg" || xCardTestJpeg.width !== 1200 || xCardTestJpeg.height !== 630) throw new Error(`Xカード比較JPEGは1200x630 JPEGのはずですが ${xCardTestJpeg.format} ${xCardTestJpeg.width}x${xCardTestJpeg.height} です`);
   if (xCardTestPng.format !== "png" || xCardTestPng.width !== 1200 || xCardTestPng.height !== 630) throw new Error(`Xカード比較PNGは1200x630 PNGのはずですが ${xCardTestPng.format} ${xCardTestPng.width}x${xCardTestPng.height} です`);
 

@@ -33,6 +33,7 @@ async function main() {
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
   await copySiteAssets();
   await generateDefaultOgp();
+  const pageOgpVersions = await generateSitePageOgps();
   await generateXCardTestImages();
 
   const nonEmptyDays = days.filter((day) => day.articles.length > 0);
@@ -46,7 +47,8 @@ async function main() {
     currentNav: "latest",
     body: renderHome(latest),
     headerDate: newestDate,
-    fullHeader: true
+    fullHeader: true,
+    ogImagePath: `/og/home.png?v=${pageOgpVersions.home}`
   }));
 
   for (const day of days) {
@@ -84,7 +86,8 @@ async function main() {
     canonicalPath: "/archive/",
     currentNav: "archive",
     body: renderArchive(days),
-    fullHeader: true
+    fullHeader: true,
+    ogImagePath: `/og/archive.png?v=${pageOgpVersions.archive}`
   }));
   await writePage("about/index.html", renderLayout({
     title: `このサイトについて｜${SITE_NAME}`,
@@ -92,7 +95,8 @@ async function main() {
     canonicalPath: "/about/",
     currentNav: "about",
     body: renderAbout(),
-    fullHeader: true
+    fullHeader: true,
+    ogImagePath: `/og/about.png?v=${pageOgpVersions.about}`
   }));
   await writeXCardTestPages();
   await writePage("robots.txt", `User-agent: *\nAllow: /\n`);
@@ -606,6 +610,31 @@ async function generateDefaultOgp() {
     .composite(composites)
     .png()
     .toFile(destination);
+}
+
+async function generateSitePageOgps() {
+  return {
+    home: await generateSitePageOgp("/og/home.png", "", "", "bingtang-hero-v2.png"),
+    archive: await generateSitePageOgp("/og/archive.png", "アーカイブ", "これまでの記事を、まとめて読む。", "bingtang-hero-v2.png"),
+    about: await generateSitePageOgp("/og/about.png", "このサイトについて", "冰糖日报の情報の扱いと運営について。", "bingtang-about-fullbody.png")
+  };
+}
+
+async function generateSitePageOgp(sitePath: string, heading: string, description: string, characterAsset: string) {
+  const destination = path.join(OUTPUT_DIR, sitePath.replace(/^\/+/, ""));
+  await fs.mkdir(path.dirname(destination), { recursive: true });
+  const [logo, character] = await Promise.all([readAsset("bingtang-logo-horizontal.png"), readAsset(characterAsset)]);
+  await Promise.all([fs.access(OGP_TITLE_FONT_PATH), fs.access(OGP_FALLBACK_FONT_PATH)]);
+  const logoOnly = !heading && !description;
+  const textMarkup = logoOnly ? "" : `<style>.heading{font-family:'Kosugi Maru','Noto Sans CJK JP';font-size:56px;font-weight:400;fill:#18375F}.description{font-family:'Zen Kaku Gothic New','Noto Sans CJK JP';font-size:28px;font-weight:400;fill:#526F88}</style><text x="78" y="290" class="heading">${xmlEscape(heading)}</text><text x="82" y="354" class="description">${xmlEscape(description)}</text>`;
+  const background = new Resvg(ogpBackgroundSvg("default", textMarkup), {
+    font: { fontFiles: [OGP_TITLE_FONT_PATH, OGP_FALLBACK_FONT_PATH], loadSystemFonts: false, defaultFontFamily: "Kosugi Maru" }
+  }).render().asPng();
+  const composites: sharp.OverlayOptions[] = [];
+  if (logo) composites.push({ input: await sharp(logo).resize({ width: logoOnly ? 680 : 510, height: logoOnly ? 185 : 130, fit: "inside" }).png().toBuffer(), left: 76, top: logoOnly ? 210 : 76 });
+  if (character) composites.push({ input: await sharp(character).resize({ width: 380, height: 480, fit: "inside" }).png().toBuffer(), left: 770, top: 120 });
+  await sharp(background).composite(composites).png().toFile(destination);
+  return createHash("sha256").update(await fs.readFile(destination)).digest("hex").slice(0, 12);
 }
 
 type XCardTest = {
