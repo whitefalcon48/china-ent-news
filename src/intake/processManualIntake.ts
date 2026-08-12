@@ -142,7 +142,8 @@ export function classifyManualIntakeError(error: unknown, stage?: ManualIntakePr
   if (/^fetch:[a-z0-9_]+$/u.test(detail)) return detail;
   if (/^topic:/u.test(detail)) return "topic_generation_failed";
   if (/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger request timeout/u.test(detail)) return "fact_ledger_timeout";
-  if (/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger API error/u.test(detail)) return "fact_ledger_api_error";
+  const ledgerApiStatus = detail.match(/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger API error: HTTP (\d{3})\b/u)?.[1];
+  if (ledgerApiStatus) return `fact_ledger_api_http_${ledgerApiStatus}`;
   if (/^generation:ledger_not_used:ledger_extraction_failed:.*empty response/u.test(detail)) return "fact_ledger_empty_response";
   if (/^generation:ledger_not_used:ledger_extraction_failed:/u.test(detail)) return "fact_ledger_generation_failed";
   if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";

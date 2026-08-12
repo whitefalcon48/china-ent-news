@@ -33,7 +33,7 @@ async function main() {
   assert.equal(classifyManualIntakeError(new Error("DeepSeek API: secret response body")), "manual_intake_processing_failed");
   assert.equal(
     classifyManualIntakeError(new Error("generation:ledger_not_used:ledger_extraction_failed: DeepSeek fact ledger API error: HTTP 500 secret response body"), "generating"),
-    "fact_ledger_api_error"
+    "fact_ledger_api_http_500"
   );
   assert.equal(
     classifyManualIntakeError(new Error("generation:ledger_not_used:ledger_extraction_failed: DeepSeek fact ledger request timeout"), "generating"),
