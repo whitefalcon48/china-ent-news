@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-12",
+  "status": "pending",
+  "created_at": "2026-08-12T03:30:00.599Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿",
+      "event_sentence": "映画『欢迎来龙餐馆』が8月11日に公開され、戦火と生活の煙が交錯する様子が描かれる。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 86,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "短剧纳入百花奖",
+      "title": "短剧首次纳入百花奖评价体系，行业加速迈向精品化",
+      "event_sentence": "短編ドラマが初めて百花賞の評価対象に組み込まれ、業界の高品質化が加速する。",
+      "topic_type": "industry_context",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "大众电影百花奖",
+      "title": "第38届大众电影百花奖系列活动在京开幕",
+      "event_sentence": "国家电影局が「第38届大众电影百花奖系列活动在京开幕」について報じた。",
+      "topic_type": "award",
+      "baseline_rank": 3,
+      "baseline_priority": "medium",
+      "baseline_score": 74,
+      "source_count": 2,
+      "source_types": {
+        "official": 1,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局",
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "红果",
+      "title": "短剧演员日薪不能超过4万？红果回应",
+      "event_sentence": "界面新闻 影视产业が「短剧演员日薪不能超过4万？红果回应」について報じた。",
+      "topic_type": "gossip_rumor",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 74,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 1,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "high",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "周星驰",
+      "title": "被粉丝表白的星爷害羞了！ “你是我的菜”“真的吗？”",
+      "event_sentence": "ファンから「你是我的菜」と言われて、周星驰が照れる場面が話題になった。",
+      "topic_type": "fan_culture",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 71,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "medium",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "年会不能停！2",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "界面新闻 影视产业が「《年会不能停！2》上映4天票房破亿，但远不及市场预期」について報じた。",
+      "topic_type": "box_office",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局が「国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "功夫女足",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "映画『功夫女足』の復帰が発表され、7月の上映作品リストが公開された。",
+      "topic_type": "box_office",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 67,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "御廷谣",
+      "title": "《御廷谣》吴谨言：角色的“瑕疵”比“完美”更让我着迷｜专访",
+      "event_sentence": "新京报 娱乐が「《御廷谣》吴谨言：角色的“瑕疵”比“完美”更让我着迷｜专访」について報じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "关注列表又增加",
+      "title": "这下关注列表又增加",
+      "event_sentence": "フォローリストがまた増えたという話題の記事。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "谢贤前女友Coco",
+      "title": "谢贤前女友coco的两大特征自恋+自律，也是我们每一个女人都应该学习的",
+      "event_sentence": "謝賢の元彼女Cocoは、自己愛と自己規律という二つの特徴を持つとされ、女性が学ぶべきだとされている。",
+      "topic_type": "unknown",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "国家广播电视总局直属事业单位2026年度公开招聘公告（第二批）",
+      "title": "国家广播电视总局直属事业单位2026年度公开招聘公告（第二批）",
+      "event_sentence": "国家广播电视总局が「国家广播电视总局直属事业单位2026年度公开招聘公告（第二批）」について報じた。",
+      "topic_type": "policy",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 59,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
