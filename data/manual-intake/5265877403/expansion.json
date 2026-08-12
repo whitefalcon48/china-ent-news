@@ -1,0 +1,383 @@
+{
+  "shortlisted_topic_keys": [
+    "2026年暑期档电影市场"
+  ],
+  "attempted_topic_count": 1,
+  "attempted_route_count": 4,
+  "success_route_count": 4,
+  "evidence_count": 2,
+  "corroboration_evidence_count": 0,
+  "related_angle_evidence_count": 2,
+  "attempts": [
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影经济促进年 惠民观影补贴",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "weak_topic_match": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影产业链 产值",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "weak_topic_match": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 1,
+      "rejected_count": 4,
+      "rejection_reasons": {
+        "related_missing_angle": 4
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 1,
+      "rejected_count": 4,
+      "rejection_reasons": {
+        "related_missing_canonical_entity": 3,
+        "unsafe_url": 1
+      },
+      "failure_stage": ""
+    }
+  ],
+  "evidence": [
+    {
+      "title": "120余件大师作品讲述北京故事，展示首都焕新面貌",
+      "url": "https://xinwen.bjd.com.cn/content/s68f0df96e4b02424b0c1a4da.html",
+      "source_name": "xinwen.bjd.com.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "北京 作品",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "120余件大师作品讲述北京故事，展示首都焕新面貌",
+        "var site = {\"uuid\":\"5b165687a010550e5ddc0e6a\",\"created\":\"2019-11-05T17:18:31.000+08:00\",\"createdBy\":\"system\",\"updated\":\"2026-05-20T14:20:24.000+08:00\",\"updatedBy\":\"64afc908d5de6cfed75146b1\",\"deleted\":false,\"type\":\"NEWSAPP\",\"name\":\"\\u5317\\u4EAC\\u65E5\\u62A5APP\\u65B0\\u95FB\",\"displayOrder\":1,\"comment\":\"\",\"siteId\":\"649a3361d5de5604717426ed\",\"schema\":\"https\",\"domain\":\"xinwen.bjd.com.cn\",\"port\":443,\"indexTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"indexTemplateName\":\"share\",\"indexTemplateFile\":\"index\",\"columnTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"columnTemplateName\":\"share\",\"columnTemplateFile\":\"column-replace\",\"specialTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"specialTemplateName\":\"share\",\"specialTemplateFile\":\"special-share\",\"contentTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"contentTemplateName\":\"share\",\"contentTemplateFile\":\"content-share\",\"seoTitle\":\"\",\"seoKeywords\":\"\",\"seoDescription\":\"\",\"cacheEnabled\":false,\"indexMaxAge\":5,\"columnMaxAge\":5,\"contentMaxAge\":5,\"contentUrlPattern\":0,\"payToRe"
+      ],
+      "validation_status": "verified",
+      "media_family": "xinwen.bjd.com.cn",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2019-11-05",
+      "document_text_length": 12000,
+      "angle_kind": "work_context"
+    },
+    {
+      "title": "英媒：北京扰乱江泽民粉丝祝寿会 - BBC News 中文",
+      "url": "https://www.bbc.com/zhongwen/simp/press_review/2016/08/160815_press_review",
+      "source_name": "bbc.com",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "北京 粉丝",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "英媒：北京扰乱江泽民粉丝祝寿会 - BBC News 中文",
+        "英媒：北京扰乱江泽民粉丝祝寿会图像来源，ReutersPublished 2016年8月15日《金融时报》周一（8月15日）报道中国前领导人江泽民被视为“威胁”，当局担心维权律师和工运人士等公民社会团体将利用前领导人江泽民90岁生日进行潜在的“颠覆”活动。“虽然周三满90岁的江泽民身体虚弱，却被现任领导人习近平视为有政治上的威胁。习近平在第二个任期之前，正在准备明年晚些时候大规模调整高级官员。”“除此之外，本次打压的原因也是为了压制人们对更为开明的1990年代的怀念。”报道提及中国一些自称江泽民粉丝的“蛤丝”们很希望为他举办生日庆祝，却遭到警方的阻止。中国与印度《金融时报》周一还报道了中国外长王毅对印度的访问，认为两国“在紧张中希望重建关系”。报道提及现任总理莫迪自2014年上任后，曾希望中国领导人习近平的印度之行能帮助推动印度的现代化。之后，中国与印度也签署了价值200亿美元的投资协议。不过，中印之间的经济合作谈判却因在有争议边界地区的两军对峙而蒙上阴影。“两国虽然在公开场合仍然表现出友好和经济合作的愿望，但是两国在地缘政治以及构织战略关系时形成的紧张一直在增长。”Skip 热读 and continue reading热读中国单身男性陷“闪婚”骗局：在孤独与婚姻焦虑中受害长崎原爆纪念式不给台湾“使节席” 台日关系“温差”浮现 ？太阳前所未有的清晰：迄今最详细的观测影像曝光泽连斯基：俄罗斯使用朝鲜导弹攻击乌克兰End of 热读王毅正是在这样的大背景下访问印度，“分析人士认为，他此行恰好在一个关键的契机”。最近，中国与巴基斯坦在巴控克什米尔地区进行了前所未有过的联合军事巡逻令印度不解，而中国也不满印度对南海仲裁案结果的支持。“虽然两国之间的差异不大可能因为王毅的访问或者莫迪与习近平即将在国际峰会上的见面机会而得以沟通解决，但是分析人士表示，高层的接触能够给不断升温的紧张封顶。”中国与日本图像来源，Reuters图像加注文字，安倍晋三2015年没有在日本投降纪念日参拜靖国神社，送去了供奉祭品《泰晤士报》周一报道了日本“闪躲”参拜靖国神社问题引发的中国危机。报道称，在二战日本投降日，日本试图避免国际事件，匆忙派遣强硬派新任防卫大臣稻田朋美前往东非国家吉布提访问。报道引述日本不具名官员的话说，这样“为维护脸面”安排的行程，就像是晴天霹雳，正值中国数以百计船只靠近有争议的"
+      ],
+      "validation_status": "verified",
+      "media_family": "bbc.com",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2016-08-15",
+      "document_text_length": 1374,
+      "angle_kind": "audience_reaction"
+    }
+  ],
+  "observations": [
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影经济促进年 惠民观影补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://ysxw.cctv.cn/landscape.html?toc_style_id=feeds_only_back&liveRoomNumber=10918288957011530358&channelId=1217&ban=1",
+      "title": "2026电影经济促进年启动仪式 - 央视新闻",
+      "source_name": "ysxw.cctv.cn",
+      "media_family": "ysxw.cctv.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影经济促进年 惠民观影补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://w.yangshipin.cn/article?articleid=a05bcrlvwkwrd",
+      "title": "五一档惠民观影攻略！收藏这份全国电影消费券领取指南 - 央视频",
+      "source_name": "w.yangshipin.cn",
+      "media_family": "w.yangshipin.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影经济促进年 惠民观影补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://baike.baidu.com/item/2026%E7%94%B5%E5%BD%B1%E7%BB%8F%E6%B5%8E%E4%BF%83%E8%BF%9B%E5%B9%B4/67378271",
+      "title": "2026电影经济促进年_百度百科",
+      "source_name": "baike.baidu.com",
+      "media_family": "baike.baidu.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影经济促进年 惠民观影补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.chinanews.com.cn/cj/2026/08-09/10674578.shtml",
+      "title": "12亿观影补贴！影院变身“消费综合体” 非票业态全面爆发 - 中国新闻网",
+      "source_name": "chinanews.com.cn",
+      "media_family": "chinanews.com.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影经济促进年 惠民观影补贴",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.chinafilm.gov.cn/xwzx/ywxx/202602/t20260211_949849.html",
+      "title": "“2026电影经济促进年”正式启动-要闻信息 - 国家电影局",
+      "source_name": "chinafilm.gov.cn",
+      "media_family": "chinafilm.gov.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影产业链 产值",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.chinafilm.gov.cn/xwzx/gzdt/202601/t20260126_947614.html",
+      "title": "超8100亿元！我国去年电影全产业链产值位居全球前列",
+      "source_name": "chinafilm.gov.cn",
+      "media_family": "chinafilm.gov.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影产业链 产值",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://baike.baidu.com/item/%E7%94%B5%E5%BD%B1%E4%BA%A7%E4%B8%9A%E9%93%BE/4649059",
+      "title": "电影产业链_百度百科",
+      "source_name": "baike.baidu.com",
+      "media_family": "baike.baidu.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影产业链 产值",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://app.xinhuanet.com/news/article.html?articleId=81c8f93926a57366fc2b4602ccd28d06",
+      "title": "超8100亿元背后：中国电影经济的活力从何而来？ - 新华网客户端",
+      "source_name": "app.xinhuanet.com",
+      "media_family": "app.xinhuanet.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影产业链 产值",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://k.sina.com.cn/article_7879922977_1d5ae152106801i3q4.html?from=tech",
+      "title": "中国电影全产业链产值破3800亿，电影IP游戏联动如何撬动银幕外千 ...",
+      "source_name": "k.sina.com.cn",
+      "media_family": "sina",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "电影产业链 产值",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://news.cctv.com/2026/01/22/ARTIp1WcBcM2crUuCFWhcclF260122.shtml",
+      "title": "2025年我国电影全产业链产值超8100亿元位居全球前列 - 新闻频道",
+      "source_name": "news.cctv.com",
+      "media_family": "news.cctv.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://artouch.com/art-news/content-3422.html",
+      "title": "藝術北京 - 典藏ARTouch.com",
+      "source_name": "artouch.com",
+      "media_family": "artouch.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.beijingcommune.com/?ref=addtabs&lang=zh-cn",
+      "title": "北京公社",
+      "source_name": "beijingcommune.com",
+      "media_family": "beijingcommune.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.news.cn/shuhua/20251228/7c34104a89a049daa92716857515c950/c.html",
+      "title": "精彩看点！第十届中国北京国际美术双年展上有哪些佳作亮相【组图】",
+      "source_name": "news.cn",
+      "media_family": "news.cn",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.visitbeijing.com.cn/article/4HrphWW59xY",
+      "title": "北京｜五月艺术展览清单",
+      "source_name": "visitbeijing.com.cn",
+      "media_family": "visitbeijing.com.cn",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 作品",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://xinwen.bjd.com.cn/content/s68f0df96e4b02424b0c1a4da.html",
+      "title": "120余件大师作品讲述北京故事，展示首都焕新面貌",
+      "source_name": "xinwen.bjd.com.cn",
+      "media_family": "xinwen.bjd.com.cn",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2019-11-05"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://wb.beijing.gov.cn/home/index/wsjx/202411/t20241120_3946726.html",
+      "title": "年度粉丝活动来袭！_外事简讯",
+      "source_name": "wb.beijing.gov.cn",
+      "media_family": "wb.beijing.gov.cn",
+      "status": "rejected",
+      "reason": "related_missing_canonical_entity"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.douyin.com/search/%E5%8C%97%E4%BA%AC%E7%B2%89%E4%B8%9D%E4%B8%93%E5%9C%BA%E5%BF%AB%E6%89%8B",
+      "title": "北京粉丝专场快手 - 抖音",
+      "source_name": "douyin.com",
+      "media_family": "douyin.com",
+      "status": "rejected",
+      "reason": "unsafe_url"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://m.voc.com.cn/xhn/news/202506/29674892.html",
+      "title": "现场画面，粉丝接机真疯狂！首都机场公安已处罚31人 - 新湖南",
+      "source_name": "m.voc.com.cn",
+      "media_family": "voc.com.cn",
+      "status": "rejected",
+      "reason": "related_missing_canonical_entity"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.chinanews.com.cn/gn/2011/04-14/2974060.shtml",
+      "title": "北京政府部门热衷开微博\"平安北京\"粉丝超百万 - 中国新闻网",
+      "source_name": "chinanews.com.cn",
+      "media_family": "chinanews.com.cn",
+      "status": "rejected",
+      "reason": "related_missing_canonical_entity",
+      "published_date": "2011-04-14"
+    },
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "query": "北京 粉丝",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.bbc.com/zhongwen/simp/press_review/2016/08/160815_press_review",
+      "title": "英媒：北京扰乱江泽民粉丝祝寿会 - BBC News 中文",
+      "source_name": "bbc.com",
+      "media_family": "bbc.com",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2016-08-15"
+    }
+  ],
+  "research_candidates": [
+    {
+      "topic_key": "2026年暑期档电影市场",
+      "title_hint": "1元撬动15.77元！银幕之外，千亿级市场全面爆发！-中新网",
+      "event_sentence": "2026年夏の映画興行収入は85.24億元に達し、映画産業チェーンの生産額は3800億元を超えた。",
+      "risk_class": "low",
+      "required_independent_evidence": 1,
+      "reason": "baseline_research"
+    }
+  ]
+}
