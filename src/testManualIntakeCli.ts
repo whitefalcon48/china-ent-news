@@ -31,6 +31,13 @@ async function main() {
   assert.throws(() => requireManualGenerationLedger({ ...validMeta, claim_check: { ...validMeta.claim_check!, gated_violation_count: 1 } }), /claim_check_gated/);
   assert.equal(classifyManualIntakeError(new Error("fetch:http_500")), "fetch:http_500");
   assert.equal(classifyManualIntakeError(new Error("DeepSeek API: secret response body")), "manual_intake_processing_failed");
+  assert.equal(
+    classifyManualIntakeError(new Error("generation:ledger_not_used:ledger_extraction_failed: DeepSeek fact ledger API error: HTTP 500 secret response body"), "generating"),
+    "fact_ledger_generation_failed"
+  );
+  assert.equal(classifyManualIntakeError(new Error("claim_check_gate: number_not_in_ledger: secret text"), "generating"), "claim_check_failed");
+  assert.equal(classifyManualIntakeError(new Error("DeepSeek API: secret response body"), "generating"), "summary_generation_failed");
+  assert.equal(classifyManualIntakeError(new Error("disk write failed"), "persisting"), "intake_persistence_failed");
 
   const temporary = await fs.mkdtemp(path.join(os.tmpdir(), "manual-intake-cli-"));
   const outputPath = path.join(temporary, "github-output.txt");

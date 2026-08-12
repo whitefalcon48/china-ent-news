@@ -32,6 +32,8 @@ export type ManualIntakeProcessResult =
   | { ok: true; idempotent: boolean; commentId: string; directory: string; reviewBodyPath: string; reviewIssueNumber: number }
   | { ok: false; commentId: string; error: string };
 
+type ManualIntakeProcessingStage = "initializing" | "fetching" | "topic_seed" | "researching" | "generating" | "persisting";
+
 /**
  * Runs the isolated, immediate route. It deliberately does not call daily
  * persistence, site building, or publication: a review decision remains the
@@ -49,6 +51,7 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
 
   const persistedUrl = redactIntakeUrl(parsed.url);
   let state = existing ?? createInitialState(parsed.commentId, persistedUrl, parsed.note);
+  let processingStage: ManualIntakeProcessingStage = "initializing";
   try {
     if (!existing) await writeManualIntakeState(state, dataRoot);
     await writeManualIntakeArtifact(parsed.commentId, "intake.json", {
@@ -60,6 +63,7 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
       received_at: state.created_at
     }, dataRoot);
 
+    processingStage = "fetching";
     state = await updateManualIntakeState(state, { status: "fetching", error: "" }, dataRoot);
     const fetched = await fetchIntakeDocument(parsed.url, options.fetchOptions);
     if (!fetched.ok) throw new Error(`fetch:${fetched.error}`);
@@ -80,11 +84,13 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
       rawContent: fetched.document.text,
       rawContentLength: fetched.document.text.length
     }, filterConfig);
+    processingStage = "topic_seed";
     const provider = options.provider ?? getAiProvider();
     const seeds = await extractTopicSeeds([root], provider);
     const initialTopic = buildTopicCandidates([root], seeds.seeds)[0];
     if (!initialTopic) throw new Error("topic:unable_to_build_candidate");
 
+    processingStage = "researching";
     state = await updateManualIntakeState(state, { status: "researching", error: "" }, dataRoot);
     const research = await expandManualTopic(initialTopic);
     const topic = preserveRootDate(initialTopic, research.topic);
@@ -92,11 +98,13 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     await writeManualIntakeArtifact(parsed.commentId, "topic.json", topic, dataRoot);
     await writeManualIntakeArtifact(parsed.commentId, "expansion.json", research.expansion, dataRoot);
 
+    processingStage = "generating";
     state = await updateManualIntakeState(state, { status: "generating", error: "" }, dataRoot);
     const generated = await summarizeTopic(topic, evidence, provider);
     // The persisted ledger, claim refs, and claim check must all originate in
     // this one call. A fallback summary is not eligible for manual review.
     const ledger = requireManualGenerationLedger(generated.meta);
+    processingStage = "persisting";
     const date = shanghaiDate();
     await writeManualIntakeArtifact(parsed.commentId, `fact_ledger_${date}.json`, {
       date,
@@ -117,18 +125,27 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     await updateManualIntakeState(state, { status: "review_ready", error: "" }, dataRoot);
     return { ok: true, idempotent: false, commentId: parsed.commentId, directory, reviewBodyPath, reviewIssueNumber: 0 };
   } catch (error) {
-    const safeError = classifyManualIntakeError(error);
+    const safeError = classifyManualIntakeError(error, processingStage);
     await updateManualIntakeState(state, { status: "failed", error: safeError }, dataRoot);
     return { ok: false, commentId: parsed.commentId, error: safeError };
   }
 }
 
 /** Never persist or expose provider responses, page text, signed URLs, or raw exceptions. */
-export function classifyManualIntakeError(error: unknown) {
+/**
+ * Produces an operationally useful but non-sensitive failure code. In
+ * particular, provider response bodies and fetched page text must never be
+ * written to an intake state or emitted by the Actions job.
+ */
+export function classifyManualIntakeError(error: unknown, stage?: ManualIntakeProcessingStage) {
   const detail = error instanceof Error ? error.message : String(error);
   if (/^fetch:[a-z0-9_]+$/u.test(detail)) return detail;
   if (/^topic:/u.test(detail)) return "topic_generation_failed";
-  if (/^(?:ledger_|claim_check_)/u.test(detail)) return "grounding_check_failed";
+  if (/^generation:ledger_not_used:ledger_extraction_failed:/u.test(detail)) return "fact_ledger_generation_failed";
+  if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";
+  if (/^claim_check_gate:/u.test(detail)) return "claim_check_failed";
+  if (stage === "generating") return "summary_generation_failed";
+  if (stage === "persisting") return "intake_persistence_failed";
   return "manual_intake_processing_failed";
 }
 
