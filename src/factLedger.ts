@@ -6,6 +6,7 @@ import type { AiProvider, ClaimType, EvidenceRole, FactLedger, FactLedgerClaim, 
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
+const FACT_LEDGER_REQUEST_TIMEOUT_MS = 90_000;
 
 export type FactLedgerExtractionResult = {
   succeeded: boolean;
@@ -253,20 +254,31 @@ async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget, mode
   for (let attempt = 0; attempt < 2; attempt++) {
     if (budget) consumeLlmCall(budget);
     let response: Response;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FACT_LEDGER_REQUEST_TIMEOUT_MS);
     try {
       response = await fetch(DEEPSEEK_ENDPOINT, {
         method: "POST",
         headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           model,
           temperature: 0,
-          max_tokens: 8000,
+          // A fact ledger is structured reference data, not article prose.
+          // Keeping its response bounded avoids a long-running provider request
+          // while still leaving room for claims, terms, and evidence refs.
+          max_tokens: 3000,
           response_format: { type: "json_object" },
           messages: [{ role: "user", content: prompt }]
         })
       });
     } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new Error("DeepSeek fact ledger request timeout");
+      }
       throw new Error(`DeepSeek fact ledger network error: ${describeError(error)}`);
+    } finally {
+      clearTimeout(timeout);
     }
     if (!response.ok) throw new Error(`DeepSeek fact ledger API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
     const payload = await response.json() as { choices?: Array<{ message?: { content?: string } }> };

@@ -141,6 +141,9 @@ export function classifyManualIntakeError(error: unknown, stage?: ManualIntakePr
   const detail = error instanceof Error ? error.message : String(error);
   if (/^fetch:[a-z0-9_]+$/u.test(detail)) return detail;
   if (/^topic:/u.test(detail)) return "topic_generation_failed";
+  if (/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger request timeout/u.test(detail)) return "fact_ledger_timeout";
+  if (/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger API error/u.test(detail)) return "fact_ledger_api_error";
+  if (/^generation:ledger_not_used:ledger_extraction_failed:.*empty response/u.test(detail)) return "fact_ledger_empty_response";
   if (/^generation:ledger_not_used:ledger_extraction_failed:/u.test(detail)) return "fact_ledger_generation_failed";
   if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";
   if (/^claim_check_gate:/u.test(detail)) return "claim_check_failed";
