@@ -33,6 +33,7 @@ async function main() {
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
   await copySiteAssets();
   await generateDefaultOgp();
+  await generateXCardTestImages();
 
   const nonEmptyDays = days.filter((day) => day.articles.length > 0);
   const newestDate = nonEmptyDays[0]?.date;
@@ -93,6 +94,7 @@ async function main() {
     body: renderAbout(),
     fullHeader: true
   }));
+  await writeXCardTestPages();
   await writePage("robots.txt", `User-agent: *\nAllow: /\n`);
   await writePage(".htaccess", `AddDefaultCharset UTF-8\n`);
   await fs.writeFile(path.join(OUTPUT_DIR, ".nojekyll"), "", "utf8");
@@ -604,6 +606,41 @@ async function generateDefaultOgp() {
     .composite(composites)
     .png()
     .toFile(destination);
+}
+
+type XCardTest = {
+  slug: "a" | "b" | "c";
+  card: "summary" | "summary_large_image";
+  imagePath: string;
+  imageType: "image/jpeg" | "image/png";
+  label: string;
+};
+
+const X_CARD_TESTS: XCardTest[] = [
+  { slug: "a", card: "summary", imagePath: "/x-card-test/fixture.jpg", imageType: "image/jpeg", label: "A: summary + JPEG" },
+  { slug: "b", card: "summary_large_image", imagePath: "/x-card-test/fixture.jpg", imageType: "image/jpeg", label: "B: summary_large_image + JPEG" },
+  { slug: "c", card: "summary_large_image", imagePath: "/x-card-test/fixture.png", imageType: "image/png", label: "C: summary_large_image + PNG" }
+];
+
+async function generateXCardTestImages() {
+  const source = path.join(OUTPUT_DIR, "assets", "ogp-default.png");
+  const directory = path.join(OUTPUT_DIR, "x-card-test");
+  await fs.mkdir(directory, { recursive: true });
+  await Promise.all([
+    sharp(source).jpeg({ quality: 88, chromaSubsampling: "4:2:0" }).toFile(path.join(directory, "fixture.jpg")),
+    fs.copyFile(source, path.join(directory, "fixture.png"))
+  ]);
+}
+
+async function writeXCardTestPages() {
+  await Promise.all(X_CARD_TESTS.map(async (test) => {
+    const canonicalPath = `/x-card-test/${test.slug}/`;
+    const canonicalUrl = absoluteUrl(canonicalPath);
+    const imageUrl = absoluteUrl(test.imagePath);
+    const title = `Xカード比較 ${test.label}｜${SITE_NAME}`;
+    const description = "Xカードの取得条件を切り分けるための比較用ページです。";
+    await writePage(`x-card-test/${test.slug}/index.html`, `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${description}"><link rel="canonical" href="${canonicalUrl}"><meta property="og:type" content="website"><meta property="og:site_name" content="${SITE_NAME}"><meta property="og:title" content="${escapeAttr(title)}"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonicalUrl}"><meta property="og:image" content="${imageUrl}"><meta property="og:image:type" content="${test.imageType}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${SITE_NAME} Xカード比較 ${test.label}"><meta name="twitter:card" content="${test.card}"><meta name="twitter:title" content="${escapeAttr(title)}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="${imageUrl}"><meta name="twitter:image:alt" content="${SITE_NAME} Xカード比較 ${test.label}"></head><body><main><h1>${escapeHtml(title)}</h1><p>このページはXカードの比較検証専用です。</p><dl><dt>twitter:card</dt><dd>${test.card}</dd><dt>OGP画像</dt><dd>${imageUrl}</dd><dt>画像形式</dt><dd>${test.imageType}</dd></dl></main></body></html>`);
+  }));
 }
 
 async function generateArticleOgp(sitePath: string, title: string, avatarName: string) {

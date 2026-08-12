@@ -71,9 +71,14 @@ try {
   const manualPost = await fs.readFile(path.join(manualPostOutput, "manual_x_post_987654321.md"), "utf8");
   const about = await readPage("about/index.html");
   const htaccess = await readPage(".htaccess");
+  const xCardTestA = await readPage("x-card-test/a/index.html");
+  const xCardTestB = await readPage("x-card-test/b/index.html");
+  const xCardTestC = await readPage("x-card-test/c/index.html");
   const articleOgpPath = path.join(outputRoot, "og", date, "1.png");
   const articleOgp = await sharp(articleOgpPath).metadata();
   const defaultOgp = await sharp(path.join(outputRoot, "assets", "ogp-default.png")).metadata();
+  const xCardTestJpeg = await sharp(path.join(outputRoot, "x-card-test", "fixture.jpg")).metadata();
+  const xCardTestPng = await sharp(path.join(outputRoot, "x-card-test", "fixture.png")).metadata();
 
   assertIncludes(home, "最終更新：2026年8月2日", "トップの日付ラベル");
   assertIncludes(home, "8月2日のピックアップ", "持ち込み承認日をフィード見出しに使う");
@@ -142,11 +147,25 @@ try {
   assertIncludes(detail, `<meta property="og:image" content="https://example.test/og/${date}/1.png?v=`, "記事別OGP画像URL");
   assertIncludes(detail, `<meta name="twitter:image" content="https://example.test/og/${date}/1.png?v=`, "記事別Xカード画像URL");
   assertIncludes(htaccess, "AddDefaultCharset UTF-8", "HTTP文字コード指定");
+  assertIncludes(xCardTestA, '<link rel="canonical" href="https://example.test/x-card-test/a/">', "Aの自己参照canonical");
+  assertIncludes(xCardTestA, '<meta property="og:url" content="https://example.test/x-card-test/a/">', "Aの自己参照OG URL");
+  assertIncludes(xCardTestA, '<meta name="twitter:card" content="summary">', "Aのsummaryカード");
+  assertIncludes(xCardTestA, '<meta property="og:image" content="https://example.test/x-card-test/fixture.jpg">', "AのJPEG画像");
+  assertIncludes(xCardTestB, '<link rel="canonical" href="https://example.test/x-card-test/b/">', "Bの自己参照canonical");
+  assertIncludes(xCardTestB, '<meta property="og:url" content="https://example.test/x-card-test/b/">', "Bの自己参照OG URL");
+  assertIncludes(xCardTestB, '<meta name="twitter:card" content="summary_large_image">', "Bのlarge imageカード");
+  assertIncludes(xCardTestB, '<meta property="og:image" content="https://example.test/x-card-test/fixture.jpg">', "BのJPEG画像");
+  assertIncludes(xCardTestC, '<link rel="canonical" href="https://example.test/x-card-test/c/">', "Cの自己参照canonical");
+  assertIncludes(xCardTestC, '<meta property="og:url" content="https://example.test/x-card-test/c/">', "Cの自己参照OG URL");
+  assertIncludes(xCardTestC, '<meta name="twitter:card" content="summary_large_image">', "Cのlarge imageカード");
+  assertIncludes(xCardTestC, '<meta property="og:image" content="https://example.test/x-card-test/fixture.png">', "CのPNG画像");
   assertIncludes(manualDetail, `https://example.test/og/${manualDate}/m-987654321.png?v=`, "持ち込み記事の固有OGPとcache bust");
   assertIncludes(manualDetail, "フィクスチャ記事 B", "持ち込み記事の本文");
   assertIncludes(manualPost, `https://example.test/t/${manualDate}/m-987654321/`, "持ち込み公開URL付きX文面");
   if (articleOgp.width !== 1200 || articleOgp.height !== 630) throw new Error(`記事別OGPは1200x630のはずですが ${articleOgp.width}x${articleOgp.height} です`);
   if (defaultOgp.width !== 1200 || defaultOgp.height !== 630) throw new Error(`共通OGPは1200x630のはずですが ${defaultOgp.width}x${defaultOgp.height} です`);
+  if (xCardTestJpeg.format !== "jpeg" || xCardTestJpeg.width !== 1200 || xCardTestJpeg.height !== 630) throw new Error(`Xカード比較JPEGは1200x630 JPEGのはずですが ${xCardTestJpeg.format} ${xCardTestJpeg.width}x${xCardTestJpeg.height} です`);
+  if (xCardTestPng.format !== "png" || xCardTestPng.width !== 1200 || xCardTestPng.height !== 630) throw new Error(`Xカード比較PNGは1200x630 PNGのはずですが ${xCardTestPng.format} ${xCardTestPng.width}x${xCardTestPng.height} です`);
 
   console.log("site feed: ok");
 } finally {
