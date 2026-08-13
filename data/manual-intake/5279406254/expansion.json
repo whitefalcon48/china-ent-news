@@ -5,9 +5,9 @@
   "attempted_topic_count": 1,
   "attempted_route_count": 6,
   "success_route_count": 6,
-  "evidence_count": 7,
+  "evidence_count": 6,
   "corroboration_evidence_count": 4,
-  "related_angle_evidence_count": 3,
+  "related_angle_evidence_count": 2,
   "attempts": [
     {
       "topic_key": "李雪健抗癌26年听力下降",
@@ -57,12 +57,10 @@
       "fetch_status": "success",
       "fetch_error": "",
       "raw_count": 5,
-      "matched_count": 1,
-      "rejected_count": 4,
+      "matched_count": 2,
+      "rejected_count": 3,
       "rejection_reasons": {
-        "related_missing_angle": 2,
-        "related_angle_outside_current_window": 1,
-        "document_http_412": 1
+        "related_missing_angle": 3
       },
       "failure_stage": ""
     },
@@ -80,9 +78,8 @@
       "matched_count": 0,
       "rejected_count": 5,
       "rejection_reasons": {
-        "related_missing_angle": 3,
-        "document_http_412": 1,
-        "related_angle_outside_current_window": 1
+        "related_missing_angle": 4,
+        "document_http_412": 1
       },
       "failure_stage": ""
     },
@@ -97,10 +94,11 @@
       "fetch_status": "success",
       "fetch_error": "",
       "raw_count": 5,
-      "matched_count": 2,
-      "rejected_count": 3,
+      "matched_count": 0,
+      "rejected_count": 5,
       "rejection_reasons": {
-        "related_missing_angle": 2,
+        "related_missing_angle": 3,
+        "weak_topic_match": 1,
         "related_angle_outside_current_window": 1
       },
       "failure_stage": ""
@@ -162,7 +160,7 @@
       "evidence_role": "corroboration",
       "key_points": [
         "李雪健：要努力把更丰富的精神食粮奉献给人们--国内-环球人物网",
-        "(function () { document.cookie = \"HOY_TR=JTXQWYMCGNSAODIE,23C8BD74A6EF5190,rklwbmhfzgjcoeps; max-age=31536000; path=/\";document.cookie = \"HBB_HC=dadb167d8b9a4382d917798a14002d46f863780c359d8b355394bff7d1f2d52da94c1234aa8594cd7d39d54f1770436988; max-age=600; path=/\"; })() $(document).ready(function () { $('#banner_pc').load('/305967/306372/index.html');//pc封推地址 }); 举报专区 var forpc = document.querySelector('.forpc') var random = Math.random().toFixed(2) forpc.onclick = function(){ url = 'http://www.globalpeople.com.cn?pc_flag=' + random window.location.href = url } $(document).ready(function () { $('#banner_wap').load('/305967/306373/index.html');// }); 您的位置： 环球人物网>>国内 李雪健：要努力把更丰富的精神食粮奉献给人们 document.write(unescape(\"\")) 2026年08月11日10:34 来源：人民日报 作者：任姗姗 小号 中号 大号 原标题：中国国家话剧院一级演员李雪健——“要努力把更丰富的精神食粮奉献给人们” 李雪健比往日更清瘦了。他从背包里取出语音转写器，而不是这些年常常带在身边的助听器。“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”李雪健的妻子于海丹在一旁解释。 2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。 今年也是他抗癌的第二"
+        "(function () { document.cookie = \"HOY_TR=BPCTLEGAKFNXMQRS,145376AE89BCDF02,tdfkqszcyxglhwuj; max-age=31536000; path=/\";document.cookie = \"HBB_HC=84b14cf771ba0b0b0d55b625fe662443ca4fc12199588f348e0c2add8a1634eb23e55d01f6ccc5236f6b90e2f02c1e7fd5; max-age=600; path=/\"; })() $(document).ready(function () { $('#banner_pc').load('/305967/306372/index.html');//pc封推地址 }); 举报专区 var forpc = document.querySelector('.forpc') var random = Math.random().toFixed(2) forpc.onclick = function(){ url = 'http://www.globalpeople.com.cn?pc_flag=' + random window.location.href = url } $(document).ready(function () { $('#banner_wap').load('/305967/306373/index.html');// }); 您的位置： 环球人物网>>国内 李雪健：要努力把更丰富的精神食粮奉献给人们 document.write(unescape(\"\")) 2026年08月11日10:34 来源：人民日报 作者：任姗姗 小号 中号 大号 原标题：中国国家话剧院一级演员李雪健——“要努力把更丰富的精神食粮奉献给人们” 李雪健比往日更清瘦了。他从背包里取出语音转写器，而不是这些年常常带在身边的助听器。“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”李雪健的妻子于海丹在一旁解释。 2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。 今年也是他抗癌的第二"
       ],
       "validation_status": "verified",
       "media_family": "globalpeople.com.cn",
@@ -228,8 +226,8 @@
     },
     {
       "title": "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌",
-      "url": "https://ent.sina.cn/2026-08-13/detail-ininavwx6563735.d.html?oid=Jeeraj%E0%A4%A8%E0%A4%AF%E0%A4%BE%E0%A4%81%20%E0%A4%B8%E0%A4%BE%E0%A4%87%E0%A4%9F%20%20nep9999.com%20.qvli&vt=4",
-      "source_name": "ent.sina.cn",
+      "url": "https://cj.sina.com.cn/articles/view/3314280193/c58be70102001j1fc?from=ent&pos=108&his=0",
+      "source_name": "cj.sina.com.cn",
       "source_type": "media_report",
       "route_id": "serper-search",
       "route": "https://google.serper.dev/search",
@@ -237,54 +235,34 @@
       "evidence_role": "related_angle",
       "key_points": [
         "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌",
-        "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌 天津广播 天津人民广播电台 08月13日01:07 关注 听新闻 8月12日#李雪健已完全听不见了#冲上热搜8月11日，人民日报刊发报道《要努力把更丰富的精神食粮奉献给人们》，采访了中国国家话剧院一级演员李雪健。李雪健从背包里取出语音转写器，而不是这些年常常带在身边的助听器。李雪健的妻子于海丹解释称，“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”据悉，2000年在拍摄《中国轨道》时，李雪健确诊鼻咽癌，放疗射线在杀死癌细胞的同时，也不可逆地损伤了听觉神经、唾液腺和声带，他的听力在26年间从衰退走向归零。抗癌26年来，他饱受后遗症的折磨。8年前，他再上手术台，所幸有惊无险。完全失聪后，他每次拍戏前把对手戏演员的所有台词烂熟于心，现场紧盯对方口型判断节奏，还要给出即兴反应，坦言“对我的要求很高”。完全听不见了，怎样演好戏？“把对手戏演员的台词背下来，表演的时候，看对方的口型。”李雪健说，“剧组帮我想了很多办法。拍电影《流浪地球3》时，副导演在我的手腕上绑了一个控制器，该我说台词了，他就按控制器，给我信号。这个语音转写器和手机应用，就是郭帆导演找到的办法。”2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。 李雪健剧照 “能吃上演员这碗饭不容易，我很珍惜演员这个职业，要努力把更丰富的精神食粮奉献给人们。”李雪健沙哑的嗓音里满是笃定。学者冯骥才曾评价：李雪健每演一个人，这世界就多了一个“人”。这个人为什么能“立得住”？因为塑造者是用生命去体悟生命，满怀真诚为观众服务。更因为这个“人”鲜活、生动、有生命力，折射了时代的共同理想与追求。 编辑 | 马瑞 综合 | 人民日报 北京青年报 window.STO=window.STO||{};window.STO.fw=new Date().getTime();"
+        "8月12日#李雪健已完全听不见了#冲上热搜8月11日，人民日报刊发报道《要努力把更丰富的精神食粮奉献给人们》，采访了中国国家话剧院一级演员李雪健。李雪健从背包里取出语音转写器，而不是这些年常常带在身边的助听器。李雪健的妻子于海丹解释称，“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”据悉，2000年在拍摄《中国轨道》时，李雪健确诊鼻咽癌，放疗射线在杀死癌细胞的同时，也不可逆地损伤了听觉神经、唾液腺和声带，他的听力在26年间从衰退走向归零。抗癌26年来，他饱受后遗症的折磨。8年前，他再上手术台，所幸有惊无险。完全失聪后，他每次拍戏前把对手戏演员的所有台词烂熟于心，现场紧盯对方口型判断节奏，还要给出即兴反应，坦言“对我的要求很高”。完全听不见了，怎样演好戏？“把对手戏演员的台词背下来，表演的时候，看对方的口型。”李雪健说，“剧组帮我想了很多办法。拍电影《流浪地球3》时，副导演在我的手腕上绑了一个控制器，该我说台词了，他就按控制器，给我信号。这个语音转写器和手机应用，就是郭帆导演找到的办法。”2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。李雪健剧照“能吃上演员这碗饭不容易，我很珍惜演员这个职业，要努力把更丰富的精神食粮奉献给人们。”李雪健沙哑的嗓音里满是笃定。学者冯骥才曾评价：李雪健每演一个人，这世界就多了一个“人”。这个人为什么能“立得住”？因为塑造者是用生命去体悟生命，满怀真诚为观众服务。更因为这个“人”鲜活、生动、有生命力，折射了时代的共同理想与追求。 编辑 | 马瑞 综合 | 人民日报 北京青年报 相关新闻 加载中 点击加载更多 头条号入驻 注意 | 天津市人民体育馆公告！暂停开放！ 扩散 | 天津一医院，清退门诊预交金！ 天气 | 最大151.3毫米！天津最新雨情！ 财经自媒体联盟更多自媒体作者 今日推荐 优秀作者 看点月榜 排行 看点昵称 看点指数 热文排行榜 日榜 周榜 月榜 01 任志强：房地产不管怎么调也不能让它掉下去，因为… 02 台胞感叹两岸差距：大陆吃饭掏手机，台湾却掏信用卡 03 王健林的妻子，背景才是真的深…… 04 年产6亿头猪为何一头也进不了香港？互害社会怪谁？ 05 刚刚，美国两房又崩"
       ],
       "validation_status": "verified",
       "media_family": "sina",
       "validation_reason": "related_angle_document_verified",
       "published_date": "2026-08-13",
-      "document_text_length": 860,
+      "document_text_length": 1819,
       "angle_kind": "audience_reaction"
     },
     {
-      "title": "李雪健听力受损及健康状况|李雪健|听力受损_新浪新闻",
-      "url": "https://www.sina.cn/news/detail/5331155538675567.html",
-      "source_name": "sina.cn",
+      "title": "老戏骨李雪健双耳已完全听不见，他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应",
+      "url": "https://m.sohu.com/a/1062077484_121627717?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "source_name": "m.sohu.com",
       "source_type": "media_report",
       "route_id": "serper-search",
       "route": "https://google.serper.dev/search",
-      "query": "李雪健 听力 回应",
+      "query": "李雪健 听力 热搜",
       "evidence_role": "related_angle",
       "key_points": [
-        "李雪健听力受损及健康状况|李雪健|听力受损_新浪新闻",
-        "#李雪健已经完全听不见了#看了心里堵堵的，前两天看李雪健老师还说怎么老了那么多，结果是生病了，希望他少疼痛，希望他可以在热爱的事业里拍出更多自己满意的作品！ ​ 发布于 广东 胖虎鲸： 多人因蝉鸣听力受损，医生紧急提醒 ——新华社 ​ 2026-08-04 14:57:41 转发(134) 评论(121) 兽爷： 人民日报：多人因蝉鸣听力受损，医生紧急提醒 ​ 2026-08-04 23:33:11 转发(75) 评论(128) 懂车老王： 新华社发文：多人因蝉鸣听力受损，医生紧急提醒。 中国农业科学院植物保护研究所专家称，蝉鸣的响声变大，高温天气是关键因素之一。持续的高温天气就像给雄蝉们打了“兴奋剂”，温度越高，它们为了求偶鸣叫得就越频繁、越响亮。 值得注意的是，蝉鸣声在峰值时能达到80多分贝，相当于持续的电钻声，有 ​ 2026-08-04 14:03:42 转发(15) 评论(59) 闪电新闻： 【#医生提醒蝉鸣是高频噪音会伤耳#】#夏季接诊大量蝉鸣致听力受损患者# 浙江一名18岁学生杨同学，在密林露营，蝉叫声铺天盖地。他全程没戴耳塞，觉得这就是大自然的声音，可当晚他就感觉耳朵闷胀，连鸟叫、手机提示音都听不清了。一查，噪声性高频听损。医生提示：门诊每年夏季都会接诊多例与蝉鸣噪声 ​ 2026-07-29 09:14:24 转发(56) 评论(46) 看看新闻Knews： 【#男子被蝉鸣吵出突发性耳聋#】#连片蝉鸣噪声堪比电钻# 盛夏蝉鸣本来是很多人记忆当中的夏天标配的背景音，不过最近有人感觉这个背景声尤其是当它们集体开麦合唱的时候，音量是不是有点大了。有关长时间听密集蝉鸣后听力受损的病例也在网络上引发了关注。 杭州一名男子近日突然感觉耳朵不适，对声音 ​ 2026-08-05 09:18:27 转发(21) 评论(5) 上饶发布： 【警惕！#长时间大音量用耳机当心听力受损#】耳朵有多脆弱？戴耳机入睡、耳机音量过大、长时间通话、用硬物掏耳朵等，可能会悄悄“偷”走听力。#如何正确健康地佩戴耳机#？不超过最大音量60%，连续使用不超60分钟，每天使用不超4小时……详戳↓↓（生命时报） ​#到底是谁取消有线耳机的# ​ 2026-07-04 16:59:45 转发(45) 评论(9) 老刀99： #家属称平顶山被打女孩视力听力受影响#听力受损要看具体程度，如果构成轻伤"
+        "老戏骨李雪健双耳已完全听不见，他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应",
+        "8月12日晚，老戏骨“李雪健已完全听不见”的消息，冲上热搜。 8月11日，人民日报客户端刊发报道《李雪健：要努力把更丰富的精神食粮奉献给人们》，记者采访了中国国家话剧院一级演员李雪健。 全文如下： 李雪健比往日更清瘦了。他从背包里取出语音转写器，而不是这些年常常带在身边的助听器。“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”李雪健的妻子于海丹在一旁解释。 2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。 展开剩余 67 % 图源CFP 今年也是他抗癌的第二十六年。化疗的射线杀死了癌细胞，也杀死了他的唾液腺。声带受损、听力下降……26年来，他饱受后遗症的折磨。8年前，他再上手术台，所幸有惊无险。 曾经许诺“每年拍一部戏”，现在是“只要是有意义的戏，哪怕只有一场，只要看上我，我就去”。李雪健一字一顿，“我要当好绿叶。” 完全听不见了，怎样演好戏？ “把对手戏演员的台词背下来，表演的时候，看对方的口型。表演要真听、真看、真感受，背了对方的台词，还要给出即兴反应，对我的要求很高。”李雪健也有苦恼。 “剧组帮我想了很多办法。拍电影《流浪地球3》时，副导演在我的手腕上绑了一个控制器，该我说台词了，他就按控制器，给我信号。这个语音转写器和手机应用，就是郭帆导演找到的办法。” 说着，李雪健从一个信封里取出4张照片。其中有3张，是他与“七一勋章”获得者崔道植的合影。“能在电影中饰演老年崔道植是一次学习的机会，我很荣幸。”另外一张拍摄于2025年11月21日凌晨时分的天安门附近，是作品杀青时，李雪健和剧组主创、执勤民警的合影。照片上，唯有70多岁的李雪健依然穿着单薄的戏服，可他说“心里热乎”。 今年还是李雪健入党的第五十一个年头。“作为老党员，把优秀共产党员的形象搬上银幕，是我的责任，也是生命的价值。”他缓缓说，“为了创作，我，还要拼命。” “能吃上演员这碗饭不容易，我很珍惜演员这个职业，要努力把更丰富的精神食粮奉献给人们。”李雪健沙哑的嗓音里满是笃定，要做一名合格的演员，更要做一名合格的党员。 一个演员，为什么在长达半个世纪的职业生涯中，对表演始终如一、毫无倦意，甚至不惜豁出半条命去？为什么他的角色总能留在观众心底？答案，就在“珍"
       ],
       "validation_status": "verified",
-      "media_family": "sina",
+      "media_family": "sohu",
       "validation_reason": "related_angle_document_verified",
       "published_date": "2026-08-12",
-      "document_text_length": 1467,
-      "angle_kind": "person_response"
-    },
-    {
-      "title": "老戏骨李雪健双耳已完全听不见，妻子：他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应 | 极目新闻",
-      "url": "https://www.ctdsb.net/c1476_202608/2829146.html",
-      "source_name": "ctdsb.net",
-      "source_type": "media_report",
-      "route_id": "serper-search",
-      "route": "https://google.serper.dev/search",
-      "query": "李雪健 听力 回应",
-      "evidence_role": "related_angle",
-      "key_points": [
-        "老戏骨李雪健双耳已完全听不见，妻子：他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应 | 极目新闻",
-        "8月11日，人民日报刊发报道《要努力把更丰富的精神食粮奉献给人们》，记者采访了中国国家话剧院一级演员李雪健。全文如下：李雪健比往日更清瘦了。他从背包里取出语音转写器，而不是这些年常常带在身边的助听器。“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”李雪健的妻子于海丹在一旁解释。2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。李雪健剧照今年也是他抗癌的第二十六年。化疗的射线杀死了癌细胞，也杀死了他的唾液腺。声带受损、听力下降……26年来，他饱受后遗症的折磨。8年前，他再上手术台，所幸有惊无险。曾经许诺“每年拍一部戏”，现在是“只要是有意义的戏，哪怕只有一场，只要看上我，我就去”。李雪健一字一顿，“我要当好绿叶。”完全听不见了，怎样演好戏？“把对手戏演员的台词背下来，表演的时候，看对方的口型。表演要真听、真看、真感受，背了对方的台词，还要给出即兴反应，对我的要求很高。”李雪健也有苦恼。“剧组帮我想了很多办法。拍电影《流浪地球3》时，副导演在我的手腕上绑了一个控制器，该我说台词了，他就按控制器，给我信号。这个语音转写器和手机应用，就是郭帆导演找到的办法。”说着，李雪健从一个信封里取出4张照片。其中有3张，是他与“七一勋章”获得者崔道植的合影。“能在电影中饰演老年崔道植是一次学习的机会，我很荣幸。”另外一张拍摄于2025年11月21日凌晨时分的天安门附近，是作品杀青时，李雪健和剧组主创、执勤民警的合影。照片上，唯有70多岁的李雪健依然穿着单薄的戏服，可他说“心里热乎”。今年还是李雪健入党的第五十一个年头。“作为老党员，把优秀共产党员的形象搬上银幕，是我的责任，也是生命的价值。”他缓缓说，“为了创作，我，还要拼命。”“能吃上演员这碗饭不容易，我很珍惜演员这个职业，要努力把更丰富的精神食粮奉献给人们。”李雪健沙哑的嗓音里满是笃定，要做一名合格的演员，更要做一名合格的党员。一个演员，为什么在长达半个世纪的职业生涯中，对表演始终如一、毫无倦意，甚至不惜豁出半条命去？为什么他的角色总能留在观众心底？答案，就在“珍惜”二字。关键词：角色塑造用角色与观众交朋友，是李雪健的追求。人物角色，既是文艺作品传情达意的“出口”，也是演员与观众对话"
-      ],
-      "validation_status": "verified",
-      "media_family": "ctdsb.net",
-      "validation_reason": "related_angle_document_verified",
-      "published_date": "2026-08-13",
-      "document_text_length": 1179,
-      "angle_kind": "person_response"
+      "document_text_length": 1262,
+      "angle_kind": "audience_reaction"
     }
   ],
   "observations": [
@@ -455,6 +433,18 @@
       "query": "李雪健 听力 热搜",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
+      "url": "https://weibo.com/a/hot/56ed38e369c8a4cc_0.html?type=grab",
+      "title": "李雪健已经完全听不见了_微博",
+      "source_name": "weibo.com",
+      "media_family": "sina",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力 热搜",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
       "url": "https://news.qq.com/rain/a/20260812A0DXZH00?adChannelId=news",
       "title": "抗癌26年，李雪健的双耳，已经完全听不见了…… - QQ News",
       "source_name": "news.qq.com",
@@ -467,10 +457,10 @@
       "query": "李雪健 听力 热搜",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
-      "url": "https://xueqiu.com/1148003899/136559131",
-      "title": "65岁李雪健近况曝光，戴助听器苍老太多！拿几十万片酬却遭质疑？",
-      "source_name": "xueqiu.com",
-      "media_family": "xueqiu.com",
+      "url": "https://k.sina.com.cn/article_7879776328_1d5abd8480680241sc.html?from=ent",
+      "title": "72岁李雪健双耳完全失聪仍坚持拍戏，听不见台词靠什么完成表演？",
+      "source_name": "k.sina.com.cn",
+      "media_family": "sina",
       "status": "rejected",
       "reason": "related_missing_angle"
     },
@@ -479,9 +469,9 @@
       "query": "李雪健 听力 热搜",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
-      "url": "https://ent.sina.cn/2026-08-13/detail-ininavwx6563735.d.html?oid=Jeeraj%E0%A4%A8%E0%A4%AF%E0%A4%BE%E0%A4%81%20%E0%A4%B8%E0%A4%BE%E0%A4%87%E0%A4%9F%20%20nep9999.com%20.qvli&vt=4",
+      "url": "https://cj.sina.com.cn/articles/view/3314280193/c58be70102001j1fc?from=ent&pos=108&his=0",
       "title": "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌",
-      "source_name": "ent.sina.cn",
+      "source_name": "cj.sina.com.cn",
       "media_family": "sina",
       "status": "accepted",
       "reason": "related_angle_document_verified",
@@ -492,37 +482,13 @@
       "query": "李雪健 听力 热搜",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
-      "url": "https://www.qdkaitai.com/news/v779.html",
-      "title": "《封神》李雪健声带、听力受损,原因竟是....",
-      "source_name": "qdkaitai.com",
-      "media_family": "qdkaitai.com",
-      "status": "rejected",
-      "reason": "related_angle_outside_current_window",
-      "published_date": "2023-08-18"
-    },
-    {
-      "topic_key": "李雪健抗癌26年听力下降",
-      "query": "李雪健 听力 热搜",
-      "route_id": "serper-search",
-      "evidence_role": "related_angle",
-      "url": "https://www.bilibili.com/video/BV1XL411s7Lj/",
-      "title": "67岁李雪健听力受损，对戏的时候他只能凑近才能听清楚",
-      "source_name": "bilibili.com",
-      "media_family": "bilibili",
-      "status": "rejected",
-      "reason": "document_http_412"
-    },
-    {
-      "topic_key": "李雪健抗癌26年听力下降",
-      "query": "李雪健 听力 热议",
-      "route_id": "serper-search",
-      "evidence_role": "related_angle",
-      "url": "http://edu.people.com.cn/n/2015/0408/c1053-26810503.html",
-      "title": "“我用角色和观众交朋友”——对话演员李雪健 - 人民网教育",
-      "source_name": "edu.people.com.cn",
-      "media_family": "edu.people.com.cn",
-      "status": "rejected",
-      "reason": "related_missing_angle"
+      "url": "https://m.sohu.com/a/1062077484_121627717?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "title": "老戏骨李雪健双耳已完全听不见，他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应",
+      "source_name": "m.sohu.com",
+      "media_family": "sohu",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2026-08-12"
     },
     {
       "topic_key": "李雪健抗癌26年听力下降",
@@ -553,25 +519,36 @@
       "query": "李雪健 听力 热议",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
-      "url": "https://www.bilibili.com/video/BV1XL411s7Lj/",
-      "title": "67岁李雪健听力受损，对戏的时候他只能凑近才能听清楚",
-      "source_name": "bilibili.com",
-      "media_family": "bilibili",
+      "url": "https://ent.china.com/movie/newszh/11005281/20260813/49671690.html",
+      "title": "李雪健已完全听不见用生命诠释角色 - 中华网娱乐",
+      "source_name": "ent.china.com",
+      "media_family": "ent.china.com",
       "status": "rejected",
-      "reason": "document_http_412"
+      "reason": "related_missing_angle"
     },
     {
       "topic_key": "李雪健抗癌26年听力下降",
       "query": "李雪健 听力 热议",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
-      "url": "https://m.yangshipin.cn/portrait_video?vid=s000049swgn",
-      "title": "敬业！李雪健听力和声带受损，仍坚持使用原声台词表演！ - 央视频",
-      "source_name": "m.yangshipin.cn",
-      "media_family": "yangshipin.cn",
+      "url": "http://edu.people.com.cn/n/2015/0408/c1053-26810503.html",
+      "title": "“我用角色和观众交朋友”——对话演员李雪健 - 人民网教育",
+      "source_name": "edu.people.com.cn",
+      "media_family": "edu.people.com.cn",
       "status": "rejected",
-      "reason": "related_angle_outside_current_window",
-      "published_date": "2021-10-05"
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力 热议",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.bilibili.com/video/BV1XL411s7Lj/",
+      "title": "67岁李雪健听力受损，对戏的时候他只能凑近才能听清楚",
+      "source_name": "bilibili.com",
+      "media_family": "bilibili",
+      "status": "rejected",
+      "reason": "document_http_412"
     },
     {
       "topic_key": "李雪健抗癌26年听力下降",
@@ -590,6 +567,18 @@
       "query": "李雪健 听力 回应",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
+      "url": "https://www.sina.cn/news/detail/5331175800575870.html",
+      "title": "李雪健听力状况及致敬 - 新浪",
+      "source_name": "sina.cn",
+      "media_family": "sina",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力 回应",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
       "url": "https://www.guancha.cn/culture/2026_08_13_827124.shtml",
       "title": "李雪健抗癌26年，双耳已完全听不见-观察者网",
       "source_name": "guancha.cn",
@@ -602,26 +591,12 @@
       "query": "李雪健 听力 回应",
       "route_id": "serper-search",
       "evidence_role": "related_angle",
-      "url": "https://www.sina.cn/news/detail/5331155538675567.html",
-      "title": "李雪健听力受损及健康状况|李雪健|听力受损_新浪新闻",
-      "source_name": "sina.cn",
-      "media_family": "sina",
-      "status": "accepted",
-      "reason": "related_angle_document_verified",
-      "published_date": "2026-08-12"
-    },
-    {
-      "topic_key": "李雪健抗癌26年听力下降",
-      "query": "李雪健 听力 回应",
-      "route_id": "serper-search",
-      "evidence_role": "related_angle",
-      "url": "https://www.ctdsb.net/c1476_202608/2829146.html",
-      "title": "老戏骨李雪健双耳已完全听不见，妻子：他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应 | 极目新闻",
-      "source_name": "ctdsb.net",
-      "media_family": "ctdsb.net",
-      "status": "accepted",
-      "reason": "related_angle_document_verified",
-      "published_date": "2026-08-13"
+      "url": "https://m.gmw.cn/2026-08/11/content_1304546406.htm",
+      "title": "李雪健：要努力把更丰富的精神食粮奉献给人们",
+      "source_name": "m.gmw.cn",
+      "media_family": "gmw.cn",
+      "status": "rejected",
+      "reason": "related_missing_angle"
     },
     {
       "topic_key": "李雪健抗癌26年听力下降",
