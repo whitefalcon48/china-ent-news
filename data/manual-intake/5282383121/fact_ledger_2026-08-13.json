@@ -1,0 +1,521 @@
+{
+  "date": "2026-08-13",
+  "generated_at": "2026-08-13T15:23:51.717Z",
+  "ledgers": [
+    {
+      "topic_key": "李雪健抗癌26年双耳失聪仍坚持演艺事业",
+      "ledger": {
+        "topic_key": "李雪健抗癌26年双耳失聪仍坚持演艺事业",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "李雪健的双耳已完全听不见，日常交流依靠语音转写器或手机应用转写。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健",
+              "语音转写器"
+            ],
+            "numbers": [],
+            "quote_zh": "老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "李雪健抗癌已26年，化疗导致声带受损、听力下降等后遗症。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "26"
+            ],
+            "quote_zh": "今年也是他抗癌的第二十六年。化疗的射线杀死了癌细胞，也杀死了",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "李雪健在8年前再次接受手术，所幸有惊无险。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "8"
+            ],
+            "quote_zh": "8年前，他再上手术台，所幸有惊无险。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "李雪健在完全失聪后，通过背诵对手台词、观察对方口型并给出即兴反应来演戏。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "把对手戏演员的台词背下来，表演的时候，看对方的口型。表演要真",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "拍摄电影《流浪地球3》时，副导演在李雪健手腕上绑控制器，通过按控制器提示他说台词的时机。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健",
+              "流浪地球3"
+            ],
+            "numbers": [],
+            "quote_zh": "拍电影《流浪地球3》时，副导演在我的手腕上绑了一个控制器，该",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "production_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "语音转写器和手机应用是导演郭帆为李雪健找到的辅助交流办法。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健",
+              "郭帆"
+            ],
+            "numbers": [],
+            "quote_zh": "这个语音转写器和手机应用，就是郭帆导演找到的办法。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "production_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "2026年是李雪健以演员为职业的第四十九年。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "2026",
+              "49"
+            ],
+            "quote_zh": "2026年是李雪健以演员为职业的第四十九年。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "李雪健曾饰演李大钊、焦裕禄、宋大成、冯石、赵树理、杨善洲、鲁迅、甘祖昌、周喆直等上百个角色。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健",
+              "李大钊",
+              "焦裕禄",
+              "宋大成",
+              "冯石",
+              "赵树理",
+              "杨善洲",
+              "鲁迅",
+              "甘祖昌",
+              "周喆直"
+            ],
+            "numbers": [
+              "上百"
+            ],
+            "quote_zh": "从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "李雪健表示现在只要是有意义的戏，哪怕只有一场，只要看上他，他就去。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "现在是“只要是有意义的戏，哪怕只有一场，只要看上我，我就去”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "李雪健在电影中饰演老年崔道植，并认为这是一次学习的机会。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健",
+              "崔道植"
+            ],
+            "numbers": [],
+            "quote_zh": "能在电影中饰演老年崔道植是一次学习的机会，我很荣幸。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2025年11月21日凌晨，李雪健与剧组主创、执勤民警在天安门附近合影，当时他穿着单薄戏服。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "2025",
+              "11",
+              "21"
+            ],
+            "quote_zh": "另外一张拍摄于2025年11月21日凌晨时分的天安门附近，是",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "2026年是李雪健入党的第五十一个年头。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "2026",
+              "51"
+            ],
+            "quote_zh": "今年还是李雪健入党的第五十一个年头。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "李雪健表示作为老党员，把优秀共产党员的形象搬上银幕是他的责任和生命的价值。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "作为老党员，把优秀共产党员的形象搬上银幕，是我的责任，也是生",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "李雪健表示为了创作，他还要拼命。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "为了创作，我，还要拼命。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "李雪健表示能吃上演员这碗饭不容易，他很珍惜演员这个职业，要努力把更丰富的精神食粮奉献给人们。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "能吃上演员这碗饭不容易，我很珍惜演员这个职业，要努力把更丰富",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "学者冯骥才评价李雪健每演一个人，这世界就多了一个“人”。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "source_name": "冯骥才",
+            "entities": [
+              "李雪健",
+              "冯骥才"
+            ],
+            "numbers": [],
+            "quote_zh": "学者冯骥才曾评价：李雪健每演一个人，这世界就多了一个“人”。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "8月12日，#李雪健已完全听不见了#话题冲上热搜。",
+            "evidence_refs": [
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "8",
+              "12"
+            ],
+            "quote_zh": "8月12日#李雪健已完全听不见了#冲上热搜",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "other",
+            "angle_kind": "audience_reaction"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "8月12日晚，老戏骨“李雪健已完全听不见”的消息冲上热搜。",
+            "evidence_refs": [
+              "E6"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "8",
+              "12"
+            ],
+            "quote_zh": "8月12日晚，老戏骨“李雪健已完全听不见”的消息，冲上热搜。",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "other",
+            "angle_kind": "audience_reaction"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "有网友表示希望李雪健少疼痛，可以在热爱的事业里拍出更多自己满意的作品。",
+            "evidence_refs": [
+              "E7"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "希望他少疼痛，希望他可以在热爱的事业里拍出更多自己满意的作品",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "other",
+            "angle_kind": "person_response"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "有网友提到几年前李雪健参与《我和我的父辈》拍摄时，现场已能明显看到听力受损。",
+            "evidence_refs": [
+              "E7"
+            ],
+            "entities": [
+              "李雪健",
+              "我和我的父辈"
+            ],
+            "numbers": [],
+            "quote_zh": "当时李雪健老师参与《我和我的父辈》拍摄，在现场明显能看到李雪",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "other",
+            "angle_kind": "person_response"
+          }
+        ],
+        "terms": [
+          {
+            "term": "语音转写器",
+            "gloss_ja": "音声文字変換器",
+            "what_is": "音声を文字に変換する機器。",
+            "why_now": "李雪健が完全失聴後の日常会話に使用している。",
+            "explain_quote_zh": "他从背包里取出语音转写器",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "助听器",
+            "gloss_ja": "補聴器",
+            "what_is": "聴力を補助する機器。",
+            "why_now": "李雪健が以前使用していたが、現在は使用していない。",
+            "explain_quote_zh": "而不是这些年常常带在身边的助听器",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "化疗",
+            "gloss_ja": "化学療法",
+            "what_is": "薬剤で癌を治療する方法。",
+            "why_now": "李雪健の癌治療で後遺症が生じた。",
+            "explain_quote_zh": "化疗的射线杀死了癌细胞，也杀死了他的唾液腺",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "鼻咽癌",
+            "gloss_ja": "上咽頭癌",
+            "what_is": "鼻の奥にできる癌。",
+            "why_now": "李雪健が2000年に診断された癌。",
+            "explain_quote_zh": "2000年在拍摄《中国轨道》时，李雪健确诊鼻咽癌",
+            "explain_evidence_refs": [
+              "E5"
+            ]
+          },
+          {
+            "term": "七一勋章",
+            "gloss_ja": "七一勲章",
+            "what_is": "中国共産党の最高栄誉章。",
+            "why_now": "李雪健が演じた崔道植が受章者。",
+            "explain_quote_zh": "他与“七一勋章”获得者崔道植的合影",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "一级演员",
+            "gloss_ja": "国家一級俳優",
+            "what_is": "中国の俳優に与えられる最高位の職階。",
+            "why_now": "李雪健の肩書き。",
+            "explain_quote_zh": "中国国家话剧院一级演员李雪健",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "老戏骨",
+            "gloss_ja": "ベテラン俳優",
+            "what_is": "演技力の高い年配俳優を指す敬称。",
+            "why_now": "李雪健を指す言葉として使われている。",
+            "explain_quote_zh": "老戏骨李雪健双耳已完全听不见",
+            "explain_evidence_refs": [
+              "E6"
+            ]
+          },
+          {
+            "term": "热搜",
+            "gloss_ja": "トレンド",
+            "what_is": "SNSで話題のキーワードランキング。",
+            "why_now": "李雪健の聴力に関する話題がランクインした。",
+            "explain_quote_zh": "#李雪健已完全听不见了#冲上热搜",
+            "explain_evidence_refs": [
+              "E5"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration",
+          "E5": "related_angle",
+          "E6": "related_angle",
+          "E7": "related_angle"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
