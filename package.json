@@ -8,6 +8,7 @@
     "start": "tsx src/index.ts",
     "test:gemini": "tsx src/testGemini.ts",
     "test:deepseek": "tsx src/testDeepSeek.ts",
+    "test:deepseek-request": "tsx src/testDeepSeekRequest.ts",
     "test:title": "tsx src/testSummaryTitle.ts",
     "test:sources": "tsx src/testSourceRelevance.ts",
     "test:evidence-expansion": "tsx src/testEvidenceExpansion.ts",

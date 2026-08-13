@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { consumeLlmCall, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
+import { buildDeepSeekJsonRequest } from "./deepSeekRequest.js";
 import { describeError, formatEvidenceForPrompt } from "./summarizeWithGemini.js";
 import type { AiProvider, ClaimType, EvidenceRole, FactLedger, FactLedgerClaim, RawArticle, TopicCandidate } from "./types.js";
 
@@ -347,16 +348,7 @@ async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget, mode
         method: "POST",
         headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
         signal: controller.signal,
-        body: JSON.stringify({
-          model,
-          temperature: 0,
-          // A fact ledger is structured reference data, not article prose.
-          // Keeping its response bounded avoids a long-running provider request
-          // while still leaving room for claims, terms, and evidence refs.
-          max_tokens: 3000,
-          response_format: { type: "json_object" },
-          messages: [{ role: "user", content: prompt }]
-        })
+        body: JSON.stringify(buildDeepSeekJsonRequest(model, prompt, 8000, 0))
       });
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {

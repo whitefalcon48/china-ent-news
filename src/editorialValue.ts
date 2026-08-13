@@ -1,4 +1,5 @@
 import { getIndependentEvidence as getIndependentEvidenceByFamily } from "./evidence/independentEvidence.js";
+import { buildDeepSeekJsonRequest } from "./deepSeekRequest.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, type LlmCallBudget } from "./llmCallBudget.js";
 import { describeError, getAiProvider, getProviderEnvStatus } from "./summarizeWithGemini.js";
 import type { PublicationHistoryMatch } from "./publicationHistory.js";
@@ -242,7 +243,7 @@ async function generateJson(provider: AiProvider, prompt: string) {
     const response = await fetch(DEEPSEEK_ENDPOINT, {
       method: "POST",
       headers: { "content-type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({ model: process.env.DEEPSEEK_MODEL || "deepseek-v4-flash", messages: [{ role: "user", content: prompt }], temperature: 0.1, response_format: { type: "json_object" } })
+      body: JSON.stringify(buildDeepSeekJsonRequest(process.env.DEEPSEEK_MODEL || "deepseek-v4-flash", prompt))
     });
     if (!response.ok) throw new Error(`DeepSeek EVS API error: HTTP ${response.status} ${response.statusText}`);
     const payload = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };

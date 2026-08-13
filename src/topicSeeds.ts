@@ -1,4 +1,5 @@
 import { createTopicKey, extractEventName, extractPersonName, extractPolicyKey, extractWorkName } from "./topicKey.js";
+import { buildDeepSeekJsonRequest } from "./deepSeekRequest.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, type LlmCallBudget } from "./llmCallBudget.js";
 import { describeError, getAiProvider, getProviderEnvStatus } from "./summarizeWithGemini.js";
 import type { AiProvider, MainEntities, RawArticle, TopicSeed, TopicSeedExtractionResult } from "./types.js";
@@ -269,13 +270,7 @@ async function generateDeepSeekJson(prompt: string) {
           authorization: `Bearer ${apiKey}`,
           "content-type": "application/json"
         },
-        body: JSON.stringify({
-          model,
-          temperature: 0,
-          max_tokens: 8000,
-          response_format: { type: "json_object" },
-          messages: [{ role: "user", content: prompt }]
-        })
+        body: JSON.stringify(buildDeepSeekJsonRequest(model, prompt, 8000, 0))
       });
     } catch (error) {
       throw new Error(`DeepSeek topic seed network error: ${describeError(error)}`);
