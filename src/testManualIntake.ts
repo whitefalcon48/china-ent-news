@@ -7,6 +7,7 @@ import path from "node:path";
 import { PassThrough } from "node:stream";
 import { buildManualReviewIssue } from "./intake/buildManualReviewIssue.js";
 import { assessArticleDepth } from "./articleDepth.js";
+import { ensureManualDetailSectionDepth } from "./summarizeWithGemini.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
@@ -174,6 +175,16 @@ async function main() {
     assert.equal(depth.passed, true, depth.reasons.join(", "));
     assert.equal(depth.used_claims, 12);
     assert.equal(depth.used_number_claims, 8);
+    const repaired = ensureManualDetailSectionDepth({
+      ...rich,
+      detail_sections: [
+        { heading: "短い節", body: "確認済みの短い記述です。", claim_refs: ["C1"] },
+        ...rich.detail_sections.slice(1)
+      ]
+    }, richLedger, "manual_evidence_rich");
+    assert.ok(repaired.detail_sections![0]!.body.length >= 55, "短い節は未使用の確認済みclaimだけで補う");
+    assert.ok(repaired.detail_sections![0]!.claim_refs.length > 1, "補ったclaim IDも同じ節へ記録する");
+    assert.equal(assessArticleDepth(repaired, richLedger, "manual_evidence_rich").reasons.includes("detail_section_too_short"), false);
 
     const personLedger: FactLedger = {
       topic_key: "李雪健",

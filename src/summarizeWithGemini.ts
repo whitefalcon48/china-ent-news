@@ -131,6 +131,7 @@ export async function summarizeTopic(
   let text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile), budget);
   let summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
   summary = ensureObservableReactionView(summary, ledger);
+  summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
   let claimCheck = runClaimCheck(summary, ledger);
 
   if (claimCheck.gated_violation_count > 0) {
@@ -141,6 +142,7 @@ export async function summarizeTopic(
       text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, gatedViolations, articleDepthProfile), budget);
       summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
       summary = ensureObservableReactionView(summary, ledger);
+      summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
       claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
       if (claimCheck.gated_violation_count > 0) {
         claimCheck = { ...claimCheck, action: "discarded" };
@@ -156,6 +158,7 @@ export async function summarizeTopic(
     text = await generateJson(provider, retryPrompt, budget);
     summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
     summary = ensureObservableReactionView(summary, ledger);
+    summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
     claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
     if (claimCheck.gated_violation_count > 0) {
       throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
@@ -227,11 +230,11 @@ export async function summarizeTopic(
   }
   claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
 
-  const finalizedSummary = ensureCanonicalPersonName(
+  const finalizedSummary = ensureManualDetailSectionDepth(ensureCanonicalPersonName(
     clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger))),
     topic,
     ledger
-  );
+  ), ledger, articleDepthProfile);
   const finalWritingFailures = articleDepthProfile === "manual_evidence_rich" ? manualWritingFailures(finalizedSummary, ledger, topic) : [];
   if (finalWritingFailures.length) throw new Error(`manual_writing_gate:${finalWritingFailures.join(",")}`);
   articleDepth = assessArticleDepth(finalizedSummary, ledger, articleDepthProfile, articleDepth.regenerated);
@@ -1289,6 +1292,39 @@ function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, t
   const ungroundedWarnings = finalClaimCheck.violations.filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"));
   failures.push(...ungroundedWarnings.map((violation) => `public_text_contains_ungrounded_detail:${violation.rule}:${violation.section}`));
   return failures;
+}
+
+export function ensureManualDetailSectionDepth(
+  summary: SummarizedArticle,
+  ledger: FactLedger,
+  profile: ArticleDepthProfile
+): SummarizedArticle {
+  if (profile !== "manual_evidence_rich" || !summary.detail_sections?.length) return summary;
+  const eligible = ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.scope !== "related_angle" && claim.anchor !== false);
+  const byId = new Map(eligible.map((claim) => [claim.id, claim]));
+  const assigned = new Set(summary.detail_sections.flatMap((section) => section.claim_refs).filter((id) => byId.has(id)));
+  const detailSections = summary.detail_sections.map((section) => {
+    if (section.body.trim().length >= 55) return section;
+    const refs = [...new Set(section.claim_refs.filter((id) => byId.has(id)))];
+    const roles = new Set(refs.map((id) => byId.get(id)?.editorial_role).filter((role) => role && role !== "other"));
+    const unused = eligible
+      .filter((claim) => !assigned.has(claim.id))
+      .sort((left, right) => Number(roles.has(right.editorial_role)) - Number(roles.has(left.editorial_role)));
+    const candidates = [
+      ...refs.map((id) => byId.get(id)).filter((claim): claim is FactLedger["claims"][number] => Boolean(claim)),
+      ...unused,
+      ...eligible.filter((claim) => !refs.includes(claim.id) && assigned.has(claim.id))
+    ];
+    let body = section.body.trim();
+    for (const claim of candidates) {
+      body = `${body}${/[。！？]$/u.test(body) ? "" : "。"}${claim.text}`.trim();
+      if (!refs.includes(claim.id)) refs.push(claim.id);
+      assigned.add(claim.id);
+      if (body.length >= 55) break;
+    }
+    return { ...section, body, claim_refs: refs };
+  });
+  return { ...summary, detail_sections: detailSections };
 }
 
 function ensureCanonicalPersonName(summary: SummarizedArticle, topic: TopicCandidate, ledger: FactLedger) {
