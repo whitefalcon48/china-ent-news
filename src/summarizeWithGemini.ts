@@ -129,6 +129,7 @@ export async function summarizeTopic(
   });
   let text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile), budget);
   let summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
+  summary = ensureObservableReactionView(summary, ledger);
   let claimCheck = runClaimCheck(summary, ledger);
 
   if (claimCheck.gated_violation_count > 0) {
@@ -138,6 +139,7 @@ export async function summarizeTopic(
       const gatedViolations = claimCheck.violations.filter((violation) => violation.severity === "gate");
       text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, gatedViolations, articleDepthProfile), budget);
       summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
+      summary = ensureObservableReactionView(summary, ledger);
       claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
       if (claimCheck.gated_violation_count > 0) {
         claimCheck = { ...claimCheck, action: "discarded" };
@@ -147,16 +149,20 @@ export async function summarizeTopic(
   }
 
   let articleDepth = assessArticleDepth(summary, ledger, articleDepthProfile);
-  if (!articleDepth.passed && articleDepthProfile === "manual_evidence_rich") {
-    const retryPrompt = `${await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile, articleDepth.reasons)}\n\n前回の下書きJSON:\n${JSON.stringify(summary, null, 2)}\n\n前回の根拠付き記述を捨てず、重複を避けて必要節数へ再構成してください。`;
+  let writingFailures = manualWritingFailures(summary, ledger, topic);
+  if ((!articleDepth.passed || writingFailures.length) && articleDepthProfile === "manual_evidence_rich") {
+    const retryPrompt = `${await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile, [...articleDepth.reasons, ...writingFailures])}\n\n前回の下書きJSON:\n${JSON.stringify(summary, null, 2)}\n\n前回の根拠付き記述を捨てず、重複を避けて必要節数と検証済みrelated angleの反映を修正してください。`;
     text = await generateJson(provider, retryPrompt, budget);
     summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
+    summary = ensureObservableReactionView(summary, ledger);
     claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
     if (claimCheck.gated_violation_count > 0) {
       throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
     }
     articleDepth = assessArticleDepth(summary, ledger, articleDepthProfile, true);
     if (!articleDepth.passed) throw new ArticleDepthGateError(articleDepth);
+    writingFailures = manualWritingFailures(summary, ledger, topic);
+    if (writingFailures.length) throw new Error(`manual_writing_gate:${writingFailures.join(",")}`);
   }
 
   const toneMode = getToneMode(topic, ledger);
@@ -220,7 +226,7 @@ export async function summarizeTopic(
   }
   claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
 
-  const finalizedSummary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence)));
+  const finalizedSummary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger)));
   articleDepth = assessArticleDepth(finalizedSummary, ledger, articleDepthProfile, articleDepth.regenerated);
   if (!articleDepth.passed) throw new ArticleDepthGateError(articleDepth);
   const residues = inspectDisplayKanjiResidues(finalizedSummary);
@@ -816,6 +822,7 @@ ${terminology}
 - type: unsupported のclaimは本文に使わない。
 - scope=root_event のclaimは中心出来事としてだけ使い、scope=related_angle のclaimは検証済みの別角度としてだけ使う。両者を同じ事実の裏付け・同じ反応の根拠として混ぜない。
 - related_angle のclaimが無い場合、家族コメント・生涯回顧・周辺の反応などを一般知識で足さない。
+- angle_kind=audience_reaction の検証済みclaimがある場合、reaction_viewを空にせず、そのclaim IDをclaim_refs.reaction_viewへ入れる。「熱搜入り」だけが根拠なら、その事実と確認元だけを書き、賛否・感情・投稿内容・反応件数を推測しない。
 - source_list には root_corroboration の根拠だけを入れる。related_angle を実際に本文で使った時だけ、その根拠を related_sources に入れる。両方に同じソースを入れない。
 - type: source_analysis のclaimを使う文は、必ずsource_nameの媒体名を主語または出典として明示し、断定しない（「〜と見ています」「〜と報じています」）。業界全体の事実のように書かない。
 - 日本での公開・配信・字幕は、japan_availability.status が "verified" の場合だけ、detailの範囲で書く。"not_in_evidence" の場合は「日本では未公開」と書かず、触れないか「日本での公開情報は今回の情報源からは確認できていない」とする。
@@ -824,6 +831,7 @@ ${terminology}
 用語の扱い:
 - 表記辞書に優先表記がある語は必ずその表記を使う。
 - 人名・作品名・賞名・業界用語を含む公開テキストの全フィールドで、簡体字を日本の新字体へ統一する。日本の新字体に対応する漢字がない場合だけ原文の簡体字を残す。
+- 入力トピックの人物名は漢字表記のまま使う。中国人名をカタカナの音訳へ置き換えない。今回の人物名: ${topic.main_entities.people.join(" / ") || "なし"}
 - 表記辞書の既知語は説明なしでそのまま使ってよい。
 - このニュースの中心にある用語（termsのうちwhat_is/why_nowがあるもの、および表記辞書の「毎回説明する語」）は、単なる括弧書きの訳語で済ませず、「それが何か」「今回なぜ重要か」が本文の流れの中で分かるように、claimsとtermsの説明を使って書く。
 - 中心の用語なのに台帳に説明材料が無い場合は、一般知識で補完せず、「〜の詳しい仕組みは今回の情報源では説明されていない」と明示するか、その用語を使わずに書く。
@@ -838,7 +846,7 @@ ${terminology}
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
 - why_it_matters: 100〜250字。ビンタンの注目ポイント。docs/editorial-character.md で定めた公開記事向けの編集トーンで、短い感想・リアクションを必ず混ぜる。本文の言い換え・要約をせず、「用語・制度の噛み砕き説明（termsに説明がある場合だけ）」「なぜ今気になるか」「次に確認する数字・発表・反応」「これまでの流れとの関係」「情報源の見方・注意点」のうち、この記事に最も価値のある角度を1つ選んで書く。日本語読者向けの背景・公開状況・ファン文化は japan_context_note 専用にし、両方がある場合は同じ事実・角度を繰り返さない。
-- reaction_view: SNS由来または複数媒体のclaimがある場合のみ100〜200字。無ければ空文字。
+- reaction_view: SNS由来、angle_kind=audience_reaction、または複数媒体の見られ方を直接示すclaimがある場合のみ100〜200字。angle_kind=audience_reactionのclaimがある場合は必ず使用する。無ければ空文字。
 - japan_context_note: 日本語圏の読者に補足する価値がある文脈のclaimがある場合だけ、100〜200字でビンタンの声で書く。why_it_matters と同じ角度・言い換えにしない。日本側の受け止めや公開状況を述べる場合は、その内容を裏付けるclaimがあるときだけ。無ければ空文字。
 - editor_comment: 常に空文字 "" を返す（旧「ビンタンからのひとこと」枠は廃止。公開上は「ビンタンの注目ポイント」と、根拠がある時だけの「ビンタンからの補足」の2役とし、独立した3枠目は作らない）。
 - lead / what_happened / reaction_view / why_it_matters / japan_context_note の基本部分はおおむね400〜700字。持ち込みニュースのdetail_sectionsはこの字数とは別に、必要な根拠量に応じて加える。
@@ -1171,7 +1179,7 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
   };
 }
 
-export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCandidate, evidence: RawArticle[]): SummarizedArticle {
+export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCandidate, evidence: RawArticle[], ledger?: FactLedger): SummarizedArticle {
   const rootEvidence = evidence.filter((article) => (article.evidenceRole ?? "root_corroboration") === "root_corroboration");
   const relatedEvidence = evidence.filter((article) => article.evidenceRole === "related_angle");
   const availableRootSources = dedupeEvidenceSources(rootEvidence);
@@ -1179,10 +1187,20 @@ export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: To
   const requestedSources = dedupeSourceRefs([...summary.source_list, ...summary.related_sources]);
   const requestedRootSources = selectRequestedEvidenceSources(requestedSources, availableRootSources);
   const requestedRelatedSources = selectRequestedEvidenceSources(requestedSources, availableRelatedSources);
+  const usedRelatedEvidenceRefs = new Set(
+    ledger?.claims
+      .filter((claim) => claim.scope === "related_angle" && summaryUsesClaim(summary, claim.id))
+      .flatMap((claim) => claim.evidence_refs) ?? []
+  );
+  const groundedRelatedSources = dedupeEvidenceSources(relatedEvidence.filter((_, index) => {
+    const absoluteIndex = evidence.indexOf(relatedEvidence[index]!);
+    return usedRelatedEvidenceRefs.has(`E${absoluteIndex + 1}`);
+  }));
   // Root sources fall back to the validated root evidence. Related sources do
   // not: absence from model output means the angle was not actually used.
   const sourceList = requestedRootSources.length ? requestedRootSources : availableRootSources;
-  const relatedSourceList = requestedRelatedSources.filter((related) => !sourceList.some((root) => sameSource(root, related)));
+  const relatedSourceList = dedupeSourceRefs([...requestedRelatedSources, ...groundedRelatedSources])
+    .filter((related) => !sourceList.some((root) => sameSource(root, related)));
   const representative = evidence[0];
   const usedRootEvidence = rootEvidence.filter((article) => sourceList.some((source) => sameSource(source, { name: article.sourceName, url: article.url })));
   const hasSnsSignal = usedRootEvidence.some((article) => article.sourceType === "sns" || article.articleType === "sns_trend");
@@ -1208,7 +1226,7 @@ export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: To
     has_official_source: hasOfficialSource,
     has_multiple_sources: rootSourceCount > 1,
     has_sns_signal: hasSnsSignal,
-    reaction_view: hasSnsSignal || rootSourceCount > 1 ? summary.reaction_view : "",
+    reaction_view: hasSnsSignal || rootSourceCount > 1 || relatedSourceList.length ? summary.reaction_view : "",
     article_type: summary.article_type === "unknown" && representative?.articleType ? representative.articleType : summary.article_type,
     topic_key: topic.topic_key,
     main_entities: {
@@ -1218,6 +1236,39 @@ export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: To
     },
     related_sources: relatedSourceList
   };
+}
+
+export function ensureObservableReactionView(summary: SummarizedArticle, ledger: FactLedger): SummarizedArticle {
+  const claims = ledger.claims.filter((claim) =>
+    claim.type !== "unsupported"
+    && claim.anchor !== false
+    && claim.scope === "related_angle"
+    && claim.angle_kind === "audience_reaction"
+  );
+  if (!claims.length || (summary.reaction_view.trim() && claims.some((claim) => summary.claim_refs.reaction_view.includes(claim.id)))) return summary;
+  return {
+    ...summary,
+    reaction_view: claims.map((claim) => claim.text).join(" "),
+    claim_refs: { ...summary.claim_refs, reaction_view: claims.map((claim) => claim.id) }
+  };
+}
+
+function summaryUsesClaim(summary: SummarizedArticle, claimId: string) {
+  return Object.values(summary.claim_refs).some((refs) => refs.includes(claimId))
+    || (summary.detail_sections ?? []).some((section) => section.claim_refs.includes(claimId));
+}
+
+function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, topic: TopicCandidate) {
+  const failures: string[] = [];
+  const audienceClaims = ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.anchor !== false && claim.scope === "related_angle" && claim.angle_kind === "audience_reaction");
+  if (audienceClaims.length && (!summary.reaction_view.trim() || !audienceClaims.some((claim) => summary.claim_refs.reaction_view.includes(claim.id)))) {
+    failures.push("verified_audience_reaction_not_presented");
+  }
+  const publicText = [summary.title_ja, summary.lead, summary.what_happened, ...(summary.detail_sections ?? []).map((section) => section.body)].join("\n");
+  for (const person of topic.main_entities.people) {
+    if (ledger.claims.some((claim) => claim.entities.includes(person)) && !publicText.includes(person)) failures.push(`person_name_not_preserved:${person}`);
+  }
+  return failures;
 }
 
 function dedupeEvidenceSources(evidence: RawArticle[]) {

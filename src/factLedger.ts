@@ -29,29 +29,35 @@ export async function extractFactLedger(
 ): Promise<FactLedgerExtractionResult> {
   try {
     const prompt = buildFactLedgerPrompt(topic, evidence);
-    let text: string;
-    try {
-      text = provider === "deepseek"
-        ? await generateDeepSeekJson(prompt, budget, model)
-        : await generateGeminiJson(prompt, budget, model);
-    } catch (error) {
-      // The manually supplied route can receive an empty response from Flash
-      // even though the same facts are valid. Retry its fact-only request once
-      // with the Pro model already proven by the daily generator. This retains
-      // the exact ledger, claim-reference, and gate contract.
-      if (provider === "deepseek" && model === "deepseek-v4-flash" && isEmptyDeepSeekResponse(error)) {
-        text = await generateDeepSeekJson(prompt, budget, "deepseek-v4-pro");
-      } else {
+    const generate = async (request: string) => {
+      try {
+        return provider === "deepseek"
+          ? await generateDeepSeekJson(request, budget, model)
+          : await generateGeminiJson(request, budget, model);
+      } catch (error) {
+        // The manually supplied route can receive an empty response from Flash
+        // even though the same facts are valid. Retry its fact-only request once
+        // with the Pro model already proven by the daily generator. This retains
+        // the exact ledger, claim-reference, and gate contract.
+        if (provider === "deepseek" && model === "deepseek-v4-flash" && isEmptyDeepSeekResponse(error)) {
+          return generateDeepSeekJson(request, budget, "deepseek-v4-pro");
+        }
         throw error;
       }
-    }
-    const anchor = {
-      topic_key: topic.topic_key,
-      claims_total: 0,
-      anchor_unverified: 0,
-      dropped_explanations: [] as Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>
     };
-    const ledger = normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence), anchor, getEvidenceRoles(evidence));
+    const normalize = (text: string) => {
+      const anchor = {
+        topic_key: topic.topic_key,
+        claims_total: 0,
+        anchor_unverified: 0,
+        dropped_explanations: [] as Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>
+      };
+      const ledger = normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence), anchor, getEvidenceRoles(evidence));
+      return { ledger, anchor };
+    };
+    const text = await generate(prompt);
+    const { ledger: extractedLedger, anchor } = normalize(text);
+    const ledger = ensureObservableRelatedClaims(extractedLedger, evidence);
     anchor.claims_total = ledger.claims.length;
     anchor.anchor_unverified = ledger.claims.filter((claim) => claim.anchor === false).length;
     return {
@@ -105,7 +111,9 @@ claimの分類（type）:
 - entities（人物・作品・組織の固有名詞）とnumbers（数字・日付）は原文の表記のまま入れる。claimの文中に出てくる数字・日付・序数（第八届など）は必ずnumbersにも入れる。
 - quote_zhには、そのclaimの根拠となるevidence原文の該当箇所を、原文の文字列のまま30字以内で抜き出して入れる。要約・言い換えをせず、原文にある文字列をそのまま写す。
  - evidence_refsには根拠のevidence番号（"E1"など）を必ず入れる。
- - claimのscopeは必ず "root_event" または "related_angle"。role=root_corroboration のEだけで支えられる出来事は root_event、role=related_angle のEだけで支えられる別角度は related_angle にする。
+- claimのscopeは必ず "root_event" または "related_angle"。role=root_corroboration のEだけで支えられる出来事は root_event、role=related_angle のEだけで支えられる別角度は related_angle にする。
+- role=related_angle の各Eについて、本文から直接確認できる角度がある場合は、そのEを根拠に最低1件のclaimを作り、入力に表示された angle_kind（person_response / career_retrospective / audience_reaction / work_context / other）をそのまま入れる。
+- angle_kind=audience_reaction で確認できるのが「熱搜入り」「話題ランキング入り」だけなら、その観測事実だけを書く。投稿コメントの内容、賛否、感情、反応件数を推測・一般化しない。
  - related_angle は中心出来事の裏付け・反応一般化・複数ソース化には絶対に使わない。root_event のclaimに related_angle のEを混ぜず、related_angle のclaimに root_corroboration のEを混ぜない。
 - このトピックの中心にある制度・仕組み・業界用語について、evidenceが「それが何か」「なぜ問題・重要なのか」「どう機能するのか」を説明している場合、その説明を必ずclaimとして拾う。
 - 制度・賞・仕組みの説明は、evidenceに書かれている範囲を1字も超えないこと。例: evidenceに「観客投票でノミネートを選ぶ」とだけ書かれている場合、「観客投票で受賞者が決まる」と書いてはいけない。選考方式・決定主体・段階は、evidenceの記述と厳密に一致させる。
@@ -123,12 +131,10 @@ claimの分類（type）:
 返すJSON:
 {
   "topic_key": "<入力値をそのまま>",
-  "claims": [{ "id": "C1", "type": "verified_fact", "scope": "root_event", "editorial_role": "other", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
+  "claims": [{ "id": "C1", "type": "verified_fact", "scope": "root_event", "angle_kind": "other", "editorial_role": "other", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
   "terms": [{ "term": "", "gloss_ja": "", "what_is": "", "why_now": "", "explain_quote_zh": "", "explain_evidence_refs": [] }],
   "japan_availability": { "status": "not_in_evidence", "detail": "", "evidence_refs": [] },
   "unresolved": []
-}
-
 入力トピック:
 - topic_key: ${topic.topic_key}
 - event_sentence: ${topic.event_sentence}
@@ -136,6 +142,52 @@ claimの分類（type）:
 
 evidence一覧:
 ${formatEvidenceForPrompt(evidence)}`;
+}
+
+/**
+ * A search-ranking observation is both narrow and mechanically verifiable.
+ * Preserve it even when the ledger model focuses on the richer biography in
+ * the same document. This never invents sentiment or treats the angle as root
+ * corroboration.
+ */
+export function ensureObservableRelatedClaims(ledger: FactLedger, evidence: RawArticle[]): FactLedger {
+  const claims = [...ledger.claims];
+  for (const [index, article] of evidence.entries()) {
+    if (article.evidenceRole !== "related_angle" || article.angleKind !== "audience_reaction") continue;
+    const ref = `E${index + 1}`;
+    if (claims.some((claim) => claim.scope === "related_angle" && claim.angle_kind === "audience_reaction" && claim.evidence_refs.includes(ref))) continue;
+    const content = `${article.title}\n${article.rawContent || article.excerpt || ""}`;
+    const observation = extractHotSearchObservation(content);
+    if (!observation) continue;
+    claims.push({
+      id: nextClaimId(claims),
+      type: "verified_fact",
+      text: `${observation.date ? `${observation.date}、` : ""}「#${observation.topic}#」が熱搜入りしたと${article.sourceName}が報じた。`,
+      evidence_refs: [ref],
+      source_name: article.sourceName,
+      entities: observation.topic.includes("李雪健") ? ["李雪健"] : [],
+      numbers: observation.date ? [observation.date] : [],
+      quote_zh: observation.quote,
+      anchor: true,
+      scope: "related_angle",
+      angle_kind: "audience_reaction",
+      editorial_role: "other"
+    });
+  }
+  return { ...ledger, claims };
+}
+
+function extractHotSearchObservation(content: string) {
+  const match = content.match(/(?:(\d{1,2}月\d{1,2}日)[，,、\s]*)?#([^#\r\n]{2,60})#[^。\r\n]{0,16}?(?:冲上|登上|进入)热搜/u);
+  if (!match) return null;
+  return { date: match[1] || "", topic: match[2]!.trim(), quote: match[0]!.slice(0, 30) };
+}
+
+function nextClaimId(claims: FactLedgerClaim[]) {
+  const used = new Set(claims.map((claim) => claim.id));
+  let number = claims.length + 1;
+  while (used.has(`C${number}`)) number += 1;
+  return `C${number}`;
 }
 
 export function normalizeFactLedger(

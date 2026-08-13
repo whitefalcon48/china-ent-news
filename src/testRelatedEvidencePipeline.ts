@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { runClaimCheck } from "./claimCheck.js";
 import { attachExpansionEvidence } from "./expandSources.js";
-import { normalizeFactLedger } from "./factLedger.js";
-import { formatEvidenceForPrompt, mergeTopicInternalMetadata } from "./summarizeWithGemini.js";
+import { ensureObservableRelatedClaims, normalizeFactLedger } from "./factLedger.js";
+import { ensureObservableReactionView, formatEvidenceForPrompt, mergeTopicInternalMetadata } from "./summarizeWithGemini.js";
 import type { FactLedger, RawArticle, SourceExpansionEvidence, SummarizedArticle, TopicCandidate } from "./types.js";
 
 const rootEvidence = [
@@ -100,6 +100,23 @@ const kungFuTopic = { ...xieXianTopic, topic_key: "功夫女足上映", title_hi
 const kungFuExpanded = attachExpansionEvidence(kungFuTopic, [evidence("票房媒体", "《功夫女足》票房が話題に", "https://example.com/kungfu", "related_angle", "功夫女足 票房")]);
 assert.equal(kungFuExpanded.source_count, kungFuTopic.source_count, "功夫女足の票房角度も上映根拠の数に加えない");
 assert.equal(kungFuExpanded.related_evidence_articles?.[0]?.angle_kind, "work_context");
+
+const hotSearchEvidence = restore({
+  ...toTopicEvidence(evidence("新浪娱乐", "热搜 | 李雪健双耳已完全听不见", "https://example.com/hot", "related_angle", "李雪健 热搜")),
+  key_points: ["热搜 | 李雪健双耳已完全听不见", "8月12日#李雪健已完全听不见了#冲上热搜"],
+  angle_kind: "audience_reaction"
+}, "related_angle");
+const withHotSearch = ensureObservableRelatedClaims(ledger, [...promptEvidence, hotSearchEvidence]);
+const hotSearchClaim = withHotSearch.claims.at(-1)!;
+assert.equal(hotSearchClaim.scope, "related_angle");
+assert.equal(hotSearchClaim.angle_kind, "audience_reaction");
+assert.equal(hotSearchClaim.evidence_refs[0], "E4");
+assert.match(hotSearchClaim.text, /8月12日.*熱搜入り/);
+const withReaction = ensureObservableReactionView(summaryFor(withHotSearch), withHotSearch);
+assert.match(withReaction.reaction_view, /熱搜入り/);
+assert.deepEqual(withReaction.claim_refs.reaction_view, [hotSearchClaim.id]);
+const reactionSources = mergeTopicInternalMetadata(withReaction, expanded, [...promptEvidence, hotSearchEvidence], withHotSearch);
+assert.ok(reactionSources.related_sources.some((source) => source.name === "新浪娱乐" && source.url === "https://example.com/hot"));
 
 console.log("related evidence pipeline tests passed");
 
