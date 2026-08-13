@@ -13,7 +13,13 @@ function convertDisplayText(value: string) {
   // Project-specific choices (for example 奖 -> 賞) take precedence over the
   // general OpenCC cn -> jp conversion. No proper noun or industry term is
   // exempt: every public field follows the same display rule.
-  const mapped = [...value]
+  const protectedTags: string[] = [];
+  const protectedValue = value.replace(/#[^#\r\n]+#/gu, (tag) => {
+    const token = `\u0000HOTSEARCH${protectedTags.length}\u0000`;
+    protectedTags.push(tag);
+    return token;
+  });
+  const mapped = [...protectedValue]
     .map((character) => {
       const projectMapping = kanjiConfig.map[character as keyof typeof kanjiConfig.map];
       if (projectMapping) return projectMapping;
@@ -24,7 +30,7 @@ function convertDisplayText(value: string) {
       return openCcSafeInputs.has(character) ? toJapaneseShinjitai(character) : character;
     })
     .join("");
-  return mapped;
+  return mapped.replace(/\u0000HOTSEARCH(\d+)\u0000/gu, (_, index: string) => protectedTags[Number(index)] ?? "");
 }
 
 export function applyDisplayKanji(summary: SummarizedArticle): { summary: SummarizedArticle; residues: DisplayResidue[] } {

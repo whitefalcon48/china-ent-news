@@ -6,7 +6,7 @@ const summary = {
   lead: "备案・定档・热搜・谐音梗・反逻辑",
   what_happened: "干渉して夢を叶え、里帰りする",
   why_it_matters: "简体字转换测试",
-  reaction_view: "",
+  reaction_view: "8月12日、「#李雪健已完全听不见了#」が热搜入りした。",
   japan_context_note: "",
   editor_comment: ""
 } as SummarizedArticle;
@@ -16,6 +16,7 @@ assertEqual(result.summary.title_ja, "張芸謀 大衆電影百花賞", "proper 
 assertEqual(result.summary.lead, "備案・定檔・熱捜・諧音梗・反邏輯", "industry terms");
 assertEqual(result.summary.what_happened, "干渉して夢を叶え、里帰りする", "Japanese prose ambiguity guard");
 assertEqual(result.summary.why_it_matters, "簡体字転換測試", "general public text");
+assertEqual(result.summary.reaction_view, "8月12日、「#李雪健已完全听不见了#」が熱捜入りした。", "hot-search hashtag remains searchable in its source spelling");
 console.log("display kanji: ok");
 
 function assertEqual(actual: string, expected: string, label: string) {
