@@ -20,6 +20,7 @@ function article(japanContextNote: string): ProcessedArticle {
       lead: "リード",
       what_happened: "出来事",
       why_it_matters: "注目ポイント本文",
+      reaction_view: "確認できた反応",
       japan_context_note: japanContextNote,
       category: "映画",
       confidence: "B",
@@ -33,6 +34,7 @@ assert.match(withSupplement, /\*\*ビンタンの注目ポイント\*\*: 注目�
 
 const withoutSupplement = formatReviewArticle(1, article("   "));
 assert.doesNotMatch(withoutSupplement, /ビンタンからの補足/);
+assert.match(withoutSupplement, /\*\*反応・見られ方\*\*: 確認できた反応/, "レビューIssueにも通常記事の反応欄を表示する");
 
 const withUndefinedSupplement = article("");
 withUndefinedSupplement.summary!.japan_context_note = undefined as unknown as string;
@@ -80,6 +82,7 @@ assert.match(ui, /const supplement=typeof s\.japan_context_note==='string'\?s\.j
 assert.match(ui, /supplementBox\.append\(el\('h3','','ビンタンからの補足'\),el\('p','',supplement\)\)/, "UIはtextContentを使うel経由で補足を独立表示する");
 assert.match(ui, /UIの補足本文/, "UIへ補足本文を渡す");
 assert.match(ui, /appendSources\(c,'関連角度のソース:',s\.related_sources\|\|\[\],s\.source_list\|\|\[\]\)/, "UIは関連角度のソースをrootと別に扱う");
+assert.match(ui, /reactionSummary=el\('summary','','反応・見られ方'\)/, "UIにも通常記事の反応欄を表示する");
 assert.match(ui, /revised_pending/, "修正版の表示経路でも同じカードを使う");
 assert.match(ui, /for\(const section of s\.detail_sections\|\|\[\]\)/, "UIは根拠詳細節を表示する");
 

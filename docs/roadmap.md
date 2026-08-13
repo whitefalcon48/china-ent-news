@@ -19,6 +19,7 @@
 
 - ✅ 持ち込みも通常記事と同じ公開フォーマットへ統一し、`detail_sections` は常に空配列にした。独立claim 60%以上・重要数字claim 60%以上という品質基準は維持し、root claimが6件以上なら `what_happened` 220字以上を必須にする。一度再生成しても不足する場合は `article_too_thin` で非公開にする。
 - ✅ 映画市場ケースでは重要数字・補助金・映画館の変化・産業波及、Issue #34型では現在の状態・本人の工夫・制作側の支援・日常の補助手段を、追加見出しを作らず通常の「何が起きた？」で整理する契約を設計正本へ追記。レビューIssue/UI/公開ページの段落構成を通常記事とそろえる。
+- ✅ 通常記事にある「反応・見られ方」を持ち込みレビューIssue/UIにも表示し、日付・ハッシュタグまで確認できる熱搜観測だけを掲載する。感情や投稿内容への一般化と、検証要素のない中国語claimの連結は行わない。
 - ✅ `npm run check`、`npm run test:manual-intake`、`npm run test:related-evidence`、`npm run test:review-presentation`、`npm run test:site-feed`、`npm run test:supplement-claim`、`npm run test:kanji` 成功。映画市場12 claimのフィクスチャで薄い2 claim案を不合格、追加段落なし・12/12 claim・重要数字8/8 claim案を合格と確認。
 - 設計正本: [`docs/design-manual-news-intake.md`](design-manual-news-intake.md#8-根拠密度型記事2026-08-13)
 

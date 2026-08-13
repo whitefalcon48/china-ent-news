@@ -122,6 +122,8 @@ assert.match(withReaction.reaction_view, /熱搜入り/);
 assert.deepEqual(withReaction.claim_refs.reaction_view, [hotSearchClaim.id]);
 const generalizedReaction = ensureObservableReactionView({ ...summaryFor(withHotSearch), reaction_view: "ネット上では驚きと尊敬の声が上がった。", claim_refs: { ...summaryFor(withHotSearch).claim_refs, reaction_view: [hotSearchClaim.id] } }, withHotSearch);
 assert.equal(generalizedReaction.reaction_view, hotSearchClaim.text, "熱搜観測から感情や投稿内容を一般化しない");
+const withRawReactionClaim = ensureObservableReactionView(summaryFor(withHotSearch), { ...withHotSearch, claims: [...withHotSearch.claims, { ...hotSearchClaim, id: "RAW", text: "8月12日晚、消息冲上热搜。", quote_zh: "" }] });
+assert.equal(withRawReactionClaim.reaction_view, hotSearchClaim.text, "日付とハッシュタグを検証できない中国語claimを公開欄へ足さない");
 const reactionSources = mergeTopicInternalMetadata(withReaction, expanded, [...promptEvidence, hotSearchEvidence], withHotSearch);
 assert.ok(reactionSources.related_sources.some((source) => source.name === "新浪娱乐" && source.url === "https://example.com/hot"));
 

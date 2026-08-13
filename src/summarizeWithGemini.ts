@@ -1257,11 +1257,15 @@ export function ensureObservableReactionView(summary: SummarizedArticle, ledger:
     && claim.angle_kind === "audience_reaction"
     && /(?:热搜|熱搜|トレンド)/u.test(`${claim.text} ${claim.quote_zh ?? ""}`)
   );
-  if (!claims.length) return { ...summary, reaction_view: "", claim_refs: { ...summary.claim_refs, reaction_view: [] } };
+  const observations = claims
+    .map((claim) => ({ claim, text: formatObservableReactionClaim(claim) }))
+    .filter((item): item is { claim: FactLedger["claims"][number]; text: string } => Boolean(item.text));
+  const unique = [...new Map(observations.map((item) => [item.text, item])).values()];
+  if (!unique.length) return { ...summary, reaction_view: "", claim_refs: { ...summary.claim_refs, reaction_view: [] } };
   return {
     ...summary,
-    reaction_view: claims.map(formatObservableReactionClaim).join(" "),
-    claim_refs: { ...summary.claim_refs, reaction_view: claims.map((claim) => claim.id) }
+    reaction_view: unique.map((item) => item.text).join(" "),
+    claim_refs: { ...summary.claim_refs, reaction_view: unique.map((item) => item.claim.id) }
   };
 }
 
@@ -1273,7 +1277,7 @@ function formatObservableReactionClaim(claim: FactLedger["claims"][number]) {
     const attribution = claim.source_name ? `と${claim.source_name}が報じた` : "ことが確認された";
     return `${date[1]}月${date[2]}日、「#${tag[1]}#」が熱搜入りした${attribution}。`;
   }
-  return claim.text;
+  return "";
 }
 
 function summaryUsesClaim(summary: SummarizedArticle, claimId: string) {
