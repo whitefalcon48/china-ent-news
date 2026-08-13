@@ -40,6 +40,8 @@ async function main() {
     "fact_ledger_timeout"
   );
   assert.equal(classifyManualIntakeError(new Error("claim_check_gate: number_not_in_ledger: secret text"), "generating"), "claim_check_failed");
+  assert.equal(classifyManualIntakeError(new Error("AI JSON parse error: secret response preview"), "generating"), "summary_json_invalid");
+  assert.equal(classifyManualIntakeError(new Error("Gemini API error: HTTP 503 secret response body"), "generating"), "summary_provider_http_503");
   assert.equal(classifyManualIntakeError(new Error("DeepSeek API: secret response body"), "generating"), "summary_generation_failed");
   assert.equal(classifyManualIntakeError(new Error("disk write failed"), "persisting"), "intake_persistence_failed");
 

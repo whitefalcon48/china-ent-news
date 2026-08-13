@@ -458,8 +458,23 @@ export async function generateJson(provider: AiProvider, prompt: string, budget?
   if (provider === "deepseek") {
     return generateDeepSeekJson(prompt, budget, model);
   }
+  // Gemini can occasionally return an empty body or a transient 5xx while a
+  // manual intake is otherwise valid. Retry only those provider-side failures;
+  // parsing and quality-gate failures remain visible and are never bypassed.
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      return await generateGeminiJson(prompt, budget, model);
+    } catch (error) {
+      lastError = error;
+      if (!isTransientGeminiError(error) || attempt === 1) throw error;
+    }
+  }
+  throw lastError;
+}
 
-  return generateGeminiJson(prompt, budget, model);
+function isTransientGeminiError(error: unknown) {
+  return error instanceof Error && /Gemini (?:network error|API error: (?:empty response text|HTTP (?:429|5\d\d)))/u.test(error.message);
 }
 
 async function generateGeminiJson(prompt: string, budget?: LlmCallBudget, modelOverride?: string) {
