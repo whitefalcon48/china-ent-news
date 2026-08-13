@@ -1253,13 +1253,7 @@ export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: To
 }
 
 export function ensureObservableReactionView(summary: SummarizedArticle, ledger: FactLedger): SummarizedArticle {
-  const claims = ledger.claims.filter((claim) =>
-    claim.type !== "unsupported"
-    && claim.anchor !== false
-    && claim.scope === "related_angle"
-    && claim.angle_kind === "audience_reaction"
-    && /(?:热搜|熱搜|トレンド)/u.test(`${claim.text} ${claim.quote_zh ?? ""}`)
-  );
+  const claims = observableAudienceClaims(ledger);
   const observations = claims
     .map((claim) => ({ claim, text: formatObservableReactionClaim(claim) }))
     .filter((item): item is { claim: FactLedger["claims"][number]; text: string } => Boolean(item.text));
@@ -1290,7 +1284,7 @@ function summaryUsesClaim(summary: SummarizedArticle, claimId: string) {
 
 function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, topic: TopicCandidate) {
   const failures: string[] = [];
-  const audienceClaims = ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.anchor !== false && claim.scope === "related_angle" && claim.angle_kind === "audience_reaction");
+  const audienceClaims = observableAudienceClaims(ledger);
   if (audienceClaims.length && (!summary.reaction_view.trim() || !audienceClaims.some((claim) => summary.claim_refs.reaction_view.includes(claim.id)))) {
     failures.push("verified_audience_reaction_not_presented");
   }
@@ -1301,6 +1295,17 @@ function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, t
   const ungroundedWarnings = finalClaimCheck.violations.filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"));
   failures.push(...ungroundedWarnings.map((violation) => `public_text_contains_ungrounded_detail:${violation.rule}:${violation.section}`));
   return failures;
+}
+
+function observableAudienceClaims(ledger: FactLedger) {
+  return ledger.claims.filter((claim) =>
+    claim.type !== "unsupported"
+    && claim.anchor !== false
+    && claim.scope === "related_angle"
+    && claim.angle_kind === "audience_reaction"
+    && /(?:热搜|熱搜|トレンド)/u.test(`${claim.text} ${claim.quote_zh ?? ""}`)
+    && Boolean(formatObservableReactionClaim(claim))
+  );
 }
 
 export function enforceStandardArticleFormat(summary: SummarizedArticle, profile: ArticleDepthProfile): SummarizedArticle {
