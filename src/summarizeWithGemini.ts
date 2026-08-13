@@ -1286,9 +1286,8 @@ function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, t
     if (ledger.claims.some((claim) => claim.entities.includes(person)) && !publicText.includes(person)) failures.push(`person_name_not_preserved:${person}`);
   }
   const finalClaimCheck = runClaimCheck(summary, ledger);
-  if (finalClaimCheck.violations.some((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"))) {
-    failures.push("public_text_contains_ungrounded_detail");
-  }
+  const ungroundedWarnings = finalClaimCheck.violations.filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"));
+  failures.push(...ungroundedWarnings.map((violation) => `public_text_contains_ungrounded_detail:${violation.rule}:${violation.section}`));
   return failures;
 }
 

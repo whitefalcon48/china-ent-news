@@ -40,6 +40,10 @@ async function main() {
     "fact_ledger_timeout"
   );
   assert.equal(classifyManualIntakeError(new Error("claim_check_gate: number_not_in_ledger: secret text"), "generating"), "claim_check_failed");
+  assert.equal(
+    classifyManualIntakeError(new Error("manual_writing_gate:public_text_contains_ungrounded_detail:number_not_in_ledger:detail_sections.2"), "generating"),
+    "grounding_public_text_contains_ungrounded_detail_number_not_in_ledger_detail_sections.2"
+  );
   assert.equal(classifyManualIntakeError(new Error("AI JSON parse error: secret response preview"), "generating"), "summary_json_invalid");
   assert.equal(classifyManualIntakeError(new Error("Gemini API error: HTTP 503 secret response body"), "generating"), "summary_provider_http_503");
   assert.equal(classifyManualIntakeError(new Error("DeepSeek API: secret response body"), "generating"), "summary_generation_failed");

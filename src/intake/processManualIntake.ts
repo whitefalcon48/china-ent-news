@@ -173,7 +173,8 @@ export function classifyManualIntakeError(error: unknown, stage?: ManualIntakePr
   if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";
   if (/^claim_check_gate:/u.test(detail)) return "claim_check_failed";
   if (/^article_depth_gate:/u.test(detail)) return "article_too_thin";
-  if (/^manual_writing_gate:/u.test(detail)) return "grounding_check_failed";
+  const writingGate = detail.match(/^manual_writing_gate:([a-z_]+)(?::([a-z_]+):([a-z0-9_.]+))?/u);
+  if (writingGate) return `grounding_${writingGate.slice(1).filter(Boolean).join("_")}`;
   if (/^AI JSON parse error:/u.test(detail)) return "summary_json_invalid";
   if (/^Gemini network error:/u.test(detail)) return "summary_provider_network_error";
   if (/^Gemini API error: empty response/u.test(detail)) return "summary_provider_empty_response";
