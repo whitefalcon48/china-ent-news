@@ -49,7 +49,7 @@ jobs:
       - name: Process intake comment
         id: intake
         continue-on-error: true
-        run: node --import tsx src/intake/processManualIntake.ts
+        run: node --import tsx src/intake/runManualIntake.ts
         env:
           MANUAL_COMMENT_ID: ${{ github.event.comment.id }}
           MANUAL_COMMENT_BODY: ${{ github.event.comment.body }}

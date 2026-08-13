@@ -9,7 +9,7 @@ async function main() {
     "contains(github.event.issue.labels.*.name, 'manual-news-intake')",
     "vars.NEWS_INTAKE_ISSUE_NUMBER",
     "group: china-ent-news-production",
-    "node --import tsx src/intake/processManualIntake.ts",
+    "node --import tsx src/intake/runManualIntake.ts",
     "DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}",
     "SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}",
     "node --import tsx src/intake/linkManualReviewIssue.ts",
