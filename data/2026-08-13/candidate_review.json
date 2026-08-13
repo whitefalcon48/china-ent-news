@@ -2,30 +2,30 @@
   "schema_version": 1,
   "date": "2026-08-13",
   "status": "pending",
-  "created_at": "2026-08-13T07:16:29.398Z",
+  "created_at": "2026-08-13T07:28:01.511Z",
   "completed_at": "",
   "candidates": [
     {
       "index": 1,
-      "topic_key": "短剧千亿赛道网文IP成核心供给",
-      "title": "短剧千亿赛道网文IP成核心供给，番茄小说改编占爆款总量62%",
-      "event_sentence": "新京报 娱乐が「短剧千亿赛道网文IP成核心供给，番茄小说改编占爆款总量62%」について報じた。",
-      "topic_type": "unknown",
+      "topic_key": "电影《欢迎来龙餐馆》票房",
+      "title": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿",
+      "event_sentence": "电影《欢迎来龙餐馆》的点映及预售票房达到1.34亿，两家出品方股价涨停。",
+      "topic_type": "box_office",
       "baseline_rank": 1,
       "baseline_priority": "high",
-      "baseline_score": 92,
+      "baseline_score": 88,
       "source_count": 1,
       "source_types": {
         "official": 0,
-        "media_report": 1,
+        "media_report": 0,
         "sns": 0,
-        "data": 0,
+        "data": 1,
         "pr_like": 0,
         "rumor": 0,
         "mixed": 0
       },
       "source_names": [
-        "新京报 娱乐"
+        "界面新闻 影视产业"
       ],
       "risk_class": "low",
       "caution_note": "Single-source topic; keep wording cautious until another source appears.",
@@ -37,16 +37,16 @@
     },
     {
       "index": 2,
-      "topic_key": "对话西游群英荟",
-      "title": "对话西游群英荟：流量大了，责任也大了",
-      "event_sentence": "新京报 娱乐が「对话西游群英荟：流量大了，责任也大了」について報じた。",
+      "topic_key": "第38届大众电影百花奖",
+      "title": "第38届大众电影百花奖在京揭晓，《哪吒之魔童闹海》获最佳影片奖",
+      "event_sentence": "第38届大众电影百花奖在京揭晓，《哪吒之魔童闹海》获最佳影片奖。",
       "topic_type": "unknown",
       "baseline_rank": 2,
       "baseline_priority": "high",
-      "baseline_score": 90,
-      "source_count": 1,
+      "baseline_score": 85,
+      "source_count": 2,
       "source_types": {
-        "official": 0,
+        "official": 1,
         "media_report": 1,
         "sns": 0,
         "data": 0,
@@ -55,38 +55,7 @@
         "mixed": 0
       },
       "source_names": [
-        "新京报 娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 3,
-      "topic_key": "欢迎来龙餐馆",
-      "title": "《欢迎来龙餐馆》破3亿，豆瓣8.4刷新沈腾主演影片最高分纪录",
-      "event_sentence": "1905电影网 新闻が「沈腾蒋奇明带中餐闯中东 《欢迎来龙餐馆》定档8.11」について報じた。",
-      "topic_type": "box_office",
-      "baseline_rank": 3,
-      "baseline_priority": "high",
-      "baseline_score": 88,
-      "source_count": 3,
-      "source_types": {
-        "official": 0,
-        "media_report": 2,
-        "sns": 0,
-        "data": 1,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "新京报 娱乐",
-        "界面新闻 影视产业",
+        "国家电影局",
         "1905电影网 新闻"
       ],
       "risk_class": "low",
@@ -98,14 +67,44 @@
       "similar_topics": []
     },
     {
+      "index": 3,
+      "topic_key": "电影《功夫女足》票房",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星驰导演的电影《功夫女足》上映半日票房破亿，引爆暑期档。",
+      "topic_type": "box_office",
+      "baseline_rank": 3,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
       "index": 4,
-      "topic_key": "王石认可田朴珺独立女性",
-      "title": "王石认可妻子田朴珺是独立女性",
-      "event_sentence": "王石は妻の田朴珺を独立した女性として認めた。",
+      "topic_key": "派拉蒙华纳并购案变数",
+      "title": "“绿巨人”联手12州起诉，派拉蒙华纳并购案突生变数",
+      "event_sentence": "“绿巨人”联手12州起诉，给派拉蒙和华纳的并购案带来了变数。",
       "topic_type": "unknown",
       "baseline_rank": 4,
-      "baseline_priority": "high",
-      "baseline_score": 86,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
       "source_count": 1,
       "source_types": {
         "official": 0,
@@ -117,7 +116,7 @@
         "mixed": 0
       },
       "source_names": [
-        "新浪娱乐"
+        "界面新闻 影视产业"
       ],
       "risk_class": "low",
       "caution_note": "Single-source topic; keep wording cautious until another source appears.",
@@ -129,71 +128,11 @@
     },
     {
       "index": 5,
-      "topic_key": "陈伟霆贴脸提问",
-      "title": "贴脸开大式提问陈伟霆，他连躲都没地方躲！",
-      "event_sentence": "陈伟霆が直接的な質問をされ、逃げ場がない状況になった。",
-      "topic_type": "unknown",
-      "baseline_rank": 5,
-      "baseline_priority": "high",
-      "baseline_score": 86,
-      "source_count": 1,
-      "source_types": {
-        "official": 0,
-        "media_report": 1,
-        "sns": 0,
-        "data": 0,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "新浪娱乐"
-      ],
-      "risk_class": "low",
-      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 6,
-      "topic_key": "泡泡聊天室偶像粉丝互动",
-      "title": "泡泡聊天室如何拉近偶像与粉丝的距离？",
-      "event_sentence": "バブルチャットルームがアイドルとファンの距離を縮める方法についての話題。",
-      "topic_type": "fan_culture",
-      "baseline_rank": 6,
-      "baseline_priority": "medium",
-      "baseline_score": 71,
-      "source_count": 1,
-      "source_types": {
-        "official": 0,
-        "media_report": 1,
-        "sns": 0,
-        "data": 0,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "新浪娱乐"
-      ],
-      "risk_class": "medium",
-      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 7,
-      "topic_key": "年会不能停！2",
-      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
-      "event_sentence": "界面新闻 影视产业が「《年会不能停！2》上映4天票房破亿，但远不及市场预期」について報じた。",
+      "topic_key": "电影《功夫女足》票房疑云",
+      "title": "周星驰连发3个问号！《功夫女足》陷“偷票房”疑云",
+      "event_sentence": "周星驰对电影《功夫女足》的“偷票房”行为表示质疑。",
       "topic_type": "box_office",
-      "baseline_rank": 7,
+      "baseline_rank": 5,
       "baseline_priority": "medium",
       "baseline_score": 70,
       "source_count": 1,
@@ -218,20 +157,20 @@
       "similar_topics": []
     },
     {
-      "index": 8,
-      "topic_key": "绿巨人",
-      "title": "“绿巨人”联手12州起诉，派拉蒙华纳并购案突生变数",
-      "event_sentence": "界面新闻 影视产业が「“绿巨人”联手12州起诉，派拉蒙华纳并购案突生变数」について報じた。",
-      "topic_type": "unknown",
-      "baseline_rank": 8,
+      "index": 6,
+      "topic_key": "电影《年会不能停",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "电影《年会不能停！2》上映4天票房破亿，但未达市场预期。",
+      "topic_type": "box_office",
+      "baseline_rank": 6,
       "baseline_priority": "medium",
       "baseline_score": 70,
       "source_count": 1,
       "source_types": {
         "official": 0,
-        "media_report": 1,
+        "media_report": 0,
         "sns": 0,
-        "data": 0,
+        "data": 1,
         "pr_like": 0,
         "rumor": 0,
         "mixed": 0
@@ -248,12 +187,42 @@
       "similar_topics": []
     },
     {
-      "index": 9,
-      "topic_key": "内蒙古电影高质量发展活动启动萨日娜等影人出席",
+      "index": 7,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局发布了电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》和DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》。",
+      "topic_type": "policy",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "内蒙古电影高质量发展活动启动",
       "title": "内蒙古电影高质量发展活动启动 萨日娜等影人出席",
-      "event_sentence": "1905电影网 新闻が「内蒙古电影高质量发展活动启动 萨日娜等影人出席」について報じた。",
+      "event_sentence": "内蒙古电影高质量发展活动启动，萨日娜等影人出席。",
       "topic_type": "unknown",
-      "baseline_rank": 9,
+      "baseline_rank": 8,
       "baseline_priority": "medium",
       "baseline_score": 68,
       "source_count": 1,
@@ -278,43 +247,12 @@
       "similar_topics": []
     },
     {
-      "index": 10,
-      "topic_key": "功夫女足",
-      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
-      "event_sentence": "1905电影网 新闻が「《功夫女足》回归，7月最全片单来了！」について報じた。",
-      "topic_type": "box_office",
-      "baseline_rank": 10,
-      "baseline_priority": "medium",
-      "baseline_score": 65,
-      "source_count": 2,
-      "source_types": {
-        "official": 0,
-        "media_report": 1,
-        "sns": 0,
-        "data": 1,
-        "pr_like": 0,
-        "rumor": 0,
-        "mixed": 0
-      },
-      "source_names": [
-        "界面新闻 影视产业",
-        "1905电影网 新闻"
-      ],
-      "risk_class": "low",
-      "caution_note": "",
-      "interest_features": [],
-      "human_rating": null,
-      "human_reason_tags": [],
-      "human_note": "",
-      "similar_topics": []
-    },
-    {
-      "index": 11,
-      "topic_key": "燃烧吧！爸爸",
+      "index": 9,
+      "topic_key": "燃烧吧",
       "title": "《燃烧吧！爸爸》定档9.5 文淇倪虹洁演绎抽象母女",
-      "event_sentence": "1905电影网 新闻が「《燃烧吧！爸爸》定档9.5 文淇倪虹洁演绎抽象母女」について報じた。",
+      "event_sentence": "电影《燃烧吧！爸爸》定档9月5日，文淇和倪虹洁将演绎抽象母女。",
       "topic_type": "release",
-      "baseline_rank": 11,
+      "baseline_rank": 9,
       "baseline_priority": "medium",
       "baseline_score": 64,
       "source_count": 1,
@@ -339,18 +277,18 @@
       "similar_topics": []
     },
     {
-      "index": 12,
-      "topic_key": "大众电影百花奖",
-      "title": "第38届大众电影百花奖揭晓！易烊千玺卫诗雅分获最佳男女主角",
-      "event_sentence": "1905电影网 新闻が「第38届大众电影百花奖揭晓！易烊千玺卫诗雅分获最佳男女主角」について報じた。",
-      "topic_type": "award",
-      "baseline_rank": 12,
+      "index": 10,
+      "topic_key": "动画八仙",
+      "title": "动画《八仙！》发布配音特辑 真实诠释市井烟火气",
+      "event_sentence": "动画《八仙！》发布了配音特辑，真实诠释了市井烟火气。",
+      "topic_type": "release",
+      "baseline_rank": 10,
       "baseline_priority": "medium",
       "baseline_score": 62,
-      "source_count": 2,
+      "source_count": 1,
       "source_types": {
         "official": 0,
-        "media_report": 2,
+        "media_report": 1,
         "sns": 0,
         "data": 0,
         "pr_like": 0,
@@ -358,11 +296,70 @@
         "mixed": 0
       },
       "source_names": [
-        "1905电影网 新闻",
-        "新京报 娱乐"
+        "1905电影网 新闻"
       ],
       "risk_class": "low",
-      "caution_note": "",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "电影《功夫女足》票房与口碑",
+      "title": "《功夫女足》上映三日票房突破5亿，但口碑呈两极分化",
+      "event_sentence": "电影《功夫女足》上映三日票房突破5亿，但口碑呈两极分化。",
+      "topic_type": "box_office",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "周峻炜",
+      "title": "周峻炜线下看片会嘴速快接上海话，合伙人大笑",
+      "event_sentence": "周峻炜在看片会上嘴速快接上海话，合伙人大笑。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 60,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
       "interest_features": [],
       "human_rating": null,
       "human_reason_tags": [],
