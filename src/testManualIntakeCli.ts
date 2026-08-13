@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { linkManualReviewIssue } from "./intake/linkManualReviewIssue.js";
-import { classifyManualIntakeError, preserveManualIntakeRootEvidence, requireManualGenerationLedger, runManualIntakeCli } from "./intake/processManualIntake.js";
+import { buildManualResearchTopic, classifyManualIntakeError, preserveManualIntakeRootEvidence, requireManualGenerationLedger, runManualIntakeCli } from "./intake/processManualIntake.js";
 import { writeManualIntakeState } from "./intake/intakeState.js";
 import { findLedger } from "./review/reviseArticle.js";
 import { writeReviewState } from "./review/reviewState.js";
@@ -84,8 +84,18 @@ async function main() {
     }]
   };
   const manualTopic = preserveManualIntakeRootEvidence(rootTopic, researchedTopic);
-  assert.deepEqual(manualTopic.related_evidence_articles, [], "manual intake must not mix an unrelated research angle into the user-supplied article");
+  assert.equal(manualTopic.related_evidence_articles?.length, 1, "a fully validated related angle reaches the ledger in its separate scope");
   assert.deepEqual(manualTopic.published_date_range, rootTopic.published_date_range, "manual intake keeps the supplied article date");
+  const researchTopic = buildManualResearchTopic({ ...rootTopic, main_entities: { people: ["李雪健"], works: [], organizations: [], events: [] }, search_queries: ["李雪健 听力下降"] }, {
+    title: "李雪健专访",
+    url: "https://example.com/li",
+    sourceName: "Example",
+    sourceUrl: "https://example.com",
+    category: "持ち込みニュース",
+    reliability: "C",
+    rawContent: "8月11日，人民日报刊发报道《要努力把更丰富的精神食粮奉献给人们》，记者采访了李雪健。"
+  });
+  assert.equal(researchTopic.search_queries[0], "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们");
 
   const temporary = await fs.mkdtemp(path.join(os.tmpdir(), "manual-intake-cli-"));
   const outputPath = path.join(temporary, "github-output.txt");

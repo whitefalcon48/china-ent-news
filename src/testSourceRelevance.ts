@@ -17,6 +17,26 @@ function evidence(title: string, url: string): SourceExpansionEvidence {
 assert.deepEqual(rankTopicSearchQueries(baseTopic).slice(0, 2), ["足球运动员 转型 短剧", "王年将成 短剧演员"]);
 assert.equal(assessSourceRelevance(baseTopic, evidence("前中超门将王年将成开始拍短剧了！自称此前工资约3000元", "https://example.com/relevant"), "足球运动员 转型 短剧").accepted, true);
 assert.equal(assessSourceRelevance(baseTopic, evidence("短剧演员王年将成拍摄时意外受伤", "https://example.com/other-event"), "王年将成 短剧演员").accepted, false);
+
+const liXuejianTopic = {
+  ...baseTopic,
+  topic_key: "李雪健抗癌26年听力下降",
+  title_hint: "李雪健双耳已完全听不见",
+  event_sentence: "李雪健の聴力低下について伝えられた",
+  search_queries: ["李雪健 听力下降", "李雪健 抗癌经历"],
+  evidence_articles: [{ article_type: "interview" }],
+  main_entities: { people: ["李雪健"], works: ["流浪地球3"], organizations: [], events: [] }
+} as unknown as TopicCandidate;
+assert.equal(
+  assessSourceRelevance(liXuejianTopic, evidence("抗癌26年，李雪健的双耳已经完全听不见了", "https://example.com/li"), "李雪健 听力下降").accepted,
+  true,
+  "a canonical person plus a distinctive condition is a sufficiently specific match"
+);
+assert.deepEqual(
+  rankRelatedAngleSearchQueries(liXuejianTopic).slice(0, 4),
+  ["李雪健 热搜", "李雪健 热议", "李雪健 回应", "李雪健 讨论"],
+  "manual interview research prioritizes verified reception around the person, not generic work box office"
+);
 assert.equal(
   assessSourceRelevance(baseTopic, evidence("王年将成新短剧作品引发粉丝讨论", "https://example.com/related"), "王年将成 粉丝", "related_angle").reason,
   "accepted_related_entity_and_angle",

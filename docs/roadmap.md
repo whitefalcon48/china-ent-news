@@ -22,6 +22,12 @@
 - ✅ `npm run check`、`npm run test:manual-intake`、`npm run test:review-presentation`、`npm run test:site-feed`、`npm run test:supplement-claim`、`npm run test:kanji` 成功。映画市場12 claimのフィクスチャで薄い2 claim案を不合格、4節・12/12 claim・重要数字8/8 claim案を合格と確認。
 - 設計正本: [`docs/design-manual-news-intake.md`](design-manual-news-intake.md#8-根拠密度型記事2026-08-13)
 
+## 2026-08-13 実装・ローカル検証（持ち込みニュース周辺根拠回収）
+
+- ✅ 李雪健インタビューの実測診断で、検索20件のうち人物本人の候補10件が `weak_topic_match` で全落ちし、検証済みrelated angle 3件も生成前に破棄されていたことを特定。人物＋特徴的状態の関連判定、人物優先の熱搜／熱議探索、人民日報元見出し検索、検証済みrelated angleの分離受け渡しへ修正した。
+- ✅ 元記事取得は安全検査済みIPの範囲で最大3回再試行し、一時的な `fetch_timeout` を吸収する。記事深度ゲートは緩めず、再生成時に前回下書きと具体的な必要節数を渡す。
+- 受け入れ実測は `npm run check`、`test:manual-intake`、`test:sources`、`test:evidence-expansion`、`test:related-evidence`、`test:review-presentation`、`test:site-feed` と Actions再生成で確認する。
+
 ????: 2026-08-11???UI??????????????
 
 ## 2026-08-11 ??????????????

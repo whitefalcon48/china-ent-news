@@ -4,6 +4,7 @@ import * as https from "node:https";
 import { extractDocumentSnapshot } from "../evidence/documentSnapshot.js";
 
 const MAX_REDIRECTS = 3;
+const MAX_REQUEST_ATTEMPTS = 3;
 const MAX_DOCUMENT_BYTES = 2 * 1024 * 1024;
 const DEFAULT_TIMEOUT_MS = 12_000;
 const REQUEST_HEADERS = {
@@ -69,7 +70,7 @@ export async function fetchIntakeDocument(value: string, options: IntakeFetchOpt
     try {
       const response = options.fetchImpl
         ? await fetchWithCompatibilityHook(current, options.fetchImpl, timeoutMs)
-        : await requestPinnedDocument(current, safe.address, timeoutMs, options.requestImpl);
+        : await requestPinnedDocumentWithRetry(current, safe.addresses, timeoutMs, options.requestImpl);
       if ([301, 302, 303, 307, 308].includes(response.status)) {
         const location = response.location;
         if (!location) return { ok: false, error: "redirect_without_location" };
@@ -101,6 +102,23 @@ export async function fetchIntakeDocument(value: string, options: IntakeFetchOpt
     }
   }
   return { ok: false, error: "too_many_redirects" };
+}
+
+async function requestPinnedDocumentWithRetry(
+  url: URL,
+  addresses: SafeUrl[],
+  timeoutMs: number,
+  override?: PinnedRequest
+) {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < MAX_REQUEST_ATTEMPTS; attempt += 1) {
+    try {
+      return await requestPinnedDocument(url, addresses[attempt % addresses.length], timeoutMs, override);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError;
 }
 
 type DocumentResponse = {
@@ -162,7 +180,7 @@ async function requestPinnedDocument(url: URL, pinned: SafeUrl, timeoutMs: numbe
   };
 }
 
-async function validateSafeExternalUrl(url: URL, lookupHost: (hostname: string) => Promise<string[]>): Promise<{ ok: true; address: SafeUrl } | { ok: false; error: string }> {
+async function validateSafeExternalUrl(url: URL, lookupHost: (hostname: string) => Promise<string[]>): Promise<{ ok: true; addresses: SafeUrl[] } | { ok: false; error: string }> {
   if (!/^https?:$/.test(url.protocol) || url.username || url.password || !url.hostname || url.port) return { ok: false, error: "unsafe_url" };
   const hostname = url.hostname.replace(/^\[|\]$/gu, "").toLowerCase();
   if (hostname === "localhost" || hostname.endsWith(".localhost") || hostname.endsWith(".local") || hostname.endsWith(".internal")) {
@@ -170,9 +188,10 @@ async function validateSafeExternalUrl(url: URL, lookupHost: (hostname: string) 
   }
   const addresses = isIpLiteral(hostname) ? [hostname] : await lookupHost(hostname).catch(() => []);
   if (!addresses.length || addresses.some(isPrivateAddress)) return { ok: false, error: "unsafe_url" };
-  const address = addresses[0];
-  const family = address.includes(":") ? 6 : 4;
-  return { ok: true, address: { address, family } };
+  return {
+    ok: true,
+    addresses: [...new Set(addresses)].map((address) => ({ address, family: address.includes(":") ? 6 : 4 }))
+  };
 }
 
 async function resolveHostAddresses(hostname: string) {

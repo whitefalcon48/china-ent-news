@@ -94,7 +94,8 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
 
     processingStage = "researching";
     state = await updateManualIntakeState(state, { status: "researching", error: "" }, dataRoot);
-    const research = await expandManualTopic(initialTopic);
+    const researchTopic = buildManualResearchTopic(initialTopic, root);
+    const research = await expandManualTopic(researchTopic);
     const topic = preserveManualIntakeRootEvidence(initialTopic, research.topic);
     const evidence = collectEvidence(root, topic);
     await writeManualIntakeArtifact(parsed.commentId, "topic.json", topic, dataRoot);
@@ -189,7 +190,11 @@ async function expandManualTopic(topic: TopicCandidate): Promise<{ topic: TopicC
     // scheduled queue. Manual intake is an explicit user request, so it gets
     // one bounded research allocation without entering daily selection.
     const temporaryResearchTopic = { ...topic, freshness_label: "today" as const };
-    const result = await expandTopicSources([temporaryResearchTopic], { maxTopics: 1, forceSerper: true });
+    const result = await expandTopicSources([temporaryResearchTopic], {
+      maxTopics: 1,
+      forceSerper: true,
+      relatedAngleQueriesPerTopic: 4
+    });
     return { topic: result.topicCandidates[0] ?? topic, expansion: result.expansion };
   } catch {
     return { topic, expansion: { error: "source_expansion_failed", graceful_fallback: true } };
@@ -201,13 +206,22 @@ export function preserveManualIntakeRootEvidence(initial: TopicCandidate, resear
     ...researched,
     freshness_label: initial.freshness_label,
     published_date_range: initial.published_date_range,
-    // A manual intake is anchored to the user-supplied document. Related
-    // angles are optional research hints, but they must not enter the draft
-    // unless they independently corroborate the same event. In this route the
-    // root article is sufficient evidence, so excluding them prevents an
-    // unrelated search match from being treated as article context.
-    related_evidence_articles: []
+    // Related angles have already passed entity+angle matching and full-page
+    // validation. They remain a separate evidence scope and never count as
+    // corroboration of the supplied root article.
+    related_evidence_articles: researched.related_evidence_articles ?? []
   };
+}
+
+export function buildManualResearchTopic(topic: TopicCandidate, root: RawArticle): TopicCandidate {
+  const person = topic.main_entities.people[0]?.trim() ?? "";
+  const body = `${root.title}\n${root.rawContent || root.excerpt || ""}`;
+  const attributedHeadline = body.match(/人民日报(?:刊发|发布|报道|专访|采访)[^《]{0,20}《([^》]{4,60})》/u)?.[1]?.trim() ?? "";
+  const queries = [
+    person && attributedHeadline ? `${person} 人民日报 ${attributedHeadline}` : "",
+    ...topic.search_queries
+  ].filter(Boolean);
+  return { ...topic, search_queries: [...new Set(queries)] };
 }
 
 function collectEvidence(root: RawArticle, topic: TopicCandidate): RawArticle[] {

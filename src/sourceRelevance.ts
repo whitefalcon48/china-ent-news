@@ -15,6 +15,7 @@ const TERM_GROUPS: Array<{ test: RegExp; match: RegExp }> = [
   { test: /足球运动员|サッカー選手/, match: /足球|中超|门将|球员|サッカー/ },
   { test: /联合|共同|合作/, match: /联合|共同|联手|合作|携手/ },
   { test: /发布|発表|推出/, match: /发布|発表|推出|上线|官宣|宣布|揭晓/ },
+  { test: /听力下降|失聪|听不见|聴力低下|聞こえない/, match: /听力下降|听力受损|失聪|听不见|耳聋|聴力低下|聞こえない/ },
   { test: /短剧演员/, match: /短剧|微短剧/ }
 ];
 
@@ -90,7 +91,7 @@ export function rankTopicSearchQueries(topic: TopicCandidate) {
  * their results can never make a factual claim multi-source.
  */
 export function rankRelatedAngleSearchQueries(topic: TopicCandidate) {
-  const entityCandidates = isObituaryRoot(topic)
+  const entityCandidates = isObituaryRoot(topic) || isPersonInterviewTopic(topic)
     ? [...topic.main_entities.people, ...topic.main_entities.works]
     : [...topic.main_entities.works, ...topic.main_entities.people];
   const entities = entityCandidates
@@ -152,6 +153,13 @@ function matchesSpecificQuery(topic: TopicCandidate, query: string, normalizedTe
 
   if (entityMatches >= 2 && contextMatches >= 1) return true;
   if (entityMatches >= 1 && contextMatches >= 2) return true;
+  // A person plus a distinctive condition/event (for example
+  // "李雪健 听力下降") is already specific. Generic occupation queries such
+  // as "王年将成 短剧演员" still need another event term.
+  if (entityMatches >= 1 && contextMatches >= 1) {
+    const contextTerms = terms.filter((term) => !isEntityTerm(term, entityTerms));
+    if (contextTerms.some((term) => !GENERIC_QUERY_TERMS.has(term))) return true;
+  }
   return entityMatches === 0 && contextMatches >= 2;
 }
 
@@ -177,10 +185,19 @@ function relatedAngleTerms(topic: TopicCandidate) {
     .filter((term) => !RELATED_GENERIC_TERMS.has(term));
   const defaults = isObituaryRoot(topic)
     ? ["回应", "生涯", "悼念", "回顾"]
+    : isPersonInterviewTopic(topic)
+      ? ["热搜", "热议", "回应", "讨论"]
     : topic.main_entities.works.length
       ? ["口碑", "票房", "幕后", "争议"]
       : ["作品", "粉丝", "回应", "动态"];
   return [...new Set([...defaults, ...candidates])].slice(0, 4);
+}
+
+function isPersonInterviewTopic(topic: TopicCandidate) {
+  return topic.main_entities.people.length > 0 && (
+    (topic.evidence_articles ?? []).some((article) => article.article_type === "interview") ||
+    /采访|专访|听力|抗癌|病情|近况|自述/.test(`${topic.title_hint} ${topic.event_sentence}`)
+  );
 }
 
 function isObituaryRoot(topic: Pick<TopicCandidate, "topic_key" | "title_hint" | "event_sentence">) {
@@ -220,6 +237,7 @@ const RELATED_EVENT_TERMS = new Set([
 ].map(normalizeText));
 
 const RELATED_GENERIC_TERMS = new Set(["电影", "影视", "短剧", "新闻", "作品", "演员"].map(normalizeText));
+const GENERIC_QUERY_TERMS = new Set(["电影", "影视", "短剧", "短剧演员", "新闻", "作品", "演员", "娱乐", "动态", "经历"].map(normalizeText));
 
 function hasStrongTitleMatch(left: string, right: string) {
   const normalizedLeft = normalizeText(left);

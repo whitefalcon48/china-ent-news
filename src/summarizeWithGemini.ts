@@ -148,7 +148,8 @@ export async function summarizeTopic(
 
   let articleDepth = assessArticleDepth(summary, ledger, articleDepthProfile);
   if (!articleDepth.passed && articleDepthProfile === "manual_evidence_rich") {
-    text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile, articleDepth.reasons), budget);
+    const retryPrompt = `${await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile, articleDepth.reasons)}\n\n前回の下書きJSON:\n${JSON.stringify(summary, null, 2)}\n\n前回の根拠付き記述を捨てず、重複を避けて必要節数へ再構成してください。`;
+    text = await generateJson(provider, retryPrompt, budget);
     summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
     claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
     if (claimCheck.gated_violation_count > 0) {
@@ -469,7 +470,8 @@ async function generateGeminiJson(prompt: string, budget?: LlmCallBudget, modelO
       body: JSON.stringify({
         generationConfig: {
           temperature: 0.1,
-          responseMimeType: "application/json"
+          responseMimeType: "application/json",
+          maxOutputTokens: 8192
         },
         contents: [
           {
@@ -785,6 +787,7 @@ async function buildLedgerWritingPrompt(
     : "";
   const depthInstruction = articleDepthProfile === "manual_evidence_rich"
     ? `\n\n持ち込みニュース専用の根拠密度ルール:
+${manualDepthRequirement(ledger)}
 - lead / what_happened の繰り返しで文字数を増やさず、detail_sections に独立した編集論点を分ける。
 - 利用可能なroot claimが10件以上なら4〜6節、6〜9件なら3〜5節、4〜5件なら2〜4節を作る。3件以下なら無理に節を作らない。
 - 各節は55〜220字。headingは記事内容に即した具体名にし、bodyは別の節と同じ事実を繰り返さない。
@@ -854,6 +857,15 @@ ${JSON.stringify(normalizeSummary({}), null, 2)}
 
 事実台帳:
 ${JSON.stringify(ledger, null, 2)}${violationInstruction}${depthInstruction}${depthRetry}`;
+}
+
+function manualDepthRequirement(ledger: FactLedger) {
+  const eligible = ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.scope !== "related_angle" && claim.anchor !== false);
+  const minimum = eligible.length >= 10 ? 4 : eligible.length >= 6 ? 3 : eligible.length >= 4 ? 2 : 0;
+  const maximum = eligible.length >= 10 ? 6 : eligible.length >= 6 ? 5 : eligible.length >= 4 ? 4 : 0;
+  return minimum
+    ? `- 今回利用可能なroot claimは${eligible.length}件。detail_sectionsを必ず${minimum}〜${maximum}節作る。`
+    : "- 今回はroot claimが3件以下のため、detail_sectionsを無理に作らない。";
 }
 
 export async function buildBingtangCommentPrompt(

@@ -31,6 +31,37 @@ async function main() {
     fetchImpl: async () => new Response("<html><title>記事</title><article>これは持ち込みニュース用に十分な長さを持つ本文です。確認できた事実だけを使います。</article></html>", { headers: { "content-type": "text/html" } })
   });
   assert.equal(fetched.ok, true);
+  let retryCount = 0;
+  const retried = await fetchIntakeDocument("https://retry.example/article", {
+    lookupHost: async () => ["93.184.216.34", "93.184.216.35"],
+    requestImpl: (options, callback) => {
+      const request = new EventEmitter() as http.ClientRequest;
+      Object.assign(request, {
+        setTimeout: () => request,
+        destroy: (error?: Error) => {
+          if (error) queueMicrotask(() => request.emit("error", error));
+          return request;
+        },
+        end: () => {
+          retryCount += 1;
+          if (retryCount === 1) {
+            queueMicrotask(() => request.emit("error", new Error("temporary network failure")));
+          } else {
+            const response = new PassThrough() as unknown as http.IncomingMessage;
+            Object.assign(response, { statusCode: 200, headers: { "content-type": "text/html" } });
+            queueMicrotask(() => {
+              callback(response);
+              (response as unknown as PassThrough).end("<html><title>再試行</title><article>最初の接続だけが失敗しても、同じ安全検査済みホストへ再試行して本文を取得できることを確認するテストです。</article></html>");
+            });
+          }
+          return request;
+        }
+      });
+      return request;
+    }
+  });
+  assert.equal(retried.ok, true, `temporary fetch failure is retried: ${JSON.stringify(retried)}`);
+  assert.equal(retryCount, 2);
   const redirectedToPrivate = await fetchIntakeDocument("https://news.example/article", {
     lookupHost: async (host) => host === "news.example" ? ["8.8.8.8"] : ["127.0.0.1"],
     fetchImpl: async () => new Response(null, { status: 302, headers: { location: "http://127.0.0.1/private" } })

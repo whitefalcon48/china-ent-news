@@ -34,6 +34,8 @@ export type SourceExpansionOptions = {
   maxTopics?: number;
   /** Use the already-configured Serper route directly instead of RSSHub. */
   forceSerper?: boolean;
+  /** Manual intake can spend a few more bounded queries on verified reactions. */
+  relatedAngleQueriesPerTopic?: number;
 };
 
 type ExpansionRoute = {
@@ -151,7 +153,7 @@ export async function expandTopicSources(topicCandidates: TopicCandidate[], opti
   // results do not become corroborating evidence or change selection scores.
   const relatedAngleTopics = selectRelatedAngleTopics(topicCandidates, options);
   for (const topic of relatedAngleTopics) {
-    const queries = rankRelatedAngleSearchQueries(topic).slice(0, getRelatedAngleQueriesPerTopic());
+    const queries = rankRelatedAngleSearchQueries(topic).slice(0, getRelatedAngleQueriesPerTopic(options.relatedAngleQueriesPerTopic));
     for (const query of queries) {
       if (skipRsshub) {
         const serperAttempt = await fetchSerperSearch(topic, query, "related_angle");
@@ -303,6 +305,7 @@ function toSerperEvidence(item: SerperOrganicItem, query: string, lane: SourceRe
 }
 
 function getSerperSourceType(hostname: string): SourceTypeLabel {
+  if (/(^|\.)(?:people\.com\.cn|peopleapp\.com)$/.test(hostname)) return "official";
   if (/(^|\.)weibo\.com$/.test(hostname) || /(^|\.)bilibili\.com$/.test(hostname)) return "sns";
   if (/(^|\.)douban\.com$/.test(hostname) || /(^|\.)maoyan\.com$/.test(hostname) || /piaofang/.test(hostname)) return "data";
   return "media_report";
@@ -407,7 +410,7 @@ export function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceE
       published_date: item.published_date ?? "",
       freshness_label: item.published_date ? ("recent" as const) : ("unknown" as const),
       article_type: item.source_type === "sns" ? ("sns_trend" as const) : ("unknown" as const),
-      reliability: "C" as const,
+      reliability: item.source_type === "official" ? ("A" as const) : ("C" as const),
       key_points: item.key_points,
       angle_kind: item.angle_kind ?? inferRelatedAngleKind(item.query, item.title)
     }));
@@ -434,7 +437,7 @@ export function attachExpansionEvidence(topic: TopicCandidate, evidence: SourceE
       published_date: item.published_date ?? "",
       freshness_label: item.published_date ? ("recent" as const) : ("unknown" as const),
       article_type: item.source_type === "sns" ? ("sns_trend" as const) : ("unknown" as const),
-      reliability: "C" as const,
+      reliability: item.source_type === "official" ? ("A" as const) : ("C" as const),
       key_points: item.key_points,
       media_family: item.media_family || normalizeMediaFamily(item.url || item.source_name)
     }));
@@ -700,7 +703,8 @@ function getMaxRelatedAngleTopics() {
   return Number.isFinite(value) && value > 0 ? value : DEFAULT_RELATED_ANGLE_TOPICS;
 }
 
-function getRelatedAngleQueriesPerTopic() {
+function getRelatedAngleQueriesPerTopic(override?: number) {
+  if (Number.isFinite(override)) return Math.max(1, Math.min(6, Math.floor(override!)));
   const value = Number(process.env.SOURCE_EXPANSION_RELATED_ANGLE_QUERIES_PER_TOPIC ?? DEFAULT_RELATED_ANGLE_QUERIES_PER_TOPIC);
   return Number.isFinite(value) && value > 0 ? value : DEFAULT_RELATED_ANGLE_QUERIES_PER_TOPIC;
 }
