@@ -28,10 +28,11 @@ async function main() {
   const issueCreateLine = workflow.split(/\r?\n/u).find((line) => line.includes("gh issue create")) ?? "";
   assert.ok(issueCreateLine && !issueCreateLine.includes("--label"), "review Issue must be created without a label");
   assert.match(workflow, /REVIEW_TITLE: "持ち込みニュース レビュー #\$\{\{/u);
-  assert.match(workflow, /LEDGER_AI_PROVIDER: gemini/u, "持ち込み用の事実台帳は独立したGemini経路を使う");
-  assert.match(workflow, /LEDGER_AI_MODEL: gemini-2\.5-flash-lite/u, "持ち込み用の事実台帳はGemini Flash Liteを使う");
-  assert.match(workflow, /AI_PROVIDER: gemini/u, "持ち込み用の下書き本文もGemini経路を使う");
-  assert.match(workflow, /COMMENT_AI_PROVIDER: gemini/u, "持ち込み用のコメントもGemini経路を使う");
+  assert.match(workflow, /LEDGER_AI_PROVIDER: deepseek/u, "持ち込み用の事実台帳は独立したDeepSeek経路を使う");
+  assert.match(workflow, /LEDGER_AI_MODEL: deepseek-v4-pro/u, "持ち込み用の事実台帳はDeepSeek Proを使う");
+  assert.match(workflow, /AI_PROVIDER: deepseek/u, "持ち込み用の下書き本文もDeepSeek経路を使う");
+  assert.match(workflow, /COMMENT_AI_PROVIDER: deepseek/u, "持ち込み用のコメントもDeepSeek経路を使う");
+  assert.match(workflow, /COMMENT_AI_MODEL: deepseek-v4-pro/u, "持ち込み用のコメントはDeepSeek Proを使う");
   assert.match(workflow, /GEMINI_API_KEY: \$\{\{ secrets\.GEMINI_API_KEY \}\}/u, "Gemini用の認証情報を持ち込み処理へ渡す");
   assert.match(workflow, /持ち込みニュースの処理に失敗しました。詳細はActionsログを確認してください。[\s\S]*?exit 1/u);
   assert.match(workflow, /steps\.review\.outputs\.needs_link == 'false'[\s\S]*?steps\.label_review\.outcome == 'success'/u, "既存レビューIssueの再実行でもラベルを復旧する");
