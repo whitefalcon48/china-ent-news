@@ -192,6 +192,8 @@ async function main() {
     };
     const grounded = repairManualFactSectionGrounding(hallucinated, richLedger, "manual_evidence_rich");
     assert.equal(grounded.what_happened, `${richLedger.claims[0]!.text}${richLedger.claims[1]!.text}`, "固有名詞警告のある事実欄は参照claim本文へ戻す");
+    const unsupportedJapanNote = repairManualFactSectionGrounding({ ...rich, japan_context_note: "日本では公開済みです。", claim_refs: { ...rich.claim_refs, japan_context_note: ["C1"] } }, richLedger, "manual_evidence_rich");
+    assert.equal(unsupportedJapanNote.japan_context_note, "", "日本関連claimがなければ補足欄を公開しない");
 
     const personLedger: FactLedger = {
       topic_key: "李雪健",

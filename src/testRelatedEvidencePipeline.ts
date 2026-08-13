@@ -120,6 +120,8 @@ assert.match(hotSearchClaim.text, /8月12日.*熱搜入り/);
 const withReaction = ensureObservableReactionView(summaryFor(withHotSearch), withHotSearch);
 assert.match(withReaction.reaction_view, /熱搜入り/);
 assert.deepEqual(withReaction.claim_refs.reaction_view, [hotSearchClaim.id]);
+const generalizedReaction = ensureObservableReactionView({ ...summaryFor(withHotSearch), reaction_view: "ネット上では驚きと尊敬の声が上がった。", claim_refs: { ...summaryFor(withHotSearch).claim_refs, reaction_view: [hotSearchClaim.id] } }, withHotSearch);
+assert.equal(generalizedReaction.reaction_view, hotSearchClaim.text, "熱搜観測から感情や投稿内容を一般化しない");
 const reactionSources = mergeTopicInternalMetadata(withReaction, expanded, [...promptEvidence, hotSearchEvidence], withHotSearch);
 assert.ok(reactionSources.related_sources.some((source) => source.name === "新浪娱乐" && source.url === "https://example.com/hot"));
 

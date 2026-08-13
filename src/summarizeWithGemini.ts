@@ -1268,7 +1268,7 @@ export function ensureObservableReactionView(summary: SummarizedArticle, ledger:
     && claim.scope === "related_angle"
     && claim.angle_kind === "audience_reaction"
   );
-  if (!claims.length || (summary.reaction_view.trim() && claims.some((claim) => summary.claim_refs.reaction_view.includes(claim.id)))) return summary;
+  if (!claims.length) return { ...summary, reaction_view: "", claim_refs: { ...summary.claim_refs, reaction_view: [] } };
   return {
     ...summary,
     reaction_view: claims.map((claim) => claim.text).join(" "),
@@ -1341,21 +1341,20 @@ export function repairManualFactSectionGrounding(
       .filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"))
       .map((violation) => violation.section)
   );
-  if (![...offending].some((section) => section === "lead" || section === "what_happened" || section === "reaction_view" || section.startsWith("detail_sections."))) return summary;
+  const hasJapanClaim = ledger.claims.some((claim) => claim.type !== "unsupported" && claim.anchor !== false && (claim.text.includes("日本") || claim.entities.some((entity) => entity.includes("日本"))));
+  const base = hasJapanClaim ? summary : { ...summary, japan_context_note: "", claim_refs: { ...summary.claim_refs, japan_context_note: [] } };
+  if (![...offending].some((section) => section === "lead" || section === "what_happened" || section === "reaction_view" || section.startsWith("detail_sections."))) return base;
   const byId = new Map(ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.anchor !== false).map((claim) => [claim.id, claim]));
   const scopedClaims = (refs: string[], scope: "root_event" | "related_angle") => refs
     .map((id) => byId.get(id))
     .filter((claim): claim is FactLedger["claims"][number] => claim !== undefined)
     .filter((claim) => claim.scope === scope);
   const claimText = (refs: string[], scope: "root_event" | "related_angle") => scopedClaims(refs, scope).map((claim) => claim.text).join("");
-  const next = { ...summary, claim_refs: { ...summary.claim_refs } };
-  if (offending.has("lead")) next.lead = claimText(summary.claim_refs.what_happened, "root_event");
-  if (offending.has("what_happened")) next.what_happened = claimText(summary.claim_refs.what_happened, "root_event");
-  if (offending.has("reaction_view")) next.reaction_view = claimText(summary.claim_refs.reaction_view, "related_angle");
-  next.detail_sections = (summary.detail_sections ?? []).map((section, index) => offending.has(`detail_sections.${index}`)
-    ? { ...section, body: claimText(section.claim_refs, "root_event") }
-    : section
-  ).filter((section) => section.body.trim());
+  const next = { ...base, claim_refs: { ...base.claim_refs } };
+  if (offending.has("lead")) next.lead = claimText(base.claim_refs.what_happened, "root_event");
+  if (offending.has("what_happened")) next.what_happened = claimText(base.claim_refs.what_happened, "root_event");
+  if (offending.has("reaction_view")) next.reaction_view = claimText(base.claim_refs.reaction_view, "related_angle");
+  next.detail_sections = (base.detail_sections ?? []).filter((_, index) => !offending.has(`detail_sections.${index}`));
   return next;
 }
 
