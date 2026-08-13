@@ -1,0 +1,15 @@
+{
+  "status": "discarded",
+  "profile": "manual_evidence_rich",
+  "eligible_claims": 15,
+  "used_claims": 13,
+  "coverage_ratio": 0.867,
+  "detail_sections": 5,
+  "important_number_claims": 6,
+  "used_number_claims": 5,
+  "regenerated": true,
+  "passed": false,
+  "reasons": [
+    "detail_section_too_short"
+  ]
+}
