@@ -1,0 +1,185 @@
+{
+  "date": "2026-08-13",
+  "generated_at": "2026-08-13T01:09:52.933Z",
+  "ledgers": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "ledger": {
+        "topic_key": "李雪健抗癌26年听力下降",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "俳優の李雪健は、がん治療から26年を経て、両耳が完全に聞こえなくなり、声帯も損傷し聴力が低下している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "26年"
+            ],
+            "quote_zh": "老李的双耳完全听不见了",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "李雪健は、相手役のセリフを覚え、相手の口の動きを見て即興で反応することで演技を続けている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "看对方口型给出即兴反应",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "映画『流浪地球3』の撮影時、助監督が李雪健の手首にコントローラーを取り付け、セリフのタイミングを知らせる信号を送っていた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "李雪健",
+              "流浪地球3"
+            ],
+            "numbers": [],
+            "quote_zh": "副导演在我的手腕上绑了一个控制器",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "李雪健は、音声書き起こしアプリや携帯アプリの文字起こし機能を使って日常会話を行っている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "这个语音转写器和手机应用",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "李雪健は、俳優としての職業生活49年目を迎えている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "49年"
+            ],
+            "quote_zh": "以演员为职业的第四十九年",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "李雪健は、党員になってから51年になる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "51年"
+            ],
+            "quote_zh": "李雪健入党的第五十一个年头",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C7",
+            "type": "source_analysis",
+            "text": "李雪健は、俳優という職業を大切にし、より豊かな精神的な糧を人々に提供しようと努力している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "www.ctdsb.net",
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "我很珍惜演员这个职业",
+            "anchor": true,
+            "scope": "root_event"
+          },
+          {
+            "id": "C8",
+            "type": "source_analysis",
+            "text": "李雪健は、役柄を通して真善美とは何かを観客に感じさせ、観客と友達になることを追求している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "www.ctdsb.net",
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "用角色与观众交朋友",
+            "anchor": true,
+            "scope": "root_event"
+          }
+        ],
+        "terms": [
+          {
+            "term": "老戏骨",
+            "gloss_ja": "ベテラン俳優",
+            "what_is": "長年の経験を持つ実力派俳優のこと",
+            "why_now": "李雪健の長年のキャリアと演技力を示す文脈で使われている",
+            "explain_quote_zh": "老戏骨李雪健",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "一级演员",
+            "gloss_ja": "一级演员",
+            "what_is": "中国国家話劇院の俳優の等級の一つ",
+            "why_now": "李雪健の所属と地位を示す",
+            "explain_quote_zh": "中国国家话剧院一级演员",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "七一勋章",
+            "gloss_ja": "七一勲章",
+            "what_is": "中国共産党の最高栄誉の一つ",
+            "why_now": "李雪健が崔道植と会った際の文脈で言及されている",
+            "explain_quote_zh": "七一勋章获得者崔道植",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}

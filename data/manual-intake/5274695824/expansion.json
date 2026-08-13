@@ -1,0 +1,402 @@
+{
+  "shortlisted_topic_keys": [
+    "李雪健抗癌26年听力下降"
+  ],
+  "attempted_topic_count": 1,
+  "attempted_route_count": 4,
+  "success_route_count": 4,
+  "evidence_count": 3,
+  "corroboration_evidence_count": 0,
+  "related_angle_evidence_count": 3,
+  "attempts": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "weak_topic_match": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 抗癌经历",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "weak_topic_match": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 口碑",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "related_missing_angle": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 票房",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 3,
+      "rejected_count": 2,
+      "rejection_reasons": {
+        "related_missing_angle": 2
+      },
+      "failure_stage": ""
+    }
+  ],
+  "evidence": [
+    {
+      "title": "《流浪地球3》票房能突破百亿吗",
+      "url": "https://ent.sina.cn/2026-06-25/detail-inierihu5652674.d.html?oid=v88%E3%80%908S.LC%E3%80%91.tjye&vt=4",
+      "source_name": "ent.sina.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "流浪地球3 票房",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "《流浪地球3》票房能突破百亿吗",
+        "《流浪地球3》票房能突破百亿吗 新浪乐迷公社 06.2516:15 关注 《流浪地球3》已定档2027年大年初一，吴京、沈腾、刘德华主演，前两部累计87.3亿票房，但能否突破百亿面临“天花板”与“扩容”的双重博弈。一、基础盘面与市场环境前作票房基础- 第一部《流浪地球》46.87亿，第二部40.43亿，合计87.3亿- 前两部均进入中国影史票房前十，分别列第6和第7左右当前影市容量参考- 《哪吒2》已冲至154.46亿，证明单片百亿并非不可能- 2026年春节档《飞驰人生3》累计超42.5亿，暂列全球年榜第一整体市场环境- 2026年4月有行业观点指出，每年新片产能从超1000部降至约500部，观众注意力集中到少数头部影片- 大量观众已将“明年《流浪地球3》”视为唯一可期待的影片二、支撑冲击百亿的利好因素1. 阵容“王炸”+ 系列口碑- 吴京、沈腾、刘德华三巨头联手，沈腾加盟首次出演科幻片- 系列豆瓣评分从第一部的7.9升至第二部的8.3，口碑持续走强- 冯小刚等实力演员加盟，阵容厚度远超前两部2. 沈腾与吴京的票房号召力- 沈腾个人总票房已突破412.38亿，吴京紧随其后- 猫眼专业版预测显示，沈腾待映的《流浪地球3》等片有望使其冲击500亿- 粉丝和观众对“含腾量”+“含京量”组合期待极高3. 工业化制作与话题效应- 上下两部连拍，总预算超10亿，耗时多年打磨- 耗资4700万搭建1:1离心机舱体，因现实科技进展九次修改剧本- 南极实拍等制作细节持续制造话题热度4. 市场对重磅科幻的渴求- 2026年春节档被部分观点批评为“雪崩”，缺乏真正大片- 观众对新片认知几乎只剩《流浪地球3》，说明其心智占位极强三、制约突破百亿的关键障碍1. 题材受众天花板- 科幻题材存在认知门槛，难以像《哪吒2》那样覆盖全年龄层- 有观点指出：一家六口可能买6张哪吒票，但《流浪地球》可能只卖2张- 前两部票房合计未达90亿，第三部想翻倍到100亿需要爆发性增长2. 百亿票房的客观难度- 2023年就有观点认为：中国电影全年总票房最高年份也仅600多亿，单片占1/6“过于捧杀”- 《哪吒2》是现象级动画，观影门槛极低，而科幻片很难复制这种模式3. 成本与分账压力- 上下两部总成本超10亿，若单部票房低于30亿即为亏损- 分账后片方实际收入约为票房的37%-38%，100亿票房片方分约37"
+      ],
+      "validation_status": "verified",
+      "media_family": "sina",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2026-06-25",
+      "document_text_length": 1577,
+      "angle_kind": "work_context"
+    },
+    {
+      "title": "马丽加盟《流浪地球3》，投资10亿票房100亿，郭帆的困局和野心",
+      "url": "https://www.sohu.com/a/911078566_122064231",
+      "source_name": "sohu.com",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "流浪地球3 票房",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "马丽加盟《流浪地球3》，投资10亿票房100亿，郭帆的困局和野心",
+        "在马丽生日那天，流浪地球的官方微博送上了生日祝福，同时宣布她将加入《流浪地球3》。这一消息，意味着沈腾和马丽将继《独行月球》之后，再度在科幻电影中强强联手，给《流浪地球3》增添了不少期待值。更强的演员阵容无疑会给导演郭帆带来更多创作空间，但同时也增加了不少的不确定性。 从2019年《流浪地球》第一部问世到《流浪地球3》4月15号开机，整个系列已经从最初的小规模制作，逐步壮大成如今的“流浪地球宇宙”。这种变化不仅体现在演员阵容的不断升级——刘德华、沈腾、马丽陆续加盟；幕后团队也愈发强大。电影的合作伙伴中，包括了中核集团、徐工集团、中国铁建等众多巨头，推动了中国电影工业的更大发展。 说《流浪地球3》已经成为科幻领域的“航空母舰”，一点也不夸张。作为中国科幻电影制作成本最高的一部，它的开销早已突破了10亿大关。回顾《流浪地球1》，当时制作成本约为5000万美元（约3.5亿人民币），而《流浪地球2》时，制作成本大幅上升，至少超过了6亿元人民币。 展开全文 在郭帆的带领下，电影的制作不仅是巨大的财务投入，还涉及到创作创新，以确保作品能够持续满足观众的期待。正如大麦娱乐的李捷所说，《哪吒2》之后，观众对电影品质的要求有了15%的提升，这对《流浪地球3》的制作压力可想而知。保守估计，《流浪地球3》的制作成本不会低于6.5亿，而将两部影片分开拍摄，整体制作费用肯定会超过10亿，真正称得上是“航空母舰”级别的投资。 如此庞大的投入，也让郭帆倍感压力。导演曾透露，在拍《流浪地球2》期间，他几乎没有休息，甚至因为过度劳累而入院。制作规模越大，涉及的环节和人员越多，创作的难度自然也随之增加。尽管郭帆始终追求完美，但在保持电影质量的同时，还要平衡投资方的利益，这无疑是他面临的巨大挑战。 为了控制风险，《流浪地球3》决定将电影分成上下两部拍摄。这样不仅能分摊单部的制作成本，还能让电影的资金流动更加顺畅。此外，分开拍摄还能提高拍摄效率，因为青岛东方影都影棚里所有场景都可以复用，大幅降低制作成本。而从观众角度来看，分开拍摄意味着他们可以更早看到电影的下一部分。 演员阵容方面，沈腾和马丽的加入，既是电影的一次大胆尝试，也让影迷的反应出现了两极分化。虽然沈腾和马丽的“沈马组合”曾为多部高票房电影贡献过强大的号召力，但也有不少影迷表示，加入这两位喜剧演员是否会让电影失去科幻电影应有的严肃性。虽然《流浪地"
+      ],
+      "validation_status": "verified",
+      "media_family": "sohu",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2025-07-06",
+      "document_text_length": 1367,
+      "angle_kind": "work_context"
+    },
+    {
+      "title": "投资10亿，票房目标100亿！《流浪地球3》是豪赌还是稳赢？",
+      "url": "https://www.163.com/dy/article/K3DB25700552LC3D.html",
+      "source_name": "163.com",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "流浪地球3 票房",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "投资10亿，票房目标100亿！《流浪地球3》是豪赌还是稳赢？",
+        "网易首页 应用 网易新闻 网易公开课 网易红彩 网易严选 邮箱大师 网易云课堂 快速导航 新闻 国内 国际 王三三 体育 NBA CBA 综合 中超 国际足球 英超 西甲 意甲 娱乐 明星 电影 电视 音乐 封面故事 财经 股票 原创 智库 汽车 购车 车型库 科技 网易智能 原创 IT 互联网 通信 时尚 艺术 旅游 手机 / 数码 惊奇科技 易评机 家电 房产 / 家居 北京房产 上海房产 广州房产 楼盘库 设计师库 案例库 教育 留学 高考 查看网易地图 登录 注册免费邮箱 注册VIP邮箱（特权邮箱，付费） 免费下载网易官方手机邮箱应用 安全退出 移动端 网易公开课 TED 中国大学视频公开课 国际名校公开课 赏课·纪录片 付费精品课程 北京大学公开课 英语课程学习 网易严选 新人特价 9.9专区 新品热卖 人气好物 居家生活 服饰鞋包 母婴亲子 美食酒水 支付 一卡通充值 一卡通购买 我的网易支付 网易跨境支付 邮箱 免费邮箱 VIP邮箱 企业邮箱 免费注册 客户端下载 网易首页 > 网易号 > 正文 申请入驻 window.UID_TARGET = ['0', '1', '2', '3', '4', '5', '6', '7'] 投资10亿，票房目标100亿！《流浪地球3》是豪赌还是稳赢？ 2025-07-01 18:00:29 来源: 娱乐圈十三太保 辽宁 举报 0 分享至 用微信扫码二维码 分享至好友和朋友圈 中国观众的底，终究还是被《哪吒之魔童闹海》探出来了。最终票房揽获154亿，是曾经的票房冠军保持者《长津湖》和《战狼2》的将近三倍。国产电影不是不卖座，而是能让观众买单的，必须得是好电影。而如今《哪吒2》创下的票房记录，想必短时间内很难突破了，但下一部百亿电影，或许很快就会跟大家见面--已经官宣将于2027年春节档上映的《流浪地球3》。一，10亿投资，制作难度再度升级自从《流浪地球》首部作品推开中国科幻电影大门后，市场上并未迅速出现代餐。一方面是制作水平达不到。《上海堡垒》也同样是科幻电影，但仅仅是从特效技术的手段来看，与《流浪地球》就不是同一个量级。一部小打小闹，试图用流量博眼球的作品，很难跟《流浪地球》这样的专业电影做比较。另一方面是投资太大。《流浪地球》的制作成本，远超绝大部分国产电影。首部作品的投资就高达3亿，在科幻电影还是冷门，并且国内市"
+      ],
+      "validation_status": "verified",
+      "media_family": "netease",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2025-07-01",
+      "document_text_length": 12000,
+      "angle_kind": "work_context"
+    }
+  ],
+  "observations": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://ent.sina.cn/2026-08-13/detail-inincnux3505652.d.html?oid=tiger%20fortune%E3%80%90GB999.bet%E3%80%91.cgoh&vt=4",
+      "title": "李雪健的听力问题是何时开始恶化的？ - 娱乐- 新浪",
+      "source_name": "ent.sina.cn",
+      "media_family": "sina",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://news.qq.com/rain/a/20260812A0DXZH00?adChannelId=news_news_top",
+      "title": "抗癌26年，李雪健的双耳，已经完全听不见了…… - QQ.com",
+      "source_name": "news.qq.com",
+      "media_family": "tencent",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.qdkaitai.com/news/v779.html",
+      "title": "《封神》李雪健声带、听力受损,原因竟是....",
+      "source_name": "qdkaitai.com",
+      "media_family": "qdkaitai.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://news.china.com/socialgd/10000169/20260812/49670944.html",
+      "title": "李雪健已经完全听不见了用生命继续演绎角色 - 中华网",
+      "source_name": "news.china.com",
+      "media_family": "news.china.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://xueqiu.com/1148003899/136559131",
+      "title": "65岁李雪健近况曝光，戴助听器苍老太多！拿几十万片酬却遭质疑？",
+      "source_name": "xueqiu.com",
+      "media_family": "xueqiu.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 抗癌经历",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://apps.medtrib.cn/media/phone/post/app/2763917/67ffcbfa-160b-4da1-a1a7-a2fa603eb3ed.html",
+      "title": "拍戏40余年，抗癌20年！李雪健战胜癌症后，总结了16字经验！ - 壹生",
+      "source_name": "apps.medtrib.cn",
+      "media_family": "apps.medtrib.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 抗癌经历",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://m.baidu.com/bh/m/detail/ar_9073403284968936253?frsrcid=rec",
+      "title": "李雪健的抗癌历程与鼻咽癌早期信号的重要性",
+      "source_name": "m.baidu.com",
+      "media_family": "baidu.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 抗癌经历",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.jiemian.com/article/247010.html",
+      "title": "著名演员李雪健自述：治疗癌症花钱太多曾想放弃 - 界面新闻",
+      "source_name": "jiemian.com",
+      "media_family": "jiemian.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 抗癌经历",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.163.com/dy/article/KGRG0PEG0556C0UJ.html",
+      "title": "听完李雪健的抗癌实话，才懂何晴朱媛媛为何拼不过病魔 - 网易",
+      "source_name": "163.com",
+      "media_family": "netease",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 抗癌经历",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://m.sohu.com/n/488891188/",
+      "title": "老戏骨：李雪健老师的抗癌故事",
+      "source_name": "m.sohu.com",
+      "media_family": "sohu",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 口碑",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://baike.baidu.com/item/%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%833/62635344",
+      "title": "流浪地球3_百度百科",
+      "source_name": "baike.baidu.com",
+      "media_family": "baike.baidu.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 口碑",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://zh.wikipedia.org/zh-cn/%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%833",
+      "title": "流浪地球3 - 维基百科，自由的百科全书",
+      "source_name": "zh.wikipedia.org",
+      "media_family": "zh.wikipedia.org",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 口碑",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://m.douban.com/movie/subject/36212391/",
+      "title": "流浪地球3(上) - 电影- 豆瓣",
+      "source_name": "m.douban.com",
+      "media_family": "douban",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 口碑",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.zhihu.com/question/2019505869054821662",
+      "title": "如何看待2024年郭帆《流浪地球3》调研1000多孩子，结果是反奋斗",
+      "source_name": "zhihu.com",
+      "media_family": "zhihu.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 口碑",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.sohu.com/a/824568362_128476",
+      "title": "原创《流浪地球3》三大变化：投资超过10亿，拆分上下两部 - 搜狐",
+      "source_name": "sohu.com",
+      "media_family": "sohu",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 票房",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://zh.wikipedia.org/zh-cn/%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%833",
+      "title": "流浪地球3 - 维基百科，自由的百科全书",
+      "source_name": "zh.wikipedia.org",
+      "media_family": "zh.wikipedia.org",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 票房",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://m.douban.com/movie/subject/36212391/",
+      "title": "流浪地球3(上) - 电影- 豆瓣",
+      "source_name": "m.douban.com",
+      "media_family": "douban",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 票房",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://ent.sina.cn/2026-06-25/detail-inierihu5652674.d.html?oid=v88%E3%80%908S.LC%E3%80%91.tjye&vt=4",
+      "title": "《流浪地球3》票房能突破百亿吗",
+      "source_name": "ent.sina.cn",
+      "media_family": "sina",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2026-06-25"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 票房",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.sohu.com/a/911078566_122064231",
+      "title": "马丽加盟《流浪地球3》，投资10亿票房100亿，郭帆的困局和野心",
+      "source_name": "sohu.com",
+      "media_family": "sohu",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2025-07-06"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "流浪地球3 票房",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.163.com/dy/article/K3DB25700552LC3D.html",
+      "title": "投资10亿，票房目标100亿！《流浪地球3》是豪赌还是稳赢？",
+      "source_name": "163.com",
+      "media_family": "netease",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2025-07-01"
+    }
+  ],
+  "research_candidates": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "title_hint": "老戏骨李雪健双耳已完全听不见，妻子：他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应 | 极目新闻",
+      "event_sentence": "演员李雪健在抗癌26年后，双耳已完全听不见，声带受损、听力下降，但仍坚持通过看口型和背对手台词来演戏。",
+      "risk_class": "low",
+      "required_independent_evidence": 1,
+      "reason": "baseline_research"
+    }
+  ]
+}
