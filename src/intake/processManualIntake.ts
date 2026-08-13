@@ -11,7 +11,7 @@ import { extractTopicSeeds } from "../topicSeeds.js";
 import { buildTopicCandidates } from "../topicCandidates.js";
 import type { AiProvider, FactLedger, ProcessedArticle, RawArticle, TopicCandidate, TopicGenerationMeta } from "../types.js";
 import { buildManualReviewIssue } from "./buildManualReviewIssue.js";
-import { fetchIntakeDocument, redactIntakeUrl, type IntakeFetchOptions } from "./fetchIntakeDocument.js";
+import { fetchIntakeDocument, redactIntakeUrl, type IntakeDocument, type IntakeFetchOptions } from "./fetchIntakeDocument.js";
 import { parseManualIntake, type ManualIntakeComment } from "./parseManualIntake.js";
 import {
   getManualIntakeDirectory,
@@ -68,23 +68,30 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     processingStage = "fetching";
     state = await updateManualIntakeState(state, { status: "fetching", error: "" }, dataRoot);
     const fetched = await fetchIntakeDocument(parsed.url, options.fetchOptions);
-    if (!fetched.ok) throw new Error(`fetch:${fetched.error}`);
-    await writeManualIntakeArtifact(parsed.commentId, "document.json", fetched.document, dataRoot);
+    const reused = !fetched.ok && (fetched.error === "fetch_timeout" || fetched.error === "fetch_failed")
+      ? await findRecentIntakeDocument(persistedUrl, parsed.commentId, dataRoot)
+      : undefined;
+    if (!fetched.ok && !reused) throw new Error(`fetch:${fetched.error}`);
+    const document = fetched.ok ? fetched.document : reused!.document;
+    await writeManualIntakeArtifact(parsed.commentId, "document.json", {
+      ...document,
+      ...(reused ? { reused_from_comment_id: reused.commentId } : {})
+    }, dataRoot);
 
     const filterConfig = await loadFilterConfig();
     const root = classifyArticle({
-      title: fetched.document.title || parsed.url,
-      url: fetched.document.final_url,
-      sourceName: new URL(fetched.document.final_url).hostname,
-      sourceUrl: fetched.document.final_url,
+      title: document.title || parsed.url,
+      url: document.final_url,
+      sourceName: new URL(document.final_url).hostname,
+      sourceUrl: document.final_url,
       category: "持ち込みニュース",
       reliability: "C",
       declaredSourceType: "media_report",
-      publishedAt: fetched.document.published_date || undefined,
-      publishedAtSource: fetched.document.published_date ? "html" : undefined,
-      excerpt: fetched.document.text.slice(0, 1000),
-      rawContent: fetched.document.text,
-      rawContentLength: fetched.document.text.length
+      publishedAt: document.published_date || undefined,
+      publishedAtSource: document.published_date ? "html" : undefined,
+      excerpt: document.text.slice(0, 1000),
+      rawContent: document.text,
+      rawContentLength: document.text.length
     }, filterConfig);
     processingStage = "topic_seed";
     const provider = options.provider ?? getAiProvider();
@@ -217,6 +224,37 @@ export function preserveManualIntakeRootEvidence(initial: TopicCandidate, resear
     // corroboration of the supplied root article.
     related_evidence_articles: researched.related_evidence_articles ?? []
   };
+}
+
+export async function findRecentIntakeDocument(
+  requestedUrl: string,
+  excludeCommentId: string,
+  dataRoot = "data",
+  now = Date.now()
+): Promise<{ commentId: string; document: IntakeDocument } | undefined> {
+  const root = path.resolve(dataRoot, "manual-intake");
+  let entries: string[];
+  try {
+    entries = (await fs.readdir(root, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && /^\d+$/u.test(entry.name) && entry.name !== excludeCommentId)
+      .map((entry) => entry.name)
+      .sort((left, right) => Number(right) - Number(left));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return undefined;
+    throw error;
+  }
+  for (const commentId of entries) {
+    try {
+      const document = JSON.parse(await fs.readFile(path.join(root, commentId, "document.json"), "utf8")) as IntakeDocument;
+      const ageMs = now - Date.parse(document.fetched_at);
+      if (redactIntakeUrl(document.requested_url) !== requestedUrl || ageMs < 0 || ageMs > 7 * 86_400_000) continue;
+      if (!document.text || document.text.length < 40 || !/^https?:\/\//u.test(document.final_url)) continue;
+      return { commentId, document };
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT" && !(error instanceof SyntaxError)) throw error;
+    }
+  }
+  return undefined;
 }
 
 export function buildManualResearchTopic(topic: TopicCandidate, root: RawArticle): TopicCandidate {

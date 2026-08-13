@@ -10,6 +10,7 @@ import { assessArticleDepth } from "./articleDepth.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
+import { findRecentIntakeDocument } from "./intake/processManualIntake.js";
 import type { FactLedger, ProcessedArticle } from "./types.js";
 
 async function main() {
@@ -124,6 +125,16 @@ async function main() {
     await writeManualIntakeState(state, root);
     const updated = await updateManualIntakeState(state, { status: "failed", error: "fetch:http_500" }, root);
     assert.equal(updated.status, "failed");
+    const cachedDirectory = path.join(root, "manual-intake", "41");
+    await fs.mkdir(cachedDirectory, { recursive: true });
+    await fs.writeFile(path.join(cachedDirectory, "document.json"), JSON.stringify({
+      requested_url: "https://example.com/news", final_url: "https://example.com/news", title: "保存済み記事",
+      text: "同一URLから直近に安全取得した十分な長さの本文を、元サイトの一時タイムアウト時だけ再利用します。別記事や古い本文は利用しません。",
+      published_date: "2026-08-11", fetched_at: "2026-08-13T00:00:00.000Z", content_type: "text/html"
+    }), "utf8");
+    const cached = await findRecentIntakeDocument("https://example.com/news", "42", root, Date.parse("2026-08-13T01:00:00.000Z"));
+    assert.equal(cached?.commentId, "41");
+    assert.equal((await findRecentIntakeDocument("https://example.com/other", "42", root, Date.parse("2026-08-13T01:00:00.000Z"))), undefined, "different URLs never reuse a cached document");
     const ledger: FactLedger = { topic_key: "topic", claims: [], terms: [], japan_availability: { status: "not_in_evidence", detail: "", evidence_refs: [] }, unresolved: [] };
     const article: ProcessedArticle = { raw: { title: "原題", url: "https://example.com/news", sourceName: "Example", sourceUrl: "https://example.com", category: "持ち込みニュース", reliability: "C" }, summary: {
       title_ja: "見出し", badge: "NEWS", lead: "要約です。", what_happened: "出来事です。", why_it_matters: "重要です。", reaction_view: "", editor_comment: "", japan_context_note: "", category: "その他", confidence: "C", source_type: "media_report", published_date: "", event_date: "", freshness_label: "unknown", newsworthiness_score: 0, japan_visibility: "unknown", japan_gap: "unknown", context_value: "low", sns_heat: "none", source_count: 1, source_list: [{ name: "Example", url: "https://example.com/news" }], has_official_source: false, has_multiple_sources: false, has_sns_signal: false, article_type: "news_event", skip_reason: "", verification_status: "", topic_key: "topic", main_entities: { people: [], works: [], organizations: [] }, related_sources: [], tags: [], publish_priority: "medium", publish_reason: "", claim_refs: { what_happened: [], why_it_matters: [], reaction_view: [], japan_context_note: [] }
