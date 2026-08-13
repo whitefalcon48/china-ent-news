@@ -1,0 +1,465 @@
+{
+  "date": "2026-08-13",
+  "generated_at": "2026-08-13T10:34:19.872Z",
+  "ledgers": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "ledger": {
+        "topic_key": "李雪健抗癌26年听力下降",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "俳優の李雪健は、がん治療から26年を経て、両耳が完全に聞こえなくなり、声帯が損傷し、聴力が低下している。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "26"
+            ],
+            "quote_zh": "老李的双耳完全听不见了",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "李雪健は、相手役のセリフを覚え、相手の口の動きを見て即興で反応することで演技を続けている。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "把对手戏演员的台词背下来",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "映画『流浪地球3』の撮影時、助監督が李雪健の手首にコントローラーを巻き付け、セリフのタイミングを知らせる信号を送った。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健",
+              "流浪地球3"
+            ],
+            "numbers": [],
+            "quote_zh": "副导演在我的手腕上绑了一个控制器",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "production_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "郭帆監督は、李雪健のために音声文字変換器と携帯アプリを見つける方法を考案した。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "郭帆",
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "这个语音转写器和手机应用",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "production_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "李雪健は、かつて「毎年1本のドラマを撮る」と約束していたが、現在は「意味のある役であれば、たとえ1シーンだけでも、声がかかれば行く」と語っている。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "1"
+            ],
+            "quote_zh": "只要是有意义的戏，哪怕只有一场",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "李雪健は、俳優としての職業生活49年目を迎える。",
+            "evidence_refs": [
+              "E1",
+              "E3",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "49"
+            ],
+            "quote_zh": "以演员为职业的第四十九年",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "李雪健は、俳優としてのキャリアにおいて100以上の多様なキャラクターを演じてきた。",
+            "evidence_refs": [
+              "E1",
+              "E3",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "100"
+            ],
+            "quote_zh": "上百个形形色色的角色",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "李雪健は、2026年8月11日に人民日報の取材を受けた。",
+            "evidence_refs": [
+              "E1",
+              "E5"
+            ],
+            "source_name": "人民日报",
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "2026-08-11"
+            ],
+            "quote_zh": "8月11日，人民日报刊发报道",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "李雪健は、70歳を超えている。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "70"
+            ],
+            "quote_zh": "70多岁的李雪健",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "李雪健は、2025年11月21日未明に天安門付近で撮影された写真に写っている。",
+            "evidence_refs": [
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "2025-11-21"
+            ],
+            "quote_zh": "拍摄于2025年11月21日凌晨时分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "李雪健は、崔道植と3枚の写真を共有している。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健",
+              "崔道植"
+            ],
+            "numbers": [
+              "3"
+            ],
+            "quote_zh": "其中有3张，是他与“七一勋章”获得者崔道植的合影",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "李雪健は、俳優としての職業生活49年目であり、がん治療26年目である。",
+            "evidence_refs": [
+              "E1",
+              "E3",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "49",
+              "26"
+            ],
+            "quote_zh": "2026年是李雪健以演员为职业的第四十九年。今年也是他抗癌的",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "李雪健は、入党51年目を迎える。",
+            "evidence_refs": [
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "51"
+            ],
+            "quote_zh": "今年还是李雪健入党的第五十一个年头",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "人民日報は、李雪健が俳優という職業を大切にし、より豊かな精神的な糧を人々に捧げようと努力していると報じた。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "source_name": "人民日报",
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "要努力把更丰富的精神食粮奉献给人们",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "李雪健は、俳優という職業を大切にしている。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "我很珍惜演员这个职业",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "李雪健は、優れた共産党員のイメージを銀幕に映し出すことが自身の責任であり、生命の価値であると考えている。",
+            "evidence_refs": [
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "把优秀共产党员的形象搬上银幕，是我的责任",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "李雪健は、創作のために「命を懸けて」いる。",
+            "evidence_refs": [
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "为了创作，我，还要拼命",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "李雪健は、がん治療の副作用に長年苦しんできた。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "饱受后遗症的折磨",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "李雪健は、8年前に再び手術を受けた。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [
+              "8"
+            ],
+            "quote_zh": "8年前，他再上手术台",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "李雪健は、がん治療の副作用で唾液腺が死滅した。",
+            "evidence_refs": [
+              "E1",
+              "E4",
+              "E5"
+            ],
+            "entities": [
+              "李雪健"
+            ],
+            "numbers": [],
+            "quote_zh": "也杀死了他的唾液腺",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "一级演员",
+            "gloss_ja": "一級俳優",
+            "what_is": "中国国家話劇院の俳優の職位の一つ",
+            "why_now": "李雪健の経歴と現在の状況を説明する上で重要",
+            "explain_quote_zh": "中国国家话剧院一级演员",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "语音转写器",
+            "gloss_ja": "音声文字変換器",
+            "what_is": "音声入力を文字に変換する機器",
+            "why_now": "李雪健が聴力低下により日常会話で使用しているため",
+            "explain_quote_zh": "取出语音转写器",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "七一勋章",
+            "gloss_ja": "七一勲章",
+            "what_is": "中国共産党の最高栄誉",
+            "why_now": "李雪健が崔道植との写真を共有する文脈で言及されているため",
+            "explain_quote_zh": "七一勋章获得者",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration",
+          "E5": "root_corroboration",
+          "E6": "related_angle"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
