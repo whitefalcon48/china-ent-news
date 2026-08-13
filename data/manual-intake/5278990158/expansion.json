@@ -1,0 +1,627 @@
+{
+  "shortlisted_topic_keys": [
+    "李雪健抗癌26年听力下降"
+  ],
+  "attempted_topic_count": 1,
+  "attempted_route_count": 6,
+  "success_route_count": 6,
+  "evidence_count": 4,
+  "corroboration_evidence_count": 3,
+  "related_angle_evidence_count": 1,
+  "attempts": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 3,
+      "rejected_count": 2,
+      "rejection_reasons": {
+        "weak_topic_match": 2
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "weak_topic_match": 3,
+        "topic_entity_not_found_in_document": 2
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热搜",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 1,
+      "rejected_count": 4,
+      "rejection_reasons": {
+        "related_missing_angle": 4
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热议",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "related_missing_angle": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 回应",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "related_missing_angle": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 讨论",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "related_angle",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "related_missing_angle": 5
+      },
+      "failure_stage": ""
+    }
+  ],
+  "evidence": [
+    {
+      "title": "李雪健：要努力把更丰富的精神食粮奉献给人们",
+      "url": "https://xinwen.bjd.com.cn/content/s6a7a8e69e4b03fa51a82c5d8.html",
+      "source_name": "xinwen.bjd.com.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "李雪健：要努力把更丰富的精神食粮奉献给人们",
+        "var site = {\"uuid\":\"5b165687a010550e5ddc0e6a\",\"created\":\"2019-11-05T17:18:31.000+08:00\",\"createdBy\":\"system\",\"updated\":\"2026-05-20T14:20:24.000+08:00\",\"updatedBy\":\"64afc908d5de6cfed75146b1\",\"deleted\":false,\"type\":\"NEWSAPP\",\"name\":\"\\u5317\\u4EAC\\u65E5\\u62A5APP\\u65B0\\u95FB\",\"displayOrder\":1,\"comment\":\"\",\"siteId\":\"649a3361d5de5604717426ed\",\"schema\":\"https\",\"domain\":\"xinwen.bjd.com.cn\",\"port\":443,\"indexTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"indexTemplateName\":\"share\",\"indexTemplateFile\":\"index\",\"columnTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"columnTemplateName\":\"share\",\"columnTemplateFile\":\"column-replace\",\"specialTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"specialTemplateName\":\"share\",\"specialTemplateFile\":\"special-share\",\"contentTemplateUuid\":\"64c3105ad5de89ef441ac05a\",\"contentTemplateName\":\"share\",\"contentTemplateFile\":\"content-share\",\"seoTitle\":\"\",\"seoKeywords\":\"\",\"seoDescription\":\"\",\"cacheEnabled\":false,\"indexMaxAge\":5,\"columnMaxAge\":5,\"contentMaxAge\":5,\"contentUrlPattern\":0,\"payToRe"
+      ],
+      "validation_status": "verified",
+      "media_family": "xinwen.bjd.com.cn",
+      "validation_reason": "document_verified",
+      "published_date": "2019-11-05",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "general",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 12000
+    },
+    {
+      "title": "李雪健：要努力把更丰富的精神食粮奉献给人们--国内-环球人物网",
+      "url": "https://www.globalpeople.com.cn/n4/2026/0811/c305917-21652728.html",
+      "source_name": "globalpeople.com.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "李雪健：要努力把更丰富的精神食粮奉献给人们--国内-环球人物网",
+        "(function () { document.cookie = \"HOY_TR=BKNJCLTURQSAWMEX,16724839ABCEDF50,tygrfqkvuwjcbhsl; max-age=31536000; path=/\";document.cookie = \"HBB_HC=c160e3963cfdca001f25c1b85c56c6d6c351ff14562895347db1b1eff78abac79e844b2809320ac42abde38668c333a2f0; max-age=600; path=/\"; })() $(document).ready(function () { $('#banner_pc').load('/305967/306372/index.html');//pc封推地址 }); 举报专区 var forpc = document.querySelector('.forpc') var random = Math.random().toFixed(2) forpc.onclick = function(){ url = 'http://www.globalpeople.com.cn?pc_flag=' + random window.location.href = url } $(document).ready(function () { $('#banner_wap').load('/305967/306373/index.html');// }); 您的位置： 环球人物网>>国内 李雪健：要努力把更丰富的精神食粮奉献给人们 document.write(unescape(\"\")) 2026年08月11日10:34 来源：人民日报 作者：任姗姗 小号 中号 大号 原标题：中国国家话剧院一级演员李雪健——“要努力把更丰富的精神食粮奉献给人们” 李雪健比往日更清瘦了。他从背包里取出语音转写器，而不是这些年常常带在身边的助听器。“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”李雪健的妻子于海丹在一旁解释。 2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。 今年也是他抗癌的第二"
+      ],
+      "validation_status": "verified",
+      "media_family": "globalpeople.com.cn",
+      "validation_reason": "document_verified",
+      "published_date": "2026-08-11",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "direct_statement",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 5380
+    },
+    {
+      "title": "李雪健：要努力把更丰富的精神食粮奉献给人们",
+      "url": "https://news.bjd.com.cn/2026/08/11/11910557.shtml",
+      "source_name": "news.bjd.com.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "evidence_role": "corroboration",
+      "key_points": [
+        "李雪健：要努力把更丰富的精神食粮奉献给人们",
+        "李雪健：要努力把更丰富的精神食粮奉献给人们 来源： 人民日报 2026-08-11 10:52 原标题：中国国家话剧院一级演员李雪健—— “要努力把更丰富的精神食粮奉献给人们” 李雪健比往日更清瘦了。他从背包里取出语音转写器，而不是这些年常常带在身边的助听器。“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”李雪健的妻子于海丹在一旁解释。 2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。 今年也是他抗癌的第二十六年。化疗的射线杀死了癌细胞，也杀死了他的唾液腺。声带受损、听力下降……26年来，他饱受后遗症的折磨。8年前，他再上手术台，所幸有惊无险。 曾经许诺“每年拍一部戏”，现在是“只要是有意义的戏，哪怕只有一场，只要看上我，我就去”。李雪健一字一顿，“我要当好绿叶。” 完全听不见了，怎样演好戏？ “把对手戏演员的台词背下来，表演的时候，看对方的口型。表演要真听、真看、真感受，背了对方的台词，还要给出即兴反应，对我的要求很高。”李雪健也有苦恼。 “剧组帮我想了很多办法。拍电影《流浪地球3》时，副导演在我的手腕上绑了一个控制器，该我说台词了，他就按控制器，给我信号。这个语音转写器和手机应用，就是郭帆导演找到的办法。” 说着，李雪健从一个信封里取出4张照片。其中有3张，是他与“七一勋章”获得者崔道植的合影。“能在电影中饰演老年崔道植是一次学习的机会，我很荣幸。”另外一张拍摄于2025年11月21日凌晨时分的天安门附近，是作品杀青时，李雪健和剧组主创、执勤民警的合影。照片上，唯有70多岁的李雪健依然穿着单薄的戏服，可他说“心里热乎”。 今年还是李雪健入党的第五十一个年头。“作为老党员，把优秀共产党员的形象搬上银幕，是我的责任，也是生命的价值。”他缓缓说，“为了创作，我，还要拼命。” “能吃上演员这碗饭不容易，我很珍惜演员这个职业，要努力把更丰富的精神食粮奉献给人们。”李雪健沙哑的嗓音里满是笃定，要做一名合格的演员，更要做一名合格的党员。 一个演员，为什么在长达半个世纪的职业生涯中，对表演始终如一、毫无倦意，甚至不惜豁出半条命去？为什么他的角色总能留在观众心底？答案，就在“珍惜”二字。 关键词：角色塑造 用角色与观众交朋友，是"
+      ],
+      "validation_status": "verified",
+      "media_family": "news.bjd.com.cn",
+      "validation_reason": "document_verified",
+      "published_date": "2026-08-11",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "direct_statement",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      },
+      "document_text_length": 1322
+    },
+    {
+      "title": "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌",
+      "url": "https://ent.sina.cn/2026-08-13/detail-ininavwx6563735.d.html?oid=b88%E3%80%9066.cyou%E3%80%91.lxna&vt=4",
+      "source_name": "ent.sina.cn",
+      "source_type": "media_report",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "query": "李雪健 热搜",
+      "evidence_role": "related_angle",
+      "key_points": [
+        "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌",
+        "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌 天津广播 天津人民广播电台 08月13日01:07 关注 听新闻 8月12日#李雪健已完全听不见了#冲上热搜8月11日，人民日报刊发报道《要努力把更丰富的精神食粮奉献给人们》，采访了中国国家话剧院一级演员李雪健。李雪健从背包里取出语音转写器，而不是这些年常常带在身边的助听器。李雪健的妻子于海丹解释称，“老李的双耳完全听不见了，日常交流就靠这个或者手机应用转写。”据悉，2000年在拍摄《中国轨道》时，李雪健确诊鼻咽癌，放疗射线在杀死癌细胞的同时，也不可逆地损伤了听觉神经、唾液腺和声带，他的听力在26年间从衰退走向归零。抗癌26年来，他饱受后遗症的折磨。8年前，他再上手术台，所幸有惊无险。完全失聪后，他每次拍戏前把对手戏演员的所有台词烂熟于心，现场紧盯对方口型判断节奏，还要给出即兴反应，坦言“对我的要求很高”。完全听不见了，怎样演好戏？“把对手戏演员的台词背下来，表演的时候，看对方的口型。”李雪健说，“剧组帮我想了很多办法。拍电影《流浪地球3》时，副导演在我的手腕上绑了一个控制器，该我说台词了，他就按控制器，给我信号。这个语音转写器和手机应用，就是郭帆导演找到的办法。”2026年是李雪健以演员为职业的第四十九年。从李大钊、焦裕禄、宋大成、冯石到赵树理、杨善洲、鲁迅、甘祖昌、周喆直……他用自己的生命“雕刻”上百个形形色色的角色，诠释“人生如戏、戏如人生”。 李雪健剧照 “能吃上演员这碗饭不容易，我很珍惜演员这个职业，要努力把更丰富的精神食粮奉献给人们。”李雪健沙哑的嗓音里满是笃定。学者冯骥才曾评价：李雪健每演一个人，这世界就多了一个“人”。这个人为什么能“立得住”？因为塑造者是用生命去体悟生命，满怀真诚为观众服务。更因为这个“人”鲜活、生动、有生命力，折射了时代的共同理想与追求。 编辑 | 马瑞 综合 | 人民日报 北京青年报 window.STO=window.STO||{};window.STO.fw=new Date().getTime();"
+      ],
+      "validation_status": "verified",
+      "media_family": "sina",
+      "validation_reason": "related_angle_document_verified",
+      "published_date": "2026-08-13",
+      "document_text_length": 860,
+      "angle_kind": "audience_reaction"
+    }
+  ],
+  "observations": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "http://www.why.com.cn/epublish/qnb/html/2025-02/26/content_118_30508.htm",
+      "title": "把最好的精神食粮奉献给人民",
+      "source_name": "why.com.cn",
+      "media_family": "why.com.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "http://opinion.people.com.cn/n/2014/1030/c1003-25938663.html",
+      "title": "人民日报文化圆桌：以艺为重以德为先",
+      "source_name": "opinion.people.com.cn",
+      "media_family": "opinion.people.com.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://xinwen.bjd.com.cn/content/s6a7a8e69e4b03fa51a82c5d8.html",
+      "title": "李雪健：要努力把更丰富的精神食粮奉献给人们",
+      "source_name": "xinwen.bjd.com.cn",
+      "media_family": "xinwen.bjd.com.cn",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2019-11-05",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "general",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.globalpeople.com.cn/n4/2026/0811/c305917-21652728.html",
+      "title": "李雪健：要努力把更丰富的精神食粮奉献给人们--国内-环球人物网",
+      "source_name": "globalpeople.com.cn",
+      "media_family": "globalpeople.com.cn",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2026-08-11",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "direct_statement",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://news.bjd.com.cn/2026/08/11/11910557.shtml",
+      "title": "李雪健：要努力把更丰富的精神食粮奉献给人们",
+      "source_name": "news.bjd.com.cn",
+      "media_family": "news.bjd.com.cn",
+      "status": "accepted",
+      "reason": "document_verified",
+      "published_date": "2026-08-11",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "direct_statement",
+        "matched": true,
+        "reason": "entity_and_query_match"
+      }
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.wenxuecity.com/news/2019/11/28/ent-182167.html",
+      "title": "65岁李雪健近况曝光，戴助听器苍老太多！ - 文学城",
+      "source_name": "wenxuecity.com",
+      "media_family": "wenxuecity.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://ent.sina.cn/2026-08-12/detail-ininarre5127496.d.html?oid=weme%E3%80%90TK.CYOU%E3%80%91.upxh&vt=4",
+      "title": "李雪健的听力问题是什么原因造成的？ - 娱乐- 新浪",
+      "source_name": "ent.sina.cn",
+      "media_family": "sina",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://kan.china.com/article/1256385.html",
+      "title": "67岁李雪健带病拍戏！听力和声带受损严重，因失误连忙道歉太谦虚",
+      "source_name": "kan.china.com",
+      "media_family": "kan.china.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.qdkaitai.com/news/v779.html",
+      "title": "《封神》李雪健声带、听力受损,原因竟是....",
+      "source_name": "qdkaitai.com",
+      "media_family": "qdkaitai.com",
+      "status": "rejected",
+      "reason": "topic_entity_not_found_in_document",
+      "published_date": "2023-08-18",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "obituary",
+        "matched": false,
+        "reason": "topic_entity_not_found_in_document"
+      }
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 听力下降",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.sina.cn/news/detail/5331155538675567.html",
+      "title": "李雪健听力受损及健康状况 - 新浪",
+      "source_name": "sina.cn",
+      "media_family": "sina",
+      "status": "rejected",
+      "reason": "topic_entity_not_found_in_document",
+      "published_date": "2026-08-12",
+      "claim_coverage": {
+        "target_claim": "general",
+        "observed_claim": "stage_or_festival",
+        "matched": false,
+        "reason": "topic_entity_not_found_in_document"
+      }
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热搜",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://tv.cctv.com/2024/07/01/VIDExSJClPsI2kDx4u2MQrZB240701.shtml",
+      "title": "[中国电影报道]热点扫描为人民服务！李雪健带来“献给明天的演讲”",
+      "source_name": "tv.cctv.com",
+      "media_family": "tv.cctv.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热搜",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://zh.wikipedia.org/zh-cn/%E6%9D%8E%E9%9B%AA%E5%81%A5",
+      "title": "李雪健- 维基百科，自由的百科全书",
+      "source_name": "zh.wikipedia.org",
+      "media_family": "zh.wikipedia.org",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热搜",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://epaper.gmw.cn/gmrb/html/2022-01/08/nw.D110000gmrb_20220108_1-01.htm",
+      "title": "李雪健：用角色与观众交朋友 - 光明日报",
+      "source_name": "epaper.gmw.cn",
+      "media_family": "epaper.gmw.cn",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热搜",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://tv.cctv.com/2022/10/06/VIDElVL17YQMcYncOC06Idpo221006.shtml",
+      "title": "[中国电影报道]热点扫描李雪健撰文谈人民与舞台感谢观众的偏爱",
+      "source_name": "tv.cctv.com",
+      "media_family": "tv.cctv.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热搜",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://ent.sina.cn/2026-08-13/detail-ininavwx6563735.d.html?oid=b88%E3%80%9066.cyou%E3%80%91.lxna&vt=4",
+      "title": "热搜 | 李雪健双耳已完全听不见！此前确诊鼻咽癌",
+      "source_name": "ent.sina.cn",
+      "media_family": "sina",
+      "status": "accepted",
+      "reason": "related_angle_document_verified",
+      "published_date": "2026-08-13"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热议",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://wuu.wikipedia.org/wiki/%E6%9D%8E%E9%9B%AA%E5%81%A5",
+      "title": "李雪健- 吴语维基百科",
+      "source_name": "wuu.wikipedia.org",
+      "media_family": "wuu.wikipedia.org",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热议",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "http://edu.people.com.cn/n/2015/0408/c1053-26810503.html",
+      "title": "“我用角色和观众交朋友”——对话演员李雪健 - 人民网教育",
+      "source_name": "edu.people.com.cn",
+      "media_family": "edu.people.com.cn",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热议",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://baike.baidu.com/item/%E6%9D%8E%E9%9B%AA%E5%81%A5/1260954",
+      "title": "李雪健（中国内地男演员，中国国家话剧院一级演员 - 百度百科",
+      "source_name": "baike.baidu.com",
+      "media_family": "baike.baidu.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热议",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.youtube.com/watch?v=BcFmGQkgJFw",
+      "title": "李雪健別五星旗奪金馬引發熱議－民視新聞 - YouTube",
+      "source_name": "youtube.com",
+      "media_family": "youtube.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 热议",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://ku.artnchina.com/page/artist/artistIntro.html?id=8f0edf9f89774ab1b2c4e5e48f82e1fd",
+      "title": "李雪健 - 文艺云- 网上文联",
+      "source_name": "ku.artnchina.com",
+      "media_family": "ku.artnchina.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 回应",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://ent.sina.cn/2026-08-11/detail-inimxmem0730032.d.html?vt=4",
+      "title": "李雪健如何理解演员与观众之间的关系？ - 娱乐- 新浪",
+      "source_name": "ent.sina.cn",
+      "media_family": "sina",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 回应",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.zhihu.com/question/21557635/answer/2586568362?utm_psn=1709280299622551552",
+      "title": "如何评价李雪健的演技？ - 小葱葱的回答- 知乎",
+      "source_name": "zhihu.com",
+      "media_family": "zhihu.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 回应",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://ent.ifeng.com/fcd/special/lixuejian/",
+      "title": "非常道》专访李雪健_娱乐频道 - 凤凰网",
+      "source_name": "ent.ifeng.com",
+      "media_family": "ent.ifeng.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 回应",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://news.qq.com/rain/a/20230809A01YK300",
+      "title": "李雪健《封神》声音嘶哑，抗癌23年声带受损，原不是姬昌第一人选",
+      "source_name": "news.qq.com",
+      "media_family": "tencent",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 回应",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://wapbaike.baidu.com/tashuo/browse/content?id=9ecbf4e3cfc2f3d59fc0e105",
+      "title": "质疑李雪健的演技，真是天大的笑话_百科TA说",
+      "source_name": "wapbaike.baidu.com",
+      "media_family": "wapbaike.baidu.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 讨论",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%8E%E9%9B%AA%E5%81%A5",
+      "title": "李雪健- 維基百科，自由的百科全書",
+      "source_name": "zh.wikipedia.org",
+      "media_family": "zh.wikipedia.org",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 讨论",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://zhuanlan.zhihu.com/p/351876883",
+      "title": "李雪健：40年33个影帝，角色塑造太成功，刘少奇夫人拒绝握手",
+      "source_name": "zhuanlan.zhihu.com",
+      "media_family": "zhuanlan.zhihu.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 讨论",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://ent.ifeng.com/fcd/special/lixuejian/",
+      "title": "非常道》专访李雪健_娱乐频道 - 凤凰网",
+      "source_name": "ent.ifeng.com",
+      "media_family": "ent.ifeng.com",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 讨论",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "http://www.gdna.org.cn/gps/20260329740921221.shtml",
+      "title": "...说漂亮话的李雪健,聊聊表演这件事|演员|北影节|电影_网易订阅",
+      "source_name": "gdna.org.cn",
+      "media_family": "gdna.org.cn",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    },
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "query": "李雪健 讨论",
+      "route_id": "serper-search",
+      "evidence_role": "related_angle",
+      "url": "https://www.163.com/dy/article/KC0F38GE05567FSP.html",
+      "title": "71岁李雪健近况曝光：坐绿皮火车难掩疲惫，一个细节却让网友盛赞",
+      "source_name": "163.com",
+      "media_family": "netease",
+      "status": "rejected",
+      "reason": "related_missing_angle"
+    }
+  ],
+  "research_candidates": [
+    {
+      "topic_key": "李雪健抗癌26年听力下降",
+      "title_hint": "老戏骨李雪健双耳已完全听不见，妻子：他抗癌26年声带受损、听力下降；拍戏时把对手戏演员台词背下来，看对方口型给出即兴反应 | 极目新闻",
+      "event_sentence": "演员李雪健在抗癌26年后，双耳已完全听不见，声带受损、听力下降，但仍坚持通过看口型和背对手台词来演戏。",
+      "risk_class": "low",
+      "required_independent_evidence": 1,
+      "reason": "baseline_research"
+    }
+  ]
+}
