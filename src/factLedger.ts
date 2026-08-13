@@ -261,19 +261,23 @@ function normalizeClaim(value: unknown, index: number, normalizedEvidence: strin
   if (type === "source_analysis" && !sourceName) type = "unsupported";
   const quote = toText(claim.quote_zh).slice(0, 30) || undefined;
   const normalizedQuote = normalizeAnchorText(quote || "");
-  const evidenceRefs = toStringArray(claim.evidence_refs);
-  const referencedRoles = evidenceRefs.map((ref) => evidenceRoles[ref]).filter((role): role is EvidenceRole => Boolean(role));
+  const rawEvidenceRefs = toStringArray(claim.evidence_refs);
+  const referencedRoles = rawEvidenceRefs.map((ref) => evidenceRoles[ref]).filter((role): role is EvidenceRole => Boolean(role));
   // Scope is determined by the actual evidence roles, never by an LLM label.
   // This avoids a single root article being incorrectly marked as a related
   // angle and then failing the grounding gate despite having no such evidence.
   const inferredScope = referencedRoles.length > 0 && referencedRoles.every((role) => role === "related_angle")
     ? "related_angle"
     : "root_event";
+  // A model may cite a root article and a related-angle repost for the same
+  // biographical fact. The related document must never strengthen the root,
+  // so retain only refs from the inferred scope before the claim gate runs.
+  const evidenceRefs = rawEvidenceRefs.filter((ref) => evidenceRoles[ref] === inferredScope.replace("root_event", "root_corroboration"));
   return {
     id: toText(claim.id) || `C${index + 1}`,
     type,
     text: toText(claim.text),
-    evidence_refs: evidenceRefs,
+    evidence_refs: evidenceRefs.length ? evidenceRefs : rawEvidenceRefs,
     source_name: sourceName || undefined,
     entities: toStringArray(claim.entities),
     numbers: toStringArray(claim.numbers),

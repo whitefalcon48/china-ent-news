@@ -559,6 +559,9 @@ async function validateDiscoveredEvidence(topic: TopicCandidate, item: SourceExp
     const snapshot = extractDocumentSnapshot(await response.text(), item.title);
     if (snapshot.text.length < 80) return { observation: toObservation(topic, item, "rejected", "document_text_too_short") };
     if (!snapshot.published_date) return { observation: toObservation(topic, item, "rejected", "missing_published_date") };
+    if (lane === "related_angle" && !isCurrentRelatedAngle(topic, snapshot.published_date)) {
+      return { observation: toObservation(topic, item, "rejected", "related_angle_outside_current_window", snapshot.published_date) };
+    }
     const relevance = assessSourceRelevance(topic, { title: snapshot.title || item.title, url: response.url, key_points: [snapshot.text.slice(0, 2000)] }, query, lane);
     if (!relevance.accepted) return { observation: toObservation(topic, item, "rejected", relevance.reason, snapshot.published_date) };
     const coverage = lane === "corroboration" ? assessClaimCoverage(topic, { title: snapshot.title || item.title, text: snapshot.text }) : undefined;
@@ -582,6 +585,13 @@ async function validateDiscoveredEvidence(topic: TopicCandidate, item: SourceExp
   } catch (error) {
     return { observation: toObservation(topic, item, "rejected", getFailureStage(error)) };
   }
+}
+
+export function isCurrentRelatedAngle(topic: TopicCandidate, publishedDate: string, maxAgeDays = 14) {
+  const rootDate = topic.published_date_range.latest;
+  if (!/^\d{4}-\d{2}-\d{2}$/u.test(rootDate) || !/^\d{4}-\d{2}-\d{2}$/u.test(publishedDate)) return false;
+  const delta = (Date.parse(`${rootDate}T00:00:00Z`) - Date.parse(`${publishedDate}T00:00:00Z`)) / 86_400_000;
+  return delta >= -1 && delta <= maxAgeDays;
 }
 
 function toObservation(

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { assessClaimCoverage, classifyEvidenceRisk, requiredIndependentEvidence } from "./evidence/claimCoverage.js";
 import { extractDocumentSnapshot } from "./evidence/documentSnapshot.js";
 import { normalizeMediaFamily } from "./evidence/mediaFamily.js";
-import { attachExpansionEvidence } from "./expandSources.js";
+import { attachExpansionEvidence, isCurrentRelatedAngle } from "./expandSources.js";
 import { buildTopicCandidates } from "./topicCandidates.js";
 import type { RawArticle, TopicCandidate } from "./types.js";
 
@@ -67,6 +67,8 @@ const snapshot = extractDocumentSnapshot(`
 `);
 assert.equal(snapshot.published_date, "2026-07-24");
 assert.match(snapshot.text, /验证HTML正文/);
+assert.equal(isCurrentRelatedAngle({ ...delayTopic, published_date_range: { earliest: "2026-08-13", latest: "2026-08-13" } }, "2026-08-12"), true);
+assert.equal(isCurrentRelatedAngle({ ...delayTopic, published_date_range: { earliest: "2026-08-13", latest: "2026-08-13" } }, "2023-08-18"), false, "old reactions cannot be attached as reception of a current interview");
 
 console.log("evidence expansion checks passed");
 

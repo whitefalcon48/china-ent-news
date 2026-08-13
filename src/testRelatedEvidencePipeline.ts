@@ -70,6 +70,11 @@ const rootScopeCannotBeOverridden = normalizeFactLedger({
   unresolved: []
 }, xieXianTopic.topic_key, promptEvidence.map((item) => `${item.title}\n${item.rawContent}`).join("\n"), undefined, { E1: "root_corroboration" });
 assert.equal(rootScopeCannotBeOverridden.claims[0]?.scope, "root_event", "a model label cannot turn root evidence into a related angle");
+const mixedRefsAreSeparated = normalizeFactLedger({
+  claims: [{ id: "C-mixed", type: "verified_fact", text: "中心記事の事実。", evidence_refs: ["E1", "E3"], entities: [], numbers: [], quote_zh: "谢贤去世" }],
+  terms: [], japan_availability: { status: "not_in_evidence", detail: "", evidence_refs: [] }, unresolved: []
+}, xieXianTopic.topic_key, promptEvidence.map((item) => `${item.title}\n${item.rawContent}`).join("\n"), undefined, { E1: "root_corroboration", E3: "related_angle" });
+assert.deepEqual(mixedRefsAreSeparated.claims[0]?.evidence_refs, ["E1"], "related refs are stripped from a root claim instead of strengthening it");
 assert.equal(ledger.claims[0]?.scope, "root_event");
 assert.equal(ledger.claims[1]?.scope, "related_angle");
 assert.equal(runClaimCheck(summaryFor(ledger), ledger).gated_violation_count, 0, "root and related claims can coexist when their evidence scopes are separate");
