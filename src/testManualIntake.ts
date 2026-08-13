@@ -7,7 +7,7 @@ import path from "node:path";
 import { PassThrough } from "node:stream";
 import { buildManualReviewIssue } from "./intake/buildManualReviewIssue.js";
 import { assessArticleDepth } from "./articleDepth.js";
-import { ensureManualDetailSectionDepth, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
+import { enforceStandardArticleFormat, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
@@ -164,35 +164,25 @@ async function main() {
     assert.equal(assessArticleDepth(thin, richLedger, "manual_evidence_rich").passed, false, "根拠12件を2件だけに圧縮した下書きを止める");
     const rich = {
       ...thin,
-      detail_sections: [
-        { heading: "重要数字", body: "夏の興行収入は85.24億元、平均票価は36.3元でした。市場規模が伸びる一方で観客の負担は下がったという、二つの変化を同時に確認できます。", claim_refs: ["C1", "C2"] },
-        { heading: "補助金", body: "全国で12億元の観賞補助金が投入され、北京だけでも2000万元が用意されました。値下がりを市場任せにせず、政策面から支えている点が分かります。", claim_refs: ["C3", "C4"] },
-        { heading: "映画館の変化", body: "映画館は363館、スクリーンは2215面増えました。飲食やVR体験も入り、上映だけを提供する場所から、交流や余暇を過ごす空間へ役割が広がっています。", claim_refs: ["C5", "C6", "C7", "C8"] },
-        { heading: "産業への波及", body: "産業チェーンは3800億元を超え、興行収入1元が関連産業15.77元を生むとのデータも示されました。飲食店の売上、旅行、IP商品まで、映画館の外へ消費が波及しています。", claim_refs: ["C9", "C10", "C11", "C12"] }
-      ]
+      what_happened: `${richLedger.claims.map((item) => item.text).join("")}市場規模、観客負担、政策支援、施設の変化、周辺産業への波及を、確認できた数字と事実に沿って一続きの本文で整理した。`,
+      claim_refs: { ...thin.claim_refs, what_happened: richLedger.claims.map((item) => item.id) },
+      detail_sections: [{ heading: "本来ない段落", body: "この段落は公開形式の統一処理で削除されます。", claim_refs: ["C1"] }]
     };
-    const depth = assessArticleDepth(rich, richLedger, "manual_evidence_rich");
+    const standardRich = enforceStandardArticleFormat(rich, "manual_evidence_rich");
+    assert.deepEqual(standardRich.detail_sections, [], "持ち込みでも通常記事と同じ段落構成にする");
+    const depth = assessArticleDepth(standardRich, richLedger, "manual_evidence_rich");
     assert.equal(depth.passed, true, depth.reasons.join(", "));
     assert.equal(depth.used_claims, 12);
     assert.equal(depth.used_number_claims, 8);
-    const repaired = ensureManualDetailSectionDepth({
-      ...rich,
-      detail_sections: [
-        { heading: "短い節", body: "確認済みの短い記述です。", claim_refs: ["C1"] },
-        ...rich.detail_sections.slice(1)
-      ]
-    }, richLedger, "manual_evidence_rich");
-    assert.ok(repaired.detail_sections![0]!.body.length >= 55, "短い節は未使用の確認済みclaimだけで補う");
-    assert.ok(repaired.detail_sections![0]!.claim_refs.length > 1, "補ったclaim IDも同じ節へ記録する");
-    assert.equal(assessArticleDepth(repaired, richLedger, "manual_evidence_rich").reasons.includes("detail_section_too_short"), false);
     const hallucinated = {
-      ...rich,
-      what_happened: "『台帳にない作品名』について報じられました。",
-      claim_refs: { ...rich.claim_refs, what_happened: ["C1", "C2"] }
+      ...standardRich,
+      what_happened: `『台帳にない作品名』について報じられました。${standardRich.what_happened}`,
+      claim_refs: { ...standardRich.claim_refs, what_happened: richLedger.claims.map((item) => item.id) }
     };
     const grounded = repairManualFactSectionGrounding(hallucinated, richLedger, "manual_evidence_rich");
-    assert.equal(grounded.what_happened, `${richLedger.claims[0]!.text}${richLedger.claims[1]!.text}`, "固有名詞警告のある事実欄は参照claim本文へ戻す");
-    const unsupportedJapanNote = repairManualFactSectionGrounding({ ...rich, japan_context_note: "日本では公開済みです。", claim_refs: { ...rich.claim_refs, japan_context_note: ["C1"] } }, richLedger, "manual_evidence_rich");
+    assert.equal(grounded.what_happened.includes("台帳にない作品名"), false, "根拠のない一文だけを落として確認済み本文を残す");
+    assert.ok(grounded.what_happened.includes("85.24億元"), "確認済みの本文は維持する");
+    const unsupportedJapanNote = repairManualFactSectionGrounding({ ...standardRich, japan_context_note: "日本では公開済みです。", claim_refs: { ...standardRich.claim_refs, japan_context_note: ["C1"] } }, richLedger, "manual_evidence_rich");
     assert.equal(unsupportedJapanNote.japan_context_note, "", "日本関連claimがなければ補足欄を公開しない");
 
     const personLedger: FactLedger = {
@@ -213,12 +203,9 @@ async function main() {
     assert.equal(assessArticleDepth(issue34Thin, personLedger, "manual_evidence_rich").passed, false, "Issue #34型の反復中心の下書きを止める");
     const issue34Rich = {
       ...issue34Thin,
-      detail_sections: [
-        { heading: "治療後の状態", body: "26年間の治療を経て、両耳の聴力を失い、声帯にも損傷が残っています。現在の活動を理解する前提として、治療後に残った二つの状態を整理します。", claim_refs: ["P1", "P2", "P3"] },
-        { heading: "演技を続ける方法", body: "口の動きからセリフを捉え、相手役の動きを見て反応しています。音に頼れない場面で本人が実際に使っている二つの方法を具体的に示します。", claim_refs: ["P4", "P5"] },
-        { heading: "撮影側の支援", body: "撮影時には手首へ信号を送り、セリフのタイミングを伝える仕組みが使われました。本人の努力だけにまとめず、制作現場が用意した支援として分けて伝えます。", claim_refs: ["P6"] },
-        { heading: "日常の補助手段と歩み", body: "日常会話では音声書き起こしアプリを使っています。俳優生活49年目という数字も示し、撮影現場以外の補助手段と現在までの歩みを一緒に確認します。", claim_refs: ["P7", "P8"] }
-      ]
+      what_happened: `${personLedger.claims.map((item) => item.text).join("")}現在の状態、本人の工夫、制作現場の支援、日常で使う補助手段を、確認できた事実に沿って一続きの本文で整理した。治療期間や俳優としての歩みの数字も落とさず、本人だけの努力として単純化しない構成にした。`,
+      claim_refs: { ...issue34Thin.claim_refs, what_happened: personLedger.claims.map((item) => item.id) },
+      detail_sections: []
     };
     const issue34Depth = assessArticleDepth(issue34Rich, personLedger, "manual_evidence_rich");
     assert.equal(issue34Depth.passed, true, issue34Depth.reasons.join(", "));

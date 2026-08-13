@@ -132,7 +132,7 @@ export async function summarizeTopic(
   let summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
   summary = ensureObservableReactionView(summary, ledger);
   summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
-  summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
+  summary = enforceStandardArticleFormat(summary, articleDepthProfile);
   let claimCheck = runClaimCheck(summary, ledger);
 
   if (claimCheck.gated_violation_count > 0) {
@@ -144,7 +144,7 @@ export async function summarizeTopic(
       summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
       summary = ensureObservableReactionView(summary, ledger);
       summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
-      summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
+      summary = enforceStandardArticleFormat(summary, articleDepthProfile);
       claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
       if (claimCheck.gated_violation_count > 0) {
         claimCheck = { ...claimCheck, action: "discarded" };
@@ -161,7 +161,7 @@ export async function summarizeTopic(
     summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
     summary = ensureObservableReactionView(summary, ledger);
     summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
-    summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
+    summary = enforceStandardArticleFormat(summary, articleDepthProfile);
     claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
     if (claimCheck.gated_violation_count > 0) {
       throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
@@ -233,11 +233,11 @@ export async function summarizeTopic(
   }
   claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
 
-  const finalizedSummary = ensureManualDetailSectionDepth(repairManualFactSectionGrounding(ensureCanonicalPersonName(
+  const finalizedSummary = enforceStandardArticleFormat(repairManualFactSectionGrounding(ensureCanonicalPersonName(
     clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger))),
     topic,
     ledger
-  ), ledger, articleDepthProfile), ledger, articleDepthProfile);
+  ), ledger, articleDepthProfile), articleDepthProfile);
   const finalWritingFailures = articleDepthProfile === "manual_evidence_rich" ? manualWritingFailures(finalizedSummary, ledger, topic) : [];
   if (finalWritingFailures.length) throw new Error(`manual_writing_gate:${finalWritingFailures.join(",")}`);
   articleDepth = assessArticleDepth(finalizedSummary, ledger, articleDepthProfile, articleDepth.regenerated);
@@ -816,18 +816,15 @@ async function buildLedgerWritingPrompt(
     : "";
   const depthInstruction = articleDepthProfile === "manual_evidence_rich"
     ? `\n\n持ち込みニュース専用の根拠密度ルール:
-${manualDepthRequirement(ledger)}
-- lead / what_happened の繰り返しで文字数を増やさず、detail_sections に独立した編集論点を分ける。
-- 利用可能なroot claimが10件以上なら4〜6節、6〜9件なら3〜5節、4〜5件なら2〜4節を作る。3件以下なら無理に節を作らない。
-- 各節は55〜220字。headingは記事内容に即した具体名にし、bodyは別の節と同じ事実を繰り返さない。
-- 各節のclaim_refsには、その節で実際に使ったclaim IDだけを入れる。根拠のない節は作らない。
-- 数字を持つ重要claimは、羅列せず比較・対象・時点が分かる文にし、原則60%以上を本文かdetail_sectionsで使う。
+- 通常生成と同じ公開フォーマットを使い、detail_sectionsは必ず空配列にする。独自の見出しや段落を追加しない。
+- 利用可能なroot claimが6件以上なら、what_happenedを220〜650字で書き、確認済みclaimを重複なく整理する。
+- 数字を持つ重要claimは、羅列せず比較・対象・時点が分かる文にし、原則60%以上をwhat_happenedで使う。
 - 政策・補助金、施設や現場の変化、制作・配給・興行・雇用・周辺消費への波及がclaimsにある場合、それぞれを独立候補として検討する。
-- 人物記事では、経歴の数字、現在の状態、本人の工夫、制作現場の支援、日常の補助手段など、claimsに存在する異なる論点へ展開する。
+- 人物記事では、経歴の数字、現在の状態、本人の工夫、制作現場の支援、日常の補助手段など、claimsに存在する異なる論点をwhat_happenedに整理する。
 - 根拠20件を全件詰め込む必要はない。重複claimをまとめ、独立した重要claimを優先する。`
     : "\n\n- detail_sections は空配列にする。";
   const depthRetry = depthFailures.length
-    ? `\n\n前回は根拠密度ゲートを通過しませんでした: ${depthFailures.join(", ")}。事実を追加せず、独立claimの採用と節分けを修正してください。`
+    ? `\n\n前回は根拠密度ゲートを通過しませんでした: ${depthFailures.join(", ")}。事実を追加せず、what_happened内で独立claimの採用と整理を修正してください。`
     : "";
 
   return `あなたは中国エンタメの日本語ニュースメモを書く編集AIです。入力は「事実台帳」だけです。元記事の原文はもう見られません。読者は中国エンタメに関心のある日本語話者で、中国の制度・業界用語の前提知識はありません。
@@ -872,9 +869,9 @@ ${terminology}
 - reaction_view: SNS由来、angle_kind=audience_reaction、または複数媒体の見られ方を直接示すclaimがある場合のみ100〜200字。angle_kind=audience_reactionのclaimがある場合は必ず使用する。無ければ空文字。
 - japan_context_note: 日本語圏の読者に補足する価値がある文脈のclaimがある場合だけ、100〜200字でビンタンの声で書く。why_it_matters と同じ角度・言い換えにしない。日本側の受け止めや公開状況を述べる場合は、その内容を裏付けるclaimがあるときだけ。無ければ空文字。
 - editor_comment: 常に空文字 "" を返す（旧「ビンタンからのひとこと」枠は廃止。公開上は「ビンタンの注目ポイント」と、根拠がある時だけの「ビンタンからの補足」の2役とし、独立した3枠目は作らない）。
-- lead / what_happened / reaction_view / why_it_matters / japan_context_note の基本部分はおおむね400〜700字。持ち込みニュースのdetail_sectionsはこの字数とは別に、必要な根拠量に応じて加える。
+- lead / what_happened / reaction_view / why_it_matters / japan_context_note の基本部分はおおむね400〜700字。持ち込みニュースも通常生成と同じ構成にする。
 - claim_refs に、各セクションで根拠にしたclaimのidを入れる（例: {"what_happened": ["C1","C2"], ...}）。
-- detail_sections は [{"heading":"","body":"","claim_refs":["C1"]}] の形で返す。
+- detail_sections は常に空配列 [] を返す。
 - 必ずJSONだけを返す。
 
 返すJSON:
@@ -888,15 +885,6 @@ ${JSON.stringify(normalizeSummary({}), null, 2)}
 
 事実台帳:
 ${JSON.stringify(ledger, null, 2)}${violationInstruction}${depthInstruction}${depthRetry}`;
-}
-
-function manualDepthRequirement(ledger: FactLedger) {
-  const eligible = ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.scope !== "related_angle" && claim.anchor !== false);
-  const minimum = eligible.length >= 10 ? 4 : eligible.length >= 6 ? 3 : eligible.length >= 4 ? 2 : 0;
-  const maximum = eligible.length >= 10 ? 6 : eligible.length >= 6 ? 5 : eligible.length >= 4 ? 4 : 0;
-  return minimum
-    ? `- 今回利用可能なroot claimは${eligible.length}件。detail_sectionsを必ず${minimum}〜${maximum}節作る。`
-    : "- 今回はroot claimが3件以下のため、detail_sectionsを無理に作らない。";
 }
 
 export async function buildBingtangCommentPrompt(
@@ -1267,13 +1255,25 @@ export function ensureObservableReactionView(summary: SummarizedArticle, ledger:
     && claim.anchor !== false
     && claim.scope === "related_angle"
     && claim.angle_kind === "audience_reaction"
+    && /(?:热搜|熱搜|トレンド)/u.test(`${claim.text} ${claim.quote_zh ?? ""}`)
   );
   if (!claims.length) return { ...summary, reaction_view: "", claim_refs: { ...summary.claim_refs, reaction_view: [] } };
   return {
     ...summary,
-    reaction_view: claims.map((claim) => claim.text).join(" "),
+    reaction_view: claims.map(formatObservableReactionClaim).join(" "),
     claim_refs: { ...summary.claim_refs, reaction_view: claims.map((claim) => claim.id) }
   };
+}
+
+function formatObservableReactionClaim(claim: FactLedger["claims"][number]) {
+  const source = `${claim.quote_zh ?? ""} ${claim.text}`;
+  const date = source.match(/(\d{1,2})月(\d{1,2})日/u);
+  const tag = source.match(/#([^#]{2,80})#/u);
+  if (date && tag) {
+    const attribution = claim.source_name ? `と${claim.source_name}が報じた` : "ことが確認された";
+    return `${date[1]}月${date[2]}日、「#${tag[1]}#」が熱搜入りした${attribution}。`;
+  }
+  return claim.text;
 }
 
 function summaryUsesClaim(summary: SummarizedArticle, claimId: string) {
@@ -1297,37 +1297,8 @@ function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, t
   return failures;
 }
 
-export function ensureManualDetailSectionDepth(
-  summary: SummarizedArticle,
-  ledger: FactLedger,
-  profile: ArticleDepthProfile
-): SummarizedArticle {
-  if (profile !== "manual_evidence_rich" || !summary.detail_sections?.length) return summary;
-  const eligible = ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.scope !== "related_angle" && claim.anchor !== false);
-  const byId = new Map(eligible.map((claim) => [claim.id, claim]));
-  const assigned = new Set(summary.detail_sections.flatMap((section) => section.claim_refs).filter((id) => byId.has(id)));
-  const detailSections = summary.detail_sections.map((section) => {
-    if (section.body.trim().length >= 55) return section;
-    const refs = [...new Set(section.claim_refs.filter((id) => byId.has(id)))];
-    const roles = new Set(refs.map((id) => byId.get(id)?.editorial_role).filter((role) => role && role !== "other"));
-    const unused = eligible
-      .filter((claim) => !assigned.has(claim.id))
-      .sort((left, right) => Number(roles.has(right.editorial_role)) - Number(roles.has(left.editorial_role)));
-    const candidates = [
-      ...refs.map((id) => byId.get(id)).filter((claim): claim is FactLedger["claims"][number] => Boolean(claim)),
-      ...unused,
-      ...eligible.filter((claim) => !refs.includes(claim.id) && assigned.has(claim.id))
-    ];
-    let body = section.body.trim();
-    for (const claim of candidates) {
-      body = `${body}${/[。！？]$/u.test(body) ? "" : "。"}${claim.text}`.trim();
-      if (!refs.includes(claim.id)) refs.push(claim.id);
-      assigned.add(claim.id);
-      if (body.length >= 55) break;
-    }
-    return { ...section, body, claim_refs: refs };
-  });
-  return { ...summary, detail_sections: detailSections };
+export function enforceStandardArticleFormat(summary: SummarizedArticle, profile: ArticleDepthProfile): SummarizedArticle {
+  return profile === "manual_evidence_rich" ? { ...summary, detail_sections: [] } : summary;
 }
 
 export function repairManualFactSectionGrounding(
@@ -1336,25 +1307,20 @@ export function repairManualFactSectionGrounding(
   profile: ArticleDepthProfile
 ): SummarizedArticle {
   if (profile !== "manual_evidence_rich") return summary;
-  const offending = new Set(
-    runClaimCheck(summary, ledger).violations
-      .filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"))
-      .map((violation) => violation.section)
-  );
+  const warnings = runClaimCheck(summary, ledger).violations
+    .filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"));
   const hasJapanClaim = ledger.claims.some((claim) => claim.type !== "unsupported" && claim.anchor !== false && (claim.text.includes("日本") || claim.entities.some((entity) => entity.includes("日本"))));
   const base = hasJapanClaim ? summary : { ...summary, japan_context_note: "", claim_refs: { ...summary.claim_refs, japan_context_note: [] } };
-  if (![...offending].some((section) => section === "lead" || section === "what_happened" || section === "reaction_view" || section.startsWith("detail_sections."))) return base;
-  const byId = new Map(ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.anchor !== false).map((claim) => [claim.id, claim]));
-  const scopedClaims = (refs: string[], scope: "root_event" | "related_angle") => refs
-    .map((id) => byId.get(id))
-    .filter((claim): claim is FactLedger["claims"][number] => claim !== undefined)
-    .filter((claim) => claim.scope === scope);
-  const claimText = (refs: string[], scope: "root_event" | "related_angle") => scopedClaims(refs, scope).map((claim) => claim.text).join("");
   const next = { ...base, claim_refs: { ...base.claim_refs } };
-  if (offending.has("lead")) next.lead = claimText(base.claim_refs.what_happened, "root_event");
-  if (offending.has("what_happened")) next.what_happened = claimText(base.claim_refs.what_happened, "root_event");
-  if (offending.has("reaction_view")) next.reaction_view = claimText(base.claim_refs.reaction_view, "related_angle");
-  next.detail_sections = (base.detail_sections ?? []).filter((_, index) => !offending.has(`detail_sections.${index}`));
+  const withoutWarnings = (text: string, section: string) => warnings
+    .filter((violation) => violation.section === section)
+    .reduce((value, violation) => value.replace(violation.detail, ""), text)
+    .replace(/\s{2,}/gu, " ")
+    .trim();
+  next.lead = withoutWarnings(base.lead, "lead");
+  next.what_happened = withoutWarnings(base.what_happened, "what_happened");
+  next.reaction_view = withoutWarnings(base.reaction_view, "reaction_view");
+  next.detail_sections = [];
   return next;
 }
 

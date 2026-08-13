@@ -14,7 +14,7 @@ export function buildManualReviewIssue(input: {
   const rootClaims = input.ledger.claims.filter((claim) => claim.scope !== "related_angle");
   const depth = input.article.generationMeta?.article_depth;
   const depthLine = depth
-    ? `\n- 根拠カバレッジ: ${depth.used_claims}/${depth.eligible_claims} claim（${Math.round(depth.coverage_ratio * 100)}%） / 詳細 ${depth.detail_sections}節 / 重要数字 ${depth.used_number_claims}/${depth.important_number_claims} claim`
+    ? `\n- 根拠カバレッジ: ${depth.used_claims}/${depth.eligible_claims} claim（${Math.round(depth.coverage_ratio * 100)}%） / 重要数字 ${depth.used_number_claims}/${depth.important_number_claims} claim`
     : "";
   return `# 持ち込みニュース レビュー: ${title}
 
