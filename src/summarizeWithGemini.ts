@@ -131,6 +131,7 @@ export async function summarizeTopic(
   let text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile), budget);
   let summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
   summary = ensureObservableReactionView(summary, ledger);
+  summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
   summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
   let claimCheck = runClaimCheck(summary, ledger);
 
@@ -142,6 +143,7 @@ export async function summarizeTopic(
       text = await generateJson(provider, await buildLedgerWritingPrompt(topic, ledger, gatedViolations, articleDepthProfile), budget);
       summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
       summary = ensureObservableReactionView(summary, ledger);
+      summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
       summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
       claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
       if (claimCheck.gated_violation_count > 0) {
@@ -158,6 +160,7 @@ export async function summarizeTopic(
     text = await generateJson(provider, retryPrompt, budget);
     summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
     summary = ensureObservableReactionView(summary, ledger);
+    summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
     summary = ensureManualDetailSectionDepth(summary, ledger, articleDepthProfile);
     claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
     if (claimCheck.gated_violation_count > 0) {
@@ -230,11 +233,11 @@ export async function summarizeTopic(
   }
   claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
 
-  const finalizedSummary = ensureManualDetailSectionDepth(ensureCanonicalPersonName(
+  const finalizedSummary = ensureManualDetailSectionDepth(repairManualFactSectionGrounding(ensureCanonicalPersonName(
     clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger))),
     topic,
     ledger
-  ), ledger, articleDepthProfile);
+  ), ledger, articleDepthProfile), ledger, articleDepthProfile);
   const finalWritingFailures = articleDepthProfile === "manual_evidence_rich" ? manualWritingFailures(finalizedSummary, ledger, topic) : [];
   if (finalWritingFailures.length) throw new Error(`manual_writing_gate:${finalWritingFailures.join(",")}`);
   articleDepth = assessArticleDepth(finalizedSummary, ledger, articleDepthProfile, articleDepth.regenerated);
@@ -1325,6 +1328,35 @@ export function ensureManualDetailSectionDepth(
     return { ...section, body, claim_refs: refs };
   });
   return { ...summary, detail_sections: detailSections };
+}
+
+export function repairManualFactSectionGrounding(
+  summary: SummarizedArticle,
+  ledger: FactLedger,
+  profile: ArticleDepthProfile
+): SummarizedArticle {
+  if (profile !== "manual_evidence_rich") return summary;
+  const offending = new Set(
+    runClaimCheck(summary, ledger).violations
+      .filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"))
+      .map((violation) => violation.section)
+  );
+  if (![...offending].some((section) => section === "lead" || section === "what_happened" || section === "reaction_view" || section.startsWith("detail_sections."))) return summary;
+  const byId = new Map(ledger.claims.filter((claim) => claim.type !== "unsupported" && claim.anchor !== false).map((claim) => [claim.id, claim]));
+  const scopedClaims = (refs: string[], scope: "root_event" | "related_angle") => refs
+    .map((id) => byId.get(id))
+    .filter((claim): claim is FactLedger["claims"][number] => claim !== undefined)
+    .filter((claim) => claim.scope === scope);
+  const claimText = (refs: string[], scope: "root_event" | "related_angle") => scopedClaims(refs, scope).map((claim) => claim.text).join("");
+  const next = { ...summary, claim_refs: { ...summary.claim_refs } };
+  if (offending.has("lead")) next.lead = claimText(summary.claim_refs.what_happened, "root_event");
+  if (offending.has("what_happened")) next.what_happened = claimText(summary.claim_refs.what_happened, "root_event");
+  if (offending.has("reaction_view")) next.reaction_view = claimText(summary.claim_refs.reaction_view, "related_angle");
+  next.detail_sections = (summary.detail_sections ?? []).map((section, index) => offending.has(`detail_sections.${index}`)
+    ? { ...section, body: claimText(section.claim_refs, "root_event") }
+    : section
+  ).filter((section) => section.body.trim());
+  return next;
 }
 
 function ensureCanonicalPersonName(summary: SummarizedArticle, topic: TopicCandidate, ledger: FactLedger) {

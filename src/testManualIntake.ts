@@ -7,7 +7,7 @@ import path from "node:path";
 import { PassThrough } from "node:stream";
 import { buildManualReviewIssue } from "./intake/buildManualReviewIssue.js";
 import { assessArticleDepth } from "./articleDepth.js";
-import { ensureManualDetailSectionDepth } from "./summarizeWithGemini.js";
+import { ensureManualDetailSectionDepth, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
@@ -185,6 +185,13 @@ async function main() {
     assert.ok(repaired.detail_sections![0]!.body.length >= 55, "短い節は未使用の確認済みclaimだけで補う");
     assert.ok(repaired.detail_sections![0]!.claim_refs.length > 1, "補ったclaim IDも同じ節へ記録する");
     assert.equal(assessArticleDepth(repaired, richLedger, "manual_evidence_rich").reasons.includes("detail_section_too_short"), false);
+    const hallucinated = {
+      ...rich,
+      what_happened: "『台帳にない作品名』について報じられました。",
+      claim_refs: { ...rich.claim_refs, what_happened: ["C1", "C2"] }
+    };
+    const grounded = repairManualFactSectionGrounding(hallucinated, richLedger, "manual_evidence_rich");
+    assert.equal(grounded.what_happened, `${richLedger.claims[0]!.text}${richLedger.claims[1]!.text}`, "固有名詞警告のある事実欄は参照claim本文へ戻す");
 
     const personLedger: FactLedger = {
       topic_key: "李雪健",
