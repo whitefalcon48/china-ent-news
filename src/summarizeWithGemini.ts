@@ -226,7 +226,13 @@ export async function summarizeTopic(
   }
   claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
 
-  const finalizedSummary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger)));
+  const finalizedSummary = ensureCanonicalPersonName(
+    clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger))),
+    topic,
+    ledger
+  );
+  const finalWritingFailures = articleDepthProfile === "manual_evidence_rich" ? manualWritingFailures(finalizedSummary, ledger, topic) : [];
+  if (finalWritingFailures.length) throw new Error(`manual_writing_gate:${finalWritingFailures.join(",")}`);
   articleDepth = assessArticleDepth(finalizedSummary, ledger, articleDepthProfile, articleDepth.regenerated);
   if (!articleDepth.passed) throw new ArticleDepthGateError(articleDepth);
   const residues = inspectDisplayKanjiResidues(finalizedSummary);
@@ -1264,11 +1270,21 @@ function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, t
   if (audienceClaims.length && (!summary.reaction_view.trim() || !audienceClaims.some((claim) => summary.claim_refs.reaction_view.includes(claim.id)))) {
     failures.push("verified_audience_reaction_not_presented");
   }
-  const publicText = [summary.title_ja, summary.lead, summary.what_happened, ...(summary.detail_sections ?? []).map((section) => section.body)].join("\n");
+  const publicText = [summary.title_ja, summary.lead, summary.what_happened, summary.reaction_view, summary.why_it_matters, summary.japan_context_note, ...(summary.detail_sections ?? []).map((section) => section.body)].join("\n");
   for (const person of topic.main_entities.people) {
     if (ledger.claims.some((claim) => claim.entities.includes(person)) && !publicText.includes(person)) failures.push(`person_name_not_preserved:${person}`);
   }
+  const finalClaimCheck = runClaimCheck(summary, ledger);
+  if (finalClaimCheck.violations.some((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"))) {
+    failures.push("public_text_contains_ungrounded_detail");
+  }
   return failures;
+}
+
+function ensureCanonicalPersonName(summary: SummarizedArticle, topic: TopicCandidate, ledger: FactLedger) {
+  const person = topic.main_entities.people.find((candidate) => ledger.claims.some((claim) => claim.entities.includes(candidate)));
+  if (!person || summary.title_ja.includes(person)) return summary;
+  return { ...summary, title_ja: `${person}：${summary.title_ja}` };
 }
 
 function dedupeEvidenceSources(evidence: RawArticle[]) {

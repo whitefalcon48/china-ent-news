@@ -166,6 +166,7 @@ export function classifyManualIntakeError(error: unknown, stage?: ManualIntakePr
   if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";
   if (/^claim_check_gate:/u.test(detail)) return "claim_check_failed";
   if (/^article_depth_gate:/u.test(detail)) return "article_too_thin";
+  if (/^manual_writing_gate:/u.test(detail)) return "grounding_check_failed";
   if (stage === "generating") return "summary_generation_failed";
   if (stage === "persisting") return "intake_persistence_failed";
   return "manual_intake_processing_failed";

@@ -34,13 +34,23 @@ assert.equal(
 );
 assert.deepEqual(
   rankRelatedAngleSearchQueries(liXuejianTopic).slice(0, 4),
-  ["李雪健 热搜", "李雪健 热议", "李雪健 回应", "李雪健 讨论"],
+  ["李雪健 听力 热搜", "李雪健 听力 热议", "李雪健 听力 回应", "李雪健 听力 讨论"],
   "manual interview research prioritizes verified reception around the person, not generic work box office"
 );
 assert.equal(
   assessSourceRelevance(baseTopic, evidence("王年将成新短剧作品引发粉丝讨论", "https://example.com/related"), "王年将成 粉丝", "related_angle").reason,
   "accepted_related_entity_and_angle",
   "related-angle discovery needs both the canonical person/work and its requested angle"
+);
+assert.equal(
+  assessSourceRelevance(liXuejianTopic, evidence("李雪健戴五星红旗徽章领金马奖引发热议", "https://example.com/old-reaction"), "李雪健 听力 热议", "related_angle").accepted,
+  false,
+  "an old unrelated reaction about the same person cannot become the current interview's reception"
+);
+assert.equal(
+  assessSourceRelevance(liXuejianTopic, evidence("李雪健双耳已完全听不见冲上热搜", "https://example.com/current-reaction"), "李雪健 听力 热搜", "related_angle").accepted,
+  true,
+  "a reception document must contain both the person and this root event's distinctive context"
 );
 assert.equal(
   assessSourceRelevance(baseTopic, evidence("另一位演员的粉丝讨论", "https://example.com/unrelated"), "王年将成 粉丝", "related_angle").reason,

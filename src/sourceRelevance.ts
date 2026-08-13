@@ -99,10 +99,11 @@ export function rankRelatedAngleSearchQueries(topic: TopicCandidate) {
     .filter((value, index, values) => value.length >= 2 && values.indexOf(value) === index)
     .slice(0, 2);
   const angles = relatedAngleTerms(topic);
+  const interviewContext = isPersonInterviewTopic(topic) ? personInterviewContext(topic) : "";
   const unique = new Map<string, string>();
   for (const entity of entities) {
     for (const angle of angles) {
-      const query = `${entity} ${angle}`;
+      const query = [entity, interviewContext, angle].filter(Boolean).join(" ");
       const normalized = normalizeText(query);
       if (!unique.has(normalized)) unique.set(normalized, query);
     }
@@ -163,6 +164,14 @@ function matchesSpecificQuery(topic: TopicCandidate, query: string, normalizedTe
   return entityMatches === 0 && contextMatches >= 2;
 }
 
+function personInterviewContext(topic: TopicCandidate) {
+  const text = `${topic.topic_key} ${topic.title_hint} ${topic.event_sentence}`;
+  if (/听力|失聪|听不见|聴力|聞こえない/.test(text)) return "听力";
+  if (/抗癌|癌|がん/.test(text)) return "抗癌";
+  if (/病情|近况|近況/.test(text)) return "近况";
+  return "";
+}
+
 function assessRelatedAngleRelevance(topic: TopicCandidate, evidence: EvidenceLike, query?: string) {
   const text = normalizeText(`${evidence.title} ${evidence.key_points.join(" ")}`);
   const canonicalEntities = [...topic.main_entities.people, ...topic.main_entities.works]
@@ -175,7 +184,21 @@ function assessRelatedAngleRelevance(topic: TopicCandidate, evidence: EvidenceLi
   if (!angleTerms.some((term) => matchesTerm(text, term))) {
     return { accepted: false, reason: "related_missing_angle" as const };
   }
+  if (!matchesRootEventContext(topic, text)) {
+    return { accepted: false, reason: "weak_topic_match" as const };
+  }
   return { accepted: true, reason: "accepted_related_entity_and_angle" as const };
+}
+
+function matchesRootEventContext(topic: TopicCandidate, text: string) {
+  const rootTerms = [topic.topic_key, topic.title_hint, topic.event_sentence, ...(topic.search_queries ?? [])]
+    .filter((value): value is string => typeof value === "string")
+    .flatMap(splitQuery)
+    .filter((term) => !isEntityTerm(term, getEntityTokens(topic)))
+    .filter((term) => !RELATED_EVENT_TERMS.has(term))
+    .filter((term) => !RELATED_GENERIC_TERMS.has(term));
+  if (!rootTerms.length) return true;
+  return rootTerms.some((term) => matchesTerm(text, term));
 }
 
 function relatedAngleTerms(topic: TopicCandidate) {
