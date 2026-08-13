@@ -358,6 +358,7 @@ function renderCard(date: string, slug: string, article: ProcessedArticle) {
 function renderFeedDetails(summary: SummarizedArticle) {
   const sections = [
     renderCardTextSection("何が起きた？", summary.what_happened),
+    ...(summary.detail_sections ?? []).map((section) => renderCardTextSection(section.heading, section.body)),
     renderCardTextSection("反応・見られ方", summary.reaction_view)
   ].filter(Boolean).join("");
   return sections ? `<div class="feed-details">${sections}</div>` : "";
@@ -377,6 +378,7 @@ function renderArticlePage(date: string, article: ProcessedArticle) {
       <p class="article-lead">${escapeHtml(summary.lead)}</p>
       ${renderSourceMix(article)}
       ${renderTextSection("何が起きた？", summary.what_happened)}
+      ${(summary.detail_sections ?? []).map((section) => renderTextSection(section.heading, section.body)).join("")}
       ${renderBingtangComment(article, summary.why_it_matters, summary.editor_comment)}
       ${renderTextSection("反応・見られ方", summary.reaction_view)}
       ${renderBingtangSupplement(summary.japan_context_note)}

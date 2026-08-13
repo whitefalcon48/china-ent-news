@@ -60,6 +60,17 @@ export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): C
   );
   const ledgerEntities = ledger.claims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
   const japanContextNote = summary.japan_context_note ?? "";
+  const detailSections = summary.detail_sections ?? [];
+  const validClaimIds = new Set(ledger.claims.map((claim) => claim.id));
+  for (const [index, detailSection] of detailSections.entries()) {
+    if (detailSection.body.trim() && detailSection.claim_refs.length === 0) {
+      violations.push(toViolation(`detail_sections.${index}`, "claim_evidence_ref_unknown", "gate", "detail section has no claim refs"));
+    }
+    const unknownRefs = detailSection.claim_refs.filter((id) => !validClaimIds.has(id));
+    if (unknownRefs.length) {
+      violations.push(toViolation(`detail_sections.${index}`, "claim_evidence_ref_unknown", "gate", unknownRefs.join(", ")));
+    }
+  }
 
   if (
     japanContextNote.trim()
@@ -126,6 +137,9 @@ export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): C
       }
     }
   }
+  for (const [index, detailSection] of detailSections.entries()) {
+    checkGroundedText(detailSection.body, `detail_sections.${index}`, detailSection.claim_refs, ledger, ledgerNumbers, ledgerEntities, violations);
+  }
 
   return {
     topic_key: ledger.topic_key,
@@ -133,6 +147,43 @@ export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): C
     gated_violation_count: violations.filter((violation) => violation.severity === "gate").length,
     action: "none"
   };
+}
+
+function checkGroundedText(
+  text: string,
+  section: string,
+  claimRefs: string[],
+  ledger: FactLedger,
+  ledgerNumbers: Set<string>,
+  ledgerEntities: string[],
+  violations: ClaimCheckViolation[]
+) {
+  const claims = ledger.claims.filter((claim) => claimRefs.includes(claim.id));
+  const referencedNumbers = new Set(
+    claims.flatMap((claim) => [...claim.numbers, claim.text, claim.quote_zh || ""])
+      .flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken))
+      .filter(Boolean)
+  );
+  for (const sentence of splitSentences(text)) {
+    const detail = sentence.trim();
+    if (!detail) continue;
+    for (const token of extractNumberTokens(detail)) {
+      const normalized = normalizeNumberToken(token);
+      if (normalized && (!ledgerNumbers.has(normalized) || !referencedNumbers.has(normalized))) {
+        violations.push(toViolation(section, "number_not_in_ledger", isHighRiskNumber(normalized) ? "gate" : "warning", detail));
+        break;
+      }
+    }
+    for (const entity of extractBracketedEntities(detail)) {
+      if (!ledgerEntities.some((ledgerEntity) => ledgerEntity.includes(entity) || entity.includes(ledgerEntity))) {
+        violations.push(toViolation(section, "entity_not_in_ledger", "warning", detail));
+        break;
+      }
+    }
+    if (/日本(の|と|でも|より|では)/.test(detail) && !claims.some(isJapanRelatedClaim)) {
+      violations.push(toViolation(section, "japan_comparison_no_claim", "warning", detail));
+    }
+  }
 }
 
 export function removeGatedViolationSentences(
@@ -161,6 +212,13 @@ export function removeGatedViolationSentences(
       next.claim_refs = { ...summary.claim_refs, japan_context_note: [] };
     }
   }
+  next.detail_sections = (summary.detail_sections ?? []).map((section, index) => ({
+    ...section,
+    body: splitSentences(section.body)
+      .filter((sentence) => !gated.some((violation) => violation.section === `detail_sections.${index}` && (sentence.includes(violation.detail) || violation.detail.includes(sentence.trim()))))
+      .join("")
+      .trim()
+  })).filter((section) => section.body);
   return next;
 }
 

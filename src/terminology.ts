@@ -97,6 +97,33 @@ export async function applyTerminology(summary: SummarizedArticle): Promise<Summ
       });
     }
   }
+  next.detail_sections = summary.detail_sections?.map((section) => {
+    let heading = section.heading;
+    let body = section.body;
+    for (const work of [...config.work_titles].sort((a, b) => b.zh.length - a.zh.length)) {
+      const variants = [work.zh, work.display, work.ja_official].filter(Boolean).sort((a, b) => b.length - a.length);
+      const regex = new RegExp(variants.map(escapeRegex).join("|"), "g");
+      heading = heading.replace(regex, work.ja_official || work.display);
+      body = body.replace(regex, work.ja_official || work.display);
+    }
+    for (const person of [...config.person_names].sort((a, b) => b.zh.length - a.zh.length)) {
+      const variants = [person.zh, person.display, person.reading ? `${person.display}（${person.reading}）` : ""].filter(Boolean).sort((a, b) => b.length - a.length);
+      const regex = new RegExp(variants.map(escapeRegex).join("|"), "g");
+      heading = heading.replace(regex, person.display);
+      body = body.replace(regex, person.display);
+    }
+    for (const preferred of config.preferred_names) {
+      const variants = [preferred.first_mention, preferred.zh, ...preferred.avoid, preferred.display].filter(Boolean).sort((a, b) => b.length - a.length);
+      const regex = new RegExp(variants.map(escapeRegex).join("|"), "g");
+      heading = heading.replace(regex, preferred.display);
+      body = body.replace(regex, preferred.display);
+    }
+    for (const override of [...config.word_overrides].sort((a, b) => b.zh.length - a.zh.length)) {
+      heading = heading.replaceAll(override.zh, override.display);
+      body = body.replaceAll(override.zh, override.display);
+    }
+    return { ...section, heading, body };
+  });
   return applyDisplayKanji(next).summary;
 }
 

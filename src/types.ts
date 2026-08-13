@@ -153,6 +153,14 @@ export type SummarizedArticle = {
   publish_priority: PublishPriority;
   publish_reason: string;
   claim_refs: ClaimRefs;
+  /** Optional evidence-dense body used by manual intake articles. */
+  detail_sections?: EvidenceDetailSection[];
+};
+
+export type EvidenceDetailSection = {
+  heading: string;
+  body: string;
+  claim_refs: string[];
 };
 
 export type SourceRef = {
@@ -190,6 +198,16 @@ export type FactLedgerClaim = {
   /** A related angle may enrich an article, but never corroborates the root event. */
   scope?: "root_event" | "related_angle";
   angle_kind?: RelatedAngleKind;
+  editorial_role?:
+    | "key_numbers"
+    | "policy_support"
+    | "venue_change"
+    | "industry_spillover"
+    | "personal_condition"
+    | "working_method"
+    | "production_support"
+    | "daily_support"
+    | "other";
 };
 
 export type FactLedgerTerm = {
@@ -313,6 +331,18 @@ export type TopicGenerationMeta = {
     opening?: string;
     regenerated_opening?: boolean;
     regenerated_paraphrase?: boolean;
+  };
+  article_depth?: {
+    profile: "standard" | "manual_evidence_rich";
+    eligible_claims: number;
+    used_claims: number;
+    coverage_ratio: number;
+    detail_sections: number;
+    important_number_claims: number;
+    used_number_claims: number;
+    regenerated: boolean;
+    passed: boolean;
+    reasons: string[];
   };
 };
 

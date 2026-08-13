@@ -52,6 +52,12 @@ assert.match(relatedIssue, /ソース: \[媒体\]/, "中心事実のソースを
 assert.match(relatedIssue, /関連角度のソース: \[関連媒体\]/, "関連角度だけを別見出しにする");
 assert.equal((relatedIssue.match(/https:\/\/example\.com\/story/g) ?? []).length, 1, "root sourceを関連角度として重複表示しない");
 
+const withDetails = article("");
+withDetails.summary!.detail_sections = [{ heading: "映画館の変化", body: "映画館が複合施設へ変わっています。", claim_refs: ["C5", "C6"] }];
+const detailedIssue = formatReviewArticle(1, withDetails);
+assert.match(detailedIssue, /### 映画館の変化/);
+assert.match(detailedIssue, /根拠claim: C5, C6/);
+
 const uiData = {
   days: [{
     date: "2026-08-09",
@@ -75,5 +81,6 @@ assert.match(ui, /supplementBox\.append\(el\('h3','','ビンタンからの補�
 assert.match(ui, /UIの補足本文/, "UIへ補足本文を渡す");
 assert.match(ui, /appendSources\(c,'関連角度のソース:',s\.related_sources\|\|\[\],s\.source_list\|\|\[\]\)/, "UIは関連角度のソースをrootと別に扱う");
 assert.match(ui, /revised_pending/, "修正版の表示経路でも同じカードを使う");
+assert.match(ui, /for\(const section of s\.detail_sections\|\|\[\]\)/, "UIは根拠詳細節を表示する");
 
 console.log("review presentation tests passed.");

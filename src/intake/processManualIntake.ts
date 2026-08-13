@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { ClaimCheckDiscardError } from "../claimCheck.js";
+import { ArticleDepthGateError } from "../articleDepth.js";
 import { classifyArticle, loadFilterConfig } from "../classifyArticle.js";
 import { expandTopicSources } from "../expandSources.js";
 import { createReviewStateFromStoredArticles, writeReviewState } from "../review/reviewState.js";
@@ -101,7 +102,7 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
 
     processingStage = "generating";
     state = await updateManualIntakeState(state, { status: "generating", error: "" }, dataRoot);
-    const generated = await summarizeTopic(topic, evidence, provider);
+    const generated = await summarizeTopic(topic, evidence, provider, undefined, { articleDepthProfile: "manual_evidence_rich" });
     // The persisted ledger, claim refs, and claim check must all originate in
     // this one call. A fallback summary is not eligible for manual review.
     const ledger = requireManualGenerationLedger(generated.meta);
@@ -134,6 +135,12 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
         violations: error.violations.map(({ section, rule, severity }) => ({ section, rule, severity }))
       }, dataRoot);
     }
+    if (error instanceof ArticleDepthGateError) {
+      await writeManualIntakeArtifact(parsed.commentId, "article-depth.json", {
+        status: "discarded",
+        ...error.assessment
+      }, dataRoot);
+    }
     const safeError = classifyManualIntakeError(error, processingStage);
     await updateManualIntakeState(state, { status: "failed", error: safeError }, dataRoot);
     return { ok: false, commentId: parsed.commentId, error: safeError };
@@ -157,6 +164,7 @@ export function classifyManualIntakeError(error: unknown, stage?: ManualIntakePr
   if (/^generation:ledger_not_used:ledger_extraction_failed:/u.test(detail)) return "fact_ledger_generation_failed";
   if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";
   if (/^claim_check_gate:/u.test(detail)) return "claim_check_failed";
+  if (/^article_depth_gate:/u.test(detail)) return "article_too_thin";
   if (stage === "generating") return "summary_generation_failed";
   if (stage === "persisting") return "intake_persistence_failed";
   return "manual_intake_processing_failed";
@@ -304,7 +312,12 @@ async function appendGithubOutput(filePath: string, content: string) {
   await fs.appendFile(filePath, content, "utf8");
 }
 
-async function main() {
+/**
+ * Executes the CLI adapter and reports only the safe, short status used by
+ * GitHub Actions. Exported so Actions can call it from an explicit entrypoint
+ * instead of relying on a TypeScript module's direct-execution detection.
+ */
+export async function runManualIntakeMain() {
   const result = await runManualIntakeCli();
   console.log(`manual intake: comment ${result.commentId || "unknown"} / ${result.ok ? "review_ready" : "failed"}`);
   if (!result.ok) {
@@ -314,7 +327,7 @@ async function main() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
-  main().catch((error) => {
+  runManualIntakeMain().catch((error) => {
     console.warn(`manual intake fatal: ${classifyManualIntakeError(error)}`);
     process.exitCode = 1;
   });

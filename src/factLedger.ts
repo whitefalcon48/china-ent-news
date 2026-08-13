@@ -100,6 +100,8 @@ claimの分類（type）:
 規則:
 - claimのtextは必ず日本語1文で書く。中国語の文をそのまま写さない（人名・作品名などの固有名詞は原文表記のままでよい）。
 - claimは1件1文。重要な順に最大20件。
+- editorial_role は記事内での役割を表す。数字の基準・比較は key_numbers、補助金・政策は policy_support、映画館や現場の変化は venue_change、制作・配給・興行・雇用・周辺消費への波及は industry_spillover、人物の現在の状態は personal_condition、本人の工夫は working_method、制作現場の支援は production_support、日常の補助手段は daily_support、それ以外は other とする。
+- 同じ内容の言い換えで20件を埋めない。evidenceにある異なる数字、政策、現場変化、波及先、人物の具体的な方法を優先する。
 - entities（人物・作品・組織の固有名詞）とnumbers（数字・日付）は原文の表記のまま入れる。claimの文中に出てくる数字・日付・序数（第八届など）は必ずnumbersにも入れる。
 - quote_zhには、そのclaimの根拠となるevidence原文の該当箇所を、原文の文字列のまま30字以内で抜き出して入れる。要約・言い換えをせず、原文にある文字列をそのまま写す。
  - evidence_refsには根拠のevidence番号（"E1"など）を必ず入れる。
@@ -121,7 +123,7 @@ claimの分類（type）:
 返すJSON:
 {
   "topic_key": "<入力値をそのまま>",
-  "claims": [{ "id": "C1", "type": "verified_fact", "scope": "root_event", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
+  "claims": [{ "id": "C1", "type": "verified_fact", "scope": "root_event", "editorial_role": "other", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
   "terms": [{ "term": "", "gloss_ja": "", "what_is": "", "why_now": "", "explain_quote_zh": "", "explain_evidence_refs": [] }],
   "japan_availability": { "status": "not_in_evidence", "detail": "", "evidence_refs": [] },
   "unresolved": []
@@ -226,8 +228,16 @@ function normalizeClaim(value: unknown, index: number, normalizedEvidence: strin
     quote_zh: quote,
     anchor: Boolean(normalizedQuote && normalizedEvidence.includes(normalizedQuote)),
     scope: inferredScope,
+    editorial_role: normalizeEditorialRole(claim.editorial_role),
     ...(claim.angle_kind === "person_response" || claim.angle_kind === "career_retrospective" || claim.angle_kind === "audience_reaction" || claim.angle_kind === "work_context" || claim.angle_kind === "other" ? { angle_kind: claim.angle_kind } : {})
   };
+}
+
+function normalizeEditorialRole(value: unknown): NonNullable<FactLedgerClaim["editorial_role"]> {
+  return value === "key_numbers" || value === "policy_support" || value === "venue_change" || value === "industry_spillover"
+    || value === "personal_condition" || value === "working_method" || value === "production_support" || value === "daily_support"
+    ? value
+    : "other";
 }
 
 function getEvidenceRoles(evidence: RawArticle[]): Record<string, EvidenceRole> {

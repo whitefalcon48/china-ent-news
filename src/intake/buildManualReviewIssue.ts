@@ -12,12 +12,16 @@ export function buildManualReviewIssue(input: {
   const xText = buildSuggestedXText(input.article);
   const note = input.note ? `\n\n持ち込み理由: ${input.note}` : "";
   const rootClaims = input.ledger.claims.filter((claim) => claim.scope !== "related_angle");
+  const depth = input.article.generationMeta?.article_depth;
+  const depthLine = depth
+    ? `\n- 根拠カバレッジ: ${depth.used_claims}/${depth.eligible_claims} claim（${Math.round(depth.coverage_ratio * 100)}%） / 詳細 ${depth.detail_sections}節 / 重要数字 ${depth.used_number_claims}/${depth.important_number_claims} claim`
+    : "";
   return `# 持ち込みニュース レビュー: ${title}
 
 常設IssueのOWNERコメント #${input.commentId} から即時生成しました。まだ公開されません。
 
 - 入力URL: ${input.intakeUrl}${note}
-- 事実台帳: root claim ${rootClaims.length}件 / claim ref付き本文を生成済み
+- 事実台帳: root claim ${rootClaims.length}件 / claim ref付き本文を生成済み${depthLine}
 - 操作: \`1 採用\` / \`1 却下\` / \`1 修正 <理由>\`
 
 ---

@@ -15,6 +15,13 @@
 - ✅ 日次生成・日次レビュー・持ち込み・Pages deployのconcurrencyを同一groupへ統一。`npm run check`、`npm run test:manual-intake`、`npm run test:site-feed`、`npm run test:review-presentation`、`npm run test:review-rescue`、`npm run build:site`成功。Actions実測と常設Issue作成はmain反映後に行う。
 - 設計正本: [`docs/design-manual-news-intake.md`](design-manual-news-intake.md)
 
+## 2026-08-13 実装・ローカル検証完了（持ち込みニュース根拠密度）
+
+- ✅ 持ち込み記事だけにclaim-ref付き `detail_sections` と `article_depth` ゲートを追加。root claim 10件以上は4〜6節、6〜9件は3〜5節、4〜5件は2〜4節へ展開し、独立claim 60%以上・重要数字claim 60%以上・根拠付き節を必須にした。一度再生成しても不足する場合は `article_too_thin` で非公開にする。
+- ✅ 映画市場ケースでは重要数字・補助金・映画館の変化・産業波及、Issue #34型では現在の状態・本人の工夫・制作側の支援・日常の補助手段を分離する契約を設計正本へ追記。レビューIssue/UIに節ごとのclaim IDと全体カバレッジを表示し、公開ページも同じ節構造を使う。
+- ✅ `npm run check`、`npm run test:manual-intake`、`npm run test:review-presentation`、`npm run test:site-feed`、`npm run test:supplement-claim`、`npm run test:kanji` 成功。映画市場12 claimのフィクスチャで薄い2 claim案を不合格、4節・12/12 claim・重要数字8/8 claim案を合格と確認。
+- 設計正本: [`docs/design-manual-news-intake.md`](design-manual-news-intake.md#8-根拠密度型記事2026-08-13)
+
 ????: 2026-08-11???UI??????????????
 
 ## 2026-08-11 ??????????????

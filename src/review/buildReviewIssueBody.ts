@@ -52,11 +52,14 @@ export function formatReviewArticle(index: number, article: ProcessedArticle, re
   const prefix = revised ? `🔄 修正版 ${index}` : `${index}. 【${summary.badge}｜${summary.category || article.raw.category}｜確度${summary.confidence || article.raw.reliability}】${summary.title_ja || article.raw.title}`;
   const supplement = summary.japan_context_note?.trim();
   const supplementSection = supplement ? `\n\n**ビンタンからの補足**: ${supplement}` : "";
+  const detailSections = (summary.detail_sections ?? []).map((section) => `### ${section.heading}\n\n${section.body}\n\n根拠claim: ${section.claim_refs.join(", ")}`).join("\n\n");
   return `## ${prefix}
 
 ${summary.lead}
 
 ${summary.what_happened}
+
+${detailSections}
 
 **ビンタンの注目ポイント**: ${summary.why_it_matters}${supplementSection}
 
