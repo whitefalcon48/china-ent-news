@@ -1,0 +1,100 @@
+{
+  "status": "discarded",
+  "violations": [
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "fact_ledger",
+      "rule": "root_claim_uses_related_evidence",
+      "severity": "gate"
+    },
+    {
+      "section": "japan_context_note",
+      "rule": "japan_context_note_without_claim_ref",
+      "severity": "gate"
+    }
+  ]
+}
