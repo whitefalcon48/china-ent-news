@@ -133,6 +133,7 @@ export async function summarizeTopic(
   summary = ensureObservableReactionView(summary, ledger);
   summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
   summary = enforceStandardArticleFormat(summary, articleDepthProfile);
+  summary = ensureCanonicalPersonName(summary, topic, ledger);
   let claimCheck = runClaimCheck(summary, ledger);
 
   if (claimCheck.gated_violation_count > 0) {
@@ -145,6 +146,7 @@ export async function summarizeTopic(
       summary = ensureObservableReactionView(summary, ledger);
       summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
       summary = enforceStandardArticleFormat(summary, articleDepthProfile);
+      summary = ensureCanonicalPersonName(summary, topic, ledger);
       claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
       if (claimCheck.gated_violation_count > 0) {
         claimCheck = { ...claimCheck, action: "discarded" };
@@ -162,6 +164,7 @@ export async function summarizeTopic(
     summary = ensureObservableReactionView(summary, ledger);
     summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
     summary = enforceStandardArticleFormat(summary, articleDepthProfile);
+    summary = ensureCanonicalPersonName(summary, topic, ledger);
     claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
     if (claimCheck.gated_violation_count > 0) {
       throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
@@ -1292,9 +1295,8 @@ function manualWritingFailures(summary: SummarizedArticle, ledger: FactLedger, t
     failures.push("verified_audience_reaction_not_presented");
   }
   const publicText = [summary.title_ja, summary.lead, summary.what_happened, summary.reaction_view, summary.why_it_matters, summary.japan_context_note, ...(summary.detail_sections ?? []).map((section) => section.body)].join("\n");
-  for (const person of topic.main_entities.people) {
-    if (ledger.claims.some((claim) => claim.entities.includes(person)) && !publicText.includes(person)) failures.push(`person_name_not_preserved:${person}`);
-  }
+  const person = canonicalPerson(topic, ledger);
+  if (person && !publicText.includes(person)) failures.push(`person_name_not_preserved:${person}`);
   const finalClaimCheck = runClaimCheck(summary, ledger);
   const ungroundedWarnings = finalClaimCheck.violations.filter((violation) => violation.severity === "warning" && (violation.rule === "number_not_in_ledger" || violation.rule === "entity_not_in_ledger" || violation.rule === "japan_comparison_no_claim"));
   failures.push(...ungroundedWarnings.map((violation) => `public_text_contains_ungrounded_detail:${violation.rule}:${violation.section}`));
@@ -1328,10 +1330,14 @@ export function repairManualFactSectionGrounding(
   return next;
 }
 
-function ensureCanonicalPersonName(summary: SummarizedArticle, topic: TopicCandidate, ledger: FactLedger) {
-  const person = topic.main_entities.people.find((candidate) => ledger.claims.some((claim) => claim.entities.includes(candidate)));
+export function ensureCanonicalPersonName(summary: SummarizedArticle, topic: TopicCandidate, ledger: FactLedger) {
+  const person = canonicalPerson(topic, ledger);
   if (!person || summary.title_ja.includes(person)) return summary;
   return { ...summary, title_ja: `${person}：${summary.title_ja}` };
+}
+
+function canonicalPerson(topic: TopicCandidate, ledger: FactLedger) {
+  return topic.main_entities.people.find((candidate) => ledger.claims.some((claim) => claim.entities.includes(candidate)));
 }
 
 function dedupeEvidenceSources(evidence: RawArticle[]) {

@@ -7,7 +7,7 @@ import path from "node:path";
 import { PassThrough } from "node:stream";
 import { buildManualReviewIssue } from "./intake/buildManualReviewIssue.js";
 import { assessArticleDepth } from "./articleDepth.js";
-import { enforceStandardArticleFormat, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
+import { enforceStandardArticleFormat, ensureCanonicalPersonName, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
@@ -188,7 +188,7 @@ async function main() {
     const personLedger: FactLedger = {
       topic_key: "李雪健",
       claims: [
-        { ...claim("P1", "李雪健は26年間治療を続けている。", ["26年"]), editorial_role: "personal_condition" },
+        { ...claim("P1", "李雪健は26年間治療を続けている。", ["26年"]), entities: ["李雪健"], editorial_role: "personal_condition" },
         { ...claim("P2", "李雪健は両耳の聴力を失った。"), editorial_role: "personal_condition" },
         { ...claim("P3", "李雪健は声帯にも損傷がある。"), editorial_role: "personal_condition" },
         { ...claim("P4", "口の動きを見てセリフを覚える。"), editorial_role: "working_method" },
@@ -210,6 +210,29 @@ async function main() {
     const issue34Depth = assessArticleDepth(issue34Rich, personLedger, "manual_evidence_rich");
     assert.equal(issue34Depth.passed, true, issue34Depth.reasons.join(", "));
     assert.equal(issue34Depth.used_claims, 8);
+    const named = ensureCanonicalPersonName({ ...issue34Rich, title_ja: "闘病後も続く俳優人生" }, {
+      topic_key: "李雪健",
+      title_hint: "李雪健のインタビュー",
+      event_sentence: "李雪健が俳優を続けている",
+      search_queries: [],
+      seed_source: "regex_fallback",
+      seed_confidence: 1,
+      topic_type: "unknown",
+      freshness_label: "recent",
+      published_date_range: { earliest: "", latest: "" },
+      source_count: 1,
+      source_mix: { official: 0, media_report: 1, sns: 0, data: 0, pr_like: 0, rumor: 0, mixed: 0 },
+      evidence_articles: [],
+      main_entities: { people: ["李雪健", "郭帆"], works: [], organizations: [], events: [] },
+      signals: { has_official_source: false, has_media_context: true, has_data_signal: false, has_hot_search_signal: false, has_multiple_sources: false },
+      newsworthiness_score: 80,
+      japan_gap: "unknown",
+      context_value: "high",
+      publish_priority: "high",
+      selection_reason: "test",
+      caution_note: ""
+    }, personLedger);
+    assert.equal(named.title_ja, "李雪健：闘病後も続く俳優人生", "再生成後も中心人物名をタイトルへ確実に残す");
   } finally {
     await fs.rm(root, { recursive: true, force: true });
   }
