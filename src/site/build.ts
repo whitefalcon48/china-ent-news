@@ -359,8 +359,8 @@ function renderCard(date: string, slug: string, article: ProcessedArticle) {
 function renderFeedDetails(summary: SummarizedArticle) {
   const sections = [
     renderCardTextSection("何が起きた？", summary.what_happened),
-    ...(summary.detail_sections ?? []).map((section) => renderCardTextSection(section.heading, section.body)),
-    renderCardTextSection("反応・見られ方", summary.reaction_view)
+    renderCardTextSection("反応・見られ方", summary.reaction_view),
+    ...(summary.detail_sections ?? []).map((section) => renderCardTextSection(section.heading, section.body))
   ].filter(Boolean).join("");
   return sections ? `<div class="feed-details">${sections}</div>` : "";
 }
@@ -373,15 +373,15 @@ function renderArticlePage(date: string, article: ProcessedArticle) {
   const summary = requireSummary(article);
   const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
   return `<main class="article-page">
-    <article>
+    <article class="article-card card-${badgeClass(summary.badge)}">
       <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(date)}">${escapeHtml(formatNumericDate(summary.event_date || summary.published_date || date))}</time></div>
       <h1>${escapeHtml(title)}</h1>
       <p class="article-lead">${escapeHtml(summary.lead)}</p>
       ${renderSourceMix(article)}
       ${renderTextSection("何が起きた？", summary.what_happened)}
+      ${renderTextSection("反応・見られ方", summary.reaction_view)}
       ${(summary.detail_sections ?? []).map((section) => renderTextSection(section.heading, section.body)).join("")}
       ${renderBingtangComment(article, summary.why_it_matters, summary.editor_comment)}
-      ${renderTextSection("反応・見られ方", summary.reaction_view)}
       ${renderBingtangSupplement(summary.japan_context_note)}
       <div class="article-actions">${renderSourceRow(article)}${renderRelatedSourceRow(article)}</div>
     </article>
@@ -789,8 +789,9 @@ const V2_CSS = String.raw`
 @media(max-width:640px){.hero:before{font-size:26px;letter-spacing:8px}.hero-inner{width:calc(100% - 28px);min-height:194px}.brand{z-index:1;flex:1;min-width:0;padding:18px 0}.logo img{width:min(245px,64vw)}.date-badge{margin-top:12px;font-size:.7rem}.hero-character{flex:none;width:142px;height:190px;margin-left:-24px}.hero-character img{height:190px;max-width:150px}.main-nav{gap:20px}.main-nav a{font-size:.76rem}.feed,.narrow,.article-page{width:calc(100% - 28px);margin-top:26px}.news-card{padding:21px 14px 17px}.chips time{width:100%;margin-left:0}.source-mix{gap:8px}.feed-details{padding-inline:12px}.bingtang-comment{grid-template-columns:42px minmax(0,1fr);padding:13px 11px}.footer-banner{align-items:flex-start;flex-wrap:wrap}.footer-banner p{min-width:calc(100% - 68px)}.article-header{padding:0 14px}.article-actions{flex-direction:column}.site-footer{align-items:flex-start;flex-direction:column}.article-page h1{font-size:1.24rem}}
 .section-icon{display:inline-block;flex:none;width:18px;height:18px;color:var(--ice)}html{font-family:"Zen Kaku Gothic New","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif}.source-mix{background:#EEF8FD}.source-mix strong,.feed-details h3,.bingtang-comment h3,.bingtang-supplement h3,.article-section h2{display:flex;align-items:center;gap:7px}.feed-details h3{color:#12549A}.feed-details section+section{padding-top:14px;border-top:1px solid #E2EFF6}.bingtang-comment{background:#FFF4F3;border-color:#F0D0CD}.bingtang-comment .section-icon-point{color:var(--red)}.bingtang-supplement{background:#EEF8FD}.sources a{color:#1576C9}.share{color:var(--red);border-color:var(--red)}
 .bingtang-comment{grid-template-columns:94px minmax(0,1fr);gap:12px;padding:14px 16px}.avatar-comment{width:92px;height:92px;font-size:46px}.avatar-comment img{transform:none}
+.article-card{position:relative;background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 32px rgba(36,86,119,.08);padding:24px;overflow:hidden}.article-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--red)}.article-card.card-official:before{background:var(--navy)}.article-card.card-data:before{background:var(--ice)}.article-card .article-section:first-of-type{margin-top:26px}.article-card .article-section{margin:28px 0}.article-card .bingtang-comment{margin:28px 0}.article-card .article-actions{margin-top:30px}
 .about{width:min(820px,calc(100% - 28px))}.about section{margin:38px 0}.about h2{font:400 1.16rem/1.55 "Kosugi Maru","Hiragino Maru Gothic ProN",sans-serif;color:var(--navy);margin:0 0 14px}.about p{margin:0 0 14px}.about-hero{display:grid;grid-template-columns:minmax(240px,290px) minmax(0,1fr);align-items:center;gap:42px}.about-character{align-self:end;display:flex;align-items:flex-end;justify-content:center}.about-character img{display:block;width:100%;max-width:280px;height:420px;object-fit:contain;object-position:center bottom}.about-intro h2{font-size:1.3rem}.about-intro p{font-size:.93rem}.about-section,.about-contact{border-top:1px solid var(--line);padding-top:28px}.about ul{margin:0;padding-left:1.4em}.about li+li{margin-top:8px}.about-contact a{font-weight:700}.site-footer p{max-width:760px}
-@media(max-width:640px){.bingtang-comment{position:relative;display:block;padding:12px}.bingtang-comment>.avatar-comment{position:absolute;top:12px;right:12px}.bingtang-comment>div{display:block}.bingtang-comment h3{min-height:76px;padding-right:86px;align-items:flex-start}.avatar-comment{width:76px;height:76px}.about-hero{grid-template-columns:1fr;gap:18px}.about-character img{width:240px;height:350px}.about-intro h2{font-size:1.18rem}.about-section,.about-contact{padding-top:24px}}
+@media(max-width:640px){.article-card{padding:21px 14px 17px}.bingtang-comment{position:relative;display:block;padding:12px}.bingtang-comment>.avatar-comment{position:absolute;top:12px;right:12px}.bingtang-comment>div{display:block}.bingtang-comment h3{min-height:76px;padding-right:86px;align-items:flex-start}.avatar-comment{width:76px;height:76px}.about-hero{grid-template-columns:1fr;gap:18px}.about-character img{width:240px;height:350px}.about-intro h2{font-size:1.18rem}.about-section,.about-contact{padding-top:24px}}
 `;
 
 main().catch((error) => {

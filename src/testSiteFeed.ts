@@ -132,6 +132,8 @@ try {
   assertNotIncludes(detail, "前の記事", "個別ページの前記事導線");
   assertNotIncludes(detail, "次の記事", "個別ページの次記事導線");
   assertIncludes(detail, "ビンタンからの補足", "個別ページの補足ラベル");
+  assertIncludes(detail, '<article class="article-card card-news">', "個別ページもトップと同じ白いカードで表示する");
+  if (detail.indexOf("何が起きた？") >= detail.indexOf("反応・見られ方")) throw new Error("個別ページでは反応・見られ方を何が起きた？の直後に置く");
   assertIncludes(detail, "関連角度のソース", "個別ページでも関連角度を別表示する");
   assertNotIncludes(detail, "/assets/bingtang-avatar-serious-", "通常記事に真剣な表情を固定しない");
   assertIncludes(detailSecond, "/assets/bingtang-avatar-serious-", "訃報記事は真剣な表情に固定");
