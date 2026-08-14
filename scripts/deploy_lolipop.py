@@ -13,6 +13,15 @@ from typing import BinaryIO, Protocol
 
 
 RETRYABLE_ERRORS = (*all_errors, ssl.SSLError, TimeoutError)
+DIAGNOSTIC_TARGETS = (
+    "index.html",
+    "archive/2026-08-14/index.html",
+    "archive/2026-08-13/index.html",
+    "t/2026-08-14/1/index.html",
+    "og/home.png",
+    "og/2026-08-14/1.png",
+    "x-card-test/a/index.html",
+)
 
 
 class FtpsClient(Protocol):
@@ -23,6 +32,8 @@ class FtpsClient(Protocol):
     def storbinary(self, command: str, fp: BinaryIO) -> str: ...
 
     def sendcmd(self, command: str) -> str: ...
+
+    def retrlines(self, command: str, callback) -> str: ...
 
 
 @dataclass(frozen=True)
@@ -103,6 +114,19 @@ def deploy_files(client: FtpsClient, source: Path, remote_dir: str) -> int:
     return len(files)
 
 
+def log_remote_modes(client: FtpsClient) -> None:
+    for remote_path in DIAGNOSTIC_TARGETS:
+        lines: list[str] = []
+        try:
+            client.retrlines(f"LIST {remote_path}", lines.append)
+            fields = lines[0].split() if lines else []
+            mode = fields[0] if fields else "missing"
+            size = fields[4] if len(fields) > 4 else "unknown"
+            print(f"Lolipop mode {remote_path}: {mode}, size={size}")
+        except all_errors as error:
+            print(f"Lolipop mode {remote_path}: {type(error).__name__}")
+
+
 def connect_and_deploy(config: DeployConfig) -> int:
     context = ssl.create_default_context()
     client = FTP_TLS(context=context, timeout=config.timeout_seconds)
@@ -112,7 +136,9 @@ def connect_and_deploy(config: DeployConfig) -> int:
         client.prot_p()
         client.set_pasv(True)
         client.cwd("/")
-        return deploy_files(client, config.source, config.remote_dir)
+        uploaded = deploy_files(client, config.source, config.remote_dir)
+        log_remote_modes(client)
+        return uploaded
     finally:
         try:
             client.quit()
