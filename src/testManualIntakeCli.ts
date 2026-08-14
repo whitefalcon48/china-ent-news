@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { isRetryableFactLedgerExtractionError } from "./factLedger.js";
 import { linkManualReviewIssue } from "./intake/linkManualReviewIssue.js";
 import { buildManualResearchTopic, classifyManualIntakeError, preserveManualIntakeRootEvidence, requireManualGenerationLedger, runManualIntakeCli } from "./intake/processManualIntake.js";
 import { writeManualIntakeState } from "./intake/intakeState.js";
@@ -39,6 +40,16 @@ async function main() {
     classifyManualIntakeError(new Error("generation:ledger_not_used:ledger_extraction_failed: DeepSeek fact ledger request timeout"), "generating"),
     "fact_ledger_timeout"
   );
+  assert.equal(
+    classifyManualIntakeError(new Error("generation:ledger_not_used:ledger_extraction_failed: fact ledger JSON parse error"), "generating"),
+    "fact_ledger_json_invalid"
+  );
+  assert.equal(classifyManualIntakeError(new Error("fact_ledger_extraction:invalid_json"), "generating"), "fact_ledger_invalid_json");
+  assert.equal(isRetryableFactLedgerExtractionError(new SyntaxError("truncated JSON")), true);
+  assert.equal(isRetryableFactLedgerExtractionError(new Error("DeepSeek fact ledger finish_reason length")), true);
+  assert.equal(isRetryableFactLedgerExtractionError(new Error("DeepSeek fact ledger API error: HTTP 408 timeout")), true);
+  assert.equal(isRetryableFactLedgerExtractionError(new Error("DeepSeek fact ledger API error: HTTP 503 unavailable")), true);
+  assert.equal(isRetryableFactLedgerExtractionError(new Error("DeepSeek fact ledger API error: HTTP 401 unauthorized")), false);
   assert.equal(classifyManualIntakeError(new Error("claim_check_gate: number_not_in_ledger: secret text"), "generating"), "claim_check_failed");
   assert.equal(classifyManualIntakeError(new Error("evidence_adequacy_gate:limited_root_without_verified_expansion"), "researching"), "evidence_too_sparse");
   assert.equal(classifyManualIntakeError(new Error("ledger_adequacy_gate:root_claims:1<6"), "generating"), "ledger_too_thin");

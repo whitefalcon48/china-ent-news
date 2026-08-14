@@ -4,7 +4,7 @@ import { ClaimCheckDiscardError, extractNumberTokens, getCommentOpening, removeG
 import { inspectDisplayKanjiResidues } from "./displayKanji.js";
 import { buildDeepSeekJsonRequest } from "./deepSeekRequest.js";
 import { resolveAiModels, resolveStageAi } from "./aiRouting.js";
-import { extractFactLedger } from "./factLedger.js";
+import { extractFactLedger, FactLedgerExtractionError } from "./factLedger.js";
 import { assessLedgerAdequacy, LedgerAdequacyGateError } from "./ledgerAdequacy.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { resolveSummaryTitle } from "./summaryTitle.js";
@@ -108,6 +108,9 @@ export async function summarizeTopic(
   if (!extraction.succeeded || !extraction.ledger) {
     if (extraction.error.includes("llm_call_budget_exceeded")) {
       throw new LlmCallBudgetExceededError();
+    }
+    if (articleDepthProfile === "manual_evidence_rich") {
+      throw new FactLedgerExtractionError(extraction);
     }
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
     const summary = await finalizeFallbackSummary(topic, evidence, parseJsonFromModelText(text));

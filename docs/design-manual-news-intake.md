@@ -113,6 +113,8 @@ data/manual-intake/<comment-id>/
 - HTML本文は先頭selectorの長さだけで決めず、article/main、JSON-LD、埋め込みJS、meta description、bodyを採点する。本文文字数、文数、既知UI文言の比率、数値・時点アンカーを `document.json` に保存し、古いUI殻キャッシュも再利用しない。
 - `related_angle` は全文検証済みの資料だけを事実台帳へ渡す。root eventの複数ソース数や裏付けには加えず、`scope=related_angle` のclaimとして分離する。確認できないSNS反応は書かない。
 - 根拠密度の再生成では前回下書きを入力に残し、独立claimと重要数字を `what_happened` に整理するよう指示する。品質ゲートそのものは変更しない。
+- 事実台帳のAPI通信失敗、timeout、408/429/5xx、空応答、出力打ち切り、JSON構文不良は同じ根拠とschemaで1回だけ再試行する。台帳の件数不足や根拠不足はこの再試行対象にせず、既存のadequacy gateで判定する。持ち込みでは台帳失敗後に根拠参照のない汎用summaryへ進まず停止する。
+- 台帳再試行が尽きた場合は、本文・prompt・provider応答を保存せず、provider、model、試行数、失敗段階、原因コード、HTTP status、finish reason、応答文字数、所要時間だけを `ledger-extraction.json` に残す。
 - 公開ページ、レビューIssue、レビューUIのすべてで通常記事と同じ段落構成を使う。持ち込みも `detail_sections: []` とする。
 
 基準ケース:

@@ -13,6 +13,7 @@ export type FactLedgerExtractionResult = {
   succeeded: boolean;
   ledger?: FactLedger;
   error: string;
+  diagnostic: FactLedgerExtractionDiagnostic;
   anchor?: {
     topic_key: string;
     claims_total: number;
@@ -20,6 +21,28 @@ export type FactLedgerExtractionResult = {
     dropped_explanations: Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>;
   };
 };
+
+export type FactLedgerExtractionDiagnostic = {
+  provider: AiProvider;
+  model: string;
+  attempts: number;
+  stage: "generation" | "parse" | "complete";
+  code: string;
+  http_status?: number;
+  finish_reason?: string;
+  response_chars?: number;
+  elapsed_ms: number;
+};
+
+export class FactLedgerExtractionError extends Error {
+  readonly diagnostic: FactLedgerExtractionDiagnostic;
+
+  constructor(result: FactLedgerExtractionResult) {
+    super(`fact_ledger_extraction:${result.diagnostic.code}`);
+    this.name = "FactLedgerExtractionError";
+    this.diagnostic = result.diagnostic;
+  }
+}
 
 export async function extractFactLedger(
   topic: TopicCandidate,
@@ -29,56 +52,117 @@ export async function extractFactLedger(
   model?: string,
   retryInstruction = ""
 ): Promise<FactLedgerExtractionResult> {
-  try {
-    const prompt = buildFactLedgerPrompt(topic, evidence, retryInstruction);
-    const generate = async (request: string) => {
-      try {
-        return provider === "deepseek"
-          ? await generateDeepSeekJson(request, budget, model)
-          : await generateGeminiJson(request, budget, model);
-      } catch (error) {
-        // The manually supplied route can receive an empty response from Flash
-        // even though the same facts are valid. Retry its fact-only request once
-        // with the Pro model already proven by the daily generator. This retains
-        // the exact ledger, claim-reference, and gate contract.
-        if (provider === "deepseek" && model === "deepseek-v4-flash" && isEmptyDeepSeekResponse(error)) {
-          return generateDeepSeekJson(request, budget, "deepseek-v4-pro");
+  const startedAt = Date.now();
+  const resolvedModel = model || (provider === "deepseek" ? process.env.DEEPSEEK_MODEL || "deepseek-v4-flash" : process.env.GEMINI_MODEL || "gemini-2.5-flash-lite");
+  let lastError: unknown;
+  let lastResponse: LedgerModelResponse | undefined;
+  let attempts = 0;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    attempts = attempt + 1;
+    lastResponse = undefined;
+    try {
+      const prompt = `${buildFactLedgerPrompt(topic, evidence, retryInstruction)}${attempt > 0 ? `
+
+再応答指示:
+前回の応答は通信またはJSON構文の問題で利用できませんでした。事実の追加・削除はせず、指定schemaに従う完全なJSON objectだけを返してください。` : ""}`;
+      const generate = async (request: string): Promise<LedgerModelResponse> => {
+        try {
+          return provider === "deepseek"
+            ? await generateDeepSeekJson(request, budget, model)
+            : await generateGeminiJson(request, budget, model);
+        } catch (error) {
+          // The manually supplied route can receive an empty response from Flash
+          // even though the same facts are valid. Retry its fact-only request once
+          // with the Pro model already proven by the daily generator. This retains
+          // the exact ledger, claim-reference, and gate contract.
+          if (provider === "deepseek" && model === "deepseek-v4-flash" && isEmptyDeepSeekResponse(error)) {
+            return generateDeepSeekJson(request, budget, "deepseek-v4-pro");
+          }
+          throw error;
         }
-        throw error;
-      }
-    };
-    const normalize = (text: string) => {
-      const anchor = {
-        topic_key: topic.topic_key,
-        claims_total: 0,
-        anchor_unverified: 0,
-        dropped_explanations: [] as Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>
       };
-      const ledger = normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence), anchor, getEvidenceRoles(evidence));
-      return { ledger, anchor };
-    };
-    const text = await generate(prompt);
-    const { ledger: extractedLedger, anchor } = normalize(text);
-    const ledger = ensureObservableRelatedClaims(extractedLedger, evidence);
-    anchor.claims_total = ledger.claims.length;
-    anchor.anchor_unverified = ledger.claims.filter((claim) => claim.anchor === false).length;
-    return {
-      succeeded: true,
-      ledger,
-      error: "",
-      anchor
-    };
-  } catch (error) {
-    const detail = describeError(error);
-    return {
-      succeeded: false,
-      error: error instanceof LlmCallBudgetExceededError ? `llm_call_budget_exceeded: ${detail}` : detail
-    };
+      const normalize = (text: string) => {
+        const anchor = {
+          topic_key: topic.topic_key,
+          claims_total: 0,
+          anchor_unverified: 0,
+          dropped_explanations: [] as Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>
+        };
+        const ledger = normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence), anchor, getEvidenceRoles(evidence));
+        return { ledger, anchor };
+      };
+      lastResponse = await generate(prompt);
+      if (lastResponse.finishReason?.toLowerCase() === "length") {
+        throw new Error("fact ledger finish_reason length");
+      }
+      const { ledger: extractedLedger, anchor } = normalize(lastResponse.text);
+      const ledger = ensureObservableRelatedClaims(extractedLedger, evidence);
+      anchor.claims_total = ledger.claims.length;
+      anchor.anchor_unverified = ledger.claims.filter((claim) => claim.anchor === false).length;
+      return {
+        succeeded: true,
+        ledger,
+        error: "",
+        anchor,
+        diagnostic: {
+          provider,
+          model: lastResponse.model,
+          attempts,
+          stage: "complete",
+          code: "ok",
+          finish_reason: lastResponse.finishReason,
+          response_chars: lastResponse.text.length,
+          elapsed_ms: Date.now() - startedAt
+        }
+      };
+    } catch (error) {
+      lastError = error;
+      if (attempt === 0 && isRetryableFactLedgerExtractionError(error)) continue;
+      break;
+    }
   }
+  const detail = lastError instanceof SyntaxError ? "fact ledger JSON parse error" : describeError(lastError);
+  const classified = classifyFactLedgerExtractionFailure(lastError);
+  return {
+    succeeded: false,
+    error: lastError instanceof LlmCallBudgetExceededError ? `llm_call_budget_exceeded: ${detail}` : detail,
+    diagnostic: {
+      provider,
+      model: lastResponse?.model ?? resolvedModel,
+      attempts,
+      stage: lastError instanceof SyntaxError ? "parse" : "generation",
+      code: classified.code,
+      http_status: classified.httpStatus,
+      finish_reason: lastResponse?.finishReason,
+      response_chars: lastResponse?.text.length,
+      elapsed_ms: Date.now() - startedAt
+    }
+  };
 }
 
+export function isRetryableFactLedgerExtractionError(error: unknown) {
+  if (error instanceof LlmCallBudgetExceededError) return false;
+  if (error instanceof SyntaxError) return true;
+  return error instanceof Error && /fact ledger (?:network error|request timeout|finish_reason length|API error: (?:empty response text|HTTP (?:408|429|5\d\d)))/u.test(error.message);
+}
+
+function classifyFactLedgerExtractionFailure(error: unknown) {
+  if (error instanceof LlmCallBudgetExceededError) return { code: "budget_exceeded" };
+  if (error instanceof SyntaxError) return { code: "invalid_json" };
+  const message = error instanceof Error ? error.message : String(error);
+  if (/finish_reason length/u.test(message)) return { code: "output_truncated" };
+  if (/request timeout/u.test(message)) return { code: "timeout" };
+  if (/network error/u.test(message)) return { code: "network_error" };
+  if (/empty response/u.test(message)) return { code: "empty_response" };
+  const status = Number(message.match(/API error: HTTP (\d{3})\b/u)?.[1] ?? 0);
+  if (status) return { code: `http_${status}`, httpStatus: status };
+  return { code: "generation_failed" };
+}
+
+type LedgerModelResponse = { text: string; finishReason?: string; model: string };
+
 function isEmptyDeepSeekResponse(error: unknown) {
-  return error instanceof Error && /DeepSeek fact ledger API error: empty response text after 2 attempts/u.test(error.message);
+  return error instanceof Error && /DeepSeek fact ledger API error: empty response text/u.test(error.message);
 }
 
 export async function writeFactLedgerFile(
@@ -337,42 +421,40 @@ async function generateGeminiJson(prompt: string, budget?: LlmCallBudget, modelO
     throw new Error(`Gemini fact ledger network error: ${describeError(error)}`);
   }
   if (!response.ok) throw new Error(`Gemini fact ledger API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
-  const payload = await response.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> };
+  const payload = await response.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> }; finishReason?: string }> };
   const text = payload.candidates?.[0]?.content?.parts?.map((part) => part.text).join("") ?? "";
   if (!text.trim()) throw new Error("Gemini fact ledger API error: empty response text");
-  return text;
+  return { text, finishReason: payload.candidates?.[0]?.finishReason, model };
 }
 
 async function generateDeepSeekJson(prompt: string, budget?: LlmCallBudget, modelOverride?: string) {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   const model = modelOverride || process.env.DEEPSEEK_MODEL || "deepseek-v4-flash";
   if (!apiKey?.trim()) throw new Error("DEEPSEEK_API_KEY is not set");
-  for (let attempt = 0; attempt < 2; attempt++) {
-    if (budget) consumeLlmCall(budget);
-    let response: Response;
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), FACT_LEDGER_REQUEST_TIMEOUT_MS);
-    try {
-      response = await fetch(DEEPSEEK_ENDPOINT, {
-        method: "POST",
-        headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify(buildDeepSeekJsonRequest(model, prompt, 8000, 0))
-      });
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
-        throw new Error("DeepSeek fact ledger request timeout");
-      }
-      throw new Error(`DeepSeek fact ledger network error: ${describeError(error)}`);
-    } finally {
-      clearTimeout(timeout);
+  if (budget) consumeLlmCall(budget);
+  let response: Response;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FACT_LEDGER_REQUEST_TIMEOUT_MS);
+  try {
+    response = await fetch(DEEPSEEK_ENDPOINT, {
+      method: "POST",
+      headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify(buildDeepSeekJsonRequest(model, prompt, 8000, 0))
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error("DeepSeek fact ledger request timeout");
     }
-    if (!response.ok) throw new Error(`DeepSeek fact ledger API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
-    const payload = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
-    const text = payload.choices?.[0]?.message?.content ?? "";
-    if (text.trim()) return text;
+    throw new Error(`DeepSeek fact ledger network error: ${describeError(error)}`);
+  } finally {
+    clearTimeout(timeout);
   }
-  throw new Error("DeepSeek fact ledger API error: empty response text after 2 attempts");
+  if (!response.ok) throw new Error(`DeepSeek fact ledger API error: HTTP ${response.status} ${response.statusText} ${safePreview(await response.text())}`);
+  const payload = await response.json() as { choices?: Array<{ message?: { content?: string }; finish_reason?: string }> };
+  const text = payload.choices?.[0]?.message?.content ?? "";
+  if (!text.trim()) throw new Error("DeepSeek fact ledger API error: empty response text");
+  return { text, finishReason: payload.choices?.[0]?.finish_reason, model };
 }
 
 function parseJsonFromModelText(text: string) {

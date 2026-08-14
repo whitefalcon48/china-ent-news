@@ -45,6 +45,7 @@
 - ✅ 持ち込みも通常記事と同じ `detail_sections: []` を維持。`npm run check`、`test:sources`、`test:evidence-expansion`、`test:manual-intake`、`test:related-evidence`、`test:review-presentation`、`test:site-feed`、`build:site` で回帰確認する。Actions再生成の実測値はpush後に追記する。
 - ✅ run `31771372302` では全文検証済みroot資料2件・root claim 20件まで回復した一方、旧プロンプトの150〜250字指定とdepth gateが矛盾し、本文利用8/20・重要数字7/19で不合格になった。プロンプトとgateの必要件数・本文長を共通化した。
 - ✅ run `31772090574` ではLLMが中心値92億元を検索語から落とし、全文検証済みroot資料が0件となった。数値集計記事は中心数値＋イベント＋指標の決定的検索語を必ず先頭へ加え、新規検索が空振りした場合だけ同一URL・7日以内・全文検証済みroot資料を再利用する。別URL、未検証snippet、related angleは再利用しない。
+- ✅ run `31772579536` で決定的検索語が働き、全文検証済みroot資料4件・evidence adequacy合格まで安定した一方、DeepSeek Proの事実台帳応答が一時的に利用不能となり `fact_ledger_generation_failed` で停止した。通信・timeout・429/5xx・空応答・JSON構文不良だけを同じ根拠とschemaで1回再試行し、件数不足などの品質不合格は再試行で隠さない。
 
 ????: 2026-08-11???UI??????????????
 

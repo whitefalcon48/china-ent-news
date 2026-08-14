@@ -6,6 +6,7 @@ import { ArticleDepthGateError } from "../articleDepth.js";
 import { classifyArticle, loadFilterConfig } from "../classifyArticle.js";
 import { assessExtractionQuality } from "../evidence/documentSnapshot.js";
 import { attachExpansionEvidence, expandTopicSources } from "../expandSources.js";
+import { FactLedgerExtractionError } from "../factLedger.js";
 import { LedgerAdequacyGateError } from "../ledgerAdequacy.js";
 import { createReviewStateFromStoredArticles, writeReviewState } from "../review/reviewState.js";
 import { getAiProvider, summarizeTopic } from "../summarizeWithGemini.js";
@@ -150,6 +151,12 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     await updateManualIntakeState(state, { status: "review_ready", error: "" }, dataRoot);
     return { ok: true, idempotent: false, commentId: parsed.commentId, directory, reviewBodyPath, reviewIssueNumber: 0 };
   } catch (error) {
+    if (error instanceof FactLedgerExtractionError) {
+      await writeManualIntakeArtifact(parsed.commentId, "ledger-extraction.json", {
+        status: "discarded",
+        ...error.diagnostic
+      }, dataRoot);
+    }
     if (error instanceof ClaimCheckDiscardError) {
       // Keep a small, non-sensitive diagnostic. Model responses and the
       // rejected sentences must not be persisted in manual intake data.
@@ -184,12 +191,15 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
  */
 export function classifyManualIntakeError(error: unknown, stage?: ManualIntakeProcessingStage) {
   const detail = error instanceof Error ? error.message : String(error);
+  const ledgerExtractionCode = detail.match(/^fact_ledger_extraction:([a-z0-9_]+)$/u)?.[1];
+  if (ledgerExtractionCode) return `fact_ledger_${ledgerExtractionCode}`;
   if (/^fetch:[a-z0-9_]+$/u.test(detail)) return detail;
   if (/^topic:/u.test(detail)) return "topic_generation_failed";
   if (/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger request timeout/u.test(detail)) return "fact_ledger_timeout";
   const ledgerApiStatus = detail.match(/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger API error: HTTP (\d{3})\b/u)?.[1];
   if (ledgerApiStatus) return `fact_ledger_api_http_${ledgerApiStatus}`;
   if (/^generation:ledger_not_used:ledger_extraction_failed:.*empty response/u.test(detail)) return "fact_ledger_empty_response";
+  if (/^generation:ledger_not_used:ledger_extraction_failed:.*fact ledger JSON parse error/u.test(detail)) return "fact_ledger_json_invalid";
   if (/^generation:ledger_not_used:ledger_extraction_failed:/u.test(detail)) return "fact_ledger_generation_failed";
   if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";
   if (/^claim_check_gate:/u.test(detail)) return "claim_check_failed";
