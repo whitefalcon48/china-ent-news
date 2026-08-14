@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "comment_id": "5289890446",
+  "source_url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+  "note": "再生成依頼（Issue #48・台帳再試行修正後）\n\n92億元を中心事実として、全文確認済みの周辺報道を使い、通常記事と同じ段落構成で再生成してください。",
+  "status": "failed",
+  "created_at": "2026-08-14T05:36:43.710Z",
+  "updated_at": "2026-08-14T05:38:03.910Z",
+  "error": "article_too_thin"
+}

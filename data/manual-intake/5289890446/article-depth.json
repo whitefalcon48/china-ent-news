@@ -1,0 +1,32 @@
+{
+  "status": "discarded",
+  "profile": "manual_evidence_rich",
+  "eligible_claims": 20,
+  "used_claims": 5,
+  "coverage_ratio": 0.25,
+  "detail_sections": 0,
+  "important_number_claims": 20,
+  "used_number_claims": 5,
+  "regenerated": true,
+  "passed": false,
+  "reasons": [
+    "claim_ref_not_realized:C1",
+    "claim_ref_not_realized:C3",
+    "claim_ref_not_realized:C4",
+    "claim_ref_not_realized:C5",
+    "claim_ref_not_realized:C7",
+    "claim_ref_not_realized:C9",
+    "claim_ref_not_realized:C10",
+    "claim_ref_not_realized:C11",
+    "claim_ref_not_realized:C12",
+    "claim_ref_not_realized:C13",
+    "claim_ref_not_realized:C14",
+    "claim_ref_not_realized:C15",
+    "claim_ref_not_realized:C16",
+    "claim_ref_not_realized:C19",
+    "claim_ref_not_realized:C20",
+    "used_claims:5<12",
+    "used_number_claims:5<12",
+    "missing_editorial_role:policy_support"
+  ]
+}
