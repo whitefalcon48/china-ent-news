@@ -120,6 +120,17 @@ jobs:
           SITE_BASE_PATH: ""
           POST_DATE: ${{ steps.review.outputs.date }}
 
+      - name: Verify published daily page
+        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 3 "https://bingtangnews.0-w-0.net/archive/${{ steps.review.outputs.date }}/" > /dev/null
+
+      - name: Reply with daily publication and X texts
+        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        continue-on-error: true
+        run: gh issue comment "${{ github.event.issue.number }}" --body-file "output/x_posts_${{ steps.review.outputs.date }}.md"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Upload X post texts
         if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
         uses: actions/upload-artifact@v4
@@ -135,6 +146,10 @@ jobs:
           SITE_URL: https://bingtangnews.0-w-0.net
           MANUAL_COMMENT_ID: ${{ steps.review.outputs.manual_id }}
           MANUAL_PUBLISHED_DATE: ${{ steps.review.outputs.published_date }}
+
+      - name: Verify published manual page
+        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 3 "https://bingtangnews.0-w-0.net/t/${{ steps.review.outputs.published_date }}/m-${{ steps.review.outputs.manual_id }}/" > /dev/null
 
       - name: Reply with manual publication and X text
         if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'

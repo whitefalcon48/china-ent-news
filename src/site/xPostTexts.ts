@@ -42,6 +42,54 @@ export function truncateToWeight(value: string, maxWeight: number) {
   return `${characters.join("")}…`;
 }
 
+export function buildBingtangHook(value: string | undefined, maxWeight: number) {
+  const normalized = value?.replace(/\s+/gu, " ").trim() ?? "";
+  if (!normalized) return "";
+  const sentence = normalized.match(/^[\s\S]*?[。！？!?](?:[」』”"])?/u)?.[0] ?? normalized;
+  const prefix = "ビンタン「";
+  const suffix = "」";
+  const contentWeight = maxWeight - xWeightedLength(prefix) - xWeightedLength(suffix);
+  if (contentWeight < 8) return "";
+  return `${prefix}${truncateToWeight(sentence, contentWeight)}${suffix}`;
+}
+
+export function buildDailyDigest(dateValue: string, articles: ProcessedArticle[], siteUrl: string, basePath = "") {
+  const [, month, day] = dateValue.match(/^\d{4}-(\d{2})-(\d{2})$/) || [];
+  if (!month || !day) throw new Error(`X投稿日が不正です: ${dateValue}`);
+  const normalizedSiteUrl = siteUrl.replace(/\/$/u, "");
+  const normalizedBasePath = basePath && basePath !== "/" ? `/${basePath.replace(/^\/+|\/+$/gu, "")}` : "";
+  const header = `🧊 今日の中国エンタメ｜${Number(month)}/${Number(day)}`;
+  const url = `${normalizedSiteUrl}${normalizedBasePath}/archive/${dateValue}/`;
+  const footer = `ほか全${articles.length}本👇\n${url}`;
+  const hook = buildBingtangHook(articles[0]?.summary?.why_it_matters, 76);
+  const fixedLength = xWeightedLength(`${header}\n${hook ? `${hook}\n` : ""}\n${footer}`);
+  if (fixedLength >= MAX_WEIGHTED_LENGTH) throw new Error("SITE_URLが長すぎてXダイジェストを組み立てられません");
+  const candidates = articles.slice(0, 3).map((article) => {
+    if (!article.summary) return "";
+    return resolveSummaryTitle(article.summary.title_ja, article.raw.title);
+  }).filter(Boolean);
+  const lines: string[] = [];
+  let remaining = MAX_WEIGHTED_LENGTH - fixedLength;
+  for (let index = 0; index < candidates.length; index++) {
+    const remainingItems = candidates.length - index;
+    const allowance = Math.max(20, Math.floor((remaining - remainingItems * 3) / remainingItems));
+    const line = `・${truncateToWeight(candidates[index], allowance - 2)}`;
+    const cost = xWeightedLength(line) + 1;
+    if (cost > remaining) break;
+    lines.push(line);
+    remaining -= cost;
+  }
+  for (let index = 0; index < lines.length && remaining > 0; index++) {
+    const full = `・${candidates[index]}`;
+    if (lines[index] === full) continue;
+    const currentCost = xWeightedLength(lines[index]);
+    const expanded = xWeightedLength(full) - currentCost <= remaining ? full : `・${truncateToWeight(candidates[index], currentCost - 2 + remaining)}`;
+    remaining -= xWeightedLength(expanded) - currentCost;
+    lines[index] = expanded;
+  }
+  return `${header}\n${hook ? `${hook}\n` : ""}${lines.join("\n")}\n${footer}`;
+}
+
 export interface IndividualPost {
   priority: string;
   category: string;
@@ -50,8 +98,8 @@ export interface IndividualPost {
   weightedLength: number;
 }
 
-// 設計正本（design-phase4-site.html §3）: 個別投稿はテキストのみ・URLなし・ハッシュタグなし・
-// 見出しとリードの機械組み立てのみ（新規生成しない）
+// 個別投稿はテキストのみ・URLなし・ハッシュタグなし。
+// 根拠確認済みの why_it_matters から先頭の一文を再利用し、新しい事実や感想は生成しない。
 export function buildIndividualPosts(articles: ProcessedArticle[]): IndividualPost[] {
   const posts: IndividualPost[] = [];
   for (const article of articles) {
@@ -60,8 +108,10 @@ export function buildIndividualPosts(articles: ProcessedArticle[]): IndividualPo
     const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
     if (!title) continue;
     const category = summary.category?.trim() || article.raw.category?.trim() || "その他";
-    const joiner = /[。！？!?]$/.test(title) ? "" : "。";
-    const text = truncateToWeight(`【${category}】${title}${joiner}${summary.lead?.trim() ?? ""}`, MAX_WEIGHTED_LENGTH);
+    const titleLine = truncateToWeight(`【${category}】${title}`, 156);
+    const hook = buildBingtangHook(summary.why_it_matters, MAX_WEIGHTED_LENGTH - xWeightedLength(titleLine) - 1);
+    const fallback = truncateToWeight(summary.lead?.trim() ?? "", MAX_WEIGHTED_LENGTH - xWeightedLength(titleLine) - 1);
+    const text = hook || fallback ? `${titleLine}\n${hook || fallback}` : titleLine;
     posts.push({
       priority: summary.publish_priority ?? "medium",
       category,
@@ -85,7 +135,7 @@ export function buildPostsMarkdown(dateValue: string, digest: string, posts: Ind
   lines.push(digest);
   lines.push("```");
   lines.push("");
-  lines.push("## 個別投稿候補（テキストのみ・URLなし）");
+  lines.push("## 個別投稿候補（ビンタンのひとこと入り・URLなし）");
   lines.push("");
   lines.push("予約するものを選んでコピーしてください。誘導はプロフィール固定リンクで行います。");
   posts.forEach((post, index) => {

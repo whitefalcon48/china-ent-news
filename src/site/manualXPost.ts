@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { truncateToWeight, xWeightedLength, MAX_WEIGHTED_LENGTH } from "./xPostTexts.js";
+import { buildBingtangHook, truncateToWeight, xWeightedLength, MAX_WEIGHTED_LENGTH } from "./xPostTexts.js";
 import { resolveSummaryTitle } from "../summaryTitle.js";
 import type { ProcessedArticle } from "../types.js";
 
@@ -26,9 +26,11 @@ if (!article?.summary) throw new Error("manual approved article not found");
 
 const title = resolveSummaryTitle(article.summary.title_ja, article.raw.title);
 const url = `${siteUrl}/t/${publishedDate}/m-${commentId}/`;
-const prefix = `🧊 ${title}${/[。！？!?]$/.test(title) ? "" : "。"}`;
 const suffix = `\n${url}`;
-const text = `${truncateToWeight(`${prefix}${article.summary.lead ? ` ${article.summary.lead}` : ""}`, MAX_WEIGHTED_LENGTH - xWeightedLength(suffix))}${suffix}`;
+const titleLine = truncateToWeight(`🧊 ${title}`, 150);
+const hook = buildBingtangHook(article.summary.why_it_matters, MAX_WEIGHTED_LENGTH - xWeightedLength(titleLine) - xWeightedLength(suffix) - 1);
+const fallback = truncateToWeight(article.summary.lead?.trim() ?? "", MAX_WEIGHTED_LENGTH - xWeightedLength(titleLine) - xWeightedLength(suffix) - 1);
+const text = `${titleLine}${hook || fallback ? `\n${hook || fallback}` : ""}${suffix}`;
 if (xWeightedLength(text) > MAX_WEIGHTED_LENGTH) throw new Error("manual X post exceeds 280 characters");
 const body = `✅ 公開しました\n\n${url}\n\nX投稿文面（${xWeightedLength(text)}/${MAX_WEIGHTED_LENGTH}）\n\n\`\`\`\n${text}\n\`\`\`\n`;
 await fs.mkdir(outputDir, { recursive: true });

@@ -28,6 +28,7 @@
     "test:manual-intake": "tsx src/testManualIntake.ts && tsx src/testManualIntakeCli.ts && tsx src/testManualIntakeWorkflow.ts && tsx src/testManualPublication.ts",
     "test:candidate-preference": "tsx src/testCandidatePreference.ts",
     "test:site-feed": "tsx src/testSiteFeed.ts",
+    "test:x-posts": "tsx src/testXPostTexts.ts",
     "test:kanji": "tsx src/testDisplayKanji.ts",
     "check": "tsc --noEmit",
     "audit:sources": "tsx src/auditSources.ts",

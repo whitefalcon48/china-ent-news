@@ -2,9 +2,8 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { getPublishableArticles } from "../renderMarkdown.js";
-import { resolveSummaryTitle } from "../summaryTitle.js";
 import type { ProcessedArticle, ReviewState, SummarizedArticle } from "../types.js";
-import { MAX_WEIGHTED_LENGTH, buildIndividualPosts, buildPostsMarkdown, truncateToWeight, xWeightedLength } from "./xPostTexts.js";
+import { MAX_WEIGHTED_LENGTH, buildDailyDigest, buildIndividualPosts, buildPostsMarkdown, xWeightedLength } from "./xPostTexts.js";
 
 const dataDir = path.resolve(process.env.SITE_DATA_DIR || "data");
 const requestedDate = process.env.POST_DATE;
@@ -14,7 +13,7 @@ const live = process.env.X_POST_LIVE === "true";
 
 const date = requestedDate || await findLatestDate();
 const articles = await loadArticles(date);
-const text = buildDigest(date, articles);
+const text = buildDailyDigest(date, articles, siteUrl, basePath);
 if (xWeightedLength(text) > MAX_WEIGHTED_LENGTH) throw new Error(`X文面が上限280（X換算）を超えています: ${xWeightedLength(text)}`);
 
 console.log(`X digest (${xWeightedLength(text)}/${MAX_WEIGHTED_LENGTH} X換算):\n${text}`);
@@ -67,40 +66,6 @@ function normalizeArticle(value: unknown): ProcessedArticle {
     },
     summary
   };
-}
-
-export function buildDigest(dateValue: string, articles: ProcessedArticle[]) {
-  const [, month, day] = dateValue.match(/^\d{4}-(\d{2})-(\d{2})$/) || [];
-  if (!month || !day) throw new Error(`X投稿日が不正です: ${dateValue}`);
-  const header = `🧊 今日の中国エンタメ｜${Number(month)}/${Number(day)}`;
-  const url = `${siteUrl}${basePath}/archive/${dateValue}/`;
-  const footer = `ほか全${articles.length}本👇\n${url}`;
-  const fixedLength = xWeightedLength(`${header}\n\n${footer}`);
-  if (fixedLength >= MAX_WEIGHTED_LENGTH) throw new Error("SITE_URLが長すぎてXダイジェストを組み立てられません");
-  const candidates = articles.slice(0, 3).map((article) => {
-    if (!article.summary) return "";
-    return resolveSummaryTitle(article.summary.title_ja, article.raw.title);
-  }).filter(Boolean);
-  const lines: string[] = [];
-  let remaining = MAX_WEIGHTED_LENGTH - fixedLength;
-  for (let index = 0; index < candidates.length; index++) {
-    const remainingItems = candidates.length - index;
-    const allowance = Math.max(20, Math.floor((remaining - remainingItems * 3) / remainingItems));
-    const line = `・${truncateToWeight(candidates[index], allowance - 2)}`;
-    const cost = xWeightedLength(line) + 1;
-    if (cost > remaining) break;
-    lines.push(line);
-    remaining -= cost;
-  }
-  for (let index = 0; index < lines.length && remaining > 0; index++) {
-    const full = `・${candidates[index]}`;
-    if (lines[index] === full) continue;
-    const currentCost = xWeightedLength(lines[index]);
-    const expanded = xWeightedLength(full) - currentCost <= remaining ? full : `・${truncateToWeight(candidates[index], currentCost - 2 + remaining)}`;
-    remaining -= xWeightedLength(expanded) - currentCost;
-    lines[index] = expanded;
-  }
-  return `${header}\n${lines.join("\n")}\n${footer}`;
 }
 
 async function writePostTexts(dateValue: string, digest: string, articles: ProcessedArticle[]) {
