@@ -1,0 +1,18 @@
+{
+  "requested_url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+  "final_url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+  "title": "2026暑期档电影票房超92亿元",
+  "text": "截至8月13日晚，2026 暑期档电影票房已突破92亿元。今年暑期档影片类型丰富，超120部中外影片陆续上映。",
+  "published_date": "2026-08-14",
+  "extraction_method": "meta_description",
+  "extraction_quality": {
+    "status": "limited",
+    "raw_chars": 55,
+    "meaningful_chars": 55,
+    "sentence_count": 2,
+    "boilerplate_ratio": 0,
+    "factual_anchor_count": 6
+  },
+  "fetched_at": "2026-08-14T06:07:24.027Z",
+  "content_type": "text/html"
+}
