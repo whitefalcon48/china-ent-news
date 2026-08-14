@@ -1,0 +1,276 @@
+[
+  {
+    "raw": {
+      "title": "2026暑期档电影票房超92亿元",
+      "url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+      "sourceName": "news.cctv.cn",
+      "sourceUrl": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+      "category": "持ち込みニュース",
+      "reliability": "C",
+      "declaredSourceType": "media_report",
+      "publishedAt": "2026-08-14",
+      "publishedAtSource": "html",
+      "excerpt": "加载更多 正在阅读：2026暑期档电影票房超92亿元 分享 扫一扫 分享到微信 手机看 扫一扫 手机继续看 A- A+",
+      "rawContent": "加载更多 正在阅读：2026暑期档电影票房超92亿元 分享 扫一扫 分享到微信 手机看 扫一扫 手机继续看 A- A+",
+      "rawContentLength": 59,
+      "articleType": "data_report",
+      "skipReason": "",
+      "topicKey": "2026暑期档电影票房超92亿元",
+      "mainEntities": {
+        "people": [],
+        "works": [],
+        "organizations": []
+      },
+      "relatedSources": [
+        {
+          "name": "news.cctv.cn",
+          "url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml"
+        }
+      ],
+      "feedCategory": "映画",
+      "isLowPriority": false,
+      "badge": "DATA",
+      "sourceType": "data",
+      "publishedDate": "2026-08-14",
+      "eventDate": "2026-08-14",
+      "freshnessLabel": "today",
+      "dateSource": "html",
+      "ageDays": 0,
+      "newsworthinessScore": 92,
+      "japanVisibility": "unknown",
+      "japanGap": "unknown",
+      "contextValue": "high",
+      "snsHeat": "none"
+    },
+    "topic": {
+      "topic_key": "2026年暑期档电影票房",
+      "title_hint": "2026暑期档电影票房超92亿元",
+      "event_sentence": "2026年暑期档电影票房が92億元を超えた。",
+      "search_queries": [
+        "2026年暑期档电影票房",
+        "2026暑期档电影票房",
+        "2026年暑期档票房",
+        "暑期档电影票房超92亿"
+      ],
+      "seed_source": "llm",
+      "seed_confidence": 0.9,
+      "topic_type": "box_office",
+      "freshness_label": "today",
+      "published_date_range": {
+        "earliest": "2026-08-14",
+        "latest": "2026-08-14"
+      },
+      "source_count": 1,
+      "source_mix": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "evidence_articles": [
+        {
+          "title": "2026暑期档电影票房超92亿元",
+          "url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+          "source_name": "news.cctv.cn",
+          "source_type": "data",
+          "published_date": "2026-08-14",
+          "freshness_label": "today",
+          "article_type": "data_report",
+          "reliability": "C",
+          "key_points": [
+            "2026暑期档电影票房超92亿元",
+            "加载更多 正在阅读：2026暑期档电影票房超92亿元 分享 扫一扫 分享到微信 手机看 扫一扫 手机继续看 A- A+"
+          ],
+          "media_family": "news.cctv.cn"
+        }
+      ],
+      "main_entities": {
+        "people": [],
+        "works": [],
+        "organizations": [],
+        "events": [
+          "2026年暑期档"
+        ]
+      },
+      "signals": {
+        "has_official_source": false,
+        "has_media_context": true,
+        "has_data_signal": true,
+        "has_hot_search_signal": false,
+        "has_multiple_sources": false
+      },
+      "newsworthiness_score": 98,
+      "japan_gap": "unknown",
+      "context_value": "high",
+      "publish_priority": "high",
+      "selection_reason": "media_context, data_signal, topic_type:box_office, root_evidence:1",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "related_evidence_articles": []
+    },
+    "summary": {
+      "title_ja": "2026年夏休み興行、92億元突破",
+      "badge": "DATA",
+      "lead": "2026年の夏休み興行シーズン（暑期檔）の映画興行収入が92億元を超えた。中国映画市場の夏の勢いを示す数字として注目される。",
+      "what_happened": "2026年の暑期檔（夏休み興行シーズン）の映画興行収入が92億元を超えた。これは中国映画市場の夏の主要な興行期間における累計興収で、例年の傾向と比較してどのような位置づけになるかが注目される。",
+      "reaction_view": "",
+      "why_it_matters": "92億元という数字、夏休みシーズンの勢いがそのまま出ていますね。次は前年同期と比べてどうなのか、どの作品が引っ張ったのかが気になります！",
+      "editor_comment": "",
+      "japan_context_note": "",
+      "category": "映画",
+      "confidence": "C",
+      "source_type": "data",
+      "published_date": "2026-08-14",
+      "event_date": "2026-08-14",
+      "freshness_label": "today",
+      "newsworthiness_score": 98,
+      "japan_visibility": "unknown",
+      "japan_gap": "unknown",
+      "context_value": "high",
+      "sns_heat": "none",
+      "source_count": 1,
+      "source_list": [
+        {
+          "name": "news.cctv.cn",
+          "url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml"
+        }
+      ],
+      "has_official_source": false,
+      "has_multiple_sources": false,
+      "has_sns_signal": false,
+      "article_type": "data_report",
+      "skip_reason": "",
+      "verification_status": "verified",
+      "topic_key": "2026年暑期档电影票房",
+      "main_entities": {
+        "people": [],
+        "works": [],
+        "organizations": []
+      },
+      "related_sources": [],
+      "tags": [
+        "興行収入",
+        "夏休み興行",
+        "中国映画"
+      ],
+      "publish_priority": "medium",
+      "publish_reason": "中国映画市場の重要な指標となる数字で、今後の動向を追う価値があるため。",
+      "claim_refs": {
+        "what_happened": [
+          "C1"
+        ],
+        "why_it_matters": [
+          "C1"
+        ],
+        "reaction_view": [],
+        "japan_context_note": []
+      },
+      "detail_sections": []
+    },
+    "generationMeta": {
+      "topic_key": "2026年暑期档电影票房",
+      "ledger_used": true,
+      "ledger_fallback_reason": "",
+      "ledger": {
+        "topic_key": "2026年暑期档电影票房",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年暑期档の映画興行収入が92億元を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "92億元"
+            ],
+            "quote_zh": "2026暑期档电影票房超92亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        }
+      },
+      "ai_models": {
+        "base": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-flash"
+        },
+        "ledger": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "comment": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        }
+      },
+      "ledger_anchor": {
+        "topic_key": "2026年暑期档电影票房",
+        "claims_total": 1,
+        "anchor_unverified": 0,
+        "dropped_explanations": []
+      },
+      "term_expansion": {
+        "enabled": true,
+        "attempted": [],
+        "succeeded": [],
+        "failed": []
+      },
+      "display_normalization": {
+        "residues": []
+      },
+      "comment_grounding": {
+        "topic_key": "2026年暑期档电影票房",
+        "refs": [
+          "C1"
+        ],
+        "gated_sentences_removed": [],
+        "unmatched_numbers": []
+      },
+      "claim_check": {
+        "topic_key": "2026年暑期档电影票房",
+        "violations": [],
+        "gated_violation_count": 0,
+        "action": "none"
+      },
+      "tone_mode": "normal",
+      "comment_stage": {
+        "attempted": true,
+        "used": true,
+        "regenerated": false,
+        "fallback_reason": "",
+        "exclamation_count": 1,
+        "opening": "92億元という数字、",
+        "regenerated_opening": false,
+        "regenerated_paraphrase": false
+      },
+      "article_depth": {
+        "profile": "manual_evidence_rich",
+        "eligible_claims": 1,
+        "used_claims": 1,
+        "coverage_ratio": 1,
+        "detail_sections": 0,
+        "important_number_claims": 1,
+        "used_number_claims": 1,
+        "regenerated": false,
+        "passed": true,
+        "reasons": []
+      }
+    }
+  }
+]

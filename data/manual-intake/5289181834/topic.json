@@ -1,0 +1,68 @@
+{
+  "topic_key": "2026年暑期档电影票房",
+  "title_hint": "2026暑期档电影票房超92亿元",
+  "event_sentence": "2026年暑期档电影票房が92億元を超えた。",
+  "search_queries": [
+    "2026年暑期档电影票房",
+    "2026暑期档电影票房",
+    "2026年暑期档票房",
+    "暑期档电影票房超92亿"
+  ],
+  "seed_source": "llm",
+  "seed_confidence": 0.9,
+  "topic_type": "box_office",
+  "freshness_label": "today",
+  "published_date_range": {
+    "earliest": "2026-08-14",
+    "latest": "2026-08-14"
+  },
+  "source_count": 1,
+  "source_mix": {
+    "official": 0,
+    "media_report": 0,
+    "sns": 0,
+    "data": 1,
+    "pr_like": 0,
+    "rumor": 0,
+    "mixed": 0
+  },
+  "evidence_articles": [
+    {
+      "title": "2026暑期档电影票房超92亿元",
+      "url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+      "source_name": "news.cctv.cn",
+      "source_type": "data",
+      "published_date": "2026-08-14",
+      "freshness_label": "today",
+      "article_type": "data_report",
+      "reliability": "C",
+      "key_points": [
+        "2026暑期档电影票房超92亿元",
+        "加载更多 正在阅读：2026暑期档电影票房超92亿元 分享 扫一扫 分享到微信 手机看 扫一扫 手机继续看 A- A+"
+      ],
+      "media_family": "news.cctv.cn"
+    }
+  ],
+  "main_entities": {
+    "people": [],
+    "works": [],
+    "organizations": [],
+    "events": [
+      "2026年暑期档"
+    ]
+  },
+  "signals": {
+    "has_official_source": false,
+    "has_media_context": true,
+    "has_data_signal": true,
+    "has_hot_search_signal": false,
+    "has_multiple_sources": false
+  },
+  "newsworthiness_score": 98,
+  "japan_gap": "unknown",
+  "context_value": "high",
+  "publish_priority": "high",
+  "selection_reason": "media_context, data_signal, topic_type:box_office, root_evidence:1",
+  "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+  "related_evidence_articles": []
+}

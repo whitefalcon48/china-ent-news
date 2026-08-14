@@ -1,0 +1,183 @@
+{
+  "shortlisted_topic_keys": [
+    "2026年暑期档电影票房"
+  ],
+  "attempted_topic_count": 1,
+  "attempted_route_count": 2,
+  "success_route_count": 2,
+  "evidence_count": 0,
+  "corroboration_evidence_count": 0,
+  "related_angle_evidence_count": 0,
+  "attempts": [
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "2026暑期档电影票房",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "weak_topic_match": 5
+      },
+      "failure_stage": ""
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "暑期档电影票房超92亿",
+      "route_id": "serper-search",
+      "route": "https://google.serper.dev/search",
+      "rsshub_base_url": "",
+      "source_type": "media_report",
+      "evidence_role": "corroboration",
+      "fetch_status": "success",
+      "fetch_error": "",
+      "raw_count": 5,
+      "matched_count": 0,
+      "rejected_count": 5,
+      "rejection_reasons": {
+        "weak_topic_match": 4,
+        "document_text_too_short": 1
+      },
+      "failure_stage": ""
+    }
+  ],
+  "evidence": [],
+  "observations": [
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "2026暑期档电影票房",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.stcn.com/article/detail/4056013.html",
+      "title": "2026年暑期档电影总票房突破75亿元 - 证券时报",
+      "source_name": "stcn.com",
+      "media_family": "stcn.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "2026暑期档电影票房",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://news.cctv.com/2026/05/29/ARTIVhN5G6jAgQE9PICD14eG260529.shtml",
+      "title": "2026电影总票房破155亿！暑期档超50部影片定档 - 新闻频道- 央视网",
+      "source_name": "news.cctv.com",
+      "media_family": "news.cctv.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "2026暑期档电影票房",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://ent.huanqiu.com/article/4Sm5T18cnJu",
+      "title": "2026暑期档电影票房突破90亿元",
+      "source_name": "ent.huanqiu.com",
+      "media_family": "ent.huanqiu.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "2026暑期档电影票房",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://m.thepaper.cn/newsDetail_forward_33612874",
+      "title": "2026年暑期档电影总票房（含预售）破40亿 - 澎湃新闻",
+      "source_name": "m.thepaper.cn",
+      "media_family": "thepaper",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "2026暑期档电影票房",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.sohu.com/a/1059981179_177992",
+      "title": "2026年暑期档票房突破80亿 - 搜狐",
+      "source_name": "sohu.com",
+      "media_family": "sohu",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "暑期档电影票房超92亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.cnr.cn/food/gstj/20260814/t20260814_527761688.shtml",
+      "title": "2026暑期档电影票房超92亿“电影+”带动消费新活力 - 央广网",
+      "source_name": "cnr.cn",
+      "media_family": "cnr.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "暑期档电影票房超92亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://www.sxdaily.com.cn/2026-08/14/content_20080261.html",
+      "title": "视频丨2026暑期档电影票房超92亿“电影+”带动消费新活力 - 陕西日报",
+      "source_name": "sxdaily.com.cn",
+      "media_family": "sxdaily.com.cn",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "暑期档电影票房超92亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "http://www.xinhuanet.com/ent/20260814/bd43ed8794654985a658abe21fe7ceb1/c.html",
+      "title": "2026暑期档票房突破92亿元连续34天单日票房超亿元 - 新华网",
+      "source_name": "xinhuanet.com",
+      "media_family": "xinhuanet.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "暑期档电影票房超92亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://news.ycwb.com/ikimvkctjo/content_54268554.htm",
+      "title": "2026暑期档票房突破92亿元连续34天单日票房超亿元 - 新闻",
+      "source_name": "news.ycwb.com",
+      "media_family": "news.ycwb.com",
+      "status": "rejected",
+      "reason": "weak_topic_match"
+    },
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "query": "暑期档电影票房超92亿",
+      "route_id": "serper-search",
+      "evidence_role": "corroboration",
+      "url": "https://tv.cctv.com/2026/08/13/VIDE6Wadm2Usrat4a8ZHsG2F260813.shtml",
+      "title": "[视频]2026暑期档电影票房超92亿元 - CCTV - 央视网",
+      "source_name": "tv.cctv.com",
+      "media_family": "tv.cctv.com",
+      "status": "rejected",
+      "reason": "document_text_too_short"
+    }
+  ],
+  "research_candidates": [
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "title_hint": "2026暑期档电影票房超92亿元",
+      "event_sentence": "2026年暑期档电影票房が92億元を超えた。",
+      "risk_class": "low",
+      "required_independent_evidence": 1,
+      "reason": "baseline_research"
+    }
+  ]
+}

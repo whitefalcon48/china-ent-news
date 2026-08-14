@@ -1,0 +1,42 @@
+{
+  "date": "2026-08-14",
+  "generated_at": "2026-08-14T03:47:40.942Z",
+  "ledgers": [
+    {
+      "topic_key": "2026年暑期档电影票房",
+      "ledger": {
+        "topic_key": "2026年暑期档电影票房",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年暑期档の映画興行収入が92億元を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "92億元"
+            ],
+            "quote_zh": "2026暑期档电影票房超92亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
