@@ -1,0 +1,506 @@
+{
+  "date": "2026-08-14",
+  "generated_at": "2026-08-14T03:30:19.730Z",
+  "ledgers": [
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:Expected ',' or ']' after array element in JSON at position 19480 (line 627 column 6)"
+    },
+    {
+      "topic_key": "百花奖纳入短剧",
+      "ledger": {
+        "topic_key": "百花奖纳入短剧",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "第38届大众电影百花奖で短劇栄誉ユニットが初めて設置され、8月9日に北京で開催された。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "第38届大众电影百花奖",
+              "短剧荣誉单元"
+            ],
+            "numbers": [
+              "8月9日",
+              "第38届"
+            ],
+            "quote_zh": "8月9日，第38届大众电影百花奖配套活动・短剧荣誉单元活动成",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "短劇栄誉ユニットは「精品化、専門化、正向化」を核心とし、過去1年間の短劇創作成果を集中的に総括した。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "短剧荣誉单元"
+            ],
+            "numbers": [],
+            "quote_zh": "以“精品化、专业化、正向化”为核心，对过去一年的短剧创作成果",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "15作品が5つの年度栄誉に分かれて受賞した。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [
+              "15",
+              "5"
+            ],
+            "quote_zh": "15部作品分获五项年度荣誉",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "5つの栄誉は「年度人気短劇」「年度創新短劇」「年度優秀系列短劇」「年度影響力短劇」「年度高品質短劇」である。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "年度人气短剧",
+              "年度创新短剧",
+              "年度优秀系列短剧",
+              "年度影响力短剧",
+              "年度高品质短剧"
+            ],
+            "numbers": [
+              "5"
+            ],
+            "quote_zh": "设置“年度人气短剧”“年度创新短剧”“年度优秀系列短剧”“年",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "「年度人気短劇」には『冒姓琅琊』『儺戯』『宜嫁宜娶』が選ばれた。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "冒姓琅琊",
+              "傩戏",
+              "宜嫁宜娶"
+            ],
+            "numbers": [],
+            "quote_zh": "《冒姓琅琊》《傩戏》《宜嫁宜娶》凭借热度与口碑，获颁“年度人",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "「年度創新短劇」には『“発”家致富』『小小狙撃手』『北往』が選ばれた。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "“发”家致富",
+              "小小狙击手",
+              "北往"
+            ],
+            "numbers": [],
+            "quote_zh": "《“发”家致富》《小小狙击手》《北往》因叙事手法突破与题材赛",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "「年度優秀系列短劇」には『東北愛情往事：閃婚玫瑰』『一家三口在同班』『以愛為家』が選ばれた。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "东北爱情往事：闪婚玫瑰",
+              "一家三口在同班",
+              "以爱为家"
+            ],
+            "numbers": [],
+            "quote_zh": "《东北爱情往事：闪婚玫瑰》《一家三口在同班》《以爱为家》展现",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "「年度影響力短劇」には『家里家外』『長路初心』『暗潮湧動』が選ばれた。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "家里家外",
+              "长路初心",
+              "暗潮涌动"
+            ],
+            "numbers": [],
+            "quote_zh": "《家里家外》《长路初心》《暗潮涌动》带动了现实议题的创作风潮",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "「年度高品質短劇」には『ENEMY』『行道者之墨狂刀』『盛夏芬德拉』が選ばれた。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "ENEMY",
+              "行道者之墨狂刀",
+              "盛夏芬德拉"
+            ],
+            "numbers": [],
+            "quote_zh": "《ENEMY》《行道者之墨狂刀》《盛夏芬德拉》则以扎实的剧本",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "現場では『食神2026』『奔頭児』『将門六姝』など9作品の待機中作品が紹介された。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "食神2026",
+              "奔头儿",
+              "将门六姝"
+            ],
+            "numbers": [
+              "9"
+            ],
+            "quote_zh": "现场推介了《食神2026》《奔头儿》《将门六姝》等9部备受期",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "『食神2026』は周星馳の古典IPが30年ぶりに短劇形式で再始動する作品である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "食神2026",
+              "周星驰"
+            ],
+            "numbers": [
+              "30年"
+            ],
+            "quote_zh": "因周星驰经典IP时隔30年以短剧形式重启",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "『奔頭児』は全編長春でロケが行われ、東北の青年の成長を描くロードムービーである。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "奔头儿",
+              "长春"
+            ],
+            "numbers": [],
+            "quote_zh": "该剧全程在长春取景，采用公路叙事结构",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "『奔頭児』では「雪餅猴」として知られる俳優・王慶峰が短劇の主演を初めて務める。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "王庆峰",
+              "雪饼猴"
+            ],
+            "numbers": [],
+            "quote_zh": "以“雪饼猴”身份被网友熟知的青年演员王庆峰首次担纲短剧男主",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "百花奨が短劇栄誉ユニットを初めて設置したことから、短劇業界は野蛮な成長から精品化へと加速している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "百花奖"
+            ],
+            "numbers": [],
+            "quote_zh": "从百花奖首次设立短剧荣誉单元，到多部兼具内容深度与制作精度的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "受賞作品のうち『東北愛情故事：閃婚玫瑰』『長路初心』『暗潮湧動』『“発”家致富』『小小狙撃手』などは紅果短劇「果燃計画」の作品である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "东北爱情故事：闪婚玫瑰",
+              "长路初心",
+              "暗潮涌动",
+              "“发”家致富",
+              "小小狙击手",
+              "红果短剧",
+              "果燃计划"
+            ],
+            "numbers": [],
+            "quote_zh": "15部获奖作品中，《东北爱情故事：闪婚玫瑰》《长路初心》《暗",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "百花奨フォーラムで中国映画協会が「金鶏百花国産映画評価体系」を正式に発表した。",
+            "evidence_refs": [
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "中国影协",
+              "金鸡百花国产电影评价体系"
+            ],
+            "numbers": [],
+            "quote_zh": "中国影协正式发布了“金鸡百花国产电影评价体系”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "「金鶏百花国産映画評価体系」は思想性・芸術性・大衆性を核心次元とし、学者・専門家・メディア・学生・映画館支配人からなる評鑑団が採点する。",
+            "evidence_refs": [
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "金鸡百花国产电影评价体系"
+            ],
+            "numbers": [],
+            "quote_zh": "以思想性、艺术性、大众性为核心维度，由学者、专家、媒体、学生",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "評鑑団の構成は専門学者30%、業界専門家20%、その他メディア・映画館支配人・専門学生で、全国主要都市をカバーする。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "30%",
+              "20%"
+            ],
+            "quote_zh": "专家学者（30%）：影视艺术领域的专业学者，需具备良好专业训",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "各映画には総合点と複数次元の項目別点数が付与され、3～5個のキーワードタグが付けられる。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "3",
+              "5"
+            ],
+            "quote_zh": "每部影片将获得一个总分及多个维度的分项分，并配以3至5个关键",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "この評価体系は中央五部門が共同で印刷・配布した『新時代の文芸評論工作強化に関する意見』に基づいて設立された。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "中央五部门",
+              "关于加强新时代文艺评论工作的意见"
+            ],
+            "numbers": [],
+            "quote_zh": "源自对“建立权威、公信力、影响力的文艺评价体系”的要求，以及",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "短剧",
+            "gloss_ja": "短編ドラマ",
+            "what_is": "1話数分～十数分の縦型動画などで配信される短編ドラマ。",
+            "why_now": "百花奨に初めて評価対象として組み込まれ、業界の精品化が進む。",
+            "explain_quote_zh": "短剧首次纳入百花奖评价体系，行业加速迈向精品化",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "百花奖",
+            "gloss_ja": "百花奨",
+            "what_is": "大衆映画百花奨。観客投票で選ばれる中国の映画賞。",
+            "why_now": "短劇栄誉ユニットを新設し、短劇を公式に評価対象とした。",
+            "explain_quote_zh": "第38届大众电影百花奖配套活动・短剧荣誉单元活动成功举办",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "精品化",
+            "gloss_ja": "高品質化",
+            "what_is": "作品の内容・制作水準を高め、質を重視する方向性。",
+            "why_now": "短劇業界が野蛮な成長から精品化へと転換する中で、百花奨の評価基準にも採用された。",
+            "explain_quote_zh": "以“精品化、专业化、正向化”为核心",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "红果短剧",
+            "gloss_ja": "紅果短劇",
+            "what_is": "短劇配信プラットフォーム。",
+            "why_now": "受賞作品の多くが紅果短劇の「果燃計画」から出品され、プラットフォームの影響力が示された。",
+            "explain_quote_zh": "均为红果短剧“果燃计划”出品",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "果燃计划",
+            "gloss_ja": "果燃計画",
+            "what_is": "紅果短劇による短劇制作支援プロジェクト。",
+            "why_now": "受賞作品の多くがこの計画から生まれ、短劇の質向上に寄与している。",
+            "explain_quote_zh": "红果短剧“果燃计划”出品",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "金鸡百花国产电影评价体系",
+            "gloss_ja": "金鶏百花国産映画評価体系",
+            "what_is": "中国映画協会と清華大学が共同で構築した映画評価基準。",
+            "why_now": "百花奨フォーラムで発表され、映画評価の標準化を目指す。",
+            "explain_quote_zh": "中国影协正式发布了“金鸡百花国产电影评价体系”",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "评鉴团",
+            "gloss_ja": "評鑑団",
+            "what_is": "映画評価体系で採点を行う専門家・業界関係者などのグループ。",
+            "why_now": "新評価体系の中核を担い、多角的な視点で映画を評価する。",
+            "explain_quote_zh": "由学者、专家、媒体、学生和院线经理组成的评鉴团进行打分",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "正向化",
+            "gloss_ja": "ポジティブな方向性",
+            "what_is": "社会的に良い影響を与える内容を重視する方針。",
+            "why_now": "短劇栄誉ユニットの核心方針の一つとして、短劇の内容面での健全性が求められている。",
+            "explain_quote_zh": "以“精品化、专业化、正向化”为核心",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}

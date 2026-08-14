@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-14",
+  "status": "pending",
+  "issue_number": 47,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "『歓迎来龍餐館』興収3億元突破、豆瓣8.4で沈騰主演映画の最高得点記録を更新",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 2,
+      "topic_key": "百花奖纳入短剧",
+      "title": "短編ドラマが初めて百花奨の評価対象に！高品質化が加速",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
+}

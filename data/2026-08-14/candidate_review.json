@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-14",
+  "status": "pending",
+  "created_at": "2026-08-14T03:27:54.339Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "《欢迎来龙餐馆》破3亿，豆瓣8.4刷新沈腾主演影片最高分纪录",
+      "event_sentence": "映画『歓迎来龍餐館』が興行収入3億元を突破し、豆瓣8.4で沈騰主演映画の最高得点記録を更新した。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 86,
+      "source_count": 3,
+      "source_types": {
+        "official": 0,
+        "media_report": 2,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐",
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "短剧千亿赛道网文IP成核心供给",
+      "title": "短剧千亿赛道网文IP成核心供给，番茄小说改编占爆款总量62%",
+      "event_sentence": "短劇の1000億元規模の市場で、ネット小説IPが中核的な供給源となり、番茄小説の改編が爆款の62%を占めた。",
+      "topic_type": "unknown",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 86,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "对话西游群英荟",
+      "title": "对话西游群英荟：流量大了，责任也大了",
+      "event_sentence": "新京報が「西遊群英会」のインタビューを掲載し、流量と責任について語った。",
+      "topic_type": "unknown",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 84,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "董润年专访",
+      "title": "迷茫，是这一代人的职场底色｜专访董润年",
+      "event_sentence": "監督の董润年氏はインタビューで、現代の世代の職場における迷いについて語った。",
+      "topic_type": "unknown",
+      "baseline_rank": 4,
+      "baseline_priority": "high",
+      "baseline_score": 82,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "百花奖纳入短剧",
+      "title": "短剧首次纳入百花奖评价体系，行业加速迈向精品化",
+      "event_sentence": "短編ドラマが初めて百花奨の評価対象に組み込まれ、業界の高品質化が加速する。",
+      "topic_type": "industry_context",
+      "baseline_rank": 5,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "功夫女足暑期档",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星驰監督の『功夫女足』は公開半日で興行収入が1億元を突破し、夏休みシーズンを席巻した。",
+      "topic_type": "box_office",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "功夫女足偷票房疑云",
+      "title": "周星驰连发3个问号！《功夫女足》陷“偷票房”疑云",
+      "event_sentence": "周星驰監督の『功夫女足』が「興行収入の水増し」疑惑に巻き込まれ、周星驰は疑問を表明した。",
+      "topic_type": "box_office",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "年会不能停",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "『年会不能停！2』は公開4日で興行収入が1億元を突破したが、市場予想には及ばなかった。",
+      "topic_type": "box_office",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "2026年7月电影剧本备案",
+      "title": "国家电影局关于2026年7月上全国电影剧本（梗概） 备案、立项公示的通知",
+      "event_sentence": "国家電影局が2026年7月の全国映画脚本（梗概）の届出・立項公示を発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 69,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局于2026年6月15日发布电影行业标准DY/T 15—2026《数字影院LED放映发行母版和数据包技术要求》和DY/T 16—2026《数字影院沉浸式音频处理器技术要求和测量方法》。",
+      "topic_type": "policy",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "罗正出道十年存款仅4800元",
+      "title": "罗正出道十年存款仅4800元是否属实？",
+      "event_sentence": "新浪娱乐报道罗正出道十年存款仅4800元，引发对其真实性讨论。",
+      "topic_type": "unknown",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "派拉蒙华纳并购案诉讼",
+      "title": "“绿巨人”联手12州起诉，派拉蒙华纳并购案突生变数",
+      "event_sentence": "「グリーン・ランタン」こと俳優が12州とともに提訴し、パラマウントとワーナーの合併に不確実性が生じた。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
