@@ -1,0 +1,27 @@
+{
+  "status": "discarded",
+  "profile": "manual_evidence_rich",
+  "eligible_claims": 20,
+  "used_claims": 8,
+  "coverage_ratio": 0.4,
+  "detail_sections": 0,
+  "important_number_claims": 19,
+  "used_number_claims": 7,
+  "regenerated": true,
+  "passed": false,
+  "reasons": [
+    "claim_ref_not_realized:C1",
+    "claim_ref_not_realized:C2",
+    "claim_ref_not_realized:C3",
+    "claim_ref_not_realized:C4",
+    "claim_ref_not_realized:C9",
+    "claim_ref_not_realized:C12",
+    "claim_ref_not_realized:C14",
+    "claim_ref_not_realized:C15",
+    "claim_ref_not_realized:C16",
+    "claim_ref_not_realized:C17",
+    "claim_ref_not_realized:C20",
+    "used_claims:8<12",
+    "used_number_claims:7<12"
+  ]
+}
