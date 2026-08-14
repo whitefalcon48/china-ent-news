@@ -5,7 +5,7 @@ import { ClaimCheckDiscardError } from "../claimCheck.js";
 import { ArticleDepthGateError } from "../articleDepth.js";
 import { classifyArticle, loadFilterConfig } from "../classifyArticle.js";
 import { assessExtractionQuality } from "../evidence/documentSnapshot.js";
-import { expandTopicSources } from "../expandSources.js";
+import { attachExpansionEvidence, expandTopicSources } from "../expandSources.js";
 import { LedgerAdequacyGateError } from "../ledgerAdequacy.js";
 import { createReviewStateFromStoredArticles, writeReviewState } from "../review/reviewState.js";
 import { getAiProvider, summarizeTopic } from "../summarizeWithGemini.js";
@@ -104,7 +104,17 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     processingStage = "researching";
     state = await updateManualIntakeState(state, { status: "researching", error: "" }, dataRoot);
     const researchTopic = buildManualResearchTopic(initialTopic, root);
-    const research = await expandManualTopic(researchTopic);
+    let research = await expandManualTopic(researchTopic);
+    if (!verifiedCorroborationEvidence(research.expansion).length) {
+      const cachedExpansion = await findRecentVerifiedExpansion(persistedUrl, parsed.commentId, dataRoot);
+      if (cachedExpansion) {
+        const reusedEvidence = cachedExpansion.expansion.evidence.map((item) => ({ ...item, validation_reason: "reused_verified_document" }));
+        research = {
+          topic: attachExpansionEvidence(research.topic, reusedEvidence),
+          expansion: mergeCachedExpansion(research.expansion, reusedEvidence, cachedExpansion.commentId)
+        };
+      }
+    }
     const topic = preserveManualIntakeRootEvidence(initialTopic, research.topic);
     const evidence = collectEvidence(root, topic);
     await writeManualIntakeArtifact(parsed.commentId, "topic.json", topic, dataRoot);
@@ -252,6 +262,28 @@ export function assessManualEvidenceAdequacy(document: IntakeDocument, expansion
   };
 }
 
+function verifiedCorroborationEvidence(expansion: ManualExpansion) {
+  return "evidence" in expansion
+    ? expansion.evidence.filter((item) => item.evidence_role !== "related_angle" && item.validation_status === "verified" && item.claim_coverage?.matched !== false)
+    : [];
+}
+
+function mergeCachedExpansion(current: ManualExpansion, reused: SourceExpansionResult["evidence"], commentId: string): SourceExpansionResult {
+  const base: SourceExpansionResult = "evidence" in current ? current : {
+    shortlisted_topic_keys: [], attempted_topic_count: 0, attempted_route_count: 0, success_route_count: 0,
+    evidence_count: 0, corroboration_evidence_count: 0, related_angle_evidence_count: 0, attempts: [], evidence: [], observations: []
+  };
+  const evidence = [...base.evidence, ...reused];
+  return {
+    ...base,
+    evidence,
+    evidence_count: evidence.length,
+    corroboration_evidence_count: evidence.filter((item) => item.evidence_role !== "related_angle").length,
+    related_angle_evidence_count: evidence.filter((item) => item.evidence_role === "related_angle").length,
+    reused_from_comment_id: commentId
+  };
+}
+
 export function preserveManualIntakeRootEvidence(initial: TopicCandidate, researched: TopicCandidate) {
   return {
     ...researched,
@@ -296,15 +328,59 @@ export async function findRecentIntakeDocument(
   return undefined;
 }
 
+export async function findRecentVerifiedExpansion(
+  requestedUrl: string,
+  excludeCommentId: string,
+  dataRoot = "data",
+  now = Date.now()
+): Promise<{ commentId: string; expansion: SourceExpansionResult } | undefined> {
+  const root = path.resolve(dataRoot, "manual-intake");
+  let entries: string[];
+  try {
+    entries = (await fs.readdir(root, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && /^\d+$/u.test(entry.name) && entry.name !== excludeCommentId)
+      .map((entry) => entry.name)
+      .sort((left, right) => Number(right) - Number(left));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return undefined;
+    throw error;
+  }
+  for (const commentId of entries) {
+    try {
+      const directory = path.join(root, commentId);
+      const document = JSON.parse(await fs.readFile(path.join(directory, "document.json"), "utf8")) as IntakeDocument;
+      const ageMs = now - Date.parse(document.fetched_at);
+      if (redactIntakeUrl(document.requested_url) !== requestedUrl || ageMs < 0 || ageMs > 7 * 86_400_000) continue;
+      const expansion = JSON.parse(await fs.readFile(path.join(directory, "expansion.json"), "utf8")) as SourceExpansionResult;
+      const evidence = verifiedCorroborationEvidence(expansion);
+      if (!evidence.length) continue;
+      return { commentId, expansion: { ...expansion, evidence } };
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT" && !(error instanceof SyntaxError)) throw error;
+    }
+  }
+  return undefined;
+}
+
 export function buildManualResearchTopic(topic: TopicCandidate, root: RawArticle): TopicCandidate {
   const person = topic.main_entities.people[0]?.trim() ?? "";
   const body = `${root.title}\n${root.rawContent || root.excerpt || ""}`;
   const attributedHeadline = body.match(/人民日报(?:刊发|发布|报道|专访|采访)[^《]{0,20}《([^》]{4,60})》/u)?.[1]?.trim() ?? "";
   const queries = [
+    buildAggregateFactQuery(root),
     person && attributedHeadline ? `${person} 人民日报 ${attributedHeadline}` : "",
     ...topic.search_queries
   ].filter(Boolean);
   return { ...topic, search_queries: [...new Set(queries)] };
+}
+
+function buildAggregateFactQuery(root: RawArticle) {
+  const body = `${root.title}\n${root.rawContent || root.excerpt || ""}`;
+  if (!/票房/u.test(body)) return "";
+  const amount = body.match(/\d+(?:\.\d+)?(?:亿元|万元|亿|万|元)/u)?.[0] ?? "";
+  const event = body.match(/(20\d{2})年?\s*(暑期档|春节档|国庆档)/u);
+  if (!amount || !event) return "";
+  return `${event[1]}${event[2]} 电影票房 ${amount}`;
 }
 
 function collectEvidence(root: RawArticle, topic: TopicCandidate): RawArticle[] {

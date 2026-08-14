@@ -43,6 +43,8 @@
 - ✅ 中国語の無空白query、超/突破、电影票房/票房、Serper snippetを候補発見に使えるようにし、全文側では中心値92億元・2026暑期档・票房の一致を必須化。90/80/192/920億元はroot裏付けとして拒否する。
 - ✅ 生成前に台帳の十分性を検査し、興行・data report・high contextはroot claim 6件以上、key_numbersを含む編集役割2種以上を要求。不足時は台帳抽出を1回再試行する。本文depthはwhat_happenedだけで計測し、注目ポイント等のrefsでは水増しできない。
 - ✅ 持ち込みも通常記事と同じ `detail_sections: []` を維持。`npm run check`、`test:sources`、`test:evidence-expansion`、`test:manual-intake`、`test:related-evidence`、`test:review-presentation`、`test:site-feed`、`build:site` で回帰確認する。Actions再生成の実測値はpush後に追記する。
+- ✅ run `31771372302` では全文検証済みroot資料2件・root claim 20件まで回復した一方、旧プロンプトの150〜250字指定とdepth gateが矛盾し、本文利用8/20・重要数字7/19で不合格になった。プロンプトとgateの必要件数・本文長を共通化した。
+- ✅ run `31772090574` ではLLMが中心値92億元を検索語から落とし、全文検証済みroot資料が0件となった。数値集計記事は中心数値＋イベント＋指標の決定的検索語を必ず先頭へ加え、新規検索が空振りした場合だけ同一URL・7日以内・全文検証済みroot資料を再利用する。別URL、未検証snippet、related angleは再利用しない。
 
 ????: 2026-08-11???UI??????????????
 

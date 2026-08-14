@@ -108,6 +108,8 @@ data/manual-intake/<comment-id>/
 - 人物インタビューでは、作品名より中心人物を優先し、「人物名＋熱搜／熱議／回应／讨论」を別角度の探索語にする。本文に人民日報などの明示された元見出しがある場合は「人物名＋媒体名＋元見出し」も中心出来事の検索語に加える。
 - corroboration は「中心人物＋特徴的な出来事・状態」が一致すれば候補にできる。ただし一般語（演员、作品、动态など）だけの一致は認めず、本文取得後のclaim coverageを必須にする。
 - 数値集計記事は、検索結果のtitleとsnippetを候補発見にだけ使い、全文取得後に「中心数値＋イベント名＋指標」が一致した資料だけをcorroborationにする。snippet自体はclaimやevidenceにしない。
+- 数値集計記事の中心数値・イベント名・指標は、LLMが返す検索語とは別に元記事から決定的に組み立て、検索語の先頭へ加える。LLMの出力揺れで中心数値を検索から落とさない。
+- 新しい検索で全文検証済みcorroborationを得られなかった場合に限り、同一URLについて7日以内に保存した全文検証済みcorroborationを再利用できる。別URL、snippetだけの候補、related angle、未検証資料は再利用しない。再利用元comment idを `expansion.json` に残す。
 - HTML本文は先頭selectorの長さだけで決めず、article/main、JSON-LD、埋め込みJS、meta description、bodyを採点する。本文文字数、文数、既知UI文言の比率、数値・時点アンカーを `document.json` に保存し、古いUI殻キャッシュも再利用しない。
 - `related_angle` は全文検証済みの資料だけを事実台帳へ渡す。root eventの複数ソース数や裏付けには加えず、`scope=related_angle` のclaimとして分離する。確認できないSNS反応は書かない。
 - 根拠密度の再生成では前回下書きを入力に残し、独立claimと重要数字を `what_happened` に整理するよう指示する。品質ゲートそのものは変更しない。

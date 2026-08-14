@@ -12,7 +12,7 @@ import { enforceStandardArticleFormat, ensureCanonicalPersonName, repairManualFa
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
-import { assessManualEvidenceAdequacy, findRecentIntakeDocument } from "./intake/processManualIntake.js";
+import { assessManualEvidenceAdequacy, findRecentIntakeDocument, findRecentVerifiedExpansion } from "./intake/processManualIntake.js";
 import type { FactLedger, ProcessedArticle } from "./types.js";
 
 async function main() {
@@ -141,8 +141,19 @@ async function main() {
       text: "同一URLから直近に安全取得した十分な長さの本文を、元サイトの一時タイムアウト時だけ再利用します。別記事や古い本文は利用しません。",
       published_date: "2026-08-11", fetched_at: "2026-08-13T00:00:00.000Z", content_type: "text/html"
     }), "utf8");
+    await fs.writeFile(path.join(cachedDirectory, "expansion.json"), JSON.stringify({
+      shortlisted_topic_keys: ["topic"], attempted_topic_count: 1, attempted_route_count: 1, success_route_count: 1,
+      evidence_count: 1, corroboration_evidence_count: 1, related_angle_evidence_count: 0, attempts: [], observations: [],
+      evidence: [{
+        title: "確認済み周辺報道", url: "https://media.example/news", source_name: "Media", source_type: "media_report",
+        route_id: "serper", route: "serper", query: "topic", evidence_role: "corroboration", key_points: ["確認済み本文"],
+        validation_status: "verified", validation_reason: "document_verified", claim_coverage: { target_claim: "general", observed_claim: "general", matched: true, reason: "fixture" }
+      }]
+    }), "utf8");
     const cached = await findRecentIntakeDocument("https://example.com/news", "42", root, Date.parse("2026-08-13T01:00:00.000Z"));
     assert.equal(cached?.commentId, "41");
+    const cachedExpansion = await findRecentVerifiedExpansion("https://example.com/news", "42", root, Date.parse("2026-08-13T01:00:00.000Z"));
+    assert.equal(cachedExpansion?.commentId, "41", "同一URLで直近に全文検証した周辺報道は検索揺れ時に再利用できる");
     assert.equal((await findRecentIntakeDocument("https://example.com/other", "42", root, Date.parse("2026-08-13T01:00:00.000Z"))), undefined, "different URLs never reuse a cached document");
     const ledger: FactLedger = { topic_key: "topic", claims: [], terms: [], japan_availability: { status: "not_in_evidence", detail: "", evidence_refs: [] }, unresolved: [] };
     const article: ProcessedArticle = { raw: { title: "原題", url: "https://example.com/news", sourceName: "Example", sourceUrl: "https://example.com", category: "持ち込みニュース", reliability: "C" }, summary: {

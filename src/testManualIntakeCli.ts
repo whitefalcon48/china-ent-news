@@ -104,6 +104,16 @@ async function main() {
     rawContent: "8月11日，人民日报刊发报道《要努力把更丰富的精神食粮奉献给人们》，记者采访了李雪健。"
   });
   assert.equal(researchTopic.search_queries[0], "李雪健 人民日报 要努力把更丰富的精神食粮奉献给人们");
+  const aggregateResearchTopic = buildManualResearchTopic({ ...rootTopic, topic_type: "box_office", main_entities: { people: [], works: [], organizations: [], events: ["2026年暑期档"] } }, {
+    title: "2026暑期档电影票房超92亿元",
+    url: "https://example.com/box-office",
+    sourceName: "Example",
+    sourceUrl: "https://example.com",
+    category: "持ち込みニュース",
+    reliability: "C",
+    rawContent: "截至8月13日晚，2026暑期档电影票房突破92亿元。"
+  });
+  assert.equal(aggregateResearchTopic.search_queries[0], "2026暑期档 电影票房 92亿元", "中心数字をLLM任せにせず検索語へ必ず残す");
 
   const temporary = await fs.mkdtemp(path.join(os.tmpdir(), "manual-intake-cli-"));
   const outputPath = path.join(temporary, "github-output.txt");

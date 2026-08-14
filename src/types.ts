@@ -538,6 +538,8 @@ export type SourceExpansionResult = {
   evidence: SourceExpansionEvidence[];
   observations?: SourceExpansionObservation[];
   research_candidates?: SourceResearchCandidate[];
+  /** A same-URL manual retry may reuse documents already fully verified within seven days. */
+  reused_from_comment_id?: string;
 };
 
 export type TopicSeed = {
