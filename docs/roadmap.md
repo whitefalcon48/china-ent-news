@@ -1,5 +1,11 @@
 # ?????? & ?????
 
+## 2026-08-14 実装・ローカル検証完了（注目ポイントの熱意・翻訳ガード）
+
+- ✅ 通常記事の `why_it_matters` は、専用生成・事実台帳失敗時の単段フォールバックの双方で、ビンタン自身の「おもしろい、伝えたい」という反応を明示する。モデルが再試行後も感嘆符0個を返した場合は、内容を変えず句点1個だけを「！」へ決定的に置換し、最低1個を保証する。重大事件・法的問題・訃報・被害者のいる `sober` 記事は従来どおり0個に固定する。
+- ✅ `小人物` を「英雄や大人物ではない平凡な人物・普通の人」として共通用語辞書へ登録。前の語との境界を誤って「中小企業」にしないプロンプト規則と、原文に `小人物` があり `中小企业` がない場合だけ働く全公開フィールド共通の根拠付き補正を追加した。
+- ✅ 日本語の邦題・仮題に中国語作品名を併記する時は、作品を問わず中国語名を「原題」と表示する共通規則をプロンプトと根拠付き表記ガードへ追加。個別の正式邦題は従来どおり作品辞書で管理する。`npm run check`、`npm run test:bingtang-comment-tone`、`npm run test:terminology`、`npm run test:kanji`、`npm run test:review-presentation`、`npm run test:site-feed` 成功。8/14 Actions再生成は修正ブランチ反映後に実行する。
+
 ## 2026-08-11 Production subdomain launch
 
 - ✅ `https://bingtangnews.0-w-0.net/` is live on Lolipop via explicit FTPS; deploy run `31482941507` published 100 files for 10 days / 33 articles / 46 pages.

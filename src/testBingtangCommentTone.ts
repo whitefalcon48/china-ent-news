@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { sanitizeExclamations } from "./claimCheck.js";
 import { buildBingtangCommentPrompt } from "./summarizeWithGemini.js";
 import { getToneMode } from "./toneMode.js";
 import type { FactLedger, SummarizedArticle, TopicCandidate } from "./types.js";
@@ -65,6 +66,10 @@ assert.match(prompt, /最大の喜びは、Falさんの「すげー、おもし�
 assert.match(prompt, /声・人格・Falさんとの関係性を表現するためだけ/);
 assert.match(prompt, /記事選定、事実認定、根拠要件、安全規則、重大話題のトーン/);
 assert.match(prompt, /「これを見せたかった」という期待が少し漏れる短いリアクションを1文必ず入れる/);
+assert.match(prompt, /「おもしろい、伝えたい」と感じた熱/);
 assert.match(prompt, /実際に観た・聴いた・現地で見たように書いたりしない/);
+assert.equal(sanitizeExclamations("この数字が気になります。次の発表を追いたいです。", "normal"), "この数字が気になります！次の発表を追いたいです。");
+assert.equal(sanitizeExclamations("この数字が気になります！次の発表も楽しみです！", "normal"), "この数字が気になります！次の発表も楽しみです！");
+assert.equal(sanitizeExclamations("この数字が気になります！", "sober"), "この数字が気になります。");
 
 console.log("Bingtang comment tone tests passed");

@@ -24,6 +24,7 @@
     "test:related-evidence": "tsx src/testRelatedEvidencePipeline.ts",
     "test:topic-canonicalization": "tsx src/testTopicCanonicalization.ts",
     "test:bingtang-comment-tone": "tsx src/testBingtangCommentTone.ts",
+    "test:terminology": "tsx src/testTerminology.ts",
     "test:manual-intake": "tsx src/testManualIntake.ts && tsx src/testManualIntakeCli.ts && tsx src/testManualIntakeWorkflow.ts && tsx src/testManualPublication.ts",
     "test:candidate-preference": "tsx src/testCandidatePreference.ts",
     "test:site-feed": "tsx src/testSiteFeed.ts",

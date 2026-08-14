@@ -33,7 +33,13 @@
     { "zh": "徐克", "display": "徐克", "reading": "ツイ・ハーク" }
   ],
   "work_titles": [
-    { "zh": "哪吒之魔童闹海", "display": "哪吒之魔童鬧海", "ja_official": "" }
+    { "zh": "哪吒之魔童闹海", "display": "哪吒之魔童鬧海", "ja_official": "" },
+    {
+      "zh": "我不是药神",
+      "display": "我不是薬神",
+      "ja_official": "薬の神じゃない！",
+      "avoid": ["薬の神じゃない", "薬の神じゃない!"]
+    }
   ],
   "word_overrides": [
     { "zh": "摄影", "display": "撮影" },
@@ -42,6 +48,7 @@
   ],
   "known_terms": ["微博", "豆瓣", "熱搜", "IP", "OST", "IMAX"],
   "first_gloss_terms": [
+    { "term": "小人物", "gloss": "英雄や大人物ではない平凡な人物・普通の人" },
     { "term": "偷票房", "gloss": "興行収入のごまかし・横取り" },
     { "term": "排片", "gloss": "上映枠の割り当て" },
     { "term": "暑期档", "gloss": "夏休み興行シーズン" },

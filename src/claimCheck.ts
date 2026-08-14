@@ -350,7 +350,7 @@ export function shingleContainment(value: string, bodyText: string) {
 export function sanitizeExclamations(text: string, toneMode: ToneMode) {
   if (toneMode === "sober") return text.replace(/[！!]/g, "。").replace(/。。+/g, "。");
   let total = 0;
-  return splitSentences(text).map((sentence) => {
+  const sanitized = splitSentences(text).map((sentence) => {
     let inSentence = 0;
     return sentence.replace(/[！!]/g, () => {
       total += 1;
@@ -358,6 +358,16 @@ export function sanitizeExclamations(text: string, toneMode: ToneMode) {
       return total > 4 || inSentence > 1 ? "。" : "！";
     });
   }).join("").replace(/。。+/g, "。");
+  if (total > 0 || !sanitized.trim()) return sanitized;
+
+  // Normal comments must not silently pass with sober-looking punctuation.
+  // This changes punctuation only, so no new fact or editorial angle is added.
+  const sentences = splitSentences(sanitized);
+  const reactionPattern = /面白|おもしろ|気にな|楽し|驚|すご|見たい|追いたい|大事|注目ポイント|期待/;
+  const reactionIndex = sentences.findIndex((sentence) => reactionPattern.test(sentence));
+  const target = reactionIndex >= 0 ? reactionIndex : 0;
+  sentences[target] = sentences[target].replace(/[。？?]?$/u, "！");
+  return sentences.join("");
 }
 
 function splitSentences(value: string) {
