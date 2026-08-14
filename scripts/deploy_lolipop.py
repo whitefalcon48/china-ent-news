@@ -22,6 +22,8 @@ class FtpsClient(Protocol):
 
     def storbinary(self, command: str, fp: BinaryIO) -> str: ...
 
+    def sendcmd(self, command: str) -> str: ...
+
 
 @dataclass(frozen=True)
 class DeployConfig:
@@ -78,6 +80,7 @@ def ensure_remote_directory(client: FtpsClient, remote_path: str) -> None:
         except error_perm as error:
             if not str(error).startswith("550"):
                 raise
+        client.sendcmd(f"SITE CHMOD 705 {current}")
 
 
 def deploy_files(client: FtpsClient, source: Path, remote_dir: str) -> int:
@@ -95,6 +98,7 @@ def deploy_files(client: FtpsClient, source: Path, remote_dir: str) -> int:
             created_directories.add(parent)
         with local_path.open("rb") as source_file:
             client.storbinary(f"STOR {remote_path}", source_file)
+        client.sendcmd(f"SITE CHMOD 604 {remote_path}")
 
     return len(files)
 

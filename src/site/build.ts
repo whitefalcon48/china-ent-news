@@ -455,7 +455,8 @@ function stableHash(value: string) {
 }
 
 function renderShareLink(currentUrl: string, title: string) {
-  return `<p class="feed-actions"><a class="share" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}" target="_blank" rel="noopener noreferrer">Xでシェア</a></p>`;
+  const shareText = `${title}\n#冰糖日报`;
+  return `<p class="feed-actions"><a class="share" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener noreferrer">Xでシェア</a></p>`;
 }
 
 function renderTextSection(title: string, text: string) {

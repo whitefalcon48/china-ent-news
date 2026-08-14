@@ -92,6 +92,7 @@ try {
   assertNotIncludes(home, "<summary", "トップの折りたたみ見出し");
   assertIncludes(home, "フィクスチャ本文 A", "トップの本文全文");
   assertCount(home, "twitter.com/intent/tweet?url=", 3, "トップのカードごとのシェアリンク");
+  assertCount(home, "%0A%23%E5%86%B0%E7%B3%96%E6%97%A5%E6%8A%A5", 3, "トップのXシェアタグ");
   assertCount(home, 'target="_blank" rel="noopener noreferrer">Xでシェア', 3, "トップのシェアリンクの新規タブ属性");
   assertIncludes(home, '<meta property="og:image" content="https://example.test/og/home.png?v=', "トップ専用OGP画像の絶対URL");
   assertIncludes(home, '<meta property="og:image:width" content="1200">', "共通OGP画像の幅");
@@ -125,6 +126,7 @@ try {
   assertIncludes(home, '<section class="bingtang-supplement">\n    <div>', "補足ブロックは顔なし");
   assertNotIncludes(home, "<h2><a href=", "トップから個別ページへのタイトル導線");
   assertCount(daily, "twitter.com/intent/tweet?url=", 2, "日次フィードのカードごとのシェアリンク");
+  assertCount(daily, "%0A%23%E5%86%B0%E7%B3%96%E6%97%A5%E6%8A%A5", 2, "日次フィードのXシェアタグ");
   assertCount(daily, 'target="_blank" rel="noopener noreferrer">Xでシェア', 2, "日次フィードのシェアリンクの新規タブ属性");
   assertCount(daily, "ビンタンからの補足", 2, "日次フィードの補足ラベル");
   assertNotIncludes(detail, "Xでシェア", "個別ページのシェアUI");
