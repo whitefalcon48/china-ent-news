@@ -13,15 +13,6 @@ from typing import BinaryIO, Protocol
 
 
 RETRYABLE_ERRORS = (*all_errors, ssl.SSLError, TimeoutError)
-DIAGNOSTIC_TARGETS = (
-    "index.html",
-    "archive/2026-08-14/index.html",
-    "archive/2026-08-13/index.html",
-    "t/2026-08-14/1/index.html",
-    "og/home.png",
-    "og/2026-08-14/1.png",
-    "x-card-test/a/index.html",
-)
 
 
 class FtpsClient(Protocol):
@@ -30,10 +21,6 @@ class FtpsClient(Protocol):
     def mkd(self, dirname: str) -> str: ...
 
     def storbinary(self, command: str, fp: BinaryIO) -> str: ...
-
-    def sendcmd(self, command: str) -> str: ...
-
-    def retrlines(self, command: str, callback) -> str: ...
 
 
 @dataclass(frozen=True)
@@ -91,7 +78,6 @@ def ensure_remote_directory(client: FtpsClient, remote_path: str) -> None:
         except error_perm as error:
             if not str(error).startswith("550"):
                 raise
-        client.sendcmd(f"SITE CHMOD 705 {current}")
 
 
 def deploy_files(client: FtpsClient, source: Path, remote_dir: str) -> int:
@@ -109,22 +95,8 @@ def deploy_files(client: FtpsClient, source: Path, remote_dir: str) -> int:
             created_directories.add(parent)
         with local_path.open("rb") as source_file:
             client.storbinary(f"STOR {remote_path}", source_file)
-        client.sendcmd(f"SITE CHMOD 604 {remote_path}")
 
     return len(files)
-
-
-def log_remote_modes(client: FtpsClient) -> None:
-    for remote_path in DIAGNOSTIC_TARGETS:
-        lines: list[str] = []
-        try:
-            client.retrlines(f"LIST {remote_path}", lines.append)
-            fields = lines[0].split() if lines else []
-            mode = fields[0] if fields else "missing"
-            size = fields[4] if len(fields) > 4 else "unknown"
-            print(f"Lolipop mode {remote_path}: {mode}, size={size}")
-        except all_errors as error:
-            print(f"Lolipop mode {remote_path}: {type(error).__name__}")
 
 
 def connect_and_deploy(config: DeployConfig) -> int:
@@ -136,9 +108,7 @@ def connect_and_deploy(config: DeployConfig) -> int:
         client.prot_p()
         client.set_pasv(True)
         client.cwd("/")
-        uploaded = deploy_files(client, config.source, config.remote_dir)
-        log_remote_modes(client)
-        return uploaded
+        return deploy_files(client, config.source, config.remote_dir)
     finally:
         try:
             client.quit()
