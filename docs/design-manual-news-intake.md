@@ -28,6 +28,7 @@ data/manual-intake/<comment-id>/
   document.json
   topic.json
   expansion.json
+  evidence-adequacy.json
   fact_ledger_<date>.json
   articles_<date>.json
   review.json
@@ -49,9 +50,10 @@ data/manual-intake/<comment-id>/
 
 - 持ち込みで免除するのは日次ランキングとカテゴリ枠だけ。
 - 関連角度はroot事実の複数ソース数・EVSを水増ししない。
-- source expansionが0件でも、seed記事だけで台帳とclaim gateを通る狭い記事案はレビューへ出せる。存在しない反応・背景は補わない。
+- 取得本文が `usable` の場合だけ、source expansionが0件でも台帳とclaim gateへ進める。短いmetaや埋め込み本文しか取れない `limited`、またはUI殻だけの `unusable` は、中心事実が一致する全文検証済みroot資料を1件以上得られなければ `evidence_too_sparse` で止める。存在しない反応・背景は補わない。
 - `summarizeTopic` が実際に使用したledgerを標準形式で保存し、修正再生成にも同じledgerを使う。
-- ledger欠落またはgated violationがある場合はレビューIssueを作らない。
+- 全記事でroot claim 3件以上を必須にし、興行・data report・context_value=highの記事はroot claim 6件以上、`key_numbers` を含む2種類以上の編集役割を必須にする。不足時はevidenceの範囲内で台帳抽出を1回だけ再試行し、なお不足なら `ledger_too_thin` としてレビューIssueを作らない。
+- ledger欠落またはgated violationがある場合もレビューIssueを作らない。
 
 ## 5. レビュー・公開・X
 
@@ -97,6 +99,7 @@ data/manual-intake/<comment-id>/
 - 重要な数字claimは原則60%以上を `what_happened` で使い、値・比較対象・時点を一緒に示す。
 - 利用可能claimに明示された編集役割は最低1件ずつ使う。根拠にない役割や背景は作らない。
 - 生成後に `article_depth` を計測する。独立claimの60%を使えていない、`what_happened` が短すぎる、重要数字を落とす、または独自の詳細節が残る場合は一度だけ再生成する。再生成後も不合格なら `article_too_thin` としてレビューIssueを作らない。
+- 本文のclaim使用率は `what_happened` のclaim refsと実際の数値・固有名アンカーだけで計測する。注目ポイント、反応、日本向け補足のrefsで本文の厚みを水増ししない。
 - 持ち込みIssueの冒頭には使用claim数、カバレッジ、重要数字claimの使用数を表示する。詳細節数は表示しない。
 
 ### 8.1 周辺根拠の取得と受け渡し（2026-08-13）
@@ -104,6 +107,8 @@ data/manual-intake/<comment-id>/
 - 元URLの取得は、同一ホストの安全検査済み公開IPに対して最大3回まで再試行する。一時的な接続失敗や遅延だけで題材を失わない。URL安全検査、サイズ上限、redirect再検査は緩めない。
 - 人物インタビューでは、作品名より中心人物を優先し、「人物名＋熱搜／熱議／回应／讨论」を別角度の探索語にする。本文に人民日報などの明示された元見出しがある場合は「人物名＋媒体名＋元見出し」も中心出来事の検索語に加える。
 - corroboration は「中心人物＋特徴的な出来事・状態」が一致すれば候補にできる。ただし一般語（演员、作品、动态など）だけの一致は認めず、本文取得後のclaim coverageを必須にする。
+- 数値集計記事は、検索結果のtitleとsnippetを候補発見にだけ使い、全文取得後に「中心数値＋イベント名＋指標」が一致した資料だけをcorroborationにする。snippet自体はclaimやevidenceにしない。
+- HTML本文は先頭selectorの長さだけで決めず、article/main、JSON-LD、埋め込みJS、meta description、bodyを採点する。本文文字数、文数、既知UI文言の比率、数値・時点アンカーを `document.json` に保存し、古いUI殻キャッシュも再利用しない。
 - `related_angle` は全文検証済みの資料だけを事実台帳へ渡す。root eventの複数ソース数や裏付けには加えず、`scope=related_angle` のclaimとして分離する。確認できないSNS反応は書かない。
 - 根拠密度の再生成では前回下書きを入力に残し、独立claimと重要数字を `what_happened` に整理するよう指示する。品質ゲートそのものは変更しない。
 - 公開ページ、レビューIssue、レビューUIのすべてで通常記事と同じ段落構成を使う。持ち込みも `detail_sections: []` とする。

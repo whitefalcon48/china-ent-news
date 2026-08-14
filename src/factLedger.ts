@@ -26,10 +26,11 @@ export async function extractFactLedger(
   evidence: RawArticle[],
   provider: AiProvider,
   budget?: LlmCallBudget,
-  model?: string
+  model?: string,
+  retryInstruction = ""
 ): Promise<FactLedgerExtractionResult> {
   try {
-    const prompt = buildFactLedgerPrompt(topic, evidence);
+    const prompt = buildFactLedgerPrompt(topic, evidence, retryInstruction);
     const generate = async (request: string) => {
       try {
         return provider === "deepseek"
@@ -94,7 +95,7 @@ export async function writeFactLedgerFile(
   return outputPath;
 }
 
-export function buildFactLedgerPrompt(topic: TopicCandidate, evidence: RawArticle[]) {
+export function buildFactLedgerPrompt(topic: TopicCandidate, evidence: RawArticle[], retryInstruction = "") {
   return `あなたは中国エンタメニュースの事実整理AIです。1つのトピックと複数のevidenceから、後工程が日本語記事を書くための「事実台帳」をJSONで作ります。
 
 最重要ルール: 後工程はこの台帳だけを使って記事を書き、台帳に無い情報は一切書けません。evidenceにある重要情報を漏らさず、evidenceに無い情報を混ぜないでください。あなた自身の知識・記憶にある背景情報（賞の仕組み、人物の経歴、過去の出来事など）は、evidenceに書かれていない限り、claimにもtermsにも一切入れてはいけません。
@@ -142,7 +143,11 @@ claimの分類（type）:
 - topic_type: ${topic.topic_type}
 
 evidence一覧:
-${formatEvidenceForPrompt(evidence)}`;
+${formatEvidenceForPrompt(evidence)}${retryInstruction ? `
+
+再抽出指示:
+前回の台帳には次の不足がありました: ${retryInstruction}
+evidenceに実在する異なる数字・政策・現場変化・産業波及を拾い直してください。同じ事実の言い換えで件数を増やさず、evidenceに無い事実は絶対に追加しないでください。` : ""}`;
 }
 
 /**

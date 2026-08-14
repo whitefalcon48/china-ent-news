@@ -18,6 +18,49 @@ assert.deepEqual(rankTopicSearchQueries(baseTopic).slice(0, 2), ["足球运动�
 assert.equal(assessSourceRelevance(baseTopic, evidence("前中超门将王年将成开始拍短剧了！自称此前工资约3000元", "https://example.com/relevant"), "足球运动员 转型 短剧").accepted, true);
 assert.equal(assessSourceRelevance(baseTopic, evidence("短剧演员王年将成拍摄时意外受伤", "https://example.com/other-event"), "王年将成 短剧演员").accepted, false);
 
+const summerBoxOfficeTopic = {
+  ...baseTopic,
+  topic_type: "box_office",
+  topic_key: "2026年暑期档电影票房",
+  title_hint: "2026暑期档电影票房超92亿元",
+  event_sentence: "2026年暑期档映画興行収入が92億元を超えた",
+  search_queries: ["暑期档电影票房超92亿"],
+  main_entities: { people: [], works: [], organizations: [], events: ["2026年暑期档"] }
+} as unknown as TopicCandidate;
+assert.equal(
+  assessSourceRelevance(summerBoxOfficeTopic, evidence("2026暑期档票房突破92亿元，连续34天单日票房超亿元", "https://example.com/box-office"), "暑期档电影票房超92亿").accepted,
+  true,
+  "an unspaced Chinese query and 超/突破 wording variants reach full-page validation"
+);
+assert.equal(
+  assessSourceRelevance(summerBoxOfficeTopic, {
+    ...evidence("暑期档市场最新观察", "https://example.com/snippet-match"),
+    key_points: ["截至8月13日晚，2026暑期档票房突破92亿元，连续34天单日票房超亿元。"]
+  }, "暑期档电影票房超92亿").accepted,
+  true,
+  "Serper snippets may admit a candidate to full-page validation but never become evidence themselves"
+);
+assert.equal(
+  assessSourceRelevance(summerBoxOfficeTopic, evidence("2026暑期档票房突破192亿元", "https://example.com/wrong-central-number"), "暑期档电影票房超92亿").accepted,
+  false,
+  "192亿元 must not consume a full-page validation slot for the 92亿元 event"
+);
+for (const [amount, expected] of [["92亿元", true], ["92亿", true], ["90亿元", false], ["80亿元", false], ["192亿元", false], ["920亿元", false]] as const) {
+  const coverage = assessClaimCoverage(summerBoxOfficeTopic, {
+    title: `2026暑期档票房突破${amount}`,
+    text: `截至8月13日，2026暑期档票房突破${amount}，影片持续上映。`
+  });
+  assert.equal(coverage.matched, expected, `${amount} must ${expected ? "match" : "not match"} the central 92亿元 claim`);
+}
+assert.deepEqual(rankRelatedAngleSearchQueries(summerBoxOfficeTopic).slice(0, 3), [
+  "2026年暑期档 热搜", "2026年暑期档 热议", "2026年暑期档 观众讨论"
+], "aggregate events also receive bounded reception queries");
+assert.equal(
+  assessSourceRelevance(summerBoxOfficeTopic, evidence("2026暑期档票房话题引发观众讨论", "https://example.com/summer-reaction"), "2026年暑期档 观众讨论", "related_angle").accepted,
+  true,
+  "2026年暑期档 and 2026暑期档 are the same event anchor"
+);
+
 const liXuejianTopic = {
   ...baseTopic,
   topic_key: "李雪健抗癌26年听力下降",

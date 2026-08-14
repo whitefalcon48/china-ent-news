@@ -22,6 +22,7 @@ const TERM_GROUPS: Array<{ test: RegExp; match: RegExp }> = [
 export type SourceRelevanceReason =
   | "accepted_title_match"
   | "accepted_query_match"
+  | "accepted_fact_anchor_match"
   | "accepted_related_entity_and_angle"
   | "missing_title_or_url"
   | "unsafe_url"
@@ -47,7 +48,10 @@ export function assessSourceRelevance(
 
   const queries = query ? [query] : rankTopicSearchQueries(topic);
   const text = normalizeText(`${evidence.title} ${evidence.key_points.join(" ")}`);
-  if (queries.some((candidate) => matchesSpecificQuery(topic, candidate, text))) {
+  if (queries.some((candidate) => matchesFactAnchorQuery(candidate, text))) {
+    return { accepted: true, reason: "accepted_fact_anchor_match" };
+  }
+  if (queries.some((candidate) => matchesNormalizedQuery(candidate, text) || matchesSpecificQuery(topic, candidate, text))) {
     return { accepted: true, reason: "accepted_query_match" };
   }
   return { accepted: false, reason: "weak_topic_match" };
@@ -93,7 +97,7 @@ export function rankTopicSearchQueries(topic: TopicCandidate) {
 export function rankRelatedAngleSearchQueries(topic: TopicCandidate) {
   const entityCandidates = isObituaryRoot(topic) || isPersonInterviewTopic(topic)
     ? [...topic.main_entities.people, ...topic.main_entities.works]
-    : [...topic.main_entities.works, ...topic.main_entities.people];
+    : [...topic.main_entities.works, ...topic.main_entities.people, ...topic.main_entities.events];
   const entities = entityCandidates
     .map((value) => value.trim())
     .filter((value, index, values) => value.length >= 2 && values.indexOf(value) === index)
@@ -173,9 +177,9 @@ function personInterviewContext(topic: TopicCandidate) {
 }
 
 function assessRelatedAngleRelevance(topic: TopicCandidate, evidence: EvidenceLike, query?: string) {
-  const text = normalizeText(`${evidence.title} ${evidence.key_points.join(" ")}`);
-  const canonicalEntities = [...topic.main_entities.people, ...topic.main_entities.works]
-    .map(normalizeText)
+  const text = normalizeEventAnchor(normalizeText(`${evidence.title} ${evidence.key_points.join(" ")}`));
+  const canonicalEntities = [...topic.main_entities.people, ...topic.main_entities.works, ...topic.main_entities.events]
+    .map((value) => normalizeEventAnchor(normalizeText(value)))
     .filter((value, index, values) => value.length >= 2 && values.indexOf(value) === index);
   if (!canonicalEntities.length || !canonicalEntities.some((entity) => text.includes(entity))) {
     return { accepted: false, reason: "related_missing_canonical_entity" as const };
@@ -191,6 +195,12 @@ function assessRelatedAngleRelevance(topic: TopicCandidate, evidence: EvidenceLi
 }
 
 function matchesRootEventContext(topic: TopicCandidate, text: string) {
+  if (topic.topic_type === "box_office") {
+    const eventMatched = topic.main_entities.events
+      .map((value) => normalizeEventAnchor(normalizeText(value)))
+      .some((event) => event.length >= 4 && normalizeEventAnchor(text).includes(event));
+    if (eventMatched && /票房/u.test(text)) return true;
+  }
   const rootTerms = [topic.topic_key, topic.title_hint, topic.event_sentence, ...(topic.search_queries ?? [])]
     .filter((value): value is string => typeof value === "string")
     .flatMap(splitQuery)
@@ -210,6 +220,8 @@ function relatedAngleTerms(topic: TopicCandidate) {
     ? ["回应", "生涯", "悼念", "回顾"]
     : isPersonInterviewTopic(topic)
       ? ["热搜", "热议", "回应", "讨论"]
+    : topic.topic_type === "box_office"
+      ? ["热搜", "热议", "观众讨论"]
     : topic.main_entities.works.length
       ? ["口碑", "票房", "幕后", "争议"]
       : ["作品", "粉丝", "回应", "动态"];
@@ -238,7 +250,8 @@ function getEntityTokens(topic: TopicCandidate) {
   return [
     ...topic.main_entities.people,
     ...topic.main_entities.works,
-    ...topic.main_entities.organizations
+    ...topic.main_entities.organizations,
+    ...topic.main_entities.events
   ].map(normalizeText).filter((term) => term.length >= 2);
 }
 
@@ -247,12 +260,51 @@ function isEntityTerm(term: string, entities: string[]) {
 }
 
 function matchesTerm(text: string, term: string) {
-  if (text.includes(term)) return true;
+  if (normalizeEventAnchor(text).includes(normalizeEventAnchor(term))) return true;
   return TERM_GROUPS.some((group) => group.test.test(term) && group.match.test(text));
 }
 
 function normalizeText(value: string) {
   return value.toLowerCase().replace(/[^\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}a-z0-9]/gu, "");
+}
+
+function normalizeEventAnchor(value: string) {
+  return value.replace(/(20\d{2})年(?=暑期档|春节档|国庆档)/gu, "$1");
+}
+
+function normalizeComparableText(value: string) {
+  return normalizeText(value)
+    .replace(/(?:突破|超过)/gu, "超")
+    .replace(/电影(?=票房)/gu, "");
+}
+
+/**
+ * Chinese search queries are commonly written without spaces.  Treating the
+ * entire query as a single token previously made every such query fail the
+ * `terms.length < 2` guard before full-page validation.  This is discovery
+ * only: accepted candidates still have to pass document and claim coverage.
+ */
+function matchesNormalizedQuery(query: string, normalizedText: string) {
+  const normalizedQuery = normalizeComparableText(query);
+  if (normalizedQuery.length < 8) return false;
+  return normalizeComparableText(normalizedText).includes(normalizedQuery);
+}
+
+function matchesFactAnchorQuery(query: string, normalizedText: string) {
+  const comparableQuery = normalizeComparableText(query);
+  const comparableText = normalizeComparableText(normalizedText);
+  const centralNumbers = comparableQuery.match(/\d+(?:\.\d+)?(?:亿|万|元|部|天|日|%)/gu) ?? [];
+  const observedNumbers = new Set((comparableText.match(/\d+(?:\.\d+)?(?:亿|万|元|部|天|日|%)/gu) ?? []).map(normalizeAmount));
+  if (!centralNumbers.length || !centralNumbers.some((anchor) => observedNumbers.has(normalizeAmount(anchor)))) return false;
+  const contextMatched = /暑期档|春节档|国庆档|电影市场/u.test(comparableQuery)
+    && /暑期档|春节档|国庆档|电影市场/u.test(comparableText);
+  const metricMatched = /票房|观影人次|场次|平均票价/u.test(comparableQuery)
+    && /票房|观影人次|场次|平均票价/u.test(comparableText);
+  return contextMatched && metricMatched;
+}
+
+function normalizeAmount(value: string) {
+  return value.replace(/亿元$/u, "亿").replace(/万元$/u, "万");
 }
 
 const RELATED_EVENT_TERMS = new Set([
@@ -263,8 +315,8 @@ const RELATED_GENERIC_TERMS = new Set(["电影", "影视", "短剧", "新闻", "
 const GENERIC_QUERY_TERMS = new Set(["电影", "影视", "短剧", "短剧演员", "新闻", "作品", "演员", "娱乐", "动态", "经历"].map(normalizeText));
 
 function hasStrongTitleMatch(left: string, right: string) {
-  const normalizedLeft = normalizeText(left);
-  const normalizedRight = normalizeText(right);
+  const normalizedLeft = normalizeComparableText(left);
+  const normalizedRight = normalizeComparableText(right);
   if (Math.min(normalizedLeft.length, normalizedRight.length) < 8) return false;
   return normalizedLeft.includes(normalizedRight) || normalizedRight.includes(normalizedLeft);
 }

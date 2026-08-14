@@ -28,6 +28,14 @@ export function assessClaimCoverage(
   const documentText = normalize(`${document.title} ${document.text}`);
   const entityMatched = targetTerms.some((term) => documentText.includes(term));
 
+  const numericAggregate = assessNumericAggregateCoverage(`${topic.title_hint} ${topic.event_sentence}`, `${document.title} ${document.text}`);
+  if (numericAggregate && !numericAggregate.matched) {
+    return { target_claim: target, observed_claim: observed, matched: false, reason: numericAggregate.reason };
+  }
+  if (numericAggregate?.matched) {
+    return { target_claim: target, observed_claim: observed, matched: true, reason: numericAggregate.reason };
+  }
+
   if (!entityMatched) {
     return { target_claim: target, observed_claim: observed, matched: false, reason: "topic_entity_not_found_in_document" };
   }
@@ -35,6 +43,26 @@ export function assessClaimCoverage(
     return { target_claim: target, observed_claim: observed, matched: false, reason: "different_claim_kind" };
   }
   return { target_claim: target, observed_claim: observed, matched: true, reason: target === "general" ? "entity_and_query_match" : "same_claim_kind" };
+}
+
+function assessNumericAggregateCoverage(targetText: string, observedText: string) {
+  if (!/票房/u.test(targetText) || !/(?:暑期档|春节档|国庆档|电影市场)/u.test(targetText)) return null;
+  const centralNumbers = targetText.match(/\d+(?:\.\d+)?(?:亿元|万元|亿|万|元)/gu) ?? [];
+  if (!centralNumbers.length) return null;
+  const observedNumbers = new Set((observedText.match(/\d+(?:\.\d+)?(?:亿元|万元|亿|万|元)/gu) ?? []).map(normalizeAggregateNumber));
+  if (!centralNumbers.some((number) => observedNumbers.has(normalizeAggregateNumber(number)))) {
+    return { matched: false, reason: "central_number_not_found" };
+  }
+  const eventMatched = /(暑期档|春节档|国庆档|电影市场)/u.exec(targetText)?.[1];
+  if (!eventMatched || !observedText.includes(eventMatched)) return { matched: false, reason: "event_anchor_not_found" };
+  const targetYear = /20\d{2}/u.exec(targetText)?.[0];
+  if (targetYear && !observedText.includes(targetYear)) return { matched: false, reason: "event_anchor_not_found" };
+  if (!/票房/u.test(observedText)) return { matched: false, reason: "metric_anchor_not_found" };
+  return { matched: true, reason: "numeric_aggregate_match" };
+}
+
+function normalizeAggregateNumber(value: string) {
+  return value.replace(/亿元$/u, "亿").replace(/万元$/u, "万");
 }
 
 function claimKind(value: string): ClaimKind {

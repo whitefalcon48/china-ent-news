@@ -36,6 +36,14 @@
 - ✅ 元記事取得は安全検査済みIPの範囲で最大3回再試行し、一時的な `fetch_timeout` を吸収する。記事深度ゲートは緩めず、再生成時に前回下書きと具体的な必要節数を渡す。
 - 受け入れ実測は `npm run check`、`test:manual-intake`、`test:sources`、`test:evidence-expansion`、`test:related-evidence`、`test:review-presentation`、`test:site-feed` と Actions再生成で確認する。
 
+## 2026-08-14 実装・ローカル検証完了（Issue #48 スカスカ記事の根本修正）
+
+- ✅ 旧run `31767847014` は、CCTVの38KB HTML内にあるmeta/埋め込み本文を見落として59字の共有UI殻を本文扱いし、関連検索10件を全落ちさせた後、root claim 1件を「1/1=100%」として誤合格していたと特定した。
+- ✅ article/main、JSON-LD、埋め込みJS、meta、bodyの候補採点と本文品質診断を追加。`limited` な起点は全文検証済みroot資料が1件以上なければ止め、旧59字UI殻のキャッシュも再利用しない。
+- ✅ 中国語の無空白query、超/突破、电影票房/票房、Serper snippetを候補発見に使えるようにし、全文側では中心値92億元・2026暑期档・票房の一致を必須化。90/80/192/920億元はroot裏付けとして拒否する。
+- ✅ 生成前に台帳の十分性を検査し、興行・data report・high contextはroot claim 6件以上、key_numbersを含む編集役割2種以上を要求。不足時は台帳抽出を1回再試行する。本文depthはwhat_happenedだけで計測し、注目ポイント等のrefsでは水増しできない。
+- ✅ 持ち込みも通常記事と同じ `detail_sections: []` を維持。`npm run check`、`test:sources`、`test:evidence-expansion`、`test:manual-intake`、`test:related-evidence`、`test:review-presentation`、`test:site-feed`、`build:site` で回帰確認する。Actions再生成の実測値はpush後に追記する。
+
 ????: 2026-08-11???UI??????????????
 
 ## 2026-08-11 ??????????????

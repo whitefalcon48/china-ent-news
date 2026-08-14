@@ -7,11 +7,12 @@ import path from "node:path";
 import { PassThrough } from "node:stream";
 import { buildManualReviewIssue } from "./intake/buildManualReviewIssue.js";
 import { assessArticleDepth } from "./articleDepth.js";
+import { assessLedgerAdequacy } from "./ledgerAdequacy.js";
 import { enforceStandardArticleFormat, ensureCanonicalPersonName, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
-import { findRecentIntakeDocument } from "./intake/processManualIntake.js";
+import { assessManualEvidenceAdequacy, findRecentIntakeDocument } from "./intake/processManualIntake.js";
 import type { FactLedger, ProcessedArticle } from "./types.js";
 
 async function main() {
@@ -26,6 +27,13 @@ async function main() {
   assert.equal(isPrivateAddress("198.18.0.1"), true, "IPv4 benchmark range");
   assert.equal(isPrivateAddress("::ffff:192.168.1.1"), true, "IPv4-mapped IPv6 private range");
   assert.equal(isPrivateAddress("2001:db8::1"), true, "IPv6 documentation range");
+  const sparseAdequacy = assessManualEvidenceAdequacy({
+    requested_url: "https://example.com", final_url: "https://example.com", title: "短い記事",
+    text: "2026年暑期档の票房は92億元を超えた。120部以上が上映された。", published_date: "2026-08-14",
+    extraction_quality: { status: "limited", raw_chars: 42, meaningful_chars: 42, sentence_count: 2, boilerplate_ratio: 0, factual_anchor_count: 4 },
+    fetched_at: "2026-08-14T00:00:00Z", content_type: "text/html"
+  }, { error: "source_expansion_failed", graceful_fallback: true });
+  assert.equal(sparseAdequacy.passed, false, "limitedな起点だけで周辺報道が確認できない場合は生成へ進めない");
   const unsafe = await fetchIntakeDocument("http://127.0.0.1/news", { lookupHost: async () => ["127.0.0.1"] });
   assert.deepEqual(unsafe, { ok: false, error: "unsafe_url" });
   const fetched = await fetchIntakeDocument("https://news.example/article", {
@@ -53,7 +61,7 @@ async function main() {
             Object.assign(response, { statusCode: 200, headers: { "content-type": "text/html" } });
             queueMicrotask(() => {
               callback(response);
-              (response as unknown as PassThrough).end("<html><title>再試行</title><article>最初の接続だけが失敗しても、同じ安全検査済みホストへ再試行して本文を取得できることを確認するテストです。</article></html>");
+              (response as unknown as PassThrough).end("<html><title>再試行</title><article>2026年8月14日の最初の接続だけが失敗しました。同じ安全検査済みホストへ2回目の接続を行い、本文を取得できることを確認します。</article></html>");
             });
           }
           return request;
@@ -162,6 +170,37 @@ async function main() {
     };
     const thin = { ...article.summary!, claim_refs: { ...article.summary!.claim_refs, what_happened: ["C1", "C2"] }, detail_sections: [] };
     assert.equal(assessArticleDepth(thin, richLedger, "manual_evidence_rich").passed, false, "根拠12件を2件だけに圧縮した下書きを止める");
+    const oneClaimLedger: FactLedger = {
+      topic_key: "2026年暑期档电影票房",
+      claims: [claim("C1", "2026年暑期档の映画興行収入が92億元を超えた。", ["92亿元"])],
+      terms: [], japan_availability: { status: "not_in_evidence", detail: "", evidence_refs: [] }, unresolved: []
+    };
+    const oneClaimSummary = {
+      ...article.summary!,
+      lead: "2026年暑期档の映画興行収入が92億元を超えました。",
+      what_happened: "2026年暑期档の映画興行収入が92億元を超えました。",
+      claim_refs: { ...article.summary!.claim_refs, what_happened: ["C1"], why_it_matters: ["C1"] }
+    };
+    const oneClaimDepth = assessArticleDepth(oneClaimSummary, oneClaimLedger, "manual_evidence_rich");
+    assert.equal(oneClaimDepth.used_claims, 1, "中国語の92亿元と表示変換後の92億元を同じ数値として扱う");
+    assert.equal(oneClaimDepth.passed, false, "1/1=100%でも、台帳そのものが薄い記事は公開候補にしない");
+    assert.ok(oneClaimDepth.reasons.includes("insufficient_eligible_claims:1<3"));
+    const commentOnlyDepth = assessArticleDepth({
+      ...oneClaimSummary,
+      what_happened: "根拠を反映していない本文です。",
+      claim_refs: { ...oneClaimSummary.claim_refs, what_happened: [], why_it_matters: ["C1"] }
+    }, oneClaimLedger, "manual_evidence_rich");
+    assert.equal(commentOnlyDepth.used_claims, 0, "コメント欄のclaim refで本文の厚みを水増ししない");
+    const simplifiedEntityLedger: FactLedger = {
+      ...oneClaimLedger,
+      claims: [{ ...oneClaimLedger.claims[0]!, text: "赵丽颖が新作について語った。", entities: ["赵丽颖"], numbers: [] }]
+    };
+    const japaneseDisplayEntityDepth = assessArticleDepth({
+      ...oneClaimSummary,
+      what_happened: "趙麗穎が新作について語りました。",
+      claim_refs: { ...oneClaimSummary.claim_refs, what_happened: ["C1"] }
+    }, simplifiedEntityLedger, "manual_evidence_rich");
+    assert.equal(japaneseDisplayEntityDepth.used_claims, 1, "簡体字の台帳entityと日本向け表示字形を同じ固有名として扱う");
     const rich = {
       ...thin,
       what_happened: `${richLedger.claims.map((item) => item.text).join("")}市場規模、観客負担、政策支援、施設の変化、周辺産業への波及を、確認できた数字と事実に沿って一続きの本文で整理した。`,
@@ -174,6 +213,19 @@ async function main() {
     assert.equal(depth.passed, true, depth.reasons.join(", "));
     assert.equal(depth.used_claims, 12);
     assert.equal(depth.used_number_claims, 8);
+    const boxOfficeTopic = {
+      topic_type: "box_office", context_value: "high",
+      topic_key: "2026年暑期档映画興行", title_hint: "2026暑期档电影票房超92亿元", event_sentence: "92億元を超えた", search_queries: []
+    } as unknown as import("./types.js").TopicCandidate;
+    const adequateLedger = {
+      ...richLedger,
+      claims: richLedger.claims.map((item, index) => ({
+        ...item,
+        editorial_role: index < 4 ? "key_numbers" as const : index < 8 ? "policy_support" as const : "industry_spillover" as const
+      }))
+    };
+    assert.equal(assessLedgerAdequacy(oneClaimLedger, boxOfficeTopic).passed, false, "興行データ記事は1 claimでは生成へ進めない");
+    assert.equal(assessLedgerAdequacy(adequateLedger, boxOfficeTopic).passed, true, "6件以上かつ複数の編集役割を持つ台帳は通す");
     const hallucinated = {
       ...standardRich,
       what_happened: `『台帳にない作品名』について報じられました。${standardRich.what_happened}`,

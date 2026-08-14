@@ -469,6 +469,8 @@ export type SourceExpansionEvidence = {
   media_family?: string;
   claim_coverage?: ClaimCoverage;
   document_text_length?: number;
+  document_extraction_method?: string;
+  document_extraction_quality?: "usable" | "limited" | "unusable";
 };
 
 export type EvidenceRiskClass = "low" | "medium" | "high";
@@ -494,6 +496,8 @@ export type SourceExpansionObservation = {
   reason: string;
   published_date?: string;
   claim_coverage?: ClaimCoverage;
+  document_extraction_method?: string;
+  document_extraction_quality?: "usable" | "limited" | "unusable";
 };
 
 export type SourceResearchCandidate = {

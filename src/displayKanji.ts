@@ -9,7 +9,7 @@ export type DisplayResidue = { field: string; chars: string[] };
 const toJapaneseShinjitai = OpenCC.Converter({ from: "cn", to: "jp" });
 const openCcSafeInputs = new Set<string>(kanjiConfig.opencc_safe);
 
-function convertDisplayText(value: string) {
+export function convertDisplayText(value: string) {
   // Project-specific choices (for example 奖 -> 賞) take precedence over the
   // general OpenCC cn -> jp conversion. No proper noun or industry term is
   // exempt: every public field follows the same display rule.

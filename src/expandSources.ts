@@ -289,8 +289,10 @@ export async function searchSerperOrganic(query: string): Promise<SerperOrganicI
 function toSerperEvidence(item: SerperOrganicItem, query: string, lane: SourceResearchLane): SourceExpansionEvidence {
   const url = item.link ?? "";
   const hostname = getHostname(url);
+  const title = cleanText(item.title ?? "");
+  const snippet = cleanText(item.snippet ?? "");
   return {
-    title: cleanText(item.title ?? ""),
+    title,
     url,
     source_name: hostname || "Serper検索",
     source_type: getSerperSourceType(hostname),
@@ -298,7 +300,9 @@ function toSerperEvidence(item: SerperOrganicItem, query: string, lane: SourceRe
     route: SERPER_ENDPOINT,
     query,
     evidence_role: lane,
-    key_points: [cleanText(item.title ?? "")].filter(Boolean),
+    // The snippet is discovery-only. validateDiscoveredEvidence replaces
+    // key_points with fetched page text before it can reach the fact ledger.
+    key_points: [title, snippet].filter(Boolean),
     validation_status: "discovered",
     media_family: normalizeMediaFamily(url)
   };
@@ -557,15 +561,20 @@ async function validateDiscoveredEvidence(topic: TopicCandidate, item: SourceExp
     const contentType = response.headers.get("content-type") ?? "";
     if (contentType && !/html|xml|text\//i.test(contentType)) return { observation: toObservation(topic, item, "rejected", "non_document_content_type") };
     const snapshot = extractDocumentSnapshot(await response.text(), item.title);
-    if (snapshot.text.length < 80) return { observation: toObservation(topic, item, "rejected", "document_text_too_short") };
-    if (!snapshot.published_date) return { observation: toObservation(topic, item, "rejected", "missing_published_date") };
+    const extractionDiagnostic = {
+      document_extraction_method: snapshot.extraction_method,
+      document_extraction_quality: snapshot.extraction_quality.status
+    } as const;
+    if (snapshot.extraction_quality.status === "unusable") return { observation: { ...toObservation(topic, item, "rejected", "document_text_unusable"), ...extractionDiagnostic } };
+    if (snapshot.text.length < 80) return { observation: { ...toObservation(topic, item, "rejected", "document_text_too_short"), ...extractionDiagnostic } };
+    if (!snapshot.published_date) return { observation: { ...toObservation(topic, item, "rejected", "missing_published_date"), ...extractionDiagnostic } };
     if (lane === "related_angle" && !isCurrentRelatedAngle(topic, snapshot.published_date)) {
-      return { observation: toObservation(topic, item, "rejected", "related_angle_outside_current_window", snapshot.published_date) };
+      return { observation: { ...toObservation(topic, item, "rejected", "related_angle_outside_current_window", snapshot.published_date), ...extractionDiagnostic } };
     }
     const relevance = assessSourceRelevance(topic, { title: snapshot.title || item.title, url: response.url, key_points: [snapshot.text.slice(0, 2000)] }, query, lane);
-    if (!relevance.accepted) return { observation: toObservation(topic, item, "rejected", relevance.reason, snapshot.published_date) };
+    if (!relevance.accepted) return { observation: { ...toObservation(topic, item, "rejected", relevance.reason, snapshot.published_date), ...extractionDiagnostic } };
     const coverage = lane === "corroboration" ? assessClaimCoverage(topic, { title: snapshot.title || item.title, text: snapshot.text }) : undefined;
-    if (coverage && !coverage.matched) return { observation: toObservation(topic, item, "rejected", coverage.reason, snapshot.published_date, coverage) };
+    if (coverage && !coverage.matched) return { observation: { ...toObservation(topic, item, "rejected", coverage.reason, snapshot.published_date, coverage), ...extractionDiagnostic } };
     const evidence: SourceExpansionEvidence = {
       ...item,
       title: snapshot.title || item.title,
@@ -579,6 +588,7 @@ async function validateDiscoveredEvidence(topic: TopicCandidate, item: SourceExp
       media_family: normalizeMediaFamily(response.url),
       claim_coverage: coverage,
       document_text_length: snapshot.text.length,
+      ...extractionDiagnostic,
       ...(lane === "related_angle" ? { angle_kind: inferRelatedAngleKind(query, snapshot.title || item.title) } : {})
     };
     return { evidence, observation: toObservation(topic, evidence, "accepted", evidence.validation_reason ?? "document_verified", snapshot.published_date, coverage) };
@@ -614,7 +624,9 @@ function toObservation(
     status,
     reason,
     ...(publishedDate ? { published_date: publishedDate } : {}),
-    ...(claimCoverage ? { claim_coverage: claimCoverage } : {})
+    ...(claimCoverage ? { claim_coverage: claimCoverage } : {}),
+    ...(item.document_extraction_method ? { document_extraction_method: item.document_extraction_method } : {}),
+    ...(item.document_extraction_quality ? { document_extraction_quality: item.document_extraction_quality } : {})
   };
 }
 

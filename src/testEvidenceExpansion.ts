@@ -67,6 +67,23 @@ const snapshot = extractDocumentSnapshot(`
 `);
 assert.equal(snapshot.published_date, "2026-07-24");
 assert.match(snapshot.text, /验证HTML正文/);
+const cctvDynamicSnapshot = extractDocumentSnapshot(`
+  <html><head>
+    <meta property="og:title" content="2026暑期档电影票房超92亿元">
+    <meta name="description" content="截至8月13日晚，2026暑期档电影票房已突破92亿元。今年暑期档影片类型丰富，超120部中外影片陆续上映。">
+  </head><body>
+    <div class="content">加载更多 正在阅读：2026暑期档电影票房超92亿元 分享 扫一扫 分享到微信 手机看 A- A+</div>
+    <script>var contentdate = '<p>[!--begin:htmlVideoCode--]video-id[!--end:htmlVideoCode--]</p><p>截至目前，2026暑期档电影票房已突破92亿元。今年暑期档影片类型丰富，超120部中外影片陆续上映。</p>';</script>
+    <div id="content_area"></div>
+  </body></html>
+`);
+assert.equal(cctvDynamicSnapshot.extraction_method, "meta_description", "dynamic CCTV pages use factual metadata instead of share-button boilerplate");
+assert.equal(cctvDynamicSnapshot.extraction_quality.status, "limited", "short but factual CCTV metadata is a limited seed, not a complete document");
+assert.match(cctvDynamicSnapshot.text, /8月13日晚/);
+assert.match(cctvDynamicSnapshot.text, /超120部/);
+assert.doesNotMatch(cctvDynamicSnapshot.text, /扫一扫/);
+const cctvShellOnly = extractDocumentSnapshot(`<html><body><div class="content">加载更多 正在阅读：2026暑期档电影票房超92亿元 分享 扫一扫 分享到微信 手机看 A- A+</div></body></html>`);
+assert.equal(cctvShellOnly.extraction_quality.status, "unusable", "a long share shell is not mistaken for article text");
 assert.equal(isCurrentRelatedAngle({ ...delayTopic, published_date_range: { earliest: "2026-08-13", latest: "2026-08-13" } }, "2026-08-12"), true);
 assert.equal(isCurrentRelatedAngle({ ...delayTopic, published_date_range: { earliest: "2026-08-13", latest: "2026-08-13" } }, "2023-08-18"), false, "old reactions cannot be attached as reception of a current interview");
 

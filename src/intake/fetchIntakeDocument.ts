@@ -1,7 +1,7 @@
 import { lookup } from "node:dns/promises";
 import * as http from "node:http";
 import * as https from "node:https";
-import { extractDocumentSnapshot } from "../evidence/documentSnapshot.js";
+import { extractDocumentSnapshot, type DocumentExtractionQuality } from "../evidence/documentSnapshot.js";
 
 const MAX_REDIRECTS = 3;
 const MAX_REQUEST_ATTEMPTS = 3;
@@ -21,6 +21,8 @@ export type IntakeDocument = {
   title: string;
   text: string;
   published_date: string;
+  extraction_method?: string;
+  extraction_quality?: DocumentExtractionQuality;
   fetched_at: string;
   content_type: string;
 };
@@ -84,7 +86,7 @@ export async function fetchIntakeDocument(value: string, options: IntakeFetchOpt
       if (response.contentLength > MAX_DOCUMENT_BYTES) return { ok: false, error: "document_too_large" };
       const html = await response.readText(MAX_DOCUMENT_BYTES);
       const snapshot = extractDocumentSnapshot(html);
-      if (!snapshot.text || snapshot.text.length < 40) return { ok: false, error: "document_text_too_short" };
+      if (!snapshot.text || snapshot.extraction_quality.status === "unusable") return { ok: false, error: "document_text_unusable" };
       return {
         ok: true,
         document: {
@@ -93,6 +95,8 @@ export async function fetchIntakeDocument(value: string, options: IntakeFetchOpt
           title: snapshot.title,
           text: snapshot.text,
           published_date: snapshot.published_date,
+          extraction_method: snapshot.extraction_method,
+          extraction_quality: snapshot.extraction_quality,
           fetched_at: new Date().toISOString(),
           content_type: response.contentType
         }

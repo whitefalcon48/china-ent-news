@@ -4,12 +4,14 @@ import { pathToFileURL } from "node:url";
 import { ClaimCheckDiscardError } from "../claimCheck.js";
 import { ArticleDepthGateError } from "../articleDepth.js";
 import { classifyArticle, loadFilterConfig } from "../classifyArticle.js";
+import { assessExtractionQuality } from "../evidence/documentSnapshot.js";
 import { expandTopicSources } from "../expandSources.js";
+import { LedgerAdequacyGateError } from "../ledgerAdequacy.js";
 import { createReviewStateFromStoredArticles, writeReviewState } from "../review/reviewState.js";
 import { getAiProvider, summarizeTopic } from "../summarizeWithGemini.js";
 import { extractTopicSeeds } from "../topicSeeds.js";
 import { buildTopicCandidates } from "../topicCandidates.js";
-import type { AiProvider, FactLedger, ProcessedArticle, RawArticle, TopicCandidate, TopicGenerationMeta } from "../types.js";
+import type { AiProvider, FactLedger, ProcessedArticle, RawArticle, SourceExpansionResult, TopicCandidate, TopicGenerationMeta } from "../types.js";
 import { buildManualReviewIssue } from "./buildManualReviewIssue.js";
 import { fetchIntakeDocument, redactIntakeUrl, type IntakeDocument, type IntakeFetchOptions } from "./fetchIntakeDocument.js";
 import { parseManualIntake, type ManualIntakeComment } from "./parseManualIntake.js";
@@ -107,6 +109,9 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
     const evidence = collectEvidence(root, topic);
     await writeManualIntakeArtifact(parsed.commentId, "topic.json", topic, dataRoot);
     await writeManualIntakeArtifact(parsed.commentId, "expansion.json", research.expansion, dataRoot);
+    const evidenceAdequacy = assessManualEvidenceAdequacy(document, research.expansion);
+    await writeManualIntakeArtifact(parsed.commentId, "evidence-adequacy.json", evidenceAdequacy, dataRoot);
+    if (!evidenceAdequacy.passed) throw new Error(`evidence_adequacy_gate:${evidenceAdequacy.reasons.join("|")}`);
 
     processingStage = "generating";
     state = await updateManualIntakeState(state, { status: "generating", error: "" }, dataRoot);
@@ -149,6 +154,12 @@ export async function processManualIntake(options: ProcessManualIntakeOptions): 
         ...error.assessment
       }, dataRoot);
     }
+    if (error instanceof LedgerAdequacyGateError) {
+      await writeManualIntakeArtifact(parsed.commentId, "ledger-adequacy.json", {
+        status: "discarded",
+        ...error.assessment
+      }, dataRoot);
+    }
     const safeError = classifyManualIntakeError(error, processingStage);
     await updateManualIntakeState(state, { status: "failed", error: safeError }, dataRoot);
     return { ok: false, commentId: parsed.commentId, error: safeError };
@@ -173,6 +184,8 @@ export function classifyManualIntakeError(error: unknown, stage?: ManualIntakePr
   if (/^generation:(?:ledger_not_used|ledger_missing|claim_check_missing|claim_check_gated)/u.test(detail)) return "grounding_check_failed";
   if (/^claim_check_gate:/u.test(detail)) return "claim_check_failed";
   if (/^article_depth_gate:/u.test(detail)) return "article_too_thin";
+  if (/^evidence_adequacy_gate:/u.test(detail)) return "evidence_too_sparse";
+  if (/^ledger_adequacy_gate:/u.test(detail)) return "ledger_too_thin";
   const writingGate = detail.match(/^manual_writing_gate:([a-z_]+)(?::([a-z_]+):([a-z0-9_.]+))?/u);
   if (writingGate) return `grounding_${writingGate.slice(1).filter(Boolean).join("_")}`;
   if (/^AI JSON parse error:/u.test(detail)) return "summary_json_invalid";
@@ -198,7 +211,9 @@ function createInitialState(commentId: string, sourceUrl: string, note: string):
   return { version: 1, comment_id: commentId, source_url: sourceUrl, note, status: "received", created_at: now, updated_at: now };
 }
 
-async function expandManualTopic(topic: TopicCandidate): Promise<{ topic: TopicCandidate; expansion: unknown }> {
+type ManualExpansion = SourceExpansionResult | { error: string; graceful_fallback: true };
+
+async function expandManualTopic(topic: TopicCandidate): Promise<{ topic: TopicCandidate; expansion: ManualExpansion }> {
   try {
     // Expansion has a daily freshness guard because it normally works on a
     // scheduled queue. Manual intake is an explicit user request, so it gets
@@ -213,6 +228,28 @@ async function expandManualTopic(topic: TopicCandidate): Promise<{ topic: TopicC
   } catch {
     return { topic, expansion: { error: "source_expansion_failed", graceful_fallback: true } };
   }
+}
+
+export type ManualEvidenceAdequacy = {
+  passed: boolean;
+  root_document_quality: "usable" | "limited" | "unusable";
+  verified_root_expansion_count: number;
+  reasons: string[];
+};
+
+export function assessManualEvidenceAdequacy(document: IntakeDocument, expansion: ManualExpansion): ManualEvidenceAdequacy {
+  const rootQuality = document.extraction_quality?.status ?? assessExtractionQuality(document.text).status;
+  const verifiedRootExpansionCount = "evidence" in expansion
+    ? expansion.evidence.filter((item) => item.evidence_role !== "related_angle" && item.validation_status === "verified" && item.claim_coverage?.matched !== false).length
+    : 0;
+  const reasons: string[] = [];
+  if (rootQuality !== "usable" && verifiedRootExpansionCount < 1) reasons.push("limited_root_without_verified_expansion");
+  return {
+    passed: reasons.length === 0,
+    root_document_quality: rootQuality,
+    verified_root_expansion_count: verifiedRootExpansionCount,
+    reasons
+  };
 }
 
 export function preserveManualIntakeRootEvidence(initial: TopicCandidate, researched: TopicCandidate) {
@@ -249,7 +286,8 @@ export async function findRecentIntakeDocument(
       const document = JSON.parse(await fs.readFile(path.join(root, commentId, "document.json"), "utf8")) as IntakeDocument;
       const ageMs = now - Date.parse(document.fetched_at);
       if (redactIntakeUrl(document.requested_url) !== requestedUrl || ageMs < 0 || ageMs > 7 * 86_400_000) continue;
-      if (!document.text || document.text.length < 40 || !/^https?:\/\//u.test(document.final_url)) continue;
+      const quality = document.extraction_quality ?? assessExtractionQuality(document.text);
+      if (!document.text || quality.status === "unusable" || !/^https?:\/\//u.test(document.final_url)) continue;
       return { commentId, document };
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "ENOENT" && !(error instanceof SyntaxError)) throw error;

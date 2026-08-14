@@ -5,6 +5,7 @@ import { inspectDisplayKanjiResidues } from "./displayKanji.js";
 import { buildDeepSeekJsonRequest } from "./deepSeekRequest.js";
 import { resolveAiModels, resolveStageAi } from "./aiRouting.js";
 import { extractFactLedger } from "./factLedger.js";
+import { assessLedgerAdequacy, LedgerAdequacyGateError } from "./ledgerAdequacy.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { resolveSummaryTitle } from "./summaryTitle.js";
 import { createTermExpansionSession, expandTermExplanation, type TermExpansionSession } from "./termExplainExpansion.js";
@@ -103,7 +104,7 @@ export async function summarizeTopic(
     };
   }
 
-  const extraction = await extractFactLedger(topic, evidence, ledgerAi.provider, budget, ledgerAi.model);
+  let extraction = await extractFactLedger(topic, evidence, ledgerAi.provider, budget, ledgerAi.model);
   if (!extraction.succeeded || !extraction.ledger) {
     if (extraction.error.includes("llm_call_budget_exceeded")) {
       throw new LlmCallBudgetExceededError();
@@ -123,7 +124,19 @@ export async function summarizeTopic(
     };
   }
 
-  const ledger = extraction.ledger;
+  let ledger = extraction.ledger;
+  if (articleDepthProfile === "manual_evidence_rich") {
+    let adequacy = assessLedgerAdequacy(ledger, topic, evidence);
+    if (!adequacy.passed) {
+      const retried = await extractFactLedger(topic, evidence, ledgerAi.provider, budget, ledgerAi.model, adequacy.reasons.join(", "));
+      if (retried.succeeded && retried.ledger) {
+        extraction = retried;
+        ledger = retried.ledger;
+        adequacy = assessLedgerAdequacy(ledger, topic, evidence);
+      }
+    }
+    if (!adequacy.passed) throw new LedgerAdequacyGateError(adequacy);
+  }
   const termExpansionSession = commentContext.termExpansionSession ?? createTermExpansionSession();
   const ledgerEvidence = [...evidence];
   await expandTermExplanation(topic, ledgerEvidence, ledger, ledgerAi.provider, aiModels.ledger.model, budget, termExpansionSession, {
@@ -158,6 +171,9 @@ export async function summarizeTopic(
 
   let articleDepth = assessArticleDepth(summary, ledger, articleDepthProfile);
   let writingFailures = manualWritingFailures(summary, ledger, topic);
+  if (articleDepthProfile === "manual_evidence_rich" && articleDepth.reasons.some((reason) => reason.startsWith("insufficient_eligible_claims:"))) {
+    throw new ArticleDepthGateError(articleDepth);
+  }
   if ((!articleDepth.passed || writingFailures.length) && articleDepthProfile === "manual_evidence_rich") {
     const retryPrompt = `${await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile, [...articleDepth.reasons, ...writingFailures])}\n\n前回の下書きJSON:\n${JSON.stringify(summary, null, 2)}\n\n前回の根拠付き記述を捨てず、重複を避けて必要節数と検証済みrelated angleの反映を修正してください。`;
     text = await generateJson(provider, retryPrompt, budget);

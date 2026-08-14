@@ -40,6 +40,8 @@ async function main() {
     "fact_ledger_timeout"
   );
   assert.equal(classifyManualIntakeError(new Error("claim_check_gate: number_not_in_ledger: secret text"), "generating"), "claim_check_failed");
+  assert.equal(classifyManualIntakeError(new Error("evidence_adequacy_gate:limited_root_without_verified_expansion"), "researching"), "evidence_too_sparse");
+  assert.equal(classifyManualIntakeError(new Error("ledger_adequacy_gate:root_claims:1<6"), "generating"), "ledger_too_thin");
   assert.equal(
     classifyManualIntakeError(new Error("manual_writing_gate:public_text_contains_ungrounded_detail:number_not_in_ledger:detail_sections.2"), "generating"),
     "grounding_public_text_contains_ungrounded_detail_number_not_in_ledger_detail_sections.2"
