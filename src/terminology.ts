@@ -10,7 +10,7 @@ export type TerminologyConfig = {
   first_gloss_terms: Array<{ term: string; gloss: string }>;
   always_explain_terms: string[];
   person_names: Array<{ zh: string; display: string; reading: string }>;
-  work_titles: Array<{ zh: string; display: string; ja_official: string }>;
+  work_titles: Array<{ zh: string; display: string; ja_official: string; avoid?: string[] }>;
   word_overrides: Array<{ zh: string; display: string }>;
 };
 
@@ -44,14 +44,26 @@ export async function applyTerminology(summary: SummarizedArticle): Promise<Summ
   const fields = ["title_ja", "lead", "what_happened", "why_it_matters", "reaction_view", "japan_context_note", "editor_comment"] as const;
   for (const work of [...config.work_titles].sort((a, b) => b.zh.length - a.zh.length)) {
     let seen = false;
-    const variants = [work.zh, work.display, work.ja_official].filter(Boolean).sort((a, b) => b.length - a.length);
+    const variants = [work.zh, work.display, work.ja_official, ...(work.avoid ?? [])].filter(Boolean).sort((a, b) => b.length - a.length);
     const regex = new RegExp(variants.map(escapeRegex).join("|"), "g");
     for (const field of fields) {
+      let normalizedComposed = false;
+      if (work.ja_official) {
+        const titleVariants = [work.ja_official, ...(work.avoid ?? [])].filter(Boolean).map(escapeRegex).join("|");
+        const originalVariants = [work.zh, work.display].map(escapeRegex).join("|");
+        const composed = new RegExp(`[『「]?(?:${titleVariants})[』」]?（(?:邦題|原題)[:：]?『?(?:${originalVariants})』?）`, "g");
+        next[field] = next[field].replace(composed, () => {
+          seen = true;
+          normalizedComposed = true;
+          return `『${work.ja_official}』（原題：『${work.display}』）`;
+        });
+      }
+      if (normalizedComposed) continue;
       next[field] = next[field].replace(regex, () => {
         if (!work.ja_official) return work.display;
         if (!seen) {
           seen = true;
-          return `${work.ja_official}（原題『${work.display}』）`;
+          return `${work.ja_official}（原題：『${work.display}』）`;
         }
         return work.ja_official;
       });
@@ -101,7 +113,7 @@ export async function applyTerminology(summary: SummarizedArticle): Promise<Summ
     let heading = section.heading;
     let body = section.body;
     for (const work of [...config.work_titles].sort((a, b) => b.zh.length - a.zh.length)) {
-      const variants = [work.zh, work.display, work.ja_official].filter(Boolean).sort((a, b) => b.length - a.length);
+      const variants = [work.zh, work.display, work.ja_official, ...(work.avoid ?? [])].filter(Boolean).sort((a, b) => b.length - a.length);
       const regex = new RegExp(variants.map(escapeRegex).join("|"), "g");
       heading = heading.replace(regex, work.ja_official || work.display);
       body = body.replace(regex, work.ja_official || work.display);

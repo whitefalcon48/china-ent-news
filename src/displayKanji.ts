@@ -33,6 +33,10 @@ function convertDisplayText(value: string) {
   return mapped.replace(/\u0000HOTSEARCH(\d+)\u0000/gu, (_, index: string) => protectedTags[Number(index)] ?? "");
 }
 
+export function toDisplayKanji(value: string) {
+  return process.env.DISPLAY_KANJI === "false" ? value : convertDisplayText(value);
+}
+
 export function applyDisplayKanji(summary: SummarizedArticle): { summary: SummarizedArticle; residues: DisplayResidue[] } {
   if (process.env.DISPLAY_KANJI === "false") return { summary, residues: [] };
   const next = { ...summary };

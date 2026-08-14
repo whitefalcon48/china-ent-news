@@ -10,6 +10,7 @@ import { resolveSummaryTitle } from "./summaryTitle.js";
 import { createTermExpansionSession, expandTermExplanation, type TermExpansionSession } from "./termExplainExpansion.js";
 import { applyTerminology, formatTerminologyForPrompt } from "./terminology.js";
 import { getToneMode } from "./toneMode.js";
+import { applyEvidenceTranslationGuards } from "./translationGuards.js";
 import { assertToneOnlyRevisionContract, ToneOnlyRevisionContractError } from "./toneOnlyRevision.js";
 import { ArticleDepthGateError, assessArticleDepth, type ArticleDepthProfile } from "./articleDepth.js";
 import type {
@@ -88,7 +89,7 @@ export async function summarizeTopic(
   const commentAi = resolveStageAi("comment", provider);
   if (process.env.FACT_LEDGER === "false") {
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
-    const summary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)));
+    const summary = await finalizeFallbackSummary(topic, evidence, parseJsonFromModelText(text));
     const residues = inspectDisplayKanjiResidues(summary);
     return {
       summary,
@@ -108,7 +109,7 @@ export async function summarizeTopic(
       throw new LlmCallBudgetExceededError();
     }
     const text = await generateJson(provider, await buildTopicPrompt(topic, evidence), budget);
-    const summary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)));
+    const summary = await finalizeFallbackSummary(topic, evidence, parseJsonFromModelText(text));
     const residues = inspectDisplayKanjiResidues(summary);
     return {
       summary,
@@ -237,7 +238,7 @@ export async function summarizeTopic(
   claimCheck = { ...claimCheck, violations: [...claimCheck.violations, ...finalCommentViolations] };
 
   const finalizedSummary = enforceStandardArticleFormat(repairManualFactSectionGrounding(ensureCanonicalPersonName(
-    clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger))),
+    applyEvidenceTranslationGuards(clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(summary, topic, evidence, ledger))), evidence),
     topic,
     ledger
   ), ledger, articleDepthProfile), articleDepthProfile);
@@ -308,7 +309,7 @@ export async function reviseTopicFromSavedData(
   if (!ledger) {
     if (commentOnly) throw new ToneOnlyRevisionContractError("事実台帳が見つからないため claim refs を固定できません");
     const text = await generateJson(provider, `${await buildTopicPrompt(topic, evidence)}\n\n${instruction}`, budget);
-    const summary = clearEditorComment(await applyTerminology(mergeTopicInternalMetadata(normalizeSummary(parseJsonFromModelText(text)), topic, evidence)));
+    const summary = await finalizeFallbackSummary(topic, evidence, parseJsonFromModelText(text));
     const residues = inspectDisplayKanjiResidues(summary);
     return {
       summary,
@@ -626,6 +627,7 @@ publish_priority rules:
 - 出典にない人物評価、作品評価、興行評価を書かない。
 - 中国人名や作品名を勝手に日本語読みへ変換しない。
 - 原文の固有名詞はできるだけ原文表記も残す。
+- 日本語の邦題・仮題の後に中国語の作品名を注記する場合、中国語名は「原題」と書く。「邦題」とは書かない。
 - コラム、論説、レビュー、インタビュー、静的ページをニュースイベントのように書かない。
 
 タイトル生成ルール:
@@ -724,8 +726,12 @@ publish_priority rules:
 
 async function buildTopicPrompt(topic: TopicCandidate, evidence: RawArticle[]) {
   const editorialCharacter = await loadEditorialCharacter();
+  const bingtangCharacter = await loadBingtangCharacter();
   const evidenceText = formatEvidenceForPrompt(evidence);
   const { claim_refs, ...fallbackTemplate } = normalizeSummary({});
+  const fallbackTone = getToneMode(topic) === "normal"
+    ? `明るく少し前のめりなビンタン自身の短い反応を必ず1文入れる。「おもしろい、伝えたい」という熱が読者に伝わるようにし、「！」を1〜4個使う。「注目ポイントです」「注目されます」だけの受け身な文にしない。`
+    : `重大事件・法的問題・訃報・被害者のいる話題として落ち着いて書き、「！」は使わない。`;
 
   return `あなたは中国エンタメの topic-first フィードを作る編集補助AIです。複数の情報源（evidence）を束ねた「ひとつのトピック」を、1本の日本語ニュースメモに整理します。
 
@@ -733,6 +739,11 @@ Editorial character policy document (docs/editorial-character.md):
 ${editorialCharacter}
 
 Use the document above as the highest-priority editorial policy.
+
+Character voice document (docs/character-bingtang-v2.md):
+${bingtangCharacter}
+
+Character document boundary: キャラクター設定は why_it_matters の声と熱意だけに使い、事実・選定・重大話題の扱いは editorial-character.md を上書きしない。
 
 目的:
 - 入力は1つのトピックと、その根拠となる複数のevidence（公式発表・媒体記事・データ・SNS反応）。
@@ -753,6 +764,8 @@ evidenceの扱い方:
 
 禁止事項（最優先）:
 - evidenceにない情報を補わない。業界一般論や背景説明で空欄を埋めない。
+- 中国語の「小人物」は、英雄や大人物に対する「平凡な人物」「普通の人」の意味。前の語と結合して「中小企業」と誤分割しない。evidenceに「中小企业」がある場合だけ「中小企業」と書く。
+- 日本語の邦題・仮題の後にevidence中の中国語作品名を注記する場合、中国語名は「原題」と書く。「邦題」とは書かない。
 - 単一ソースの場合、複数視点があるかのように書かない。reaction_view は空文字、has_multiple_sources は false。
 - SNS evidenceがないのにSNS反応を書かない。has_sns_signal は false、reaction_view は空文字。
 - 未確認情報を断定しない。出典にない人物評価、作品評価、興行評価を書かない。
@@ -769,7 +782,7 @@ evidenceの扱い方:
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。official/media evidenceの事実だけで、出来事・数字・日付・関係者を整理。
 - reaction_view: SNS evidenceまたは複数媒体の見られ方がある場合のみ150〜250字。根拠がなければ空文字。
-- why_it_matters: 本文の言い換えをせず、「なぜ今気になるか」「次に確認する数字・発表・反応」「台帳に根拠のある用語・制度の説明」「情報源の見方・注意点」のいずれかをevidenceの範囲で書く。日本語読者向けの背景・公開状況・ファン文化は japan_context_note 専用にし、両方がある場合は同じ事実・角度を繰り返さない。
+- why_it_matters: 本文の言い換えをせず、「なぜ今気になるか」「次に確認する数字・発表・反応」「evidenceにある用語・制度の説明」「情報源の見方・注意点」のいずれかをevidenceの範囲で書く。${fallbackTone} 日本語読者向けの背景・公開状況・ファン文化は japan_context_note 専用にし、両方がある場合は同じ事実・角度を繰り返さない。
 - japan_context_note: 日本語圏の読者に補足する価値がある文脈のevidenceがある場合だけ、ビンタンの声で書く。why_it_matters と同じ角度・言い換えにしない。日本側の受け止めや公開状況を述べる場合は、その内容を裏付けるevidenceがあるときだけ。なければ空文字。
 - editor_comment: 常に空文字にする。
 - confidence: officialを含む複数ソース整合=A/B、媒体単独=B/C、SNS単独=C/Dを目安にする。
@@ -792,6 +805,13 @@ ${JSON.stringify(fallbackTemplate, null, 2)}
 
 evidence一覧:
 ${evidenceText}`;
+}
+
+async function finalizeFallbackSummary(topic: TopicCandidate, evidence: RawArticle[], value: Partial<SummarizedArticle>) {
+  const normalized = normalizeSummary(value);
+  normalized.why_it_matters = sanitizeExclamations(normalized.why_it_matters, getToneMode(topic));
+  const merged = mergeTopicInternalMetadata(normalized, topic, evidence);
+  return applyEvidenceTranslationGuards(clearEditorComment(await applyTerminology(merged)), evidence);
 }
 
 export function formatEvidenceForPrompt(evidence: RawArticle[]): string {
@@ -853,6 +873,8 @@ ${terminology}
 
 用語の扱い:
 - 表記辞書に優先表記がある語は必ずその表記を使う。
+- 中国語の「小人物」は、英雄や大人物に対する「平凡な人物」「普通の人」の意味。前の語と結合して「中小企業」と誤分割しない。原文に「中小企业」がある場合だけ「中小企業」と書く。
+- 日本語の邦題・仮題の後に中国語の作品名を注記する場合、中国語名は「原題」と書く。「邦題」とは書かない。
 - 人名・作品名・賞名・業界用語を含む公開テキストの全フィールドで、簡体字を日本の新字体へ統一する。日本の新字体に対応する漢字がない場合だけ原文の簡体字を残す。
 - 入力トピックの人物名は漢字表記のまま使う。中国人名をカタカナの音訳へ置き換えない。今回の人物名: ${topic.main_entities.people.join(" / ") || "なし"}
 - 表記辞書の既知語は説明なしでそのまま使ってよい。
@@ -905,6 +927,7 @@ export async function buildBingtangCommentPrompt(
   const toneInstruction = toneMode === "normal"
     ? `- 明るく、少し前のめりな、話し言葉に近い「です・ます調」。短いくだけた感想を混ぜてよい。
 - 事実台帳にある具体的な一点を選び、「これを見せたかった」という期待が少し漏れる短いリアクションを1文必ず入れる。公開コメントでFalさんへ直接呼びかける必要はない。
+- ビンタン自身が「おもしろい、伝えたい」と感じた熱を、観察者の説明ではなく自分の短い反応として明確に出す。「注目ポイントです」「注目されます」だけの受け身な文で済ませない。
 - 前のめりさは、確認済みの具体的な出来事・数字・言葉への反応で出す。未確認情報を断定したり、実際に観た・聴いた・現地で見たように書いたりしない。
 - 使ってよい表現の例: 「〜かも！」「〜みたい！」「すごい！」「これは気になる！」「ちょっと待って！」「ここ、大事です！」「〜なんです！」「〜でしたね〜！」
 - 「かも」「みたい」はビンタンの見方・可能性にだけ使う。事実台帳で確認できた事実は、です・ます調で明確に言い切る。
