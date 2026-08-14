@@ -1,11 +1,530 @@
 {
   "date": "2026-08-14",
-  "generated_at": "2026-08-14T03:30:19.730Z",
+  "generated_at": "2026-08-14T04:21:54.115Z",
   "ledgers": [
     {
       "topic_key": "欢迎来龙餐馆",
-      "ledger": null,
-      "fallback_reason": "ledger_extraction_failed:Expected ',' or ']' after array element in JSON at position 19480 (line 627 column 6)"
+      "ledger": {
+        "topic_key": "欢迎来龙餐馆",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『欢迎来龙餐馆』の興行収入が3億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "3亿元"
+            ],
+            "quote_zh": "票房超3亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の豆瓣スコアは8.4で、沈騰主演映画の最高記録を更新した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆",
+              "沈騰"
+            ],
+            "numbers": [
+              "8.4"
+            ],
+            "quote_zh": "豆瓣评分8.4分，刷新了沈腾主演电影的最高分纪录",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の観客動員数は824万人に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "824万"
+            ],
+            "quote_zh": "观看总人次已达824万",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の淘票票点映スコアは9.8で、ここ3年の国産映画点映の最高記録を更新した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆",
+              "淘票票"
+            ],
+            "numbers": [
+              "9.8",
+              "3年"
+            ],
+            "quote_zh": "淘票票点映评分高达9.8分，也创下近三年国产片点映最高纪录",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "沈騰は『欢迎来龙餐馆』で料理人の徐福を演じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "沈騰",
+              "欢迎来龙餐馆",
+              "徐福"
+            ],
+            "numbers": [],
+            "quote_zh": "沈腾在《欢迎来龙餐馆》中饰演厨师徐福",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "沈騰は今回の役について、これまでの映画すべての感情点を合わせてもこの作品ほど多くないと語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "沈騰"
+            ],
+            "numbers": [],
+            "quote_zh": "拍这么多年电影，所有电影加起来的情感点，都不如这一部多",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は文牧野が監督し、沈騰と蒋奇明らが主演した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆",
+              "文牧野",
+              "沈騰",
+              "蒋奇明"
+            ],
+            "numbers": [],
+            "quote_zh": "由文牧野执导，沈腾、蒋奇明等主演",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は2026年8月11日に全国の映画館で公開された。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "m.sohu.com",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "2026年8月11日"
+            ],
+            "quote_zh": "将于8月11日登陆全国院线",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は8月8日から10日まで毎日14時から21時に先行上映された。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "m.sohu.com",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "8月8日",
+              "10日",
+              "14:00",
+              "21:00"
+            ],
+            "quote_zh": "8月8日至10日每日14:00至21:00，影片将进行超前点",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "沈騰は主演映画の累計興行収入414億元で、中国で主演映画の興行収入が最も高い映画人となった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "m.sohu.com",
+            "entities": [
+              "沈騰"
+            ],
+            "numbers": [
+              "414亿元"
+            ],
+            "quote_zh": "沈腾以414亿元的票房数据，成为中国主演电影票房最高的电影人",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の主な出資会社には壊猴子影業、大麦娯楽、中国電影、儒意電影、開心麻花影業などが含まれる。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "m.sohu.com",
+            "entities": [
+              "欢迎来龙餐馆",
+              "壊猴子影業",
+              "大麦娯楽",
+              "中国電影",
+              "儒意電影",
+              "開心麻花影業"
+            ],
+            "numbers": [],
+            "quote_zh": "出品方包括坏猴子影业、大麦娱乐、中国电影、儒意电影、开心麻花",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の共同出資会社には華夏電影、博納影業、横店影視、北京文化などが含まれる。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "m.sohu.com",
+            "entities": [
+              "欢迎来龙餐馆",
+              "華夏電影",
+              "博納影業",
+              "横店影視",
+              "北京文化"
+            ],
+            "numbers": [],
+            "quote_zh": "联合出品方包括华夏电影、博纳影业、横店影视、北京文化等公司",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "中金公司は今年の夏休み映画シーズンの重点作品として『欢迎来龙餐馆』『転念花開』『神探之痕跡』などを挙げた。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "中金公司",
+            "entities": [
+              "中金公司",
+              "欢迎来龙餐馆",
+              "転念花開",
+              "神探之痕跡"
+            ],
+            "numbers": [],
+            "quote_zh": "判断重点影片包括《欢迎来龙餐馆》《转念花开》《神探之痕迹》等",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の初日興行収入は2億元を突破した。",
+            "evidence_refs": [
+              "E5"
+            ],
+            "source_name": "k.sina.com.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "2亿元"
+            ],
+            "quote_zh": "首日票房突破2亿元",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "key_numbers",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "灯塔専業版AIは『欢迎来龙餐馆』の総興行収入を35.42億元と予測した。",
+            "evidence_refs": [
+              "E5"
+            ],
+            "source_name": "k.sina.com.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "灯塔専業版"
+            ],
+            "numbers": [
+              "35.42亿元"
+            ],
+            "quote_zh": "灯塔专业版AI预测其总票房高达35.42亿元",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "key_numbers",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "猫眼専業版は『欢迎来龙餐馆』の総興行収入を20.57億元と予測した。",
+            "evidence_refs": [
+              "E5"
+            ],
+            "source_name": "k.sina.com.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "猫眼専業版"
+            ],
+            "numbers": [
+              "20.57亿元"
+            ],
+            "quote_zh": "猫眼专业版仅预测20.57亿元",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "key_numbers",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の点映期間中の上映シェアは14.5%だったが、興行収入シェアは40%近くに達した。",
+            "evidence_refs": [
+              "E5"
+            ],
+            "source_name": "k.sina.com.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "14.5%",
+              "40%"
+            ],
+            "quote_zh": "点映期间排片占比仅14.5%，票房占比却高达近40%",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "key_numbers",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の点映期間中の上座率は初日の10.8%から翌日には20.3%に上昇した。",
+            "evidence_refs": [
+              "E5"
+            ],
+            "source_name": "k.sina.com.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "10.8%",
+              "20.3%"
+            ],
+            "quote_zh": "上座率从首日的10.8%飙升至次日的20.3%",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "key_numbers",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の共同出資会社である北京文化の株価が2日連続でストップ高となった。",
+            "evidence_refs": [
+              "E6"
+            ],
+            "source_name": "thepaper.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "北京文化"
+            ],
+            "numbers": [
+              "2日"
+            ],
+            "quote_zh": "联合出品方北京文化（000802.SZ）两连板",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "person_response"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の出資会社である儒意電影の株価が2日間で12.07%上昇した。",
+            "evidence_refs": [
+              "E6"
+            ],
+            "source_name": "thepaper.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "儒意電影"
+            ],
+            "numbers": [
+              "12.07%",
+              "2日"
+            ],
+            "quote_zh": "出品方儒意电影（002739.SZ）两日累涨12.07%",
+            "anchor": true,
+            "scope": "related_angle",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "person_response"
+          }
+        ],
+        "terms": [
+          {
+            "term": "豆瓣",
+            "gloss_ja": "豆瓣",
+            "what_is": "中国の映画・書籍などのレビューサイト。",
+            "why_now": "本作の豆瓣スコア8.4が沈騰主演映画の最高記録を更新した。",
+            "explain_quote_zh": "豆瓣评分8.4分，刷新了沈腾主演电影的最高分纪录",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "淘票票",
+            "gloss_ja": "淘票票",
+            "what_is": "中国の映画チケット販売・レビュープラットフォーム。",
+            "why_now": "本作の淘票票点映スコア9.8が近3年の国産映画点映最高記録を更新した。",
+            "explain_quote_zh": "淘票票点映评分高达9.8分，也创下近三年国产片点映最高纪录",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "点映",
+            "gloss_ja": "先行上映",
+            "what_is": "正式公開前に行われる限定的な上映。",
+            "why_now": "本作は8月8日から10日まで点映が行われ、高い評価を得た。",
+            "explain_quote_zh": "8月8日至10日每日14:00至21:00，影片将进行超前点",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "灯塔专业版",
+            "gloss_ja": "灯塔専業版",
+            "what_is": "中国の映画興行データ分析プラットフォーム。",
+            "why_now": "本作の総興行収入を35.42億元と予測し、猫眼と大きく異なる。",
+            "explain_quote_zh": "灯塔专业版AI预测其总票房高达35.42亿元",
+            "explain_evidence_refs": [
+              "E5"
+            ]
+          },
+          {
+            "term": "猫眼专业版",
+            "gloss_ja": "猫眼専業版",
+            "what_is": "中国の映画興行データ分析プラットフォーム。",
+            "why_now": "本作の総興行収入を20.57億元と予測し、灯塔と大きく異なる。",
+            "explain_quote_zh": "猫眼专业版仅预测20.57亿元",
+            "explain_evidence_refs": [
+              "E5"
+            ]
+          },
+          {
+            "term": "排片占比",
+            "gloss_ja": "上映シェア",
+            "what_is": "映画館の上映枠に占める割合。",
+            "why_now": "本作の点映期間中の上映シェアは14.5%だったが、興行収入シェアは40%近くに達した。",
+            "explain_quote_zh": "点映期间排片占比仅14.5%，票房占比却高达近40%",
+            "explain_evidence_refs": [
+              "E5"
+            ]
+          },
+          {
+            "term": "上座率",
+            "gloss_ja": "上座率",
+            "what_is": "上映回における座席の埋まり具合を示す指標。",
+            "why_now": "本作の点映期間中の上座率は初日の10.8%から翌日には20.3%に上昇した。",
+            "explain_quote_zh": "上座率从首日的10.8%飙升至次日的20.3%",
+            "explain_evidence_refs": [
+              "E5"
+            ]
+          },
+          {
+            "term": "出品方",
+            "gloss_ja": "出資会社",
+            "what_is": "映画製作に出資する会社。",
+            "why_now": "本作の出資会社には壊猴子影業、大麦娯楽、中国電影などが含まれる。",
+            "explain_quote_zh": "出品方包括坏猴子影业、大麦娱乐、中国电影、儒意电影、开心麻花",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration",
+          "E5": "related_angle",
+          "E6": "related_angle",
+          "E7": "related_angle"
+        }
+      },
+      "fallback_reason": ""
     },
     {
       "topic_key": "百花奖纳入短剧",
@@ -15,20 +534,20 @@
           {
             "id": "C1",
             "type": "verified_fact",
-            "text": "第38届大众电影百花奖で短劇栄誉ユニットが初めて設置され、8月9日に北京で開催された。",
+            "text": "第38届大众电影百花奖首次设立短剧荣誉单元，将短剧纳入荣誉评价体系。",
             "evidence_refs": [
               "E1",
-              "E2"
+              "E2",
+              "E3"
             ],
             "entities": [
               "第38届大众电影百花奖",
               "短剧荣誉单元"
             ],
             "numbers": [
-              "8月9日",
-              "第38届"
+              "38"
             ],
-            "quote_zh": "8月9日，第38届大众电影百花奖配套活动・短剧荣誉单元活动成",
+            "quote_zh": "第38届大众电影百花奖配套活动・短剧荣誉单元活动成功举办",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -37,16 +556,17 @@
           {
             "id": "C2",
             "type": "verified_fact",
-            "text": "短劇栄誉ユニットは「精品化、専門化、正向化」を核心とし、過去1年間の短劇創作成果を集中的に総括した。",
+            "text": "短剧荣誉单元活动于2026年8月9日举办。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "短剧荣誉单元"
             ],
-            "numbers": [],
-            "quote_zh": "以“精品化、专业化、正向化”为核心，对过去一年的短剧创作成果",
+            "numbers": [
+              "2026年8月9日"
+            ],
+            "quote_zh": "8月9日，第38届大众电影百花奖配套活动・短剧荣誉单元活动成",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -55,10 +575,26 @@
           {
             "id": "C3",
             "type": "verified_fact",
-            "text": "15作品が5つの年度栄誉に分かれて受賞した。",
+            "text": "本届短剧荣誉单元以“精品化、专业化、正向化”为核心。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
+            ],
+            "entities": [
+              "短剧荣誉单元"
+            ],
+            "numbers": [],
+            "quote_zh": "本届短剧荣誉单元以“精品化、专业化、正向化”为核心",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "15部作品分获五项年度荣誉。",
+            "evidence_refs": [
+              "E1"
             ],
             "entities": [],
             "numbers": [
@@ -72,12 +608,11 @@
             "angle_kind": "other"
           },
           {
-            "id": "C4",
+            "id": "C5",
             "type": "verified_fact",
-            "text": "5つの栄誉は「年度人気短劇」「年度創新短劇」「年度優秀系列短劇」「年度影響力短劇」「年度高品質短劇」である。",
+            "text": "五项年度荣誉分别为“年度人气短剧”“年度创新短剧”“年度优秀系列短剧”“年度影响力短剧”“年度高品质短剧”。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "年度人气短剧",
@@ -89,24 +624,24 @@
             "numbers": [
               "5"
             ],
-            "quote_zh": "设置“年度人气短剧”“年度创新短剧”“年度优秀系列短剧”“年",
+            "quote_zh": "共设置“年度人气短剧”“年度创新短剧”“年度优秀系列短剧”“",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
             "angle_kind": "other"
           },
           {
-            "id": "C5",
+            "id": "C6",
             "type": "verified_fact",
-            "text": "「年度人気短劇」には『冒姓琅琊』『儺戯』『宜嫁宜娶』が選ばれた。",
+            "text": "《冒姓琅琊》《傩戏》《宜嫁宜娶》获颁“年度人气短剧”。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "冒姓琅琊",
               "傩戏",
-              "宜嫁宜娶"
+              "宜嫁宜娶",
+              "年度人气短剧"
             ],
             "numbers": [],
             "quote_zh": "《冒姓琅琊》《傩戏》《宜嫁宜娶》凭借热度与口碑，获颁“年度人",
@@ -116,17 +651,17 @@
             "angle_kind": "other"
           },
           {
-            "id": "C6",
+            "id": "C7",
             "type": "verified_fact",
-            "text": "「年度創新短劇」には『“発”家致富』『小小狙撃手』『北往』が選ばれた。",
+            "text": "《“发”家致富》《小小狙击手》《北往》摘得“年度创新短剧”。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "“发”家致富",
               "小小狙击手",
-              "北往"
+              "北往",
+              "年度创新短剧"
             ],
             "numbers": [],
             "quote_zh": "《“发”家致富》《小小狙击手》《北往》因叙事手法突破与题材赛",
@@ -136,17 +671,17 @@
             "angle_kind": "other"
           },
           {
-            "id": "C7",
+            "id": "C8",
             "type": "verified_fact",
-            "text": "「年度優秀系列短劇」には『東北愛情往事：閃婚玫瑰』『一家三口在同班』『以愛為家』が選ばれた。",
+            "text": "《东北爱情往事：闪婚玫瑰》《一家三口在同班》《以爱为家》获评“年度优秀系列短剧”。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "东北爱情往事：闪婚玫瑰",
               "一家三口在同班",
-              "以爱为家"
+              "以爱为家",
+              "年度优秀系列短剧"
             ],
             "numbers": [],
             "quote_zh": "《东北爱情往事：闪婚玫瑰》《一家三口在同班》《以爱为家》展现",
@@ -156,17 +691,17 @@
             "angle_kind": "other"
           },
           {
-            "id": "C8",
+            "id": "C9",
             "type": "verified_fact",
-            "text": "「年度影響力短劇」には『家里家外』『長路初心』『暗潮湧動』が選ばれた。",
+            "text": "《家里家外》《长路初心》《暗潮涌动》荣获“年度影响力短剧”。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "家里家外",
               "长路初心",
-              "暗潮涌动"
+              "暗潮涌动",
+              "年度影响力短剧"
             ],
             "numbers": [],
             "quote_zh": "《家里家外》《长路初心》《暗潮涌动》带动了现实议题的创作风潮",
@@ -176,17 +711,17 @@
             "angle_kind": "other"
           },
           {
-            "id": "C9",
+            "id": "C10",
             "type": "verified_fact",
-            "text": "「年度高品質短劇」には『ENEMY』『行道者之墨狂刀』『盛夏芬德拉』が選ばれた。",
+            "text": "《ENEMY》《行道者之墨狂刀》《盛夏芬德拉》成为“年度高品质短剧”的代表。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "ENEMY",
               "行道者之墨狂刀",
-              "盛夏芬德拉"
+              "盛夏芬德拉",
+              "年度高品质短剧"
             ],
             "numbers": [],
             "quote_zh": "《ENEMY》《行道者之墨狂刀》《盛夏芬德拉》则以扎实的剧本",
@@ -196,12 +731,11 @@
             "angle_kind": "other"
           },
           {
-            "id": "C10",
+            "id": "C11",
             "type": "verified_fact",
-            "text": "現場では『食神2026』『奔頭児』『将門六姝』など9作品の待機中作品が紹介された。",
+            "text": "活动现场推介了《食神2026》《奔头儿》《将门六姝》等9部待播作品。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
             "entities": [
               "食神2026",
@@ -218,9 +752,9 @@
             "angle_kind": "other"
           },
           {
-            "id": "C11",
+            "id": "C12",
             "type": "verified_fact",
-            "text": "『食神2026』は周星馳の古典IPが30年ぶりに短劇形式で再始動する作品である。",
+            "text": "《食神2026》因周星驰经典IP时隔30年以短剧形式重启，成为现场关注度最高的剧集之一。",
             "evidence_refs": [
               "E1"
             ],
@@ -229,18 +763,18 @@
               "周星驰"
             ],
             "numbers": [
-              "30年"
+              "30"
             ],
-            "quote_zh": "因周星驰经典IP时隔30年以短剧形式重启",
+            "quote_zh": "《食神2026》，因周星驰经典IP时隔30年以短剧形式重启，",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
             "angle_kind": "other"
           },
           {
-            "id": "C12",
+            "id": "C13",
             "type": "verified_fact",
-            "text": "『奔頭児』は全編長春でロケが行われ、東北の青年の成長を描くロードムービーである。",
+            "text": "《奔头儿》全程在长春取景，采用公路叙事结构。",
             "evidence_refs": [
               "E1"
             ],
@@ -256,35 +790,18 @@
             "angle_kind": "other"
           },
           {
-            "id": "C13",
+            "id": "C14",
             "type": "verified_fact",
-            "text": "『奔頭児』では「雪餅猴」として知られる俳優・王慶峰が短劇の主演を初めて務める。",
+            "text": "青年演员王庆峰首次担纲短剧男主，知名演员唐鉴军等东北喜剧演员也集中进入短剧赛道。",
             "evidence_refs": [
               "E1"
             ],
             "entities": [
               "王庆峰",
-              "雪饼猴"
+              "唐鉴军"
             ],
             "numbers": [],
-            "quote_zh": "以“雪饼猴”身份被网友熟知的青年演员王庆峰首次担纲短剧男主",
-            "anchor": true,
-            "scope": "root_event",
-            "editorial_role": "other",
-            "angle_kind": "other"
-          },
-          {
-            "id": "C14",
-            "type": "verified_fact",
-            "text": "百花奨が短劇栄誉ユニットを初めて設置したことから、短劇業界は野蛮な成長から精品化へと加速している。",
-            "evidence_refs": [
-              "E1"
-            ],
-            "entities": [
-              "百花奖"
-            ],
-            "numbers": [],
-            "quote_zh": "从百花奖首次设立短剧荣誉单元，到多部兼具内容深度与制作精度的",
+            "quote_zh": "以“雪饼猴”身份被网友熟知的青年演员王庆峰首次担纲短剧男主，",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -292,22 +809,17 @@
           },
           {
             "id": "C15",
-            "type": "verified_fact",
-            "text": "受賞作品のうち『東北愛情故事：閃婚玫瑰』『長路初心』『暗潮湧動』『“発”家致富』『小小狙撃手』などは紅果短劇「果燃計画」の作品である。",
+            "type": "source_analysis",
+            "text": "1905电影网认为，短剧行业正加速从野蛮生长走向精品化深耕。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
+            "source_name": "1905电影网",
             "entities": [
-              "东北爱情故事：闪婚玫瑰",
-              "长路初心",
-              "暗潮涌动",
-              "“发”家致富",
-              "小小狙击手",
-              "红果短剧",
-              "果燃计划"
+              "1905电影网"
             ],
             "numbers": [],
-            "quote_zh": "15部获奖作品中，《东北爱情故事：闪婚玫瑰》《长路初心》《暗",
+            "quote_zh": "短剧行业正加速从野蛮生长走向精品化深耕",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -316,17 +828,17 @@
           {
             "id": "C16",
             "type": "verified_fact",
-            "text": "百花奨フォーラムで中国映画協会が「金鶏百花国産映画評価体系」を正式に発表した。",
+            "text": "百花奖由大众投票与101位现场评委终评。",
             "evidence_refs": [
-              "E3",
-              "E4"
+              "E2"
             ],
             "entities": [
-              "中国影协",
-              "金鸡百花国产电影评价体系"
+              "百花奖"
             ],
-            "numbers": [],
-            "quote_zh": "中国影协正式发布了“金鸡百花国产电影评价体系”",
+            "numbers": [
+              "101"
+            ],
+            "quote_zh": "百花奖由大众投票与101位现场评委终评",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -335,16 +847,18 @@
           {
             "id": "C17",
             "type": "verified_fact",
-            "text": "「金鶏百花国産映画評価体系」は思想性・芸術性・大衆性を核心次元とし、学者・専門家・メディア・学生・映画館支配人からなる評鑑団が採点する。",
+            "text": "2026年已有11个省份安排专项扶持资金，6家网络视听平台投入至少60亿元支持真人精品微短剧创作。",
             "evidence_refs": [
-              "E3",
-              "E4"
+              "E2"
             ],
-            "entities": [
-              "金鸡百花国产电影评价体系"
+            "entities": [],
+            "numbers": [
+              "2026",
+              "11",
+              "6",
+              "60亿元"
             ],
-            "numbers": [],
-            "quote_zh": "以思想性、艺术性、大众性为核心维度，由学者、专家、媒体、学生",
+            "quote_zh": "2026年已有11个省份安排专项扶持资金，6家网络视听平台投",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -353,16 +867,19 @@
           {
             "id": "C18",
             "type": "verified_fact",
-            "text": "評鑑団の構成は専門学者30%、業界専門家20%、その他メディア・映画館支配人・専門学生で、全国主要都市をカバーする。",
+            "text": "短剧演员郭宇欣主演的《盛夏芬德拉》获“年度品质短剧”，《东北爱情往事：闪婚玫瑰》获“年度优秀系列短剧”。",
             "evidence_refs": [
-              "E4"
+              "E3"
             ],
-            "entities": [],
-            "numbers": [
-              "30%",
-              "20%"
+            "entities": [
+              "郭宇欣",
+              "盛夏芬德拉",
+              "东北爱情往事：闪婚玫瑰",
+              "年度品质短剧",
+              "年度优秀系列短剧"
             ],
-            "quote_zh": "专家学者（30%）：影视艺术领域的专业学者，需具备良好专业训",
+            "numbers": [],
+            "quote_zh": "95后演员郭宇欣主演的《盛夏芬德拉》获“年度品质短剧”，《东",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -371,16 +888,15 @@
           {
             "id": "C19",
             "type": "verified_fact",
-            "text": "各映画には総合点と複数次元の項目別点数が付与され、3～5個のキーワードタグが付けられる。",
+            "text": "短剧演员一航在百花奖现场表示“看到了很多前辈，和他们站在一起是一种激励”。",
             "evidence_refs": [
               "E3"
             ],
-            "entities": [],
-            "numbers": [
-              "3",
-              "5"
+            "entities": [
+              "一航"
             ],
-            "quote_zh": "每部影片将获得一个总分及多个维度的分项分，并配以3至5个关键",
+            "numbers": [],
+            "quote_zh": "短剧演员一航在百花奖现场表示“看到了很多前辈，和他们站在一起",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -389,16 +905,15 @@
           {
             "id": "C20",
             "type": "verified_fact",
-            "text": "この評価体系は中央五部門が共同で印刷・配布した『新時代の文芸評論工作強化に関する意見』に基づいて設立された。",
+            "text": "演员王译磊坦言“抱着学习态度前来”。",
             "evidence_refs": [
               "E3"
             ],
             "entities": [
-              "中央五部门",
-              "关于加强新时代文艺评论工作的意见"
+              "王译磊"
             ],
             "numbers": [],
-            "quote_zh": "源自对“建立权威、公信力、影响力的文艺评价体系”的要求，以及",
+            "quote_zh": "演员王译磊坦言“抱着学习态度前来”",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -407,21 +922,21 @@
         ],
         "terms": [
           {
-            "term": "短剧",
-            "gloss_ja": "短編ドラマ",
-            "what_is": "1話数分～十数分の縦型動画などで配信される短編ドラマ。",
-            "why_now": "百花奨に初めて評価対象として組み込まれ、業界の精品化が進む。",
-            "explain_quote_zh": "短剧首次纳入百花奖评价体系，行业加速迈向精品化",
+            "term": "百花奖",
+            "gloss_ja": "百花賞",
+            "what_is": "中国の大衆映画賞で、観客投票と101人の現場審査員による最終審査で選出される。",
+            "why_now": "短劇部門が初めて設置され、短劇が国家級映画賞に認められた。",
+            "explain_quote_zh": "百花奖由大众投票与101位现场评委终评",
             "explain_evidence_refs": [
-              "E1"
+              "E2"
             ]
           },
           {
-            "term": "百花奖",
-            "gloss_ja": "百花奨",
-            "what_is": "大衆映画百花奨。観客投票で選ばれる中国の映画賞。",
-            "why_now": "短劇栄誉ユニットを新設し、短劇を公式に評価対象とした。",
-            "explain_quote_zh": "第38届大众电影百花奖配套活动・短剧荣誉单元活动成功举办",
+            "term": "短剧",
+            "gloss_ja": "ショートドラマ",
+            "what_is": "短尺のドラマ形式で、従来は「流量爽剧」と呼ばれる低品質な作品が多かった。",
+            "why_now": "百花賞の評価体系に組み込まれ、精品化が加速している。",
+            "explain_quote_zh": "短剧首次纳入百花奖评价体系",
             "explain_evidence_refs": [
               "E1"
             ]
@@ -429,61 +944,61 @@
           {
             "term": "精品化",
             "gloss_ja": "高品質化",
-            "what_is": "作品の内容・制作水準を高め、質を重視する方向性。",
-            "why_now": "短劇業界が野蛮な成長から精品化へと転換する中で、百花奨の評価基準にも採用された。",
-            "explain_quote_zh": "以“精品化、专业化、正向化”为核心",
+            "what_is": "作品の質を高め、粗製濫造から脱却する動き。",
+            "why_now": "百花賞の短劇部門設置が業界の精品化を後押ししている。",
+            "explain_quote_zh": "行业加速迈向精品化",
             "explain_evidence_refs": [
               "E1"
             ]
           },
           {
-            "term": "红果短剧",
-            "gloss_ja": "紅果短劇",
-            "what_is": "短劇配信プラットフォーム。",
-            "why_now": "受賞作品の多くが紅果短劇の「果燃計画」から出品され、プラットフォームの影響力が示された。",
-            "explain_quote_zh": "均为红果短剧“果燃计划”出品",
+            "term": "微短剧",
+            "gloss_ja": "ミニショートドラマ",
+            "what_is": "短編ドラマの一種で、短尺の動画コンテンツ。",
+            "why_now": "政策支援やプラットフォーム投資により、真人精品微短劇の創作が推進されている。",
+            "explain_quote_zh": "6家网络视听平台投入至少60亿元支持真人精品微短剧创作",
             "explain_evidence_refs": [
               "E2"
             ]
           },
           {
-            "term": "果燃计划",
-            "gloss_ja": "果燃計画",
-            "what_is": "紅果短劇による短劇制作支援プロジェクト。",
-            "why_now": "受賞作品の多くがこの計画から生まれ、短劇の質向上に寄与している。",
-            "explain_quote_zh": "红果短剧“果燃计划”出品",
+            "term": "投流",
+            "gloss_ja": "投流（広告出稿）",
+            "what_is": "プラットフォームに広告費を投じて視聴者を獲得する手法。",
+            "why_now": "従来の短劇は投流に依存していたが、精品化により内容重視へシフトしている。",
+            "explain_quote_zh": "过去依靠“投流”和噱头获客的模式",
             "explain_evidence_refs": [
               "E2"
             ]
           },
           {
-            "term": "金鸡百花国产电影评价体系",
-            "gloss_ja": "金鶏百花国産映画評価体系",
-            "what_is": "中国映画協会と清華大学が共同で構築した映画評価基準。",
-            "why_now": "百花奨フォーラムで発表され、映画評価の標準化を目指す。",
-            "explain_quote_zh": "中国影协正式发布了“金鸡百花国产电影评价体系”",
+            "term": "霸总",
+            "gloss_ja": "俺様社長",
+            "what_is": "「霸道总裁」の略で、恋愛ドラマの定番キャラクター類型。",
+            "why_now": "従来の短劇は「霸总」などの類型に偏っていたが、多様化が進んでいる。",
+            "explain_quote_zh": "不再局限于“霸总”“战神”等爽感套路",
             "explain_evidence_refs": [
-              "E3"
+              "E2"
             ]
           },
           {
-            "term": "评鉴团",
-            "gloss_ja": "評鑑団",
-            "what_is": "映画評価体系で採点を行う専門家・業界関係者などのグループ。",
-            "why_now": "新評価体系の中核を担い、多角的な視点で映画を評価する。",
-            "explain_quote_zh": "由学者、专家、媒体、学生和院线经理组成的评鉴团进行打分",
+            "term": "战神",
+            "gloss_ja": "戦神",
+            "what_is": "無敵の強さを持つ主人公の類型。",
+            "why_now": "従来の短劇は「战神」などの類型に偏っていたが、多様化が進んでいる。",
+            "explain_quote_zh": "不再局限于“霸总”“战神”等爽感套路",
             "explain_evidence_refs": [
-              "E3"
+              "E2"
             ]
           },
           {
-            "term": "正向化",
-            "gloss_ja": "ポジティブな方向性",
-            "what_is": "社会的に良い影響を与える内容を重視する方針。",
-            "why_now": "短劇栄誉ユニットの核心方針の一つとして、短劇の内容面での健全性が求められている。",
-            "explain_quote_zh": "以“精品化、专业化、正向化”为核心",
+            "term": "爽感",
+            "gloss_ja": "爽快感",
+            "what_is": "視聴者がカタルシスを得る感覚。",
+            "why_now": "従来の短劇は爽感を重視していたが、精品化により内容の深みが求められている。",
+            "explain_quote_zh": "不再局限于“霸总”“战神”等爽感套路",
             "explain_evidence_refs": [
-              "E1"
+              "E2"
             ]
           }
         ],
