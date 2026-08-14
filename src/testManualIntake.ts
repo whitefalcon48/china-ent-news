@@ -8,7 +8,7 @@ import { PassThrough } from "node:stream";
 import { buildManualReviewIssue } from "./intake/buildManualReviewIssue.js";
 import { assessArticleDepth, getArticleDepthRequirements } from "./articleDepth.js";
 import { assessLedgerAdequacy } from "./ledgerAdequacy.js";
-import { enforceStandardArticleFormat, ensureCanonicalPersonName, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
+import { composeGroundedManualFactSection, enforceStandardArticleFormat, ensureCanonicalPersonName, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
 import { updateManualIntakeState, writeManualIntakeState } from "./intake/intakeState.js";
 import { parseManualIntake } from "./intake/parseManualIntake.js";
@@ -196,6 +196,25 @@ async function main() {
     assert.equal(oneClaimDepth.used_claims, 1, "中国語の92亿元と表示変換後の92億元を同じ数値として扱う");
     assert.equal(oneClaimDepth.passed, false, "1/1=100%でも、台帳そのものが薄い記事は公開候補にしない");
     assert.ok(oneClaimDepth.reasons.includes("insufficient_eligible_claims:1<3"));
+    const translatedUnitLedger: FactLedger = {
+      ...oneClaimLedger,
+      claims: [
+        claim("U1", "放映は3220万场を超えた。", ["3220万场"]),
+        claim("U2", "観客は2.5亿人次を超えた。", ["2.5亿人次"]),
+        claim("U3", "120部を超える作品が公開された。", ["120部"]),
+        claim("U4", "34天連続で単日興行収入が1億元を超えた。", ["34天", "1亿元"]),
+        claim("U5", "45.36万张の補助券が使われた。", ["45.36万张"]),
+        claim("U6", "2026年8月13日に集計された。", ["2026年8月13日"]),
+        claim("U7", "第八届の映画祭で実施された。", ["第八届"]),
+        claim("U8", "波及比率は1∶15.77だった。", ["1∶15.77"])
+      ]
+    };
+    const translatedUnitDepth = assessArticleDepth({
+      ...oneClaimSummary,
+      what_happened: "放映は3220万回を超え、観客は2.5億人を超えた。120本を超える作品が公開され、34日連続で単日興行収入が1億元を超えた。45.36万枚の補助券が使われた。2026年8月13日に集計され、第8回の映画祭で実施された。波及比率は1対15.77だった。",
+      claim_refs: { ...oneClaimSummary.claim_refs, what_happened: ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8"] }
+    }, translatedUnitLedger, "manual_evidence_rich");
+    assert.equal(translatedUnitDepth.used_claims, 8, "中国語の数量単位・複合日付・序数・比率を自然な日本語へ訳しても同じ数字claimとして扱う");
     const commentOnlyDepth = assessArticleDepth({
       ...oneClaimSummary,
       what_happened: "根拠を反映していない本文です。",
@@ -224,6 +243,13 @@ async function main() {
     assert.equal(depth.passed, true, depth.reasons.join(", "));
     assert.equal(depth.used_claims, 12);
     assert.equal(depth.used_number_claims, 8);
+    const longRichLedger = { ...richLedger, claims: richLedger.claims.map((item) => ({ ...item, text: `${item.text.replace(/。$/u, "")}ことが確認されている。` })) };
+    const composed = composeGroundedManualFactSection(thin, longRichLedger, "manual_evidence_rich");
+    const composedDepth = assessArticleDepth(composed, longRichLedger, "manual_evidence_rich", true);
+    assert.equal(composedDepth.passed, true, composedDepth.reasons.join(", "));
+    assert.deepEqual(composed.detail_sections, [], "台帳文からの最終構成でも通常記事と同じ段落構成を保つ");
+    const unresolvedWithoutNumber = composeGroundedManualFactSection(thin, { ...longRichLedger, unresolved: ["E1とE2で評価が食い違う"] }, "manual_evidence_rich");
+    assert.equal(unresolvedWithoutNumber.what_happened, thin.what_happened, "数値で安全に切り分けられない矛盾がある時は台帳文の自動構成を使わない");
     const boxOfficeTopic = {
       topic_type: "box_office", context_value: "high",
       topic_key: "2026年暑期档映画興行", title_hint: "2026暑期档电影票房超92亿元", event_sentence: "92億元を超えた", search_queries: []

@@ -13,7 +13,7 @@ import { applyTerminology, formatTerminologyForPrompt } from "./terminology.js";
 import { getToneMode } from "./toneMode.js";
 import { applyEvidenceTranslationGuards } from "./translationGuards.js";
 import { assertToneOnlyRevisionContract, ToneOnlyRevisionContractError } from "./toneOnlyRevision.js";
-import { ArticleDepthGateError, assessArticleDepth, getArticleDepthRequirements, type ArticleDepthProfile } from "./articleDepth.js";
+import { ArticleDepthGateError, assessArticleDepth, extractCanonicalDepthNumbers, getArticleDepthRequirements, isClaimReflectedInText, type ArticleDepthProfile } from "./articleDepth.js";
 import type {
   AiProvider,
   ArticleType,
@@ -179,7 +179,10 @@ export async function summarizeTopic(
   }
   if ((!articleDepth.passed || writingFailures.length) && articleDepthProfile === "manual_evidence_rich") {
     const retryPrompt = `${await buildLedgerWritingPrompt(topic, ledger, [], articleDepthProfile, [...articleDepth.reasons, ...writingFailures])}\n\n前回の下書きJSON:\n${JSON.stringify(summary, null, 2)}\n\n前回の根拠付き記述を捨てず、重複を避けて必要節数と検証済みrelated angleの反映を修正してください。`;
-    text = await generateJson(provider, retryPrompt, budget);
+    // The initial draft stays on the base model. A depth failure is the
+    // quality-critical rewrite, so use the same higher-quality route as the
+    // verified ledger before falling back to deterministic claim composition.
+    text = await generateJson(ledgerAi.provider, retryPrompt, budget, ledgerAi.model);
     summary = normalizeSummaryClaimRefs(await applyTerminology(normalizeSummary(parseJsonFromModelText(text))), ledger);
     summary = ensureObservableReactionView(summary, ledger);
     summary = repairManualFactSectionGrounding(summary, ledger, articleDepthProfile);
@@ -190,7 +193,15 @@ export async function summarizeTopic(
       throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
     }
     articleDepth = assessArticleDepth(summary, ledger, articleDepthProfile, true);
-    if (!articleDepth.passed) throw new ArticleDepthGateError(articleDepth);
+    if (!articleDepth.passed) {
+      summary = composeGroundedManualFactSection(summary, ledger, articleDepthProfile);
+      claimCheck = { ...runClaimCheck(summary, ledger), action: "regenerated" };
+      if (claimCheck.gated_violation_count > 0) {
+        throw new ClaimCheckDiscardError(claimCheck.violations.filter((violation) => violation.severity === "gate"));
+      }
+      articleDepth = assessArticleDepth(summary, ledger, articleDepthProfile, true);
+      if (!articleDepth.passed) throw new ArticleDepthGateError(articleDepth);
+    }
     writingFailures = manualWritingFailures(summary, ledger, topic);
     if (writingFailures.length) throw new Error(`manual_writing_gate:${writingFailures.join(",")}`);
   }
@@ -859,7 +870,7 @@ async function buildLedgerWritingPrompt(
   const depthInstruction = articleDepthProfile === "manual_evidence_rich"
     ? `\n\n持ち込みニュース専用の根拠密度ルール:
 - 通常生成と同じ公開フォーマットを使い、detail_sectionsは必ず空配列にする。独自の見出しや段落を追加しない。
-- 利用可能なroot claimが6件以上なら、what_happenedを220〜650字で書き、確認済みclaimを重複なく整理する。
+- 利用可能なroot claimが6件以上なら、what_happenedを220〜1000字で書き、確認済みclaimを重複なく整理する。必要claim数を満たすために650字を超えてよい。
 - 数字を持つ重要claimは、羅列せず比較・対象・時点が分かる文にし、原則60%以上をwhat_happenedで使う。
 - 政策・補助金、施設や現場の変化、制作・配給・興行・雇用・周辺消費への波及がclaimsにある場合、それぞれを独立候補として検討する。
 - 人物記事では、経歴の数字、現在の状態、本人の工夫、制作現場の支援、日常の補助手段など、claimsに存在する異なる論点をwhat_happenedに整理する。
@@ -872,8 +883,8 @@ async function buildLedgerWritingPrompt(
     ? `\n\n前回は根拠密度ゲートを通過しませんでした: ${depthFailures.join(", ")}。事実を追加せず、what_happened内で独立claimの採用と整理を修正してください。`
     : "";
 
-  const whatHappenedLength = articleDepthProfile === "manual_evidence_rich" ? "220〜650字" : "150〜250字";
-  const totalLength = articleDepthProfile === "manual_evidence_rich" ? "550〜1100字" : "400〜700字";
+  const whatHappenedLength = articleDepthProfile === "manual_evidence_rich" ? "220〜1000字" : "150〜250字";
+  const totalLength = articleDepthProfile === "manual_evidence_rich" ? "550〜1500字" : "400〜700字";
 
   return `あなたは中国エンタメの日本語ニュースメモを書く編集AIです。入力は「事実台帳」だけです。元記事の原文はもう見られません。読者は中国エンタメに関心のある日本語話者で、中国の制度・業界用語の前提知識はありません。
 
@@ -1358,6 +1369,78 @@ function observableAudienceClaims(ledger: FactLedger) {
 
 export function enforceStandardArticleFormat(summary: SummarizedArticle, profile: ArticleDepthProfile): SummarizedArticle {
   return profile === "manual_evidence_rich" ? { ...summary, detail_sections: [] } : summary;
+}
+
+/**
+ * Last-resort writer for a rich manual ledger. It does not invent or infer a
+ * fact: after two prose attempts miss the declared coverage, it composes the
+ * factual body from the ledger's already anchored Japanese claim sentences.
+ */
+export function composeGroundedManualFactSection(
+  summary: SummarizedArticle,
+  ledger: FactLedger,
+  profile: ArticleDepthProfile
+): SummarizedArticle {
+  if (profile !== "manual_evidence_rich") return summary;
+  const requirements = getArticleDepthRequirements(ledger, profile);
+  const unresolvedNumberGroups = ledger.unresolved.map((item) => extractCanonicalDepthNumbers(item.replace(/\b[EC]\d+\b/giu, "")));
+  if (unresolvedNumberGroups.some((tokens) => tokens.length === 0)) return summary;
+  const unresolvedNumbers = new Set(unresolvedNumberGroups.flat());
+  const signatures = new Set<string>();
+  const eligible = ledger.claims.filter((claim) =>
+    claim.type !== "unsupported"
+    && claim.type !== "source_analysis"
+    && claim.scope !== "related_angle"
+    && claim.anchor !== false
+    && isClaimReflectedInText(claim, claim.text)
+    && ![...claim.numbers, claim.text].flatMap(extractCanonicalDepthNumbers).some((token) => unresolvedNumbers.has(token))
+  ).filter((claim) => {
+    const signature = `${claim.text.toLowerCase().replace(/[\s,，。！？、；：,.!?;:（）()【】《》「」『』“”"']/gu, "")}|${claim.numbers.flatMap(extractCanonicalDepthNumbers).sort().join(",")}`;
+    if (signatures.has(signature)) return false;
+    signatures.add(signature);
+    return true;
+  });
+  const selected = new Set<string>();
+  const add = (claim: FactLedger["claims"][number] | undefined) => {
+    if (claim) selected.add(claim.id);
+  };
+  add(eligible[0]);
+  for (const role of requirements.required_roles) add(eligible.find((claim) => claim.editorial_role === role));
+  for (const claim of eligible.filter((item) => item.numbers.length > 0)) {
+    if ([...selected].filter((id) => eligible.find((item) => item.id === id)?.numbers.length).length >= requirements.minimum_number_claims) break;
+    add(claim);
+  }
+  for (const claim of eligible) {
+    if (selected.size >= requirements.minimum_used_claims) break;
+    add(claim);
+  }
+  let ordered = eligible.filter((claim) => selected.has(claim.id));
+  let body = ordered.map(formatGroundedClaimSentence).join("");
+  for (const claim of eligible) {
+    if (body.length >= requirements.minimum_body_length) break;
+    if (selected.has(claim.id)) continue;
+    add(claim);
+    ordered = eligible.filter((item) => selected.has(item.id));
+    body = ordered.map(formatGroundedClaimSentence).join("");
+  }
+  if (
+    ordered.length < requirements.minimum_used_claims
+    || ordered.filter((claim) => claim.numbers.length > 0).length < requirements.minimum_number_claims
+    || requirements.required_roles.some((role) => !ordered.some((claim) => claim.editorial_role === role))
+    || body.length < requirements.minimum_body_length
+    || body.length > 1000
+  ) return summary;
+  return {
+    ...summary,
+    what_happened: body,
+    claim_refs: { ...summary.claim_refs, what_happened: ordered.map((claim) => claim.id) },
+    detail_sections: []
+  };
+}
+
+function formatGroundedClaimSentence(claim: FactLedger["claims"][number]) {
+  const text = claim.text.trim();
+  return /[。！？]$/u.test(text) ? text : `${text}。`;
 }
 
 export function repairManualFactSectionGrounding(

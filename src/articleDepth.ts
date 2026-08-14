@@ -55,7 +55,7 @@ export function assessArticleDepth(
   addReferencedText(referencedText, summary.claim_refs.what_happened, summary.what_happened);
   const referencedIds = new Set([...referencedText.keys()].filter((id) => validIds.has(id)));
   const usedIds = new Set(eligible
-    .filter((claim) => referencedIds.has(claim.id) && claimIsReflected(claim, (referencedText.get(claim.id) ?? []).join("\n")))
+    .filter((claim) => referencedIds.has(claim.id) && isClaimReflectedInText(claim, (referencedText.get(claim.id) ?? []).join("\n")))
     .map((claim) => claim.id));
   const unrealizedIds = [...referencedIds].filter((id) => !usedIds.has(id));
   const numberClaims = eligible.filter((claim) => claim.numbers.length > 0);
@@ -94,10 +94,10 @@ function addReferencedText(target: Map<string, string[]>, refs: string[], text: 
   for (const ref of refs) target.set(ref, [...(target.get(ref) ?? []), text]);
 }
 
-function claimIsReflected(claim: FactLedger["claims"][number], text: string) {
+export function isClaimReflectedInText(claim: FactLedger["claims"][number], text: string) {
   const normalized = normalizeAnchor(text);
   const observedNumbers = new Set(extractDepthNumbers(text).map(normalizeDepthNumber));
-  const numbers = claim.numbers.map(normalizeDepthNumber).filter(Boolean);
+  const numbers = claim.numbers.flatMap(extractCanonicalDepthNumbers);
   if (numbers.length && !numbers.every((number) => observedNumbers.has(number))) return false;
   const entities = claim.entities.map(normalizeAnchor).filter((entity) => entity.length >= 2);
   if (entities.length && !entities.some((entity) => normalized.includes(entity))) return false;
@@ -108,11 +108,20 @@ function normalizeDepthNumber(value: string) {
   return normalizeNumberToken(value)
     .replace(/亿元$/u, "亿")
     .replace(/万元$/u, "万")
-    .replace(/館$/u, "馆");
+    .replace(/館$/u, "馆")
+    .replace(/天$/u, "日")
+    .replace(/部$/u, "本")
+    .replace(/人次$/u, "人")
+    .replace(/[場场]$/u, "回")
+    .replace(/[張张]$/u, "枚");
 }
 
 function extractDepthNumbers(value: string) {
-  return value.match(/(?:[0-9０-９]+|[一二三四五六七八九十百千两]+)(?:[.,，．][0-9０-９]+)?(?:億元|亿元|萬元|万元|億円|亿|億|万|萬|円|元|%|％|年|月|日|部|天|館|馆|面|本|件|人|回|場|场|歳)?/gu) ?? [];
+  return value.match(/第(?:[0-9０-９]+|[一二三四五六七八九十百千两]+)(?:届|回|期)|(?:[0-9０-９]+|[一二三四五六七八九十百千两]+)(?:[.,，．][0-9０-９]+)?(?:億元|亿元|萬元|万元|億円|[亿億万萬](?:人次|[人場场回部本天日館馆面張张枚件])?|円|元|%|％|年|月|日|部|天|館|馆|面|本|件|人次|人|回|場|场|張|张|枚|歳)?/gu) ?? [];
+}
+
+export function extractCanonicalDepthNumbers(value: string) {
+  return extractDepthNumbers(value).map(normalizeDepthNumber).filter(Boolean);
 }
 
 function normalizeAnchor(value: string) {

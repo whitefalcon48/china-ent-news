@@ -95,7 +95,7 @@ data/manual-intake/<comment-id>/
 ```
 
 - ledger claimには `editorial_role` を付ける。映画・産業記事では `key_numbers` / `policy_support` / `venue_change` / `industry_spillover`、人物記事では `personal_condition` / `working_method` / `production_support` / `daily_support` を主に使う。
-- root claimが6件以上ある場合、`what_happened` は220〜650字を目安に、確認済みの独立claimを重複なく整理する。
+- root claimが6件以上ある場合、`what_happened` は220〜1000字を目安に、確認済みの独立claimを重複なく整理する。必要claim数を満たすために650字を超えることを許容する。
 - 重要な数字claimは原則60%以上を `what_happened` で使い、値・比較対象・時点を一緒に示す。
 - 利用可能claimに明示された編集役割は最低1件ずつ使う。根拠にない役割や背景は作らない。
 - 生成後に `article_depth` を計測する。独立claimの60%を使えていない、`what_happened` が短すぎる、重要数字を落とす、または独自の詳細節が残る場合は一度だけ再生成する。再生成後も不合格なら `article_too_thin` としてレビューIssueを作らない。
@@ -113,6 +113,8 @@ data/manual-intake/<comment-id>/
 - HTML本文は先頭selectorの長さだけで決めず、article/main、JSON-LD、埋め込みJS、meta description、bodyを採点する。本文文字数、文数、既知UI文言の比率、数値・時点アンカーを `document.json` に保存し、古いUI殻キャッシュも再利用しない。
 - `related_angle` は全文検証済みの資料だけを事実台帳へ渡す。root eventの複数ソース数や裏付けには加えず、`scope=related_angle` のclaimとして分離する。確認できないSNS反応は書かない。
 - 根拠密度の再生成では前回下書きを入力に残し、独立claimと重要数字を `what_happened` に整理するよう指示する。品質ゲートそのものは変更しない。
+- 本文初稿は基盤モデルで作り、根拠密度不合格時の再生成だけ事実台帳と同じ高品質モデルを使う。それでも不合格の場合に限り、矛盾数値・重複claim・自己実現できないclaimを除外した検証済み台帳文から `what_happened` を構成し、全claim/depth/表記gateを再実行する。
+- 中国語から日本語への自然な数量単位変換（`天→日`、`部→本`、`人次→人`、`场→回`、`张→枚`）は同じ数字claimとして照合する。`3220万回` のような「万＋単位」を途中で切らない。
 - 事実台帳のAPI通信失敗、timeout、408/429/5xx、空応答、出力打ち切り、JSON構文不良は同じ根拠とschemaで1回だけ再試行する。台帳の件数不足や根拠不足はこの再試行対象にせず、既存のadequacy gateで判定する。持ち込みでは台帳失敗後に根拠参照のない汎用summaryへ進まず停止する。
 - 台帳再試行が尽きた場合は、本文・prompt・provider応答を保存せず、provider、model、試行数、失敗段階、原因コード、HTTP status、finish reason、応答文字数、所要時間だけを `ledger-extraction.json` に残す。
 - 公開ページ、レビューIssue、レビューUIのすべてで通常記事と同じ段落構成を使う。持ち込みも `detail_sections: []` とする。
