@@ -256,7 +256,11 @@ function getEntityTokens(topic: TopicCandidate) {
 }
 
 function isEntityTerm(term: string, entities: string[]) {
-  return entities.some((entity) => entity === term || entity.includes(term) || term.includes(entity));
+  const normalizedTerm = normalizeEventAnchor(term);
+  return entities.some((entity) => {
+    const normalizedEntity = normalizeEventAnchor(entity);
+    return normalizedEntity === normalizedTerm || normalizedEntity.includes(normalizedTerm) || normalizedTerm.includes(normalizedEntity);
+  });
 }
 
 function matchesTerm(text: string, term: string) {

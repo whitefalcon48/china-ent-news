@@ -60,6 +60,11 @@ assert.equal(
   true,
   "2026年暑期档 and 2026暑期档 are the same event anchor"
 );
+assert.equal(
+  assessSourceRelevance(summerBoxOfficeTopic, evidence("2026年暑期档票房突破80亿", "https://example.com/not-hot-search"), "2026年暑期档 热搜", "related_angle").accepted,
+  false,
+  "an event match alone cannot masquerade as a hot-search observation"
+);
 
 const liXuejianTopic = {
   ...baseTopic,

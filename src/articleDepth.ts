@@ -6,6 +6,38 @@ export type ArticleDepthProfile = "standard" | "manual_evidence_rich";
 
 export type ArticleDepthAssessment = NonNullable<import("./types.js").TopicGenerationMeta["article_depth"]>;
 
+export type ArticleDepthRequirements = {
+  eligible_claims: number;
+  minimum_used_claims: number;
+  important_number_claims: number;
+  minimum_number_claims: number;
+  minimum_body_length: number;
+  required_roles: string[];
+};
+
+export function getArticleDepthRequirements(ledger: FactLedger, profile: ArticleDepthProfile): ArticleDepthRequirements {
+  const eligible = ledger.claims.filter((claim) =>
+    claim.type !== "unsupported" && claim.scope !== "related_angle" && claim.anchor !== false
+  );
+  const numberClaims = eligible.filter((claim) => claim.numbers.length > 0);
+  if (profile !== "manual_evidence_rich") {
+    return { eligible_claims: eligible.length, minimum_used_claims: 0, important_number_claims: numberClaims.length, minimum_number_claims: 0, minimum_body_length: 0, required_roles: [] };
+  }
+  const minimumUsedClaims = eligible.length >= 10
+    ? Math.max(6, Math.ceil(eligible.length * 0.6))
+    : eligible.length >= 6
+      ? Math.ceil(eligible.length * 0.6)
+      : Math.min(eligible.length, 3);
+  return {
+    eligible_claims: eligible.length,
+    minimum_used_claims: minimumUsedClaims,
+    important_number_claims: numberClaims.length,
+    minimum_number_claims: Math.ceil(numberClaims.length * 0.6),
+    minimum_body_length: eligible.length >= 6 ? 220 : eligible.length >= 3 ? 150 : 0,
+    required_roles: [...new Set(eligible.map((claim) => claim.editorial_role).filter((role): role is NonNullable<typeof role> => Boolean(role) && role !== "other"))]
+  };
+}
+
 export function assessArticleDepth(
   summary: SummarizedArticle,
   ledger: FactLedger,
@@ -30,23 +62,16 @@ export function assessArticleDepth(
   const usedNumberClaims = numberClaims.filter((claim) => usedIds.has(claim.id));
   const coverageRatio = eligible.length ? usedIds.size / eligible.length : 1;
   const reasons: string[] = [];
+  const requirements = getArticleDepthRequirements(ledger, profile);
 
   if (profile === "manual_evidence_rich") {
     if (eligible.length < 3) reasons.push(`insufficient_eligible_claims:${eligible.length}<3`);
-    const minimumUsedClaims = eligible.length >= 10
-      ? Math.max(6, Math.ceil(eligible.length * 0.6))
-      : eligible.length >= 6
-        ? Math.ceil(eligible.length * 0.6)
-        : Math.min(eligible.length, 3);
-    const minimumNumberClaims = Math.ceil(numberClaims.length * 0.6);
     if (sections.length > 0) reasons.push(`unexpected_detail_sections:${sections.length}`);
     for (const id of unrealizedIds) reasons.push(`claim_ref_not_realized:${id}`);
-    if (usedIds.size < minimumUsedClaims) reasons.push(`used_claims:${usedIds.size}<${minimumUsedClaims}`);
-    if (usedNumberClaims.length < minimumNumberClaims) reasons.push(`used_number_claims:${usedNumberClaims.length}<${minimumNumberClaims}`);
-    const minimumBodyLength = eligible.length >= 6 ? 220 : eligible.length >= 3 ? 150 : 0;
-    if (minimumBodyLength && summary.what_happened.trim().length < minimumBodyLength) reasons.push(`what_happened_too_short:${summary.what_happened.trim().length}<${minimumBodyLength}`);
-    const requiredRoles = new Set(eligible.map((claim) => claim.editorial_role).filter((role) => role && role !== "other"));
-    for (const role of requiredRoles) {
+    if (usedIds.size < requirements.minimum_used_claims) reasons.push(`used_claims:${usedIds.size}<${requirements.minimum_used_claims}`);
+    if (usedNumberClaims.length < requirements.minimum_number_claims) reasons.push(`used_number_claims:${usedNumberClaims.length}<${requirements.minimum_number_claims}`);
+    if (requirements.minimum_body_length && summary.what_happened.trim().length < requirements.minimum_body_length) reasons.push(`what_happened_too_short:${summary.what_happened.trim().length}<${requirements.minimum_body_length}`);
+    for (const role of requirements.required_roles) {
       if (!eligible.some((claim) => claim.editorial_role === role && usedIds.has(claim.id))) reasons.push(`missing_editorial_role:${role}`);
     }
   }

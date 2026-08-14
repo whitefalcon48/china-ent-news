@@ -13,7 +13,7 @@ import { applyTerminology, formatTerminologyForPrompt } from "./terminology.js";
 import { getToneMode } from "./toneMode.js";
 import { applyEvidenceTranslationGuards } from "./translationGuards.js";
 import { assertToneOnlyRevisionContract, ToneOnlyRevisionContractError } from "./toneOnlyRevision.js";
-import { ArticleDepthGateError, assessArticleDepth, type ArticleDepthProfile } from "./articleDepth.js";
+import { ArticleDepthGateError, assessArticleDepth, getArticleDepthRequirements, type ArticleDepthProfile } from "./articleDepth.js";
 import type {
   AiProvider,
   ArticleType,
@@ -860,11 +860,17 @@ async function buildLedgerWritingPrompt(
 - 数字を持つ重要claimは、羅列せず比較・対象・時点が分かる文にし、原則60%以上をwhat_happenedで使う。
 - 政策・補助金、施設や現場の変化、制作・配給・興行・雇用・周辺消費への波及がclaimsにある場合、それぞれを独立候補として検討する。
 - 人物記事では、経歴の数字、現在の状態、本人の工夫、制作現場の支援、日常の補助手段など、claimsに存在する異なる論点をwhat_happenedに整理する。
+- 今回の合格条件は、root claimを最低${getArticleDepthRequirements(ledger, articleDepthProfile).minimum_used_claims}件、そのうち数字を持つclaimを最低${getArticleDepthRequirements(ledger, articleDepthProfile).minimum_number_claims}件、what_happenedで実際に読める形にすること。
+- claim_refs.what_happened にIDを入れるだけでは使用扱いにならない。そのclaimのnumbersをすべて本文に書き、entitiesがあるclaimは少なくとも1つのentityも本文に書く。書けないclaim IDはrefsへ入れない。
+- 必須の編集役割: ${getArticleDepthRequirements(ledger, articleDepthProfile).required_roles.join(" / ") || "なし"}。各役割から最低1件を本文に反映する。
 - 根拠20件を全件詰め込む必要はない。重複claimをまとめ、独立した重要claimを優先する。`
     : "\n\n- detail_sections は空配列にする。";
   const depthRetry = depthFailures.length
     ? `\n\n前回は根拠密度ゲートを通過しませんでした: ${depthFailures.join(", ")}。事実を追加せず、what_happened内で独立claimの採用と整理を修正してください。`
     : "";
+
+  const whatHappenedLength = articleDepthProfile === "manual_evidence_rich" ? "220〜650字" : "150〜250字";
+  const totalLength = articleDepthProfile === "manual_evidence_rich" ? "550〜1100字" : "400〜700字";
 
   return `あなたは中国エンタメの日本語ニュースメモを書く編集AIです。入力は「事実台帳」だけです。元記事の原文はもう見られません。読者は中国エンタメに関心のある日本語話者で、中国の制度・業界用語の前提知識はありません。
 
@@ -905,12 +911,12 @@ ${terminology}
 
 構成ルール:
 - lead: 2〜3行。トピック全体として何が起きたか。
-- what_happened: 150〜250字。verified_fact claimだけで出来事・数字・日付・関係者を整理。
+- what_happened: ${whatHappenedLength}。verified_fact claimを中心に出来事・数字・日付・関係者を整理。source_analysis claimを使う場合は媒体名を明示する。
 - why_it_matters: 100〜250字。ビンタンの注目ポイント。docs/editorial-character.md で定めた公開記事向けの編集トーンで、短い感想・リアクションを必ず混ぜる。本文の言い換え・要約をせず、「用語・制度の噛み砕き説明（termsに説明がある場合だけ）」「なぜ今気になるか」「次に確認する数字・発表・反応」「これまでの流れとの関係」「情報源の見方・注意点」のうち、この記事に最も価値のある角度を1つ選んで書く。日本語読者向けの背景・公開状況・ファン文化は japan_context_note 専用にし、両方がある場合は同じ事実・角度を繰り返さない。
 - reaction_view: SNS由来、angle_kind=audience_reaction、または複数媒体の見られ方を直接示すclaimがある場合のみ100〜200字。angle_kind=audience_reactionのclaimがある場合は必ず使用する。無ければ空文字。
 - japan_context_note: 日本語圏の読者に補足する価値がある文脈のclaimがある場合だけ、100〜200字でビンタンの声で書く。why_it_matters と同じ角度・言い換えにしない。日本側の受け止めや公開状況を述べる場合は、その内容を裏付けるclaimがあるときだけ。無ければ空文字。
 - editor_comment: 常に空文字 "" を返す（旧「ビンタンからのひとこと」枠は廃止。公開上は「ビンタンの注目ポイント」と、根拠がある時だけの「ビンタンからの補足」の2役とし、独立した3枠目は作らない）。
-- lead / what_happened / reaction_view / why_it_matters / japan_context_note の基本部分はおおむね400〜700字。持ち込みニュースも通常生成と同じ構成にする。
+- lead / what_happened / reaction_view / why_it_matters / japan_context_note の基本部分はおおむね${totalLength}。持ち込みニュースも通常生成と同じ構成にする。
 - claim_refs に、各セクションで根拠にしたclaimのidを入れる（例: {"what_happened": ["C1","C2"], ...}）。
 - detail_sections は常に空配列 [] を返す。
 - 必ずJSONだけを返す。

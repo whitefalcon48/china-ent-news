@@ -107,7 +107,7 @@ claimの分類（type）:
 
 規則:
 - claimのtextは必ず日本語1文で書く。中国語の文をそのまま写さない（人名・作品名などの固有名詞は原文表記のままでよい）。
-- claimは1件1文。重要な順に最大20件。
+- claimは1件1文。root_eventは重要な順に最大20件、related_angleは検証済みEごとに最低1件・最大4件を追加できる（全体最大24件）。
 - editorial_role は記事内での役割を表す。数字の基準・比較は key_numbers、補助金・政策は policy_support、映画館や現場の変化は venue_change、制作・配給・興行・雇用・周辺消費への波及は industry_spillover、人物の現在の状態は personal_condition、本人の工夫は working_method、制作現場の支援は production_support、日常の補助手段は daily_support、それ以外は other とする。
 - 同じ内容の言い換えで20件を埋めない。evidenceにある異なる数字、政策、現場変化、波及先、人物の具体的な方法を優先する。
 - entities（人物・作品・組織の固有名詞）とnumbers（数字・日付）は原文の表記のまま入れる。claimの文中に出てくる数字・日付・序数（第八届など）は必ずnumbersにも入れる。
@@ -206,7 +206,11 @@ export function normalizeFactLedger(
   const object = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
   const rawClaims = Array.isArray(object.claims) ? object.claims : [];
   const normalizedEvidence = normalizeAnchorText(evidence);
-  const claims = rawClaims.slice(0, 20).map((item, index) => normalizeClaim(item, index, normalizedEvidence, evidenceRoles));
+  const normalizedClaims = rawClaims.slice(0, 30).map((item, index) => normalizeClaim(item, index, normalizedEvidence, evidenceRoles));
+  const claims = [
+    ...normalizedClaims.filter((claim) => claim.scope !== "related_angle").slice(0, 20),
+    ...normalizedClaims.filter((claim) => claim.scope === "related_angle").slice(0, 4)
+  ];
   const rawTerms = Array.isArray(object.terms) ? object.terms : [];
   const terms = rawTerms
     .slice(0, 8)

@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
 import { buildManualReviewIssue } from "./intake/buildManualReviewIssue.js";
-import { assessArticleDepth } from "./articleDepth.js";
+import { assessArticleDepth, getArticleDepthRequirements } from "./articleDepth.js";
 import { assessLedgerAdequacy } from "./ledgerAdequacy.js";
 import { enforceStandardArticleFormat, ensureCanonicalPersonName, repairManualFactSectionGrounding } from "./summarizeWithGemini.js";
 import { fetchIntakeDocument, isPrivateAddress } from "./intake/fetchIntakeDocument.js";
@@ -226,6 +226,10 @@ async function main() {
     };
     assert.equal(assessLedgerAdequacy(oneClaimLedger, boxOfficeTopic).passed, false, "興行データ記事は1 claimでは生成へ進めない");
     assert.equal(assessLedgerAdequacy(adequateLedger, boxOfficeTopic).passed, true, "6件以上かつ複数の編集役割を持つ台帳は通す");
+    const twentyClaimLedger = { ...adequateLedger, claims: [...adequateLedger.claims, ...adequateLedger.claims.slice(0, 8).map((item, index) => ({ ...item, id: `X${index + 1}` }))] };
+    const twentyClaimRequirements = getArticleDepthRequirements(twentyClaimLedger, "manual_evidence_rich");
+    assert.equal(twentyClaimRequirements.minimum_used_claims, 12, "20 root claimsなら本文に最低12件を要求する");
+    assert.equal(twentyClaimRequirements.minimum_number_claims, 9, "数字claimも60%を同じ計算からpromptとgateへ渡す");
     const hallucinated = {
       ...standardRich,
       what_happened: `『台帳にない作品名』について報じられました。${standardRich.what_happened}`,
