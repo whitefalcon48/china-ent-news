@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "comment_id": "5289725840",
+  "source_url": "https://news.cctv.cn/2026/08/14/ARTIeYoVtBFR7Vh3tf6gSy5u260814.shtml",
+  "note": "Issue #48の根本修正・生成指示統一後の再生成。確認済み周辺報道から必要な数字・政策・産業波及を通常記事フォーマットで整理する。",
+  "status": "failed",
+  "created_at": "2026-08-14T05:09:22.119Z",
+  "updated_at": "2026-08-14T05:09:31.687Z",
+  "error": "evidence_too_sparse"
+}

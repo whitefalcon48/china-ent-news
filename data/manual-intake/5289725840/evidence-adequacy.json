@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "root_document_quality": "limited",
+  "verified_root_expansion_count": 0,
+  "reasons": [
+    "limited_root_without_verified_expansion"
+  ]
+}
