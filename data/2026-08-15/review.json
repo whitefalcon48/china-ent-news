@@ -1,13 +1,13 @@
 {
   "date": "2026-08-15",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 51,
   "articles": [
     {
       "index": 1,
       "topic_key": "欢迎来龙餐馆票房",
       "title": "映画『歓迎来龍餐馆』、点映・前売り興収1.34億元 出資2社がストップ高",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -16,7 +16,7 @@
       "index": 2,
       "topic_key": "第38届大众电影百花奖",
       "title": "第38回大衆電影百花賞（百花賞）、易烊千璽と衛詩雅が最優秀主演賞を受賞",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
