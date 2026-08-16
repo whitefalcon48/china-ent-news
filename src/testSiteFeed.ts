@@ -71,6 +71,7 @@ try {
   const manualPost = await fs.readFile(path.join(manualPostOutput, "manual_x_post_987654321.md"), "utf8");
   const about = await readPage("about/index.html");
   const archive = await readPage("archive/index.html");
+  const tags = await readPage("tags/index.html");
   const htaccess = await readPage(".htaccess");
   const xCardTestA = await readPage("x-card-test/a/index.html");
   const xCardTestB = await readPage("x-card-test/b/index.html");
@@ -105,6 +106,12 @@ try {
   assertIncludes(about, '<meta name="twitter:image" content="https://example.test/og/about.png?v=', "このサイトについてのXカード画像の絶対URL");
   assertIncludes(home, "/assets/bingtang-logo-horizontal.png", "本番横長ロゴ");
   assertIncludes(home, "/assets/bingtang-hero-v2.png", "本番ヘッダーキャラクター");
+  assertIncludes(home, 'href="/tags/?tag=', "記事カードのタグリンク");
+  assertIncludes(detail, 'class="article-tags"', "記事詳細のタグ表示");
+  assertIncludes(tags, 'data-tag-search', "タグ検索ページ");
+  assertIncludes(tags, 'data-tag-filter="中国映画"', "既存タグの絞り込みボタン");
+  assertIncludes(tags, 'data-tagged-article', "タグ検索対象の記事一覧");
+  assertIncludes(tags, 'new URLSearchParams(window.location.search)', "タグURLパラメータの復元");
   assertNotIncludes(home, "中国エンタメの現地温度を、日本語で。", "削除したキャッチコピー");
   assertNotIncludes(home, "今日のわたしが気になる", "削除した吹き出し文言");
   assertNotIncludes(home, "ビンタンちゃんデイリー", "旧サイト読み");
@@ -237,7 +244,7 @@ function fixtureArticle(index: number) {
       topic_key: `fixture-${index}`,
       main_entities: { people: [], works: [], organizations: [] },
       related_sources: index === 1 ? [{ name: "関連媒体", url: relatedUrl }] : [],
-      tags: [],
+      tags: index === 1 ? ["中国映画", "興行収入"] : ["イベント"],
       publish_priority: "medium",
       publish_reason: "fixture",
       claim_refs: { what_happened: [], why_it_matters: [], reaction_view: [], japan_context_note: [] }

@@ -39,6 +39,7 @@ async function main() {
   const nonEmptyDays = days.filter((day) => day.articles.length > 0);
   const newestDate = nonEmptyDays[0]?.date;
   const latest = nonEmptyDays.flatMap((day) => day.articles.map((item) => ({ date: day.date, ...item }))).slice(0, 10);
+  const allPublished = nonEmptyDays.flatMap((day) => day.articles.map((item) => ({ date: day.date, ...item })));
 
   await writePage("index.html", renderLayout({
     title: SITE_NAME,
@@ -88,6 +89,14 @@ async function main() {
     body: renderArchive(days),
     fullHeader: true,
     ogImagePath: `/og/archive.png?v=${pageOgpVersions.archive}`
+  }));
+  await writePage("tags/index.html", renderLayout({
+    title: `タグから探す｜${SITE_NAME}`,
+    description: "記事に付いたタグから、公開済みの記事を絞り込みできます。",
+    canonicalPath: "/tags/",
+    currentNav: "tags",
+    body: renderTagSearch(allPublished),
+    fullHeader: true
   }));
   await writePage("about/index.html", renderLayout({
     title: `このサイトについて｜${SITE_NAME}`,
@@ -346,6 +355,7 @@ function renderCard(date: string, slug: string, article: ProcessedArticle) {
     <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(referenceArticleDate)}">参考記事公開日：${escapeHtml(formatNumericDate(referenceArticleDate))}</time></div>
     <h2>${escapeHtml(title)}</h2>
     <p class="lead">${escapeHtml(summary.lead)}</p>
+    ${renderArticleTags(summary.tags)}
     ${renderSourceMix(article)}
     ${renderFeedDetails(summary)}
     ${renderBingtangComment(article, summary.why_it_matters)}
@@ -377,6 +387,7 @@ function renderArticlePage(date: string, article: ProcessedArticle) {
       <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(date)}">${escapeHtml(formatNumericDate(summary.event_date || summary.published_date || date))}</time></div>
       <h1>${escapeHtml(title)}</h1>
       <p class="article-lead">${escapeHtml(summary.lead)}</p>
+      ${renderArticleTags(summary.tags)}
       ${renderSourceMix(article)}
       ${renderTextSection("何が起きた？", summary.what_happened)}
       ${renderTextSection("反応・見られ方", summary.reaction_view)}
@@ -391,6 +402,74 @@ function renderArticlePage(date: string, article: ProcessedArticle) {
 function renderChips(summary: SummarizedArticle) {
   return `<span class="chip badge badge-${badgeClass(summary.badge)}">${escapeHtml(summary.badge)}</span>
     <span class="chip category">${escapeHtml(summary.category)}</span>`;
+}
+
+function renderArticleTags(tags: string[]) {
+  const uniqueTags = [...new Set(tags.map((tag) => tag.trim()).filter(Boolean))];
+  if (!uniqueTags.length) return `<p class="article-tags no-tags"><span>タグなし</span></p>`;
+  return `<p class="article-tags" aria-label="記事タグ">${uniqueTags.map((tag) => `<a class="article-tag" href="${href(`/tags/?tag=${encodeURIComponent(tag)}`)}">${escapeHtml(tag)}</a>`).join("")}</p>`;
+}
+
+function renderTagSearch(items: Array<{ date: string; article: ProcessedArticle; slug: string }>) {
+  const tagCounts = new Map<string, number>();
+  for (const { article } of items) {
+    for (const tag of new Set(requireSummary(article).tags.map((value) => value.trim()).filter(Boolean))) {
+      tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+    }
+  }
+  const tags = [...tagCounts.entries()].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "ja"));
+  const cards = items.map(({ date, article, slug }) => {
+    const articleTags = [...new Set(requireSummary(article).tags.map((tag) => tag.trim()).filter(Boolean))];
+    return `<div data-tagged-article data-tags="${escapeAttr(JSON.stringify(articleTags))}">${renderCard(date, slug, article)}</div>`;
+  }).join("");
+  return `<main class="feed tag-search" data-tag-search>
+    <h1 class="page-title">タグから探す</h1>
+    <p class="tag-search-intro">記事のタグを選ぶと、公開済みの記事を絞り込めます。</p>
+    <label class="tag-query-label">タグを検索<input type="search" data-tag-query placeholder="例：中国映画、俳優、興行収入" autocomplete="off"></label>
+    <div class="tag-filter-list" data-tag-filter-list><button type="button" class="tag-filter current" data-tag-filter="">すべて <span>${items.length}</span></button>${tags.map(([tag, count]) => `<button type="button" class="tag-filter" data-tag-filter="${escapeAttr(tag)}">${escapeHtml(tag)} <span>${count}</span></button>`).join("")}</div>
+    <p class="tag-result-count" data-tag-result-count aria-live="polite"></p>
+    <section class="tag-results" data-tag-results>${cards || `<p class="empty">タグ付きの記事はまだありません。</p>`}</section>
+    ${renderTagSearchScript()}
+  </main>`;
+}
+
+function renderTagSearchScript() {
+  return `<script>(() => {
+    const root = document.querySelector('[data-tag-search]');
+    if (!root) return;
+    const query = root.querySelector('[data-tag-query]');
+    const buttons = [...root.querySelectorAll('[data-tag-filter]')];
+    const articles = [...root.querySelectorAll('[data-tagged-article]')];
+    const resultCount = root.querySelector('[data-tag-result-count]');
+    const normalize = (value) => value.normalize('NFKC').toLocaleLowerCase();
+    let activeTag = new URLSearchParams(window.location.search).get('tag') || '';
+    const render = () => {
+      const term = normalize(query.value.trim());
+      for (const button of buttons) {
+        const tag = button.dataset.tagFilter || '';
+        button.hidden = Boolean(term) && !normalize(tag).includes(term);
+        button.classList.toggle('current', tag === activeTag);
+      }
+      let visible = 0;
+      for (const article of articles) {
+        const tags = JSON.parse(article.dataset.tags || '[]');
+        const matches = activeTag ? tags.includes(activeTag) : !term || tags.some((tag) => normalize(tag).includes(term));
+        article.hidden = !matches;
+        if (matches) visible += 1;
+      }
+      resultCount.textContent = activeTag ? '「' + activeTag + '」の記事 ' + visible + '件' : term ? '「' + query.value.trim() + '」を含むタグの記事 ' + visible + '件' : '公開済みの記事 ' + visible + '件';
+    };
+    for (const button of buttons) button.addEventListener('click', () => {
+      const tag = button.dataset.tagFilter || '';
+      activeTag = tag === activeTag ? '' : tag;
+      const url = new URL(window.location.href);
+      if (activeTag) url.searchParams.set('tag', activeTag); else url.searchParams.delete('tag');
+      window.history.replaceState({}, '', url);
+      render();
+    });
+    query.addEventListener('input', render);
+    render();
+  })();</script>`;
 }
 
 function renderSourceMix(article: ProcessedArticle) {
@@ -502,7 +581,7 @@ function renderAvatar(sizeClass: string, imageName = "bingtang-avatar-smile-left
   return `<span class="avatar ${sizeClass}"><img src="${href(`/assets/${imageName}`)}" alt="ビンタン（AI秘書）" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="avatar-fallback" hidden aria-hidden="true">🧊</span></span>`;
 }
 
-function renderLayout(options: { title: string; description: string; canonicalPath: string; currentNav: "latest" | "archive" | "about" | ""; body: string; fullHeader: boolean; headerDate?: string; articleDate?: string; ogImagePath?: string }) {
+function renderLayout(options: { title: string; description: string; canonicalPath: string; currentNav: "latest" | "archive" | "tags" | "about" | ""; body: string; fullHeader: boolean; headerDate?: string; articleDate?: string; ogImagePath?: string }) {
   const canonicalUrl = absoluteUrl(options.canonicalPath);
   const ogImageUrl = absoluteUrl(options.ogImagePath || "/assets/ogp-default.png");
   return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(options.title)}</title><meta name="description" content="${escapeAttr(options.description)}"><link rel="canonical" href="${canonicalUrl}"><meta property="og:type" content="${options.fullHeader ? "website" : "article"}"><meta property="og:site_name" content="${SITE_NAME}"><meta property="og:title" content="${escapeAttr(options.title)}"><meta property="og:description" content="${escapeAttr(options.description)}"><meta property="og:url" content="${canonicalUrl}"><meta property="og:image" content="${ogImageUrl}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${SITE_NAME}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeAttr(options.title)}"><meta name="twitter:description" content="${escapeAttr(options.description)}"><meta name="twitter:image" content="${ogImageUrl}"><meta name="twitter:image:alt" content="${SITE_NAME}"><link rel="icon" href="${href("/assets/favicon-32.png")}"><style>${V2_CSS}</style></head><body>
@@ -510,12 +589,12 @@ function renderLayout(options: { title: string; description: string; canonicalPa
   ${options.body}${renderFooter()}</body></html>`;
 }
 
-function renderHeader(current: "latest" | "archive" | "about" | "", date?: string) {
+function renderHeader(current: "latest" | "archive" | "tags" | "about" | "", date?: string) {
   return `<header class="hero"><div class="hero-inner"><div class="brand"><a href="${href("/")}" class="logo"><img src="${href("/assets/bingtang-logo-horizontal.png")}" alt="冰糖日报 ビンタンデイリー"></a>${date ? `<time class="date-badge" datetime="${date}">最終更新：${escapeHtml(formatUpdatedDate(date))}</time>` : ""}</div><div class="hero-character"><img src="${href("/assets/bingtang-hero-v2.png")}" alt="片手を上げて挨拶するビンタン"></div></div>${renderNav(current)}</header>`;
 }
 
-function renderNav(current: "latest" | "archive" | "about" | "") {
-  return `<nav class="main-nav"><a${current === "latest" ? " class=\"current\"" : ""} href="${href("/")}">最新</a><a${current === "archive" ? " class=\"current\"" : ""} href="${href("/archive/")}">アーカイブ</a><a${current === "about" ? " class=\"current\"" : ""} href="${href("/about/")}">このサイトについて</a></nav>`;
+function renderNav(current: "latest" | "archive" | "tags" | "about" | "") {
+  return `<nav class="main-nav"><a${current === "latest" ? " class=\"current\"" : ""} href="${href("/")}">最新</a><a${current === "archive" ? " class=\"current\"" : ""} href="${href("/archive/")}">アーカイブ</a><a${current === "tags" ? " class=\"current\"" : ""} href="${href("/tags/")}">タグから探す</a><a${current === "about" ? " class=\"current\"" : ""} href="${href("/about/")}">このサイトについて</a></nav>`;
 }
 
 function renderArticleHeader(date: string) {
@@ -523,7 +602,7 @@ function renderArticleHeader(date: string) {
 }
 
 function renderFooter() {
-  return `<footer class="site-footer"><p>冰糖日报（ビンタンデイリー）／記事はAIが収集・生成しています。運営については<a href="${href("/about/")}">「このサイトについて」</a>をご覧ください。／© 2026 冰糖日报</p><nav><a href="${href("/about/")}">このサイトについて</a><a href="${href("/archive/")}">アーカイブ</a></nav></footer>`;
+  return `<footer class="site-footer"><p>冰糖日报（ビンタンデイリー）／記事はAIが収集・生成しています。運営については<a href="${href("/about/")}">「このサイトについて」</a>をご覧ください。／© 2026 冰糖日报</p><nav><a href="${href("/tags/")}">タグから探す</a><a href="${href("/about/")}">このサイトについて</a><a href="${href("/archive/")}">アーカイブ</a></nav></footer>`;
 }
 
 function badgeClass(badge: string) {
@@ -792,6 +871,7 @@ const V2_CSS = String.raw`
 .bingtang-comment{grid-template-columns:94px minmax(0,1fr);gap:12px;padding:14px 16px}.avatar-comment{width:92px;height:92px;font-size:46px}.avatar-comment img{transform:none}
 .article-card{position:relative;background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 32px rgba(36,86,119,.08);padding:24px;overflow:hidden}.article-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--red)}.article-card.card-official:before{background:var(--navy)}.article-card.card-data:before{background:var(--ice)}.article-card .article-section:first-of-type{margin-top:26px}.article-card .article-section{margin:28px 0}.article-card .bingtang-comment{margin:28px 0}.article-card .article-actions{margin-top:30px}
 .about{width:min(820px,calc(100% - 28px))}.about section{margin:38px 0}.about h2{font:400 1.16rem/1.55 "Kosugi Maru","Hiragino Maru Gothic ProN",sans-serif;color:var(--navy);margin:0 0 14px}.about p{margin:0 0 14px}.about-hero{display:grid;grid-template-columns:minmax(240px,290px) minmax(0,1fr);align-items:center;gap:42px}.about-character{align-self:end;display:flex;align-items:flex-end;justify-content:center}.about-character img{display:block;width:100%;max-width:280px;height:420px;object-fit:contain;object-position:center bottom}.about-intro h2{font-size:1.3rem}.about-intro p{font-size:.93rem}.about-section,.about-contact{border-top:1px solid var(--line);padding-top:28px}.about ul{margin:0;padding-left:1.4em}.about li+li{margin-top:8px}.about-contact a{font-weight:700}.site-footer p{max-width:760px}
+.article-tags{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 16px}.article-tag,.article-tags.no-tags span{display:inline-flex;align-items:center;border:1px solid #BFDCEB;border-radius:999px;background:#F4FBFE;color:#12549A;padding:3px 10px;font-size:.75rem;font-weight:700;line-height:1.45}.article-tag:hover{background:#E4F4FB;text-decoration:none}.article-tags.no-tags span{border-color:var(--line);background:#F7F9FA;color:var(--muted)}.tag-search-intro{margin:-16px 0 18px}.tag-query-label{display:grid;gap:6px;color:var(--navy);font-size:.85rem;font-weight:700}.tag-query-label input{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 12px;color:var(--text);font:inherit}.tag-filter-list{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.tag-filter{appearance:none;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--navy);padding:6px 11px;cursor:pointer;font:700 .78rem/1.35 inherit}.tag-filter span{color:var(--muted);font-weight:600}.tag-filter.current{border-color:var(--red);background:#FFF3F2;color:var(--red)}.tag-result-count{color:var(--muted);font-size:.84rem;margin:10px 0 18px}.tag-results>[hidden]{display:none}
 @media(max-width:640px){.article-card{padding:21px 14px 17px}.bingtang-comment{position:relative;display:block;padding:12px}.bingtang-comment>.avatar-comment{position:absolute;top:12px;right:12px}.bingtang-comment>div{display:block}.bingtang-comment h3{min-height:76px;padding-right:86px;align-items:flex-start}.avatar-comment{width:76px;height:76px}.about-hero{grid-template-columns:1fr;gap:18px}.about-character img{width:240px;height:350px}.about-intro h2{font-size:1.18rem}.about-section,.about-contact{padding-top:24px}}
 `;
 
