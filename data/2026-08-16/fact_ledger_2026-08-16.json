@@ -1,0 +1,1523 @@
+{
+  "date": "2026-08-16",
+  "generated_at": "2026-08-16T02:28:05.695Z",
+  "ledgers": [
+    {
+      "topic_key": "龙餐馆",
+      "ledger": {
+        "topic_key": "龙餐馆",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "周星驰经纪人陈震宇于8月13日晚在社交平台晒出《龙餐馆》电影票截图，配文质疑“我买的《功夫女足》，为什么给我的是别人的票”。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星驰",
+              "陈震宇",
+              "龙餐馆",
+              "功夫女足"
+            ],
+            "numbers": [
+              "8月13日"
+            ],
+            "quote_zh": "陈震宇8月13日晚间在社交平台晒出一张关于《龙餐馆》电影票的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "“周星驰经纪人内涵龙餐馆偷票房”相关话题冲上热搜。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星驰",
+              "龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "“周星驰经纪人内涵龙餐馆偷票房”相关话题冲上热搜",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "《龙餐馆》官方微博于8月14日下午发文称，经核实，该事件为涉事影城操作失误所致，影城已第一时间完成退票更正、补齐对应影片票房数据，并发布致歉与整改说明，《欢迎来龙餐馆》片方未参与、未授意该操作。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "龙餐馆",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "8月14日"
+            ],
+            "quote_zh": "《龙餐馆》官方微博8月14日下午发文称，经核实，该事件为涉事",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "涉事影城上蔡奥斯卡巨幕影城发文说明，8月12日顾客要求购买《功夫女足》，但已过开场时间20分钟，系统无法出票，前台员工误将《龙餐馆》出票后手写改签为《功夫女足》。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "上蔡奥斯卡巨幕影城",
+              "功夫女足",
+              "龙餐馆"
+            ],
+            "numbers": [
+              "8月12日",
+              "20分钟"
+            ],
+            "quote_zh": "当时顾客要求购买《功夫女足》，但已过开场时间20分钟，系统无",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "事后，值班经理将顾客观看的《功夫女足》票房数据完成补录，将误操作的《龙餐馆》影票退票。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足",
+              "龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "值班经理将顾客观看的《功夫女足》票房数据完成补录，将误操作的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "偷票房是指影视行业内部分影院通过违规操作，截留、转移本该计入官方统计的电影票房收入，损害片方、发行方等相关方合法收益的行业乱象。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "所谓偷票房是指影视行业内部分影院通过违规操作，截留、转移本该",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "常见的偷票房手段包括手写白条替代机打票、诱导退票现金购票、阴阳票转移票房、假机打票/套餐拆分截留等。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "常见的偷票房手段包括手写白条替代机打票、诱导退票现金购票、‌",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "今年7月《功夫女足》上映时，就曾曝出被偷票房，有网友反映观看《功夫女足》时收到手写电影票。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月"
+            ],
+            "quote_zh": "今年7月《功夫女足》上映时，就曾曝出被偷票房",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "7月16日晚，周星驰在社交媒体上分享了一组《功夫女足》手写票的图片，每张图片均配上了3个问号，疑似回应影片被偷票房风波。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "周星驰",
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月16日",
+              "3个"
+            ],
+            "quote_zh": "7月16日晚，周星驰在社交媒体上分享了一组《功夫女足》手写票",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "7月13日，《功夫女足》曾发布声明，倡导文明观影、拒绝盗摄盗录、保护影视版权，并联合各方抵制个别影院的偷漏瞒报票房行为等。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月13日"
+            ],
+            "quote_zh": "7月13日，《功夫女足》曾发布声明，倡导文明观影、拒绝盗摄盗",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "《功夫女足》由周星驰导演，张小斐、迪丽热巴、张艺兴领衔主演，上映35天，目前票房（含预售）超过22亿元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "功夫女足",
+              "周星驰",
+              "张小斐",
+              "迪丽热巴",
+              "张艺兴"
+            ],
+            "numbers": [
+              "35天",
+              "22亿元"
+            ],
+            "quote_zh": "《功夫女足》由周星驰导演，张小斐、迪丽热巴、张艺兴领衔主演，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "陈震宇为星辉海外有限公司董事总经理，2000年加入该公司后长期从事电影制作与艺人经纪工作，参与制作《少林足球》《长江7号》《美人鱼》等周星驰系列影片。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "陈震宇",
+              "星辉海外有限公司",
+              "少林足球",
+              "长江7号",
+              "美人鱼",
+              "周星驰"
+            ],
+            "numbers": [
+              "2000年"
+            ],
+            "quote_zh": "陈震宇为星辉海外有限公司董事总经理，2000年加入该公司后长",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "《龙餐馆》由文牧野执导、沈腾领衔主演，截至8月14日累计票房达到5.17亿元，观看人次为232万人。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "龙餐馆",
+              "文牧野",
+              "沈腾"
+            ],
+            "numbers": [
+              "8月14日",
+              "5.17亿元",
+              "232万人"
+            ],
+            "quote_zh": "《龙餐馆》由文牧野执导、沈腾领衔主演。猫眼专业版数据显示，截",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "猫眼预测《龙餐馆》总票房将达到26.83亿元，灯塔专业版预测该片总票房为30.15亿元。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "龙餐馆",
+              "猫眼",
+              "灯塔专业版"
+            ],
+            "numbers": [
+              "26.83亿元",
+              "30.15亿元"
+            ],
+            "quote_zh": "猫眼预测，该片总票房将达到26.83亿元；灯塔专业版预测，该",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "《龙餐馆》豆瓣评分已由8.4涨至8.5，暂居暑期档豆瓣评分第一，创下沈腾主演电影最高评分纪录。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "龙餐馆",
+              "沈腾"
+            ],
+            "numbers": [
+              "8.4",
+              "8.5"
+            ],
+            "quote_zh": "该片豆瓣评分已由8.4涨至8.5，暂居暑期档豆瓣评分第一，创",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "《龙餐馆》以“反战+美食”为题材，讲述了出国打工的厨师徐福在战争降临后与经理马俊生一道用中餐在乱世里撑起温暖角落的故事。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "龙餐馆",
+              "徐福",
+              "马俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "《龙餐馆》以“反战+美食”为题材，讲述了出国打工的厨师徐福",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "《龙餐馆》上映后，多家出品方股价连日创下新高，其中北京文化实现四连板。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "龙餐馆",
+              "北京文化"
+            ],
+            "numbers": [
+              "四连板"
+            ],
+            "quote_zh": "该片上映后，多家出品方股价连日创下新高。其中，实现四连板的北",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "北京文化8月11日公告称，公司连续两个交易日（2026年8月10日、2026年8月11日）收盘价格涨幅偏离值累计超过20%，属于股票交易异常波动情形。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "北京文化"
+            ],
+            "numbers": [
+              "8月11日",
+              "2026年8月10日",
+              "2026年8月11日",
+              "20%"
+            ],
+            "quote_zh": "北京文化（000802.SZ）8月11日公告称，公司连续两个",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "北京文化作为联合出品方的部分电影项目已于2026年暑期档上映，公司参投比例较低，预计不会对业绩产生重大影响。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "北京文化"
+            ],
+            "numbers": [
+              "2026年"
+            ],
+            "quote_zh": "公司作为联合出品方的部分电影项目已于2026年暑期档上映，公",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "《龙餐馆》出品方共计10家，包括坏猴子（上海）文化传播有限公司、中国电影产业集团股份有限公司、儒意电影娱乐股份有限公司等；联合出品方共计24家，包括北京京西文化旅游股份有限公司、浙江横店影业、华夏电影发行有限公司等；发行方为北京上狮文化集团有限公司。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "龙餐馆",
+              "坏猴子（上海）文化传播有限公司",
+              "中国电影产业集团股份有限公司",
+              "儒意电影娱乐股份有限公司",
+              "北京京西文化旅游股份有限公司",
+              "浙江横店影业",
+              "华夏电影发行有限公司",
+              "北京上狮文化集团有限公司"
+            ],
+            "numbers": [
+              "10家",
+              "24家"
+            ],
+            "quote_zh": "《龙餐馆》出品方共计10家，包括坏猴子（上海）文化传播有限公",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "偷票房",
+            "gloss_ja": "興行収入の不正操作",
+            "what_is": "映画館が公式統計に入るべき興行収入を不正に横取り・移転する行為",
+            "why_now": "周星馳のマネージャーが『龍餐館』の興行収入盗用を疑い、映画側が操作ミスと説明した",
+            "explain_quote_zh": "所谓偷票房是指影视行业内部分影院通过违规操作，截留、转移本该",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "手写票",
+            "gloss_ja": "手書きの映画チケット",
+            "what_is": "機械発券ではなく手書きで発行される映画チケット",
+            "why_now": "『功夫女足』上映時に手書きチケットが発見され、盗用の疑いが浮上した",
+            "explain_quote_zh": "有网友当时反映，观看《功夫女足》时，收到手写电影票",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "阴阳票",
+            "gloss_ja": "二重チケット",
+            "what_is": "実際の観客と異なる映画のチケットを発行して興行収入を移す手口",
+            "why_now": "今回の事件で『龍餐館』のチケットが『功夫女足』に書き換えられた",
+            "explain_quote_zh": "常见的偷票房手段包括手写白条替代机打票、诱导退票现金购票、‌",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休み映画シーズン",
+            "what_is": "中国で6月から8月にかけての映画興行の最盛期",
+            "why_now": "今回の事件は暑期档の興行競争が激化する中で発生した",
+            "explain_quote_zh": "随着暑期档竞争进入白热化阶段，任何与票房相关的争议都可能被放",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "豆瓣评分",
+            "gloss_ja": "豆瓣の評価点",
+            "what_is": "中国の映画・書籍レビューサイト「豆瓣」でのユーザー評価点",
+            "why_now": "『龍餐館』の豆瓣評価が8.5に上昇し、沈騰主演作の最高記録を更新した",
+            "explain_quote_zh": "该片豆瓣评分已由8.4涨至8.5，暂居暑期档豆瓣评分第一",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "猫眼专业版",
+            "gloss_ja": "猫眼プロフェッショナル版",
+            "what_is": "中国の映画興行データを提供するプラットフォーム",
+            "why_now": "『龍餐館』の興行収入や観客動員数のデータが引用された",
+            "explain_quote_zh": "猫眼专业版数据显示，截至8月14日界面新闻发稿前，《龙餐馆》",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "灯塔专业版",
+            "gloss_ja": "灯塔プロフェッショナル版",
+            "what_is": "中国の映画興行データを提供するプラットフォーム",
+            "why_now": "『龍餐館』の総興行収入予測が引用された",
+            "explain_quote_zh": "灯塔专业版预测，该片总票房为30.15亿元",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "四连板",
+            "gloss_ja": "4日連続ストップ高",
+            "what_is": "株式市場で4営業日連続で株価が値幅制限いっぱいまで上昇すること",
+            "why_now": "『龍餐館』のヒットにより北京文化の株価が4連続ストップ高を記録した",
+            "explain_quote_zh": "实现四连板的北京文化（000802.SZ）",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "第38届大众电影百花奖",
+      "ledger": {
+        "topic_key": "第38届大众电影百花奖",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "第38届大众电影百花奖于2026年8月10日晚在北京揭晓。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "第38届大众电影百花奖"
+            ],
+            "numbers": [
+              "2026年8月10日"
+            ],
+            "quote_zh": "第38届大众电影百花奖8月10日晚在京揭晓",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "《哪吒之魔童闹海》获第38届大众电影百花奖最佳影片奖。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "哪吒之魔童闹海",
+              "第38届大众电影百花奖"
+            ],
+            "numbers": [],
+            "quote_zh": "《哪吒之魔童闹海》获最佳影片奖",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "来自各行各业的101位观众现场投票，选出本届百花奖的最终归属。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "百花奖"
+            ],
+            "numbers": [
+              "101"
+            ],
+            "quote_zh": "来自各行各业的101位观众现场投票",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "易烊千玺凭借《小小的我》获最佳男主角奖。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "易烊千玺",
+              "小小的我"
+            ],
+            "numbers": [],
+            "quote_zh": "易烊千玺、卫诗雅分获最佳男女主角奖",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "卫诗雅凭借《破·地狱》获最佳女主角奖。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "卫诗雅",
+              "破·地狱"
+            ],
+            "numbers": [],
+            "quote_zh": "易烊千玺、卫诗雅分获最佳男女主角奖",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "许渌洋、张珂、申奥凭借《南京照相馆》获最佳编剧奖。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "许渌洋",
+              "张珂",
+              "申奥",
+              "南京照相馆"
+            ],
+            "numbers": [],
+            "quote_zh": "许渌洋、张珂、申奥凭借《南京照相馆》斩获最佳编剧奖",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "王骁凭借《南京照相馆》中老金一角获最佳男配角奖。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "王骁",
+              "南京照相馆"
+            ],
+            "numbers": [],
+            "quote_zh": "王骁凭借影片中老金这一角色获得最佳男配角奖",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "《哪吒之魔童闹海》是中国影史票房冠军影片。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "哪吒之魔童闹海"
+            ],
+            "numbers": [],
+            "quote_zh": "中国影史票房冠军影片《哪吒之魔童闹海》",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "百花奖首次将最佳影片奖颁给动画电影。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "百花奖"
+            ],
+            "numbers": [],
+            "quote_zh": "百花奖首次把最佳影片奖颁给动画电影",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "《哪吒之魔童闹海》总出品人王长田在领奖时表示，希望中国动画电影百花齐放。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "王长田",
+              "哪吒之魔童闹海"
+            ],
+            "numbers": [],
+            "quote_zh": "影片总出品人王长田在领奖时感慨",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "第38届大众电影百花奖系列活动于2026年8月7日晚在北京朝阳公园开幕。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "第38届大众电影百花奖"
+            ],
+            "numbers": [
+              "2026年8月7日"
+            ],
+            "quote_zh": "8月7日晚，由中国文联、北京市人民政府、中国影协主办的第38",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "第38届大众电影百花奖系列活动为期4天。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "第38届大众电影百花奖"
+            ],
+            "numbers": [
+              "4天"
+            ],
+            "quote_zh": "第38届大众电影百花奖系列活动为期4天",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "第38届大众电影百花奖系列活动涵盖开幕式、提名者表彰仪式、百花影展、百花电影论坛、电影文化主题特展、公益慰问演出、华语青年电影周、颁奖典礼暨闭幕式、文商旅体融合等活动。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "第38届大众电影百花奖"
+            ],
+            "numbers": [],
+            "quote_zh": "涵盖开幕式、提名者表彰仪式、百花影展、百花电影论坛、电影文化",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "第38届大众电影百花奖由中国文联、北京市人民政府、中国影协主办。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "中国文联",
+              "北京市人民政府",
+              "中国影协",
+              "第38届大众电影百花奖"
+            ],
+            "numbers": [],
+            "quote_zh": "由中国文联、北京市人民政府、中国影协主办的第38届大众电影百",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "中国文联党组成员、副主席高世名在开幕式上表示，大众电影百花奖是我国历史最悠久、群众根基最深厚的电影奖项。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "高世名",
+              "大众电影百花奖"
+            ],
+            "numbers": [],
+            "quote_zh": "高世名表示，大众电影百花奖，是我国历史最悠久、群众根基最深厚",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "高世名表示，百花奖是中国唯一依托观众投票评选的国家级奖项。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "高世名",
+              "百花奖"
+            ],
+            "numbers": [],
+            "quote_zh": "作为中国唯一依托观众投票评选的国家级奖项",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "北京市委常委、宣传部部长孙军民在开幕式上表示，北京市将全力把本届活动打造成彰显人民情怀、首都水准、时代风貌的群众节日。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "孙军民",
+              "北京市"
+            ],
+            "numbers": [],
+            "quote_zh": "孙军民表示，作为全国文化中心，北京市全面学习贯彻习近平文化思",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "开幕式文艺演出以“百花归来 光影初心”为主题，用“三封信”的叙事结构串联起电影与人民和时代之间的深情对话。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [],
+            "numbers": [
+              "三封信"
+            ],
+            "quote_zh": "开幕式文艺演出以“百花归来 光影初心”为主题，用“三封信”的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "开幕式文艺演出后放映了开幕影片《密档》。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "密档"
+            ],
+            "numbers": [],
+            "quote_zh": "文艺演出后放映了开幕影片《密档》",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "易烊千玺为了演好《小小的我》中的脑瘫少年刘春和，与主创团队实地探访多位脑瘫患者家庭，观察他们的生活状态。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "新华网",
+            "entities": [
+              "易烊千玺",
+              "小小的我",
+              "刘春和"
+            ],
+            "numbers": [],
+            "quote_zh": "易烊千玺与主创团队实地探访多位脑瘫患者家庭",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "大众电影百花奖",
+            "gloss_ja": "大衆映画百花賞",
+            "what_is": "中国で最も歴史が古く、観客投票で選ばれる国家級映画賞。",
+            "why_now": "第38回の授賞式が2026年8月に北京で開催され、アニメ映画が初の最優秀作品賞を受賞した。",
+            "explain_quote_zh": "我国历史最悠久、群众根基最深厚的电影奖项",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "最佳影片奖",
+            "gloss_ja": "最優秀作品賞",
+            "what_is": "映画賞で最も重要な作品に与えられる賞。",
+            "why_now": "第38回百花賞でアニメ映画『哪吒之魔童闹海』が受賞し、アニメ映画として初の快挙となった。",
+            "explain_quote_zh": "百花奖首次把最佳影片奖颁给动画电影",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "最佳男主角奖",
+            "gloss_ja": "最優秀主演男優賞",
+            "what_is": "映画賞で最も優れた主演男優に与えられる賞。",
+            "why_now": "第38回百花賞で易烊千玺が『小小的我』の演技で受賞した。",
+            "explain_quote_zh": "易烊千玺、卫诗雅分获最佳男女主角奖",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "最佳编剧奖",
+            "gloss_ja": "最優秀脚本賞",
+            "what_is": "映画賞で最も優れた脚本に与えられる賞。",
+            "why_now": "第38回百花賞で『南京照相馆』の脚本家3名が受賞した。",
+            "explain_quote_zh": "许渌洋、张珂、申奥凭借《南京照相馆》斩获最佳编剧奖",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "最佳男配角奖",
+            "gloss_ja": "最優秀助演男優賞",
+            "what_is": "映画賞で最も優れた助演男優に与えられる賞。",
+            "why_now": "第38回百花賞で王骁が『南京照相馆』の老金役で受賞した。",
+            "explain_quote_zh": "王骁凭借影片中老金这一角色获得最佳男配角奖",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "中国影史票房冠军",
+            "gloss_ja": "中国映画史上興行収入1位",
+            "what_is": "中国で公開された映画の中で最も興行収入が高い作品。",
+            "why_now": "『哪吒之魔童闹海』がこの記録を持ち、百花賞最優秀作品賞も受賞した。",
+            "explain_quote_zh": "中国影史票房冠军影片《哪吒之魔童闹海》",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "主旋律题材",
+            "gloss_ja": "主旋律テーマ",
+            "what_is": "中国政府が推進する愛国主義や革命歴史などを描いた映画のジャンル。",
+            "why_now": "第38回百花賞では『南京照相馆』など主旋律作品が複数受賞し、その創作傾向が注目された。",
+            "explain_quote_zh": "主旋律题材创作不断创新叙事视角、表达方式",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": {
+        "topic_key": "欢迎来龙餐馆",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『欢迎来龙餐馆』は2026年8月12日17時19分11秒時点で興行収入が3億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "3亿元",
+              "2026年8月12日17:19:11"
+            ],
+            "quote_zh": "截至8月12日17:19:11时，由文牧野执导，沈腾、蒋奇明",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の観客動員数は824万人に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "824万"
+            ],
+            "quote_zh": "观看总人次已达824万",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の豆瓣スコアは8.4点で、沈騰主演映画の最高得点記録を更新した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆",
+              "沈腾"
+            ],
+            "numbers": [
+              "8.4"
+            ],
+            "quote_zh": "影片豆瓣评分8.4分，刷新了沈腾主演电影的最高分纪录",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の淘票票点映スコアは9.8点で、ここ3年の国産映画の点映最高記録を更新した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "欢迎来龙餐馆",
+              "淘票票"
+            ],
+            "numbers": [
+              "9.8",
+              "近三年"
+            ],
+            "quote_zh": "淘票票点映评分高达9.8分，也创下近三年国产片点映最高纪录",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "沈騰は『欢迎来龙餐馆』で料理人の徐福を演じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "沈腾",
+              "欢迎来龙餐馆",
+              "徐福"
+            ],
+            "numbers": [],
+            "quote_zh": "沈腾在《欢迎来龙餐馆》中饰演厨师徐福",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "source_analysis",
+            "text": "新京報は、沈騰が快適領域から完全に抜け出し、極めて内省的で抑制の効いた方法で戦火の中の小人物の葛藤と変貌を描いたと評した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "沈腾",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "沈腾彻底跳出舒适区，用极度内敛和克制的方式，将一个战火中小人",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "沈騰は今回演じた料理人の徐福について、伝統的なコメディキャラクターではなく、多くのシーンが抑制と沈黙の感情表現に依存していると語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "沈腾",
+              "徐福"
+            ],
+            "numbers": [],
+            "quote_zh": "沈腾坦言这个角色不是传统喜剧人设，大量戏份依靠克制、沉默的情",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "沈騰は「これまで何年も映画を撮ってきたが、すべての映画の感情点を合わせても、この作品ほど多くはない」と述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报 娱乐",
+            "entities": [
+              "沈腾"
+            ],
+            "numbers": [],
+            "quote_zh": "拍这么多年电影，所有电影加起来的情感点，都不如这一部多",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は2026年8月14日12時30分時点で公開4日目、中国本土の累計興行収入が4.57億元に達した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "ent.sina.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "4.57亿元",
+              "2026年08月14日12:30",
+              "上映第4天"
+            ],
+            "quote_zh": "截至2026年08月14日12:30，影片《欢迎来龙餐馆》上",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は2026年8月11日に全国で正式公開された。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "ent.sina.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "8月11日"
+            ],
+            "quote_zh": "于8月11日全国正式公映",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の初日興行収入は2.46億元だった。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "ent.sina.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "2.46亿元"
+            ],
+            "quote_zh": "首日票房8月11日首映当天，影片票房为2.46亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は2026年8月13日18時に累計興行収入が4億元を突破した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "ent.sina.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "4亿元",
+              "8月13日18时"
+            ],
+            "quote_zh": "8月13日18时：累计票房突破4亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "猫眼プロフェッショナル版は『欢迎来龙餐馆』の総興行収入を約26億元と予測した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "ent.sina.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "猫眼专业版"
+            ],
+            "numbers": [
+              "26亿元"
+            ],
+            "quote_zh": "猫眼专业版预测总票房约26亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "灯塔AIは『欢迎来龙餐馆』の総興行収入を31.29億元と予測した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "ent.sina.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "灯塔AI"
+            ],
+            "numbers": [
+              "31.29亿元"
+            ],
+            "quote_zh": "灯塔AI预测可达31.29亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は2026年8月13日18時10分時点で公開3日目、累計興行収入が4億元を突破した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "tidenews.com.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "4亿元",
+              "2026年8月13日18时10分",
+              "上映3天"
+            ],
+            "quote_zh": "截至2026年8月13日18时10分，由文牧野执导、沈腾主演",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は豆瓣の初回スコアが8.4点で、沈騰主演映画の新記録を樹立した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "tidenews.com.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "沈腾"
+            ],
+            "numbers": [
+              "8.4"
+            ],
+            "quote_zh": "豆瓣开分8.4创沈腾主演影片新高",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は正式公開翌日に、平日としては珍しい興行収入の逆転上昇を達成した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "tidenews.com.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "并在正式上映次日实现罕见的工作日票房逆跌",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "潮新聞は『欢迎来龙餐馆』を夏休みシーズンの現象的な映画と評した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "tidenews.com.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "成为暑期档现象级影片",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は豆瓣の初回スコアが8.4点だった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "finance.sina.com.cn",
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "8.4"
+            ],
+            "quote_zh": "正式豆瓣开分8.4",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は寧浩が監修を務めた。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "finance.sina.com.cn",
+            "entities": [
+              "欢迎来龙餐馆",
+              "宁浩"
+            ],
+            "numbers": [],
+            "quote_zh": "影片由宁浩担任监制",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "豆瓣",
+            "gloss_ja": "豆瓣",
+            "what_is": "中国の映画・書籍などのレビューサイト。",
+            "why_now": "本作の豆瓣スコア8.4が沈騰主演映画の最高記録として話題。",
+            "explain_quote_zh": "影片豆瓣评分8.4分，刷新了沈腾主演电影的最高分纪录",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "淘票票",
+            "gloss_ja": "淘票票",
+            "what_is": "中国の映画チケット販売・レビュープラットフォーム。",
+            "why_now": "本作の淘票票点映スコア9.8が近三年の国産映画最高記録。",
+            "explain_quote_zh": "淘票票点映评分高达9.8分，也创下近三年国产片点映最高纪录",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "猫眼专业版",
+            "gloss_ja": "猫眼プロフェッショナル版",
+            "what_is": "中国の映画興行データ・予測を提供するプラットフォーム。",
+            "why_now": "本作の総興行収入を約26億元と予測した。",
+            "explain_quote_zh": "猫眼专业版预测总票房约26亿元",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "灯塔专业版",
+            "gloss_ja": "灯塔プロフェッショナル版",
+            "what_is": "中国の映画興行データ・予測を提供するプラットフォーム。",
+            "why_now": "本作の累計興行収入4億元突破のデータ元として言及。",
+            "explain_quote_zh": "8月13日18时：累计票房突破4亿元（数据来源：灯塔专业版）",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "超前点映",
+            "gloss_ja": "先行上映",
+            "what_is": "正式公開前に行われる限定上映。",
+            "why_now": "本作は3日間の先行上映で累計1.6億元を記録。",
+            "explain_quote_zh": "影片开启3天超前点映，累计点映票房突破1.6亿",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "票房逆跌",
+            "gloss_ja": "興行収入の逆転上昇",
+            "what_is": "通常は下落する平日に興行収入が前日を上回ること。",
+            "why_now": "本作は正式公開翌日の平日に逆跌を達成し話題に。",
+            "explain_quote_zh": "并在正式上映次日实现罕见的工作日票房逆跌",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休みシーズン",
+            "what_is": "中国の映画市場で最も重要な興行シーズンの一つ。",
+            "why_now": "本作は夏休みシーズンの現象的な作品と評された。",
+            "explain_quote_zh": "成为暑期档现象级影片",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "IMAX特制规格",
+            "gloss_ja": "IMAX特製規格",
+            "what_is": "IMAX用に最適化された撮影・上映規格。",
+            "why_now": "本作は撮影全編でこの規格を採用し、視聴体験を向上。",
+            "explain_quote_zh": "拍摄全程采用IMAX特制规格",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [
+          "初日興行収入について、E2は2.46億元、E4は2.33億元と異なる数値が記載されている。"
+        ],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
