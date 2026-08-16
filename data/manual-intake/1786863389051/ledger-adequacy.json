@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "passed": true,
+  "required_root_claims": 6,
+  "root_claims": 6,
+  "editorial_roles": [
+    "key_numbers",
+    "venue_change"
+  ],
+  "reasons": []
+}

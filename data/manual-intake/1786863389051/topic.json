@@ -1,0 +1,185 @@
+{
+  "topic_key": "牛来_反向出圈_202608",
+  "title_hint": "制作の粗さが話題のアニメ映画『牛来』、低調な初動から興行急伸",
+  "event_sentence": "中国のアニメ映画『牛来』が8月14日ごろから制作の粗さをめぐってSNSで反向的に話題化し、上映枠と興行収入が急増した。",
+  "search_queries": [
+    "牛来 興行収入",
+    "牛来 熱搜",
+    "牛来 上映枠"
+  ],
+  "seed_source": "llm",
+  "seed_confidence": 0.95,
+  "topic_type": "box_office",
+  "freshness_label": "today",
+  "published_date_range": {
+    "earliest": "2021-12-13",
+    "latest": "2026-08-16"
+  },
+  "source_count": 4,
+  "source_mix": {
+    "official": 2,
+    "media_report": 3,
+    "sns": 0,
+    "data": 0,
+    "pr_like": 0,
+    "rumor": 0,
+    "mixed": 0
+  },
+  "evidence_articles": [
+    {
+      "title": "《牛来》靠“抽象”出圈：有观众驱车30公里只为见证“历史”",
+      "url": "https://www.bjnews.com.cn/detail/1786783512168828.html",
+      "source_name": "新京報",
+      "source_type": "media_report",
+      "published_date": "2026-08-15",
+      "freshness_label": "background",
+      "article_type": "data_report",
+      "reliability": "B",
+      "key_points": [
+        "8月14日に「牛来票房7352元没有万」が熱搜入りし、粗いキャラクターモデルや動き、吹替の断片と二次創作がSNSで広がった。",
+        "8月14日から15日に全国の上映枠は21場から359場へ増え、8月15日16時45分時点の興行収入は25.1万元だった。",
+        "記者が北京で実際に鑑賞し、熱搜を見て好奇心から来場した複数の観客と映画館関係者を取材している。",
+        "エンドクレジットでは監督、脚本、主要声優、製作、エンディング曲などの主要職種が信雨萌と孫麗芳の2人に集中していた。"
+      ],
+      "media_family": "www.bjnews.com.cn"
+    },
+    {
+      "title": "《牛来》票房暴涨1000倍，上映12天累计票房262.5万；观众：“看了后悔86分钟，不看后悔一辈子”",
+      "url": "https://www.ctdsb.net/c1476_202608/2831846.html",
+      "source_name": "極目新聞",
+      "source_type": "media_report",
+      "published_date": "2026-08-16",
+      "freshness_label": "today",
+      "article_type": "data_report",
+      "reliability": "B",
+      "key_points": [
+        "灯塔専門版データとして、8月16日9時30分時点の累計興行収入を262.5万元と報じている。",
+        "成都の映画館を現地取材し、ネットで作品を知り好奇心から来場した若い観客や、熱度を見て上映を決めた映画館スタッフの証言を掲載している。"
+      ],
+      "media_family": "www.ctdsb.net"
+    },
+    {
+      "title": "2025年电影公映许可证发放公示（国产动画、纪录、科教、特种片）",
+      "url": "https://www.chinafilm.gov.cn/xxgk/gsxx/dygyxkz/202604/t20260403_982702.html",
+      "source_name": "国家電影局",
+      "source_type": "official",
+      "published_date": "2026-04-03",
+      "freshness_label": "background",
+      "article_type": "official_announcement",
+      "reliability": "A",
+      "key_points": [
+        "国家電影局（中国の映画主管当局）の公示で、『牛来』の公映許可番号が「電審動字〔2024〕第33号」、第一出品会社が大連璟園文化影視伝媒有限公司と確認できる。"
+      ],
+      "media_family": "www.chinafilm.gov.cn"
+    },
+    {
+      "title": "国家电影局关于2021年10月全国电影剧本（梗概）备案、立项公示的通知",
+      "url": "https://www.chinafilm.gov.cn/xxgk/gsxx/dybalx/202112/t20211213_615696.html",
+      "source_name": "国家電影局",
+      "source_type": "official",
+      "published_date": "2021-12-13",
+      "freshness_label": "background",
+      "article_type": "official_announcement",
+      "reliability": "A",
+      "key_points": [
+        "『牛来』は「影動備字〔2021〕第104号」として制作届出が承認され、届出会社は大連璟園文化影視伝媒有限公司、脚本は孫麗芳と公示されている。"
+      ],
+      "media_family": "www.chinafilm.gov.cn"
+    },
+    {
+      "title": "动画电影《牛来》因制作粗糙“出圈”，导演信雨萌称已经完成最初的心愿",
+      "url": "https://tech.ifeng.com/c/8vdLshfZ24r",
+      "source_name": "IT之家（鳳凰網転載）",
+      "source_type": "media_report",
+      "published_date": "2026-08-16",
+      "freshness_label": "today",
+      "article_type": "data_report",
+      "reliability": "B",
+      "key_points": [
+        "『牛来』は2026年8月5日に中国本土で公開された。",
+        "初日の興行収入は3420元、初週は5587元で、その後しばらく日額100～1000元程度だったと報じている。",
+        "8月16日11時37分公開の記事では、灯塔専門版の数字として累計興行収入300万元突破、同日のリアルタイム興行収入200万元と報じている。",
+        "8月16日に監督の信雨萌が作品をめぐる反応について発信したことを報じている。"
+      ],
+      "media_family": "ithome"
+    }
+  ],
+  "related_evidence_articles": [
+    {
+      "title": "票房暴涨1000倍！《牛来》是学了三年动画在AI时代最后的倔犟",
+      "url": "https://www.thepaper.cn/newsDetail_forward_33789867",
+      "source_name": "澎湃新聞・澎湃号（ACGx）",
+      "source_type": "mixed",
+      "published_date": "2026-08-16",
+      "freshness_label": "today",
+      "article_type": "column_opinion",
+      "reliability": "B",
+      "key_points": [
+        "ACGxは『牛来』を、AIGCアニメ作品が相次いで企画される時期に、手作業的な制作で逆方向から話題化した作品として論じている。",
+        "同記事は、制作の崩れた場面がネットで拡散した後、上映枠と興行数字が上昇したと整理している。"
+      ],
+      "media_family": "www.thepaper.cn"
+    },
+    {
+      "title": "《牛来》靠“抽象”出圈：有观众驱车30公里只为见证“历史”",
+      "url": "https://www.bjnews.com.cn/detail/1786783512168828.html",
+      "source_name": "新京報",
+      "source_type": "media_report",
+      "published_date": "2026-08-15",
+      "freshness_label": "background",
+      "article_type": "data_report",
+      "reliability": "B",
+      "key_points": [
+        "8月14日に「牛来票房7352元没有万」が熱搜入りし、粗いキャラクターモデルや動き、吹替の断片と二次創作がSNSで広がった。",
+        "8月14日から15日に全国の上映枠は21場から359場へ増え、8月15日16時45分時点の興行収入は25.1万元だった。",
+        "記者が北京で実際に鑑賞し、熱搜を見て好奇心から来場した複数の観客と映画館関係者を取材している。",
+        "エンドクレジットでは監督、脚本、主要声優、製作、エンディング曲などの主要職種が信雨萌と孫麗芳の2人に集中していた。"
+      ],
+      "media_family": "E2"
+    },
+    {
+      "title": "《牛来》票房暴涨1000倍，上映12天累计票房262.5万；观众：“看了后悔86分钟，不看后悔一辈子”",
+      "url": "https://www.ctdsb.net/c1476_202608/2831846.html",
+      "source_name": "極目新聞",
+      "source_type": "media_report",
+      "published_date": "2026-08-16",
+      "freshness_label": "today",
+      "article_type": "data_report",
+      "reliability": "B",
+      "key_points": [
+        "灯塔専門版データとして、8月16日9時30分時点の累計興行収入を262.5万元と報じている。",
+        "成都の映画館を現地取材し、ネットで作品を知り好奇心から来場した若い観客や、熱度を見て上映を決めた映画館スタッフの証言を掲載している。"
+      ],
+      "media_family": "E3"
+    }
+  ],
+  "main_entities": {
+    "people": [
+      "信雨萌",
+      "孫麗芳"
+    ],
+    "works": [
+      "牛来"
+    ],
+    "organizations": [
+      "国家電影局",
+      "大連璟園文化影視伝媒有限公司"
+    ],
+    "events": [
+      "牛来の反向出圈"
+    ]
+  },
+  "signals": {
+    "has_official_source": true,
+    "has_media_context": true,
+    "has_data_signal": true,
+    "has_hot_search_signal": true,
+    "has_multiple_sources": true
+  },
+  "newsworthiness_score": 88,
+  "japan_gap": "unknown",
+  "context_value": "high",
+  "publish_priority": "high",
+  "selection_reason": "manual_chat_handoff_v1_verified, multiple_sources, media_context, box_office_data, hot_search_signal",
+  "caution_note": "IT之家の原URLは404。C1・C2・C6は鳳凰網転載とユーザー提供本文で再確認。"
+}

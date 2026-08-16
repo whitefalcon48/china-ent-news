@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "topic_key": "牛来_反向出圈_202608",
+  "violations": [
+    {
+      "section": "lead",
+      "rule": "number_not_in_ledger",
+      "severity": "warning",
+      "detail": "中国のアニメ映画『牛来』が、8月14日ごろからSNSで急速に話題化し、低調だった興行が一転して伸びています。"
+    },
+    {
+      "section": "what_happened",
+      "rule": "number_not_in_ledger",
+      "severity": "warning",
+      "detail": "新京報によると、「牛来票房7352元没有万」が熱搜入りし、粗い3Dモデルや動き、吹替を扱った投稿と二次創作がSNSで拡散しました。"
+    },
+    {
+      "section": "what_happened",
+      "rule": "number_not_in_ledger",
+      "severity": "warning",
+      "detail": "国家電影局（中国の映画主管当局）の公示では、同作は2021年に制作届出が承認され、公映許可番号「電審動字〔2024〕第33号」を取得しています。"
+    },
+    {
+      "section": "why_it_matters",
+      "rule": "number_not_in_ledger",
+      "severity": "warning",
+      "detail": "17日以降も上映枠が維持されるかで、週末の「打卡」需要だったのかを切り分けやすくなります。"
+    }
+  ],
+  "gated_violation_count": 0,
+  "action": "none"
+}

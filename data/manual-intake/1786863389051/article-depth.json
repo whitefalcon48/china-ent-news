@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "profile": "manual_evidence_rich",
+  "eligible_claims": 6,
+  "used_claims": 6,
+  "coverage_ratio": 1,
+  "detail_sections": 0,
+  "important_number_claims": 6,
+  "used_number_claims": 6,
+  "regenerated": false,
+  "passed": true,
+  "reasons": []
+}

@@ -1,0 +1,39 @@
+{
+  "comment_id": "1786863389051",
+  "author_login": "whitefalcon48",
+  "author_association": "OWNER",
+  "source_url": "https://www.thepaper.cn/newsDetail_forward_33789867",
+  "note": "",
+  "received_at": "2026-08-16T06:56:42.316Z",
+  "provenance": {
+    "schema_version": "manual_chat_handoff_v1",
+    "generated_at": "2026-08-16T05:18:00Z",
+    "imported_by": "codex_manual_verification",
+    "provided_material": [
+      "url",
+      "pasted_text",
+      "screenshot"
+    ],
+    "source_correction": {
+      "ref": "E6",
+      "original_url_status": "404",
+      "verified_url": "https://tech.ifeng.com/c/8vdLshfZ24r"
+    },
+    "evidence_aliases": {
+      "E7": "E2 related-angle alias",
+      "E8": "E3 related-angle alias"
+    },
+    "number_token_normalization": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "reviewed_display_exceptions": [
+      "熱搜 (known_terms)",
+      "号 (identity mapping and Japanese character)"
+    ]
+  }
+}

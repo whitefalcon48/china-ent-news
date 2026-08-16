@@ -1,0 +1,19 @@
+{
+  "requested_url": "https://www.thepaper.cn/newsDetail_forward_33789867",
+  "final_url": "https://www.thepaper.cn/newsDetail_forward_33789867",
+  "title": "票房暴涨1000倍！《牛来》是学了三年动画在AI时代最后的倔犟",
+  "text": "ACGxは『牛来』を、AIGCアニメ作品が相次いで企画される時期に、手作業的な制作で逆方向から話題化した作品として論じている。 同記事は、制作の崩れた場面がネットで拡散した後、上映枠と興行数字が上昇したと整理している。",
+  "published_date": "2026-08-16",
+  "extraction_method": "manual_chat_handoff_verified",
+  "extraction_quality": {
+    "status": "usable",
+    "raw_chars": 0,
+    "meaningful_chars": 109,
+    "sentence_count": 2,
+    "boilerplate_ratio": 0,
+    "factual_anchor_count": 3
+  },
+  "fetched_at": "2026-08-16T06:56:42.316Z",
+  "content_type": "text/html",
+  "provenance": "manual_chat_handoff_v1"
+}
