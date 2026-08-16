@@ -1,0 +1,20 @@
+{
+  "schema_version": "manual_editorial_approval_v1",
+  "status": "approved_for_publication",
+  "approved_at": "2026-08-16T08:58:59.6502435Z",
+  "approved_article_file": "articles_2026-08-16.json",
+  "article_index": 1,
+  "canonical_fields": [
+    "title_ja",
+    "badge",
+    "lead",
+    "what_happened",
+    "reaction_view",
+    "why_it_matters",
+    "japan_context_note"
+  ],
+  "canonicalization": "UTF-8 JSON serialization of canonical_fields in listed order; no whitespace",
+  "body_sha256": "fe03583f8b6d04a2520bdbb17ef25683cf5dbc4dfe9980b0e769e9b6e38f9033",
+  "content_status": "human_approved",
+  "content_change_policy": "No text changes after this hash without renewed human approval."
+}
