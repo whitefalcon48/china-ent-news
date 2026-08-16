@@ -71,7 +71,7 @@ try {
   const manualPost = await fs.readFile(path.join(manualPostOutput, "manual_x_post_987654321.md"), "utf8");
   const about = await readPage("about/index.html");
   const archive = await readPage("archive/index.html");
-  const tags = await readPage("tags/index.html");
+  await assertMissingPage("tags/index.html", "専用タグ検索ページ");
   const htaccess = await readPage(".htaccess");
   const xCardTestA = await readPage("x-card-test/a/index.html");
   const xCardTestB = await readPage("x-card-test/b/index.html");
@@ -106,12 +106,21 @@ try {
   assertIncludes(about, '<meta name="twitter:image" content="https://example.test/og/about.png?v=', "このサイトについてのXカード画像の絶対URL");
   assertIncludes(home, "/assets/bingtang-logo-horizontal.png", "本番横長ロゴ");
   assertIncludes(home, "/assets/bingtang-hero-v2.png", "本番ヘッダーキャラクター");
-  assertIncludes(home, 'href="/tags/?tag=', "記事カードのタグリンク");
+  assertIncludes(home, 'href="/archive/?tag=', "記事カードからアーカイブ絞り込みへのタグリンク");
   assertIncludes(detail, 'class="article-tags"', "記事詳細のタグ表示");
-  assertIncludes(tags, 'data-tag-search', "タグ検索ページ");
-  assertIncludes(tags, 'data-tag-filter="中国映画"', "既存タグの絞り込みボタン");
-  assertIncludes(tags, 'data-tagged-article', "タグ検索対象の記事一覧");
-  assertIncludes(tags, 'new URLSearchParams(window.location.search)', "タグURLパラメータの復元");
+  assertIncludes(home, ">ショートドラマ</a>", "短劇表記を横断タグへ正規化");
+  assertIncludes(home, ">周星馳</a>", "人名の簡体字と日本の新字体を統一");
+  assertIncludes(home, ">興行収入</a>", "興行の表記を横断タグへ正規化");
+  assertNotIncludes(home, ">中国映画</a>", "大きすぎるカテゴリ相当タグ");
+  assertNotIncludes(home, ">1905电影网</a>", "横断価値のない単発タグ");
+  assertNotIncludes(home, "?tag=%E3%83%86%E3%82%B9%E3%83%88%E5%AA%92%E4%BD%93\">テスト媒体</a>", "出現回数が多くても媒体名はタグにしない");
+  assertNotIncludes(home, ">広西</a>", "出現回数が多くても地域名だけではタグにしない");
+  assertNotIncludes(home, ">がん闘病</a>", "横断価値のない単発細目タグ");
+  assertIncludes(archive, 'data-archive-tag-search', "アーカイブ内のタグ絞り込み");
+  assertIncludes(archive, '<option value="ショートドラマ">', "正規化タグの入力候補");
+  assertIncludes(archive, 'data-archive-tagged-article', "アーカイブの絞り込み対象記事");
+  assertIncludes(archive, 'new URLSearchParams(window.location.search)', "タグURLパラメータの復元");
+  assertNotIncludes(home, ">タグから探す</a>", "専用タグページへのナビゲーション");
   assertNotIncludes(home, "中国エンタメの現地温度を、日本語で。", "削除したキャッチコピー");
   assertNotIncludes(home, "今日のわたしが気になる", "削除した吹き出し文言");
   assertNotIncludes(home, "ビンタンちゃんデイリー", "旧サイト読み");
@@ -198,6 +207,16 @@ async function readPage(relativePath: string) {
   return fs.readFile(path.join(outputRoot, relativePath), "utf8");
 }
 
+async function assertMissingPage(relativePath: string, label: string) {
+  try {
+    await fs.access(path.join(outputRoot, relativePath));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+    throw error;
+  }
+  throw new Error(`${label} が残っています: ${relativePath}`);
+}
+
 function fixtureArticle(index: number) {
   const suffix = index === 1 ? "A" : "B";
   const category = index === 1 ? "ドラマ" : "訃報";
@@ -244,7 +263,11 @@ function fixtureArticle(index: number) {
       topic_key: `fixture-${index}`,
       main_entities: { people: [], works: [], organizations: [] },
       related_sources: index === 1 ? [{ name: "関連媒体", url: relatedUrl }] : [],
-      tags: index === 1 ? ["中国映画", "興行収入"] : ["イベント"],
+      tags: index === 1
+        ? ["中国映画", "微短剧", "周星驰", "1905电影网", "興行", "テスト媒体", "広西"]
+        : index === 2
+          ? ["映画", "短劇", "周星馳", "興行収入", "がん闘病", "テスト媒体", "広西"]
+          : ["ショートドラマ", "周星馳", "大別山", "テスト媒体", "広西"],
       publish_priority: "medium",
       publish_reason: "fixture",
       claim_refs: { what_happened: [], why_it_matters: [], reaction_view: [], japan_context_note: [] }

@@ -33,6 +33,12 @@ import type {
   TopicGenerationMeta
 } from "./types.js";
 
+const ARTICLE_TAG_RULES = `タグ規則:
+- tags は横断して関連記事を見つけるための検索キーだけを0〜4件返す。記事内容の要約語を並べない。
+- 中心人物・中心作品・継続イベントの固有名、または再利用できる中粒度テーマ（興行収入、映画賞、映画祭、ショートドラマ、配信、AI制作、海外展開、ファン文化、規制・政策、不祥事）から選ぶ。
+- 映画、ドラマ、中国エンタメ、俳優、イベントのようにcategoryと重なる大分類、媒体名・URL、地域名だけ、病状や会場など単発の細目、宣伝文句、同義語の重複は入れない。
+- 短剧・微短剧・短劇・微短劇は「ショートドラマ」、兴行・票房は「興行収入」のように日本語の代表表記へ統一する。`;
+
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
 const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/chat/completions";
 
@@ -686,6 +692,7 @@ publish_priority rules:
 - ゴシップでは「報じられた」「SNS上で話題になっている」など情報源に応じた表現にする。
 - ゴシップや未確認情報がある場合、本人・事務所・公式側の反応有無と出典の弱さを verification_status に反映する。
 - 原文を翻訳調でなぞらず、日本語として自然に再構成する。
+${ARTICLE_TAG_RULES}
 - 必ずJSONだけを返す。説明文やMarkdownは返さない。
 
 返すJSON:
@@ -818,6 +825,7 @@ evidenceの扱い方:
 - confidence: officialを含む複数ソース整合=A/B、媒体単独=B/C、SNS単独=C/Dを目安にする。
 - badge: OFFICIAL / HOT SEARCH / DATA / PR WATCH / NEWS のいずれか。
 - topic_key は入力値をそのまま返す。
+${ARTICLE_TAG_RULES}
 - 必ずJSONだけを返す。説明文やMarkdownは返さない。
 
 返すJSON:
@@ -933,6 +941,7 @@ ${terminology}
 - lead / what_happened / reaction_view / why_it_matters / japan_context_note の基本部分はおおむね${totalLength}。持ち込みニュースも通常生成と同じ構成にする。
 - claim_refs に、各セクションで根拠にしたclaimのidを入れる（例: {"what_happened": ["C1","C2"], ...}）。
 - detail_sections は常に空配列 [] を返す。
+${ARTICLE_TAG_RULES}
 - 必ずJSONだけを返す。
 
 返すJSON:
