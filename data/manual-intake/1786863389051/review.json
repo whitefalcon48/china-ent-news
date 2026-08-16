@@ -1,13 +1,13 @@
 {
   "date": "2026-08-16",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 53,
   "articles": [
     {
       "index": 1,
       "topic_key": "牛来_反向出圈_202608",
       "title": "興収7352元から262万元へ　アニメ映画『牛来』が\"クオリティの低さ\"で異例の逆転ヒット",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
