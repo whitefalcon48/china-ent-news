@@ -406,9 +406,16 @@ function renderArticleTags(article: ProcessedArticle, catalog: ArticleTagCatalog
 }
 
 function articleTagInput({ article }: { article: ProcessedArticle }): ArticleTagInput {
+  const summary = requireSummary(article);
   return {
-    tags: requireSummary(article).tags,
-    sourceNames: getSources(article).map((source) => source.name)
+    tags: summary.tags,
+    sourceNames: [...new Set([
+      ...getSources(article).map((source) => source.name),
+      ...(summary.source_list ?? []).map((source) => source.name),
+      article.raw.sourceName
+    ].filter(Boolean))],
+    titles: [summary.title_ja, article.raw.title],
+    mainEntities: summary.main_entities as ArticleTagInput["mainEntities"]
   };
 }
 
@@ -531,7 +538,6 @@ function renderArchive(days: DayData[], articles: PublishedSiteArticle[], tagCat
     ? days.map((day) => `<li><a href="${href(`/archive/${day.date}/`)}"><time datetime="${day.date}">${escapeHtml(formatLongDate(day.date))}</time><span>${day.articles.length}本</span></a></li>`).join("")
     : "<li>アーカイブはまだありません。</li>";
   const searchableTags = [...tagCatalog.counts.entries()]
-    .filter(([, count]) => count >= tagCatalog.minimumArticleCount)
     .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "ja"));
   const results = articles.map(({ date, article, slug }) => {
     const summary = requireSummary(article);

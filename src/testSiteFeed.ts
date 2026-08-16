@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import sharp from "sharp";
+import { buildArticleTagCatalog, getSearchableArticleTags, type ArticleTagInput } from "./site/articleTags.js";
 
 const repoRoot = path.resolve(".");
 const date = "2026-08-01";
@@ -198,6 +199,7 @@ try {
   if (xCardTestJpeg.format !== "jpeg" || xCardTestJpeg.width !== 1200 || xCardTestJpeg.height !== 630) throw new Error(`Xカード比較JPEGは1200x630 JPEGのはずですが ${xCardTestJpeg.format} ${xCardTestJpeg.width}x${xCardTestJpeg.height} です`);
   if (xCardTestPng.format !== "png" || xCardTestPng.width !== 1200 || xCardTestPng.height !== 630) throw new Error(`Xカード比較PNGは1200x630 PNGのはずですが ${xCardTestPng.format} ${xCardTestPng.width}x${xCardTestPng.height} です`);
 
+  await assertPublishedTagRegression();
   console.log("site feed: ok");
 } finally {
   await fs.rm(tempRoot, { recursive: true, force: true });
@@ -279,6 +281,80 @@ function fixtureArticle(index: number) {
       }
     } : {})
   };
+}
+
+async function assertPublishedTagRegression() {
+  // Fixed public-data examples guard the exact inconsistencies found in the
+  // 2026-08-16 audit without making the synthetic site fixture date-dependent.
+  const dragonCases = await Promise.all([
+    readPublishedTagInput("2026-08-09", "歓迎来竜餐館"),
+    readPublishedTagInput("2026-08-11", "歓迎来竜餐館"),
+    readPublishedTagInput("2026-08-15", "歓迎来龍餐馆"),
+    readPublishedTagInput("2026-08-16", "『龍餐館』")
+  ]);
+  const summer = await readPublishedTagInput("2026-08-07", "年会不能停！2");
+  const sourceNamed = await readPublishedTagInput("2026-08-06", "台海一九五〇");
+  const cctv = await readPublishedTagInput("2026-07-19", "中央広播電視総台と優酷");
+  const regulator = await readPublishedTagInput("2026-08-03", "国家広播電視总局");
+  const inputs = [...dragonCases, summer, sourceNamed, cctv, regulator];
+  const catalog = buildArticleTagCatalog(inputs);
+  const tagsByArticle = inputs.map((input) => getSearchableArticleTags(input, catalog));
+
+  dragonCases.forEach((_, index) => assertArrayIncludes(tagsByArticle[index], "龍餐館", `龍餐館実データ #${index + 1}`));
+  assertArrayIncludes(tagsByArticle[0], "沈騰", "沈腾/沈騰の代表表記");
+  assertArrayIncludes(tagsByArticle[4], "夏休み興行", "暑期档/暑期檔/夏休み映画の代表表記");
+  assertArrayIncludes(tagsByArticle[5], "台海一九五〇", "単発でも中心作品タグを維持");
+  assertArrayIncludes(tagsByArticle[6], "中央広播電視総台", "中央広播電視総台の組織タグ");
+  assertArrayIncludes(tagsByArticle[7], "国家広播電視総局", "国家広播電視総局の組織タグ");
+  for (const tags of tagsByArticle) {
+    assertArrayNotIncludes(tags, "中国映画", "大分類タグの実データ除外");
+    assertArrayNotIncludes(tags, "微博", "微博観測元の実データ除外");
+    assertArrayNotIncludes(tags, "1905電影網", "媒体名の実データ除外");
+    assertArrayNotIncludes(tags, "沈腾", "簡体字人名の残留防止");
+  }
+  assertArrayNotIncludes(tagsByArticle[6], "国家広播電視総局", "中央広播電視総台を総局へ誤統合しない");
+  assertArrayNotIncludes(tagsByArticle[7], "中央広播電視総台", "国家広播電視総局を総台へ誤統合しない");
+
+  // Repeating the same source-observation tag proves it is removed by meaning,
+  // not merely because it happened to be a singleton in the public corpus.
+  const repeatedWeiboCatalog = buildArticleTagCatalog([dragonCases[0], dragonCases[0]]);
+  assertArrayNotIncludes(getSearchableArticleTags(dragonCases[0], repeatedWeiboCatalog), "微博", "微博を頻度に依存せず除外");
+  const singletonCatalog = buildArticleTagCatalog([sourceNamed], 99);
+  assertArrayIncludes(getSearchableArticleTags(sourceNamed, singletonCatalog), "台海一九五〇", "テーマ閾値99でも中心作品を維持");
+}
+
+async function readPublishedTagInput(dateValue: string, titleFragment: string): Promise<ArticleTagInput> {
+  const filePath = path.join(repoRoot, "data", dateValue, `articles_${dateValue}.json`);
+  const stored = JSON.parse(await fs.readFile(filePath, "utf8")) as Array<{
+    raw?: { title?: string; sourceName?: string };
+    summary?: {
+      title_ja?: string;
+      tags?: string[];
+      source_list?: Array<{ name?: string }>;
+      main_entities?: ArticleTagInput["mainEntities"];
+    };
+  }>;
+  const article = stored.find((item) => item.summary?.title_ja?.includes(titleFragment));
+  if (!article?.summary?.title_ja || !article.summary.main_entities) {
+    throw new Error(`${dateValue}: 実データ回帰記事が見つかりません: ${titleFragment}`);
+  }
+  return {
+    tags: article.summary.tags ?? [],
+    sourceNames: [
+      ...(article.summary.source_list ?? []).flatMap((source) => source.name ? [source.name] : []),
+      ...(article.raw?.sourceName ? [article.raw.sourceName] : [])
+    ],
+    titles: [article.summary.title_ja, article.raw?.title ?? ""],
+    mainEntities: article.summary.main_entities
+  };
+}
+
+function assertArrayIncludes(value: string[], expected: string, label: string) {
+  if (!value.includes(expected)) throw new Error(`${label} がありません: ${expected} (${value.join("・")})`);
+}
+
+function assertArrayNotIncludes(value: string[], unexpected: string, label: string) {
+  if (value.includes(unexpected)) throw new Error(`${label} が残っています: ${unexpected} (${value.join("・")})`);
 }
 
 function assertIncludes(value: string, expected: string, label: string) {
