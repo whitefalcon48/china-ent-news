@@ -1,31 +1,31 @@
 {
   "date": "2026-08-16",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 52,
   "articles": [
     {
       "index": 1,
       "topic_key": "第38届大众电影百花奖",
       "title": "易烊千玺：第38回大衆電影百花賞（百花賞）、アニメ『哪吒之魔童鬧海』が最優秀作品賞に",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "その他",
+      "comment": "3回以上重複",
       "revision_count": 0
     },
     {
       "index": 2,
       "topic_key": "欢迎来龙餐馆",
       "title": "沈腾：沈騰：沈騰主演『歓迎来龍餐馆』、興行収入3億元突破＆豆瓣8.4で主演作最高記録更新",
-      "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "status": "rejected",
+      "reason_tag": "その他",
+      "comment": "3回以上重複",
       "revision_count": 0
     },
     {
       "index": 3,
       "topic_key": "龙餐馆",
       "title": "周星驰：周星馳（チャウ・シンチー）：周星馳（チャウ・シンチー）マネージャーが『龍餐館』の興行収入盗用を疑うも、映画側は操作ミスと説明",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
