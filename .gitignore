@@ -4,4 +4,7 @@ node_modules/
 output/*.md
 output/*.json
 dist/
-scratchpad/phase4a-*/
+.claude/
+.publish-worktree/
+.worktrees/
+scratchpad/

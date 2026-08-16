@@ -1,5 +1,12 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-16 リポジトリ復旧・並行作業の保護
+
+- ✅ 旧mainの8コミットを監査し、7件は別コミット番号で `origin/main` へ反映済みと確認。未反映だったXアカウント運用開始準備だけを最新版へ移植した。
+- ✅ 未追跡だった `docs/manual-chat-to-codex.md` と `docs/x-project-story-draft.md` は救済ブランチ `codex/rescue-untracked-docs-20260816` に保存。旧mainは `codex/rescue-main-20260816` で保持した。
+- ✅ `.claude/`、`.publish-worktree/`、`.worktrees/`、`scratchpad/` を作業用領域として除外し、通常の変更一覧へ混ざらないようにした。既存worktreeとブランチは削除せず保持する。
+- ✅ 復旧ブランチで `npm run check`、`npm run test:x-posts`、`npm run test:site-feed`、`npm run test:manual-intake`、`npm run build:site` 成功（15日分・41記事・59ページ）。
+
 ## 2026-08-14 実装・ローカル検証完了（Xアカウント運用開始準備）
 
 - ✅ Xアイコン2案・ヘッダー3案を同じV2正本素材で比較するChatGPT画像生成プロンプトと、X推奨サイズ／クロップ安全領域／比較基準を `docs/x-account-launch.md` に固定。
