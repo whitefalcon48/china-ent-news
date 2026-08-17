@@ -1,5 +1,12 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-17 実装・ローカル検証完了（topic反復cooldown・日次構成分散）
+
+- ✅ 8月17日のボツ2件、selection trace、topic candidates、8月4〜17日のレビュー履歴を比較。fresh topicは39件中box_office 2件だけで候補全体は多様だった一方、最終EVS 7点以上は映画2件だけだった。直近の承認14件は「映画」9件＋「興行」1件で、『歓迎来龍餐館』は8月9・11・15日に採用、14日にpending、16・17日に重複却下されていた。
+- ✅ 履歴照合は別topic key（`龙餐馆偷票房争议` / `龙餐馆`）も同一出来事として検出できていたが、旧ロジックが「過去記事にないURL」と `突破` / `声明` だけで続報扱いしていた。8月17日の根拠日は『龍餐館』争議が全件8月14日、『歓迎来龍餐館』が8月10〜12日で、いずれも8月16日の採用・却下より古く、後者は4〜4.57億元の履歴から3億元記事へ逆戻りしていた。
+- ✅ 公開・却下履歴を当日込み14日間へ拡張し、同日再生成も履歴対象にした。新URLだけでは再採用せず、照合日より後に公開された根拠に、未出の公式決定・本人反応・公開段階・数値到達がある場合だけ `history_follow_up:*` で許可する。それ以外は `history_cooldown:no_newer_evidence` / `history_cooldown:no_novel_update` としてselection traceへ残す。映画の一律禁止、EVS閾値、根拠条件、fact/claim gate、graceful fallbackは変更しない。
+- ✅ 保存済み8月17日候補への再適用では、旧traceで `reselect_allowed` だった2件が、初回想定・同日再生成の双方で `history_cooldown:no_newer_evidence` へ変化。履歴は12生成日・20件をロードし、重複映画を除くと既存EVS-6救済候補の「影之刃零」「短剧网文IP供给」が残ることを確認した。`npm run check`、`npm run test:publication-history`、`npm run test:topic-canonicalization`、`npm run test:evs`、`npm run test:review-rescue`、`npm run test:generation-status`、`npm run test:candidate-preference` 成功。本番再生成はmain反映後に行う。
+
 ## 2026-08-16 実装・ローカル検証完了（記事タグの横断検索品質）
 
 - ✅ 公開対象41記事の全タグを再監査。元データはタグあり30記事・157付与・116種類で、101種類（87%）が1記事だけにしかなく、カテゴリ相当の大分類、媒体名、単発の細目、簡体字／日本の新字体と同義語の重複が混在していた。

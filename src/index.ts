@@ -881,7 +881,7 @@ async function selectTopicsForAi(
     if (historyMatch) {
       historyMatches.push(historyMatch);
       if (editorialGateEnabled && historyMatch.decision === "dup_no_update") {
-        dropped.push({ topic, reason: "dup_no_update" });
+        dropped.push({ topic, reason: historyMatch.decision_reason });
         continue;
       }
     }
@@ -899,7 +899,9 @@ async function selectTopicsForAi(
       representative,
       category: representative.feedCategory ?? "その他",
       score: getTopicSelectionScore(topic, publishableEvidence),
-      selectionReason: topic.selection_reason,
+      selectionReason: historyMatch?.decision === "reselect_allowed"
+        ? `${topic.selection_reason}, ${historyMatch.decision_reason}`
+        : topic.selection_reason,
       historyMatch
     });
   }

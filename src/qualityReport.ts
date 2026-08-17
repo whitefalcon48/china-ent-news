@@ -21,7 +21,7 @@ async function main() {
       candidates: Array<{ topic_key: string; axes: Record<string, { score: number; reason: string; angle_hint?: string }>; total: number; caps: string[]; result: string }>;
       review_rescue?: { enabled: boolean; activated: boolean; threshold: number; limit: number; selected_topic_keys: string[]; reason: string };
     };
-    publication_history?: { loaded_days: string[]; entry_count: number; matches: Array<{ topic_key: string; matched_date: string; matched_key: string; substantive_update: string; decision: string }> };
+    publication_history?: { loaded_days: string[]; entry_count: number; matches: Array<{ topic_key: string; matched_date: string; matched_key: string; substantive_update: string; decision: string; decision_reason?: string }> };
     official_only?: { limit: number; used: string[]; excluded: string[] };
     comment_diversity?: { openings: Array<{ topic_key: string; opening: string }>; regenerated_opening: string[]; regenerated_paraphrase: string[] };
     ledger_anchor?: Array<{ topic_key: string; dropped_explanations: Array<{ topic_key: string; term: string; reason: string }> }>;
@@ -85,7 +85,7 @@ async function main() {
   console.log(`- loaded_days: ${trace.publication_history?.loaded_days.join(", ") || "none"}`);
   console.log(`- entry_count: ${trace.publication_history?.entry_count ?? 0}`);
   for (const match of trace.publication_history?.matches ?? []) {
-    console.log(`- ${match.topic_key} <= ${match.matched_date}/${match.matched_key}: ${match.substantive_update} -> ${match.decision}`);
+    console.log(`- ${match.topic_key} <= ${match.matched_date}/${match.matched_key}: ${match.substantive_update} -> ${match.decision} (${match.decision_reason ?? "legacy_reason"})`);
   }
   console.log("\n## Official-only");
   console.log(`- limit: ${trace.official_only?.limit ?? 1}`);
