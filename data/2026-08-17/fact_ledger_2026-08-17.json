@@ -1,0 +1,1028 @@
+{
+  "date": "2026-08-17",
+  "generated_at": "2026-08-17T02:24:41.889Z",
+  "ledgers": [
+    {
+      "topic_key": "龙餐馆偷票房争议",
+      "ledger": {
+        "topic_key": "龙餐馆偷票房争议",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "周星驰经纪人陈震宇于8月13日晚在社交平台晒出《龙餐馆》电影票截图，配文称在河南省上蔡县伟业城购买《功夫女足》却拿到别人的票。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "陈震宇",
+              "龙餐馆",
+              "功夫女足",
+              "河南省上蔡县伟业城"
+            ],
+            "numbers": [
+              "8月13日"
+            ],
+            "quote_zh": "陈震宇8月13日晚间在社交平台晒出一张关于《龙餐馆》电影票的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "陈震宇的质疑引发关注，“周星驰经纪人内涵龙餐馆偷票房”话题冲上热搜。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "陈震宇",
+              "龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "“周星驰经纪人内涵龙餐馆偷票房”相关话题冲上热搜",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "《龙餐馆》官方微博于8月14日下午发文回应，称事件为涉事影城操作失误所致，片方未参与、未授意该操作。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "龙餐馆"
+            ],
+            "numbers": [
+              "8月14日"
+            ],
+            "quote_zh": "《龙餐馆》官方微博8月14日下午发文称，经核实，该事件为涉事",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "涉事影城上蔡奥斯卡巨幕影城发文致歉，称因顾客购买《功夫女足》时已过开场时间20分钟，系统无法出票，前台员工误将《龙餐馆》出票后手写改签为《功夫女足》。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "上蔡奥斯卡巨幕影城",
+              "功夫女足",
+              "龙餐馆"
+            ],
+            "numbers": [
+              "20分钟"
+            ],
+            "quote_zh": "当时顾客要求购买《功夫女足》，但已过开场时间20分钟，系统无",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "事后，值班经理将顾客观看的《功夫女足》票房数据完成补录，将误操作的《龙餐馆》影票退票。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "功夫女足",
+              "龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "事后，值班经理将顾客观看的《功夫女足》票房数据完成补录，将误",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "偷票房是指影视行业内部分影院通过违规操作，截留、转移本该计入官方统计的电影票房收入，损害片方、发行方等相关方合法收益的行业乱象。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "所谓偷票房是指影视行业内部分影院通过违规操作，截留、转移本该",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "常见的偷票房手段包括手写白条替代机打票、诱导退票现金购票、阴阳票转移票房、假机打票/套餐拆分截留等。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "常见的偷票房手段包括手写白条替代机打票、诱导退票现金购票、阴",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "今年7月《功夫女足》上映时，有网友反映观看时收到手写电影票，质疑有电影院以手写票、空白票、不通过电影发行系统出机打票等方式偷票房。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月"
+            ],
+            "quote_zh": "今年7月《功夫女足》上映时，就曾曝出被偷票房",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "7月16日晚，周星驰在社交媒体上分享了一组《功夫女足》手写票的图片，每张图片均配上了3个问号，疑似回应影片被偷票房风波。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "周星驰",
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月16日",
+              "3个"
+            ],
+            "quote_zh": "7月16日晚，周星驰在社交媒体上分享了一组《功夫女足》手写票",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "7月13日，《功夫女足》曾发布声明，倡导文明观影、拒绝盗摄盗录、保护影视版权，并联合各方抵制个别影院的偷漏瞒报票房行为等。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "7月13日"
+            ],
+            "quote_zh": "7月13日，《功夫女足》曾发布声明，倡导文明观影、拒绝盗摄盗",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "《功夫女足》由周星驰导演，张小斐、迪丽热巴、张艺兴领衔主演，上映35天，目前票房（含预售）超过22亿元。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "功夫女足",
+              "周星驰",
+              "张小斐",
+              "迪丽热巴",
+              "张艺兴"
+            ],
+            "numbers": [
+              "35天",
+              "22亿元"
+            ],
+            "quote_zh": "《功夫女足》由周星驰导演，张小斐、迪丽热巴、张艺兴领衔主演，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "陈震宇为星辉海外有限公司董事总经理，2000年加入该公司后长期从事电影制作与艺人经纪工作，参与制作《少林足球》《长江7号》《美人鱼》等周星驰系列影片。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "陈震宇",
+              "星辉海外有限公司",
+              "少林足球",
+              "长江7号",
+              "美人鱼",
+              "周星驰"
+            ],
+            "numbers": [
+              "2000年"
+            ],
+            "quote_zh": "陈震宇为星辉海外有限公司董事总经理，2000年加入该公司后长",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "《龙餐馆》由文牧野执导、沈腾领衔主演，截至8月14日累计票房达到5.17亿元，观看人次为232万人。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "龙餐馆",
+              "文牧野",
+              "沈腾"
+            ],
+            "numbers": [
+              "8月14日",
+              "5.17亿元",
+              "232万人"
+            ],
+            "quote_zh": "《龙餐馆》由文牧野执导、沈腾领衔主演。猫眼专业版数据显示，截",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "猫眼预测《龙餐馆》总票房将达到26.83亿元，灯塔专业版预测总票房为30.15亿元。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "source_name": "猫眼专业版、灯塔专业版",
+            "entities": [
+              "龙餐馆",
+              "猫眼专业版",
+              "灯塔专业版"
+            ],
+            "numbers": [
+              "26.83亿元",
+              "30.15亿元"
+            ],
+            "quote_zh": "猫眼预测，该片总票房将达到26.83亿元；灯塔专业版预测，该",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "《龙餐馆》豆瓣评分已由8.4涨至8.5，暂居暑期档豆瓣评分第一，创下沈腾主演电影最高评分纪录。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "龙餐馆",
+              "豆瓣",
+              "沈腾"
+            ],
+            "numbers": [
+              "8.4",
+              "8.5"
+            ],
+            "quote_zh": "该片豆瓣评分已由8.4涨至8.5，暂居暑期档豆瓣评分第一，创",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "《龙餐馆》以“反战+美食”为题材，讲述出国打工的厨师徐福与经理马俊生在战争中用中餐撑起温暖角落的故事。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "龙餐馆",
+              "徐福",
+              "马俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "《龙餐馆》以“反战+美食”为题材，讲述了出国打工的厨师徐福",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "《龙餐馆》上映后，多家出品方股价连日创下新高，其中北京文化实现四连板。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "龙餐馆",
+              "北京文化"
+            ],
+            "numbers": [
+              "四连板"
+            ],
+            "quote_zh": "该片上映后，多家出品方股价连日创下新高。其中，实现四连板的北",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "北京文化8月11日公告称，公司连续两个交易日（2026年8月10日、2026年8月11日）收盘价格涨幅偏离值累计超过20%，属于股票交易异常波动情形。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "北京文化"
+            ],
+            "numbers": [
+              "8月11日",
+              "2026年8月10日",
+              "2026年8月11日",
+              "20%"
+            ],
+            "quote_zh": "北京文化（000802.SZ）8月11日公告称，公司连续两个",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "北京文化作为联合出品方的部分电影项目已于2026年暑期档上映，公司参投比例较低，预计不会对业绩产生重大影响。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "北京文化"
+            ],
+            "numbers": [
+              "2026年"
+            ],
+            "quote_zh": "公司作为联合出品方的部分电影项目已于2026年暑期档上映，公",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "《龙餐馆》出品方共计10家，包括坏猴子（上海）文化传播有限公司、中国电影产业集团股份有限公司、儒意电影娱乐股份有限公司等；联合出品方共计24家，包括北京京西文化旅游股份有限公司、浙江横店影业、华夏电影发行有限公司等；发行方为北京上狮文化集团有限公司。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "龙餐馆",
+              "坏猴子（上海）文化传播有限公司",
+              "中国电影产业集团股份有限公司",
+              "儒意电影娱乐股份有限公司",
+              "北京京西文化旅游股份有限公司",
+              "浙江横店影业",
+              "华夏电影发行有限公司",
+              "北京上狮文化集团有限公司"
+            ],
+            "numbers": [
+              "10家",
+              "24家"
+            ],
+            "quote_zh": "《龙餐馆》出品方共计10家，包括坏猴子（上海）文化传播有限公",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "偷票房",
+            "gloss_ja": "興行収入の横領",
+            "what_is": "映画館が違法操作で公式統計に入るべき興行収入を横取り・移転し、製作側や配給側の正",
+            "why_now": "周星馳のマネージャーが『龍餐館』の興行収入横領を疑い、話題となった。",
+            "explain_quote_zh": "所谓偷票房是指影视行业内部分影院通过违规操作，截留、转移本该",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "手写票",
+            "gloss_ja": "手書きの映画チケット",
+            "what_is": "映画館が発券システムを通さずに手書きで発行するチケット。",
+            "why_now": "『功夫女足』上映時に手書きチケットが発行され、興行収入横領の手段として疑われた。",
+            "explain_quote_zh": "有网友当时反映，观看《功夫女足》时，收到手写电影票",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "阴阳票",
+            "gloss_ja": "二重チケット",
+            "what_is": "実際の観客には別の映画のチケットを渡し、興行収入を別の作品に移す不正手段。",
+            "why_now": "今回の事件で、『功夫女足』のチケットの代わりに『龍餐館』のチケットが発行された。",
+            "explain_quote_zh": "阴阳票转移票房",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "票房",
+            "gloss_ja": "興行収入",
+            "what_is": "映画のチケット販売による収入。",
+            "why_now": "『龍餐館』と『功夫女足』の興行収入が話題の中心。",
+            "explain_quote_zh": "累计票房达到5.17亿元",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "豆瓣评分",
+            "gloss_ja": "豆瓣の評価点",
+            "what_is": "中国の映画・書籍レビューサイト「豆瓣」でのユーザー評価。",
+            "why_now": "『龍餐館』の評価が8.4から8.5に上昇し、話題となった。",
+            "explain_quote_zh": "豆瓣评分已由8.4涨至8.5",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "猫眼专业版",
+            "gloss_ja": "猫眼プロフェッショナル版",
+            "what_is": "中国の映画興行データを提供するプラットフォーム。",
+            "why_now": "『龍餐館』の興行収入や観客動員数のデータが引用された。",
+            "explain_quote_zh": "猫眼专业版数据显示",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "灯塔专业版",
+            "gloss_ja": "灯塔プロフェッショナル版",
+            "what_is": "中国の映画興行データを提供するプラットフォーム。",
+            "why_now": "『龍餐館』の総興行収入予測が引用された。",
+            "explain_quote_zh": "灯塔专业版预测，该片总票房为30.15亿元",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休み映画シーズン",
+            "what_is": "中国の映画市場で夏休み期間に公開される作品群。",
+            "why_now": "2026年の夏休み映画シーズンの興行収入が話題となった。",
+            "explain_quote_zh": "暑期档票房突破94亿元",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": {
+        "topic_key": "欢迎来龙餐馆",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』は8月11日に公開された。",
+            "evidence_refs": [
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "8月11日"
+            ],
+            "quote_zh": "8.11上映",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』は文牧野が監督を務めた。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "文牧野",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "由文牧野执导",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』には沈腾と蒋奇明が主演している。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "沈腾",
+              "蒋奇明",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "沈腾、蒋奇明等主演",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』のジャンルは剧情、战争、喜剧である。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "类型：剧情、战争、喜剧",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』のあらすじは、徐福が借金返済のため中東の中華料理店でコックとして働き、現地で大堂マネージャーの馬俊生と出会い、戦争勃発により運命が翻弄されるというものである。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "徐福",
+              "马俊生",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "徐福（沈腾 饰）为养家还债远赴中东中餐馆当厨师",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の興行収入は8月12日17時19分時点で3億元を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "3亿",
+              "8月12日17:19:11"
+            ],
+            "quote_zh": "票房超3亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の観客動員数は8月12日17時19分時点で824万人に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "824万"
+            ],
+            "quote_zh": "观看总人次已达824万",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の豆瓣スコアは8.4点で、沈腾主演映画の最高記録を更新した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "沈腾",
+              "豆瓣"
+            ],
+            "numbers": [
+              "8.4"
+            ],
+            "quote_zh": "豆瓣8.4刷新沈腾主演影片最高分纪录",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の淘票票での点映スコアは9.8点で、ここ3年の国産映画の点映最高記録を更新した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "淘票票"
+            ],
+            "numbers": [
+              "9.8",
+              "近三年"
+            ],
+            "quote_zh": "淘票票点映评分高达9.8分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "沈腾は映画『龍レストランへようこそ』でコックの徐福を演じた。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "沈腾",
+              "徐福",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "沈腾在《欢迎来龙餐馆》中饰演厨师徐福",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "沈腾は今回の役柄について、伝統的なコメディキャラクターではなく、抑制と沈黙の感情表現に多くを頼ったと語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "沈腾",
+              "徐福"
+            ],
+            "numbers": [],
+            "quote_zh": "这个角色不是传统喜剧人设，大量戏份依靠克制、沉默的情绪表达",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "沈腾は「これまで撮ったすべての映画の感情点を合わせても、今回の作品ほど多くはない」と述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "沈腾"
+            ],
+            "numbers": [],
+            "quote_zh": "拍这么多年电影，所有电影加起来的情感点，都不如这一部多",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の2社の製作会社の株価がストップ高となった。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "两家出品方股价涨停",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の点映および前売り興行収入は1.34億元に達した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "1.34亿"
+            ],
+            "quote_zh": "点映及预售票房达1.34亿",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』は8月8日から8月10日まで先行上映が行われた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "8月8日",
+              "8月10日"
+            ],
+            "quote_zh": "8月8日至10日超前点映",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の脚本は文牧野、郎群力、钟伟が担当した。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "文牧野",
+              "郎群力",
+              "钟伟",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "编剧：文牧野、郎群力、钟伟",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』には奥马尔·谢里夫と李治廷も出演している。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "奥马尔·谢里夫",
+              "李治廷",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "主演：沈腾、蒋奇明、奥马尔·谢里夫、李治廷",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』の舞台は中東の中華料理店である。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "远赴中东中餐馆当厨师",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』では、徐福と馬俊生が本場の中国料理で客を集め、龍レストランは名声を博した。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "徐福",
+              "马俊生",
+              "龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "以地道中国风味广招八方来客，龙餐馆声名鹊起",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "映画『龍レストランへようこそ』では、戦争勃発により現地の情勢が急変し、誰も無関係ではいられなくなる。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "随着战争爆发，当地形势急转直下，没有人能够独善其身",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "豆瓣",
+            "gloss_ja": "豆瓣",
+            "what_is": "中国の映画・書籍などのレビューサイト。",
+            "why_now": "本作の豆瓣スコア8.4が沈腾主演映画の最高記録を更新した。",
+            "explain_quote_zh": "豆瓣8.4刷新沈腾主演影片最高分纪录",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "淘票票",
+            "gloss_ja": "淘票票",
+            "what_is": "中国の映画チケット販売・レビューアプリ。",
+            "why_now": "本作の淘票票点映スコア9.8が近三年の国産映画点映最高記録を更新した。",
+            "explain_quote_zh": "淘票票点映评分高达9.8分",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "点映",
+            "gloss_ja": "先行上映",
+            "what_is": "正式公開前の限定的な上映。",
+            "why_now": "本作は8月8日から10日まで点映が行われ、点映・前売り興収が1.34億元に達した。",
+            "explain_quote_zh": "8月8日至10日超前点映",
+            "explain_evidence_refs": [
+              "E1",
+              "E3"
+            ]
+          },
+          {
+            "term": "超前点映",
+            "gloss_ja": "先行上映",
+            "what_is": "正式公開前の限定的な上映。",
+            "why_now": "本作は8月8日から10日まで超前点映が行われた。",
+            "explain_quote_zh": "8月8日至10日超前点映",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "出品方",
+            "gloss_ja": "製作会社",
+            "what_is": "映画の製作に出資する会社。",
+            "why_now": "本作の2社の出品方の株価がストップ高となった。",
+            "explain_quote_zh": "两家出品方股价涨停",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "票房",
+            "gloss_ja": "興行収入",
+            "what_is": "映画のチケット販売による収入。",
+            "why_now": "本作の興行収入は8月12日時点で3億元を超えた。",
+            "explain_quote_zh": "票房超3亿元",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "观看总人次",
+            "gloss_ja": "観客動員数",
+            "what_is": "映画を観た観客の延べ人数。",
+            "why_now": "本作の観客動員数は8月12日時点で824万人に達した。",
+            "explain_quote_zh": "观看总人次已达824万",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "预售",
+            "gloss_ja": "前売り",
+            "what_is": "公開前のチケット販売。",
+            "why_now": "本作の点映および前売り興収が1.34億元に達した。",
+            "explain_quote_zh": "点映及预售票房达1.34亿",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        }
+      },
+      "fallback_reason": ""
+    }
+  ]
+}

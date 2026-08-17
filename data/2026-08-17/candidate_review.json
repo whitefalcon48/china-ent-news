@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-17",
+  "status": "pending",
+  "created_at": "2026-08-17T02:22:44.266Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "龙餐馆偷票房争议",
+      "title": "被周星驰经纪人质疑偷票房，《龙餐馆》：系影院操作失误",
+      "event_sentence": "周星馳のマネージャーが『龍餐館』の興行収入の横領を疑ったが、同作は映画館の操作ミスだと説明した。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "《欢迎来龙餐馆》破3亿，豆瓣8.4刷新沈腾主演影片最高分纪录",
+      "event_sentence": "映画『龍レストランへようこそ』が8月11日に公開され、硝煙と炊煙が交錯する衝撃的な映像が描かれる。",
+      "topic_type": "box_office",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 86,
+      "source_count": 3,
+      "source_types": {
+        "official": 0,
+        "media_report": 2,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐",
+        "界面新闻 影视产业",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "短剧网文IP供给",
+      "title": "短剧千亿赛道网文IP成核心供给，番茄小说改编占爆款总量62%",
+      "event_sentence": "短劇の1000億元規模の市場で、網文IPが中核的な供給源となり、番茄小説の改編が爆款の62%を占めた。",
+      "topic_type": "unknown",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 86,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "对话西游群英荟",
+      "title": "对话西游群英荟：流量大了，责任也大了",
+      "event_sentence": "新京報娯楽は「西遊群英荟」のインタビューを掲載し、流量が増えると責任も大きくなると述べた。",
+      "topic_type": "unknown",
+      "baseline_rank": 4,
+      "baseline_priority": "high",
+      "baseline_score": 84,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "《功夫女足》上映",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星驰导演作品《功夫女足》上映半日票房破亿，引爆暑期档。",
+      "topic_type": "box_office",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "董润年专访",
+      "title": "迷茫，是这一代人的职场底色｜专访董润年",
+      "event_sentence": "董潤年はインタビューで、迷いはこの世代の職場の基調であると語った。",
+      "topic_type": "unknown",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "《年会不能停",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "《年会不能停！2》上映4天票房破亿，但远不及市场预期。",
+      "topic_type": "box_office",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局于2026年6月15日发布了电影行业标准DY/T 15—2026《数字影院LED放映发行母版和数据包技术要求》和DY/T 16—2026《数字影院沉浸式音频处理器技术要求和测量方法》。",
+      "topic_type": "policy",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "王橹杰出演电视剧",
+      "title": "王橹杰还出演过哪些电视剧？",
+      "event_sentence": "新浪娱乐报道了王橹杰出演过的其他电视剧。",
+      "topic_type": "drama_production",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 66,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "派拉蒙华纳并购案",
+      "title": "“绿巨人”联手12州起诉，派拉蒙华纳并购案突生变数",
+      "event_sentence": "绿巨人联手12州起诉，派拉蒙华纳并购案生变数。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "大众电影百花奖",
+      "title": "短剧首次纳入百花奖评价体系，行业加速迈向精品化",
+      "event_sentence": "第38回大衆電影百花奨が発表され、易烊千璽と衛詩雅が最優秀主演男優賞・女優賞を受賞した。",
+      "topic_type": "industry_context",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 63,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "《功夫女足》票房口碑",
+      "title": "《功夫女足》上映三日票房突破5亿，但口碑呈两极分化",
+      "event_sentence": "《功夫女足》上映三日票房突破5亿，但口碑呈两极分化。",
+      "topic_type": "box_office",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
