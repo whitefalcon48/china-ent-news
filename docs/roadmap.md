@@ -6,6 +6,7 @@
 - ✅ 履歴照合は別topic key（`龙餐馆偷票房争议` / `龙餐馆`）も同一出来事として検出できていたが、旧ロジックが「過去記事にないURL」と `突破` / `声明` だけで続報扱いしていた。8月17日の根拠日は『龍餐館』争議が全件8月14日、『歓迎来龍餐館』が8月10〜12日で、いずれも8月16日の採用・却下より古く、後者は4〜4.57億元の履歴から3億元記事へ逆戻りしていた。
 - ✅ 公開・却下履歴を当日込み14日間へ拡張し、同日再生成も履歴対象にした。新URLだけでは再採用せず、照合日より後に公開された根拠に、未出の公式決定・本人反応・公開段階・数値到達がある場合だけ `history_follow_up:*` で許可する。それ以外は `history_cooldown:no_newer_evidence` / `history_cooldown:no_novel_update` としてselection traceへ残す。映画の一律禁止、EVS閾値、根拠条件、fact/claim gate、graceful fallbackは変更しない。
 - ✅ 保存済み8月17日候補への再適用では、旧traceで `reselect_allowed` だった2件が、初回想定・同日再生成の双方で `history_cooldown:no_newer_evidence` へ変化。履歴は12生成日・20件をロードし、重複映画を除くと既存EVS-6救済候補の「影之刃零」「短剧网文IP供给」が残ることを確認した。`npm run check`、`npm run test:publication-history`、`npm run test:topic-canonicalization`、`npm run test:evs`、`npm run test:review-rescue`、`npm run test:generation-status`、`npm run test:candidate-preference` 成功。本番再生成はmain反映後に行う。
+- ✅ Actions `32091798373` をmain ref・`run_date=2026-08-17`・`refresh_review=true` で再実行。生成1件（`《师兄太稳健》定档819`、ドラマ）を保存し、旧『龍餐館』争議は `history_cooldown:no_newer_evidence` で除外。レビューIssue #56を作成、`REVIEW_GATE=true` のため本番公開は未実施。
 
 ## 2026-08-16 実装・ローカル検証完了（記事タグの横断検索品質）
 
