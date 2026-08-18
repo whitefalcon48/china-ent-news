@@ -15,6 +15,7 @@ export type PublicationHistoryEntry = {
   entities: MainEntities;
   topic_type: TopicType;
   evidence_urls: string[];
+  evidence_texts: string[];
 };
 
 export type PublicationHistory = {
@@ -24,6 +25,13 @@ export type PublicationHistory = {
 
 export type SubstantiveUpdate = "none" | "official_decision" | "principal_response" | "result";
 
+export type PublicationHistoryDecisionReason =
+  | "history_cooldown:no_newer_evidence"
+  | "history_cooldown:no_novel_update"
+  | "history_follow_up:official_decision"
+  | "history_follow_up:principal_response"
+  | "history_follow_up:result";
+
 export type PublicationHistoryMatch = {
   topic_key: string;
   matched_date: string;
@@ -31,15 +39,18 @@ export type PublicationHistoryMatch = {
   matched_status: PublicationHistoryStatus;
   reason_tag: ReviewReasonTag;
   substantive_update: SubstantiveUpdate;
+  candidate_evidence_urls: string[];
   update_evidence_urls: string[];
+  non_newer_evidence_urls: string[];
   decision: "reselect_allowed" | "dup_no_update";
+  decision_reason: PublicationHistoryDecisionReason;
 };
 
-export async function loadPublicationHistory(referenceDate: string, days = 5, dataRoot = "data"): Promise<PublicationHistory> {
+export async function loadPublicationHistory(referenceDate: string, days = 14, dataRoot = "data"): Promise<PublicationHistory> {
   const loadedDays: string[] = [];
   const entries: PublicationHistoryEntry[] = [];
 
-  for (const date of previousDates(referenceDate, days)) {
+  for (const date of historyDates(referenceDate, days)) {
     const directory = path.resolve(dataRoot, date);
     const review = await readJson<ReviewState>(path.join(directory, "review.json"));
     if (!review?.articles?.length) continue;
@@ -61,7 +72,8 @@ export async function loadPublicationHistory(referenceDate: string, days = 5, da
         reason_tag: reviewed.reason_tag,
         entities: getEntities(article),
         topic_type: article.topic?.topic_type ?? "unknown",
-        evidence_urls: getEvidenceUrls(article)
+        evidence_urls: getEvidenceUrls(article),
+        evidence_texts: getEvidenceTexts(article)
       });
     }
   }
@@ -73,16 +85,30 @@ export function evaluateTopicHistory(topic: TopicCandidate, history: Publication
   const matched = history.entries
     .map((entry) => ({ entry, specificity: getTopicMatchSpecificity(topic, entry) }))
     .filter((item) => item.specificity > 0)
-    .sort((a, b) => b.specificity - a.specificity || b.entry.topic_key.length - a.entry.topic_key.length)[0]?.entry;
+    .sort((a, b) => b.specificity - a.specificity || b.entry.date.localeCompare(a.entry.date) || b.entry.topic_key.length - a.entry.topic_key.length)[0]?.entry;
   if (!matched) return undefined;
   const oldUrls = new Set(matched.evidence_urls);
-  const newEvidence = topic.evidence_articles.filter((evidence) =>
+  const candidateEvidence = topic.evidence_articles.filter((evidence) =>
     evidence.url
     && !oldUrls.has(evidence.url)
     && Boolean(evidence.published_date)
     && ["today", "yesterday", "recent"].includes(evidence.freshness_label)
   );
-  const substantiveUpdate = detectSubstantiveUpdate(newEvidence.map((evidence) => `${evidence.title} ${evidence.key_points.join(" ")}`).join(" "));
+  // A new URL is not a follow-up when it only republishes facts that predate
+  // the reviewed item. Same-day reruns also rest the topic until a later day,
+  // because date-only source metadata cannot prove which item came first.
+  const newerEvidence = candidateEvidence.filter((evidence) => evidence.published_date > matched.date);
+  const nonNewerEvidence = candidateEvidence.filter((evidence) => evidence.published_date <= matched.date);
+  const substantiveUpdate = detectSubstantiveUpdate(
+    newerEvidence.map((evidence) => `${evidence.title} ${evidence.key_points.join(" ")}`).join(" "),
+    [matched.title, ...matched.evidence_texts].join(" ")
+  );
+  const decision = substantiveUpdate === "none" ? "dup_no_update" : "reselect_allowed";
+  const decisionReason: PublicationHistoryDecisionReason = !newerEvidence.length
+    ? "history_cooldown:no_newer_evidence"
+    : substantiveUpdate === "none"
+      ? "history_cooldown:no_novel_update"
+      : `history_follow_up:${substantiveUpdate}`;
   return {
     topic_key: topic.topic_key,
     matched_date: matched.date,
@@ -90,25 +116,44 @@ export function evaluateTopicHistory(topic: TopicCandidate, history: Publication
     matched_status: matched.status,
     reason_tag: matched.reason_tag,
     substantive_update: substantiveUpdate,
-    update_evidence_urls: newEvidence.map((evidence) => evidence.url),
-    decision: substantiveUpdate === "none" ? "dup_no_update" : "reselect_allowed"
+    candidate_evidence_urls: candidateEvidence.map((evidence) => evidence.url),
+    update_evidence_urls: newerEvidence.map((evidence) => evidence.url),
+    non_newer_evidence_urls: nonNewerEvidence.map((evidence) => evidence.url),
+    decision,
+    decision_reason: decisionReason
   };
 }
 
-function detectSubstantiveUpdate(text: string): SubstantiveUpdate {
+function detectSubstantiveUpdate(text: string, previousText: string): SubstantiveUpdate {
   if (!text.trim()) return "none";
-  if (/官宣|定档|立项|批准|获奖|得奖|夺冠|判决|处罚|立案|声明|公告/.test(text)) return "official_decision";
-  if (/回应|本人|受访|发文|发声|承认|否认/.test(text)) return "principal_response";
-  if (/开播|首播|上映|收官|大结局|突破|破.{0,3}亿|夺冠|登顶/.test(text)) return "result";
+  const decisionSignals = [/官宣|宣布/, /定档/, /立项|批准/, /获奖|得奖|夺冠/, /判决|处罚|立案/];
+  if (hasNovelSignal(text, previousText, decisionSignals)) return "official_decision";
+  const responseSignals = [/声明|公告|回应|本人|受访|发文|发声|承认|否认/];
+  if (hasNovelSignal(text, previousText, responseSignals)) return "principal_response";
+  const resultSignals = [/开播|首播/, /上映/, /收官|大结局/, /夺冠|登顶/];
+  if (hasNovelSignal(text, previousText, resultSignals)) return "result";
+  const previousMetrics = new Set(extractResultMetrics(previousText));
+  const newMetrics = extractResultMetrics(text).filter((metric) => !previousMetrics.has(metric));
+  if (newMetrics.length && /突破|破.{0,6}(?:亿|万|分|%|％)|票房|评分|評分|热度|熱度|播放|收视|收視/.test(text)) return "result";
   return "none";
 }
 
-function previousDates(referenceDate: string, days: number) {
+function hasNovelSignal(text: string, previousText: string, signals: RegExp[]) {
+  return signals.some((signal) => signal.test(text) && !signal.test(previousText));
+}
+
+function extractResultMetrics(text: string) {
+  const normalized = text.replace(/[，、]/g, ",").replace(/％/g, "%");
+  return [...normalized.matchAll(/\d+(?:\.\d+)?\s*(?:亿元|億元|亿|億|万元|萬元|万|萬|分|%|万人|萬人|万次|萬次|次)/g)]
+    .map((match) => match[0].replace(/\s+/g, ""));
+}
+
+function historyDates(referenceDate: string, days: number) {
   const base = new Date(`${referenceDate}T00:00:00Z`);
   if (Number.isNaN(base.getTime())) return [];
   return Array.from({ length: days }, (_, index) => {
     const value = new Date(base);
-    value.setUTCDate(value.getUTCDate() - index - 1);
+    value.setUTCDate(value.getUTCDate() - index);
     return value.toISOString().slice(0, 10);
   });
 }
@@ -153,6 +198,14 @@ function getEvidenceUrls(article: ProcessedArticle) {
     ...(article.summary?.source_list.map((source) => source.url ?? "") ?? []),
     article.raw.url
   ].filter(Boolean))];
+}
+
+function getEvidenceTexts(article: ProcessedArticle) {
+  return [...new Set([
+    article.raw.title,
+    article.summary?.title_ja ?? "",
+    ...(article.topic?.evidence_articles.flatMap((evidence) => [evidence.title, ...evidence.key_points]) ?? [])
+  ].map((value) => value.trim()).filter(Boolean))];
 }
 
 function normalizeStatus(status: string): PublicationHistoryStatus {
