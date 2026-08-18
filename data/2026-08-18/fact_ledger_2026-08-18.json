@@ -1,109 +1,112 @@
 {
   "date": "2026-08-18",
-  "generated_at": "2026-08-18T02:21:28.054Z",
+  "generated_at": "2026-08-18T05:05:14.738Z",
   "ledgers": [
     {
-      "topic_key": "欢迎来龙餐馆",
+      "topic_key": "大众电影百花奖",
       "ledger": {
-        "topic_key": "欢迎来龙餐馆",
+        "topic_key": "大众电影百花奖",
         "claims": [
           {
             "id": "C1",
             "type": "verified_fact",
-            "text": "映画『歓迎来龍餐館』の興行収入が3億元を突破した。",
+            "text": "第38届大众电影百花奖系列活动于2026年8月7日晚在北京朝阳公园开幕。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "欢迎来龙餐馆"
+              "第38届大众电影百花奖",
+              "北京朝阳公园"
             ],
             "numbers": [
-              "3亿元"
+              "2026年8月7日",
+              "第38届"
             ],
-            "quote_zh": "票房超3亿元",
+            "quote_zh": "8月7日晚，由中国文联、北京市人民政府、中国影协主办的第38",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "key_numbers",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C2",
             "type": "verified_fact",
-            "text": "観客動員数は824万人に達した。",
+            "text": "第38届大众电影百花奖系列活动由中国文联、北京市人民政府、中国影协主办。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "欢迎来龙餐馆"
+              "中国文联",
+              "北京市人民政府",
+              "中国影协"
             ],
-            "numbers": [
-              "824万"
-            ],
-            "quote_zh": "观看总人次已达824万",
+            "numbers": [],
+            "quote_zh": "由中国文联、北京市人民政府、中国影协主办的第38届大众电影百",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "key_numbers",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C3",
             "type": "verified_fact",
-            "text": "豆瓣の評価は8.4点で、沈騰主演映画の最高得点を更新した。",
+            "text": "中国文联党组成员、副主席高世名在开幕式上致辞并宣布开幕。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "欢迎来龙餐馆",
-              "沈腾"
+              "高世名",
+              "中国文联"
             ],
-            "numbers": [
-              "8.4"
-            ],
-            "quote_zh": "豆瓣评分8.4分，刷新了沈腾主演电影的最高分纪录",
+            "numbers": [],
+            "quote_zh": "中国文联党组成员、副主席高世名致辞并宣布开幕。",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "key_numbers",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C4",
             "type": "verified_fact",
-            "text": "淘票票の試写会評価は9.8点で、ここ3年の国産映画の試写会最高記録を更新した。",
+            "text": "北京市委常委、宣传部部长孙军民在开幕式上致辞。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "欢迎来龙餐馆",
-              "淘票票"
+              "孙军民",
+              "北京市委"
             ],
-            "numbers": [
-              "9.8",
-              "3年"
-            ],
-            "quote_zh": "淘票票点映评分高达9.8分，也创下近三年国产片点映最高纪录",
+            "numbers": [],
+            "quote_zh": "北京市委常委、宣传部部长孙军民致辞。",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "key_numbers",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C5",
             "type": "verified_fact",
-            "text": "沈騰は本作でシェフの徐福を演じた。",
+            "text": "张丕民、童刚、张宏等电影界老领导，祝希娟、丁荫楠、谢飞、肖桂云、王兴东等电影界嘉宾出席开幕式。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "沈腾",
-              "徐福"
+              "张丕民",
+              "童刚",
+              "张宏",
+              "祝希娟",
+              "丁荫楠",
+              "谢飞",
+              "肖桂云",
+              "王兴东"
             ],
             "numbers": [],
-            "quote_zh": "沈腾在《欢迎来龙餐馆》中饰演厨师徐福",
+            "quote_zh": "张丕民、童刚、张宏等电影界老领导，祝希娟、丁荫楠、谢飞、肖桂",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -111,18 +114,17 @@
           },
           {
             "id": "C6",
-            "type": "source_analysis",
-            "text": "新京報は、沈騰が本作で快適領域から完全に抜け出し、極めて内省的で抑制の効いた方法で戦火の中の小人物の葛藤と変化を描き出したと評価した。",
+            "type": "verified_fact",
+            "text": "高世名表示，大众电影百花奖是中国历史最悠久、群众根基最深厚的电影奖项。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "沈腾",
-              "欢迎来龙餐馆"
+              "大众电影百花奖"
             ],
             "numbers": [],
-            "quote_zh": "沈腾彻底跳出舒适区，用极度内敛和克制的方式，将一个战火中小人",
+            "quote_zh": "大众电影百花奖，是我国历史最悠久、群众根基最深厚的电影奖项。",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -131,99 +133,87 @@
           {
             "id": "C7",
             "type": "verified_fact",
-            "text": "沈騰は、この役は伝統的なコメディのキャラクターではなく、多くのシーンが抑制と沈黙の感情表現に依存していると語った。",
+            "text": "高世名表示，大众电影百花奖是中国唯一依托观众投票评选的国家级奖项。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "沈腾",
-              "徐福"
+              "大众电影百花奖"
             ],
             "numbers": [],
-            "quote_zh": "这个角色不是传统喜剧人设，大量戏份依靠克制、沉默的情绪表达",
+            "quote_zh": "作为中国唯一依托观众投票评选的国家级奖项",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "personal_condition",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C8",
             "type": "verified_fact",
-            "text": "沈騰は、これまで撮影したすべての映画の感情的なポイントを合わせても、この作品ほど多くはないと述べた。",
+            "text": "高世名表示，百花奖最重要的价值在于它所建构和见证的电影与大众的关系、艺术与人民的关系。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "新京报 娱乐",
+            "source_name": "国家电影局",
             "entities": [
-              "沈腾"
+              "百花奖"
             ],
             "numbers": [],
-            "quote_zh": "拍这么多年电影，所有电影加起来的情感点，都不如这一部多",
+            "quote_zh": "百花奖最重要的价值在于它所建构和见证的，是电影与大众的关系、",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "personal_condition",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C9",
             "type": "verified_fact",
-            "text": "8月10日、A株の映画・テレビ・劇場セクターが全面高となり、『歓迎来龍餐館』の製作会社である北京文化は寄り付きでストップ高、共同製作会社の儒意電影は午後にストップ高となった。",
+            "text": "高世名表示，在“十五五”开局之年，百花奖重返首都，是向着中国电影初心的回归，更是电影文化的重铸。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
+            "source_name": "国家电影局",
             "entities": [
-              "北京文化",
-              "儒意电影",
-              "欢迎来龙餐馆"
+              "百花奖",
+              "首都"
             ],
             "numbers": [
-              "8月10日"
+              "十五五"
             ],
-            "quote_zh": "北京文化当日开盘后一字涨停，联合出品方儒意电影午后涨停",
+            "quote_zh": "在“十五五”开局之年，百花奖重返首都，是向着中国电影初心的回",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "industry_spillover",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C10",
             "type": "verified_fact",
-            "text": "8月10日時点で、『歓迎来龍餐館』の試写会および前売り興行収入は1億3400万元に達した。",
+            "text": "高世名表示，要回归记忆，重塑大众电影的文化根脉；回归人民，坚守电影艺术的人民之心；回归热爱，唤醒全民观影的审美体验。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
-            "entities": [
-              "欢迎来龙餐馆"
-            ],
-            "numbers": [
-              "1.34亿元",
-              "8月10日"
-            ],
-            "quote_zh": "点映及预售票房达到1.34亿元",
+            "source_name": "国家电影局",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "我们要回归记忆，重塑大众电影的文化根脉；回归人民，坚守电影艺",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "industry_spillover",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C11",
             "type": "verified_fact",
-            "text": "『歓迎来龍餐館』は文牧野が監督し、寧浩が監修、沈騰が主演を務める。",
+            "text": "高世名表示，通过回归大众电影本源、重建电影文化价值来塑造大众电影的文化品格，重振当代电影的行业底气，重铸中国电影的时代荣光。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
-            "entities": [
-              "文牧野",
-              "宁浩",
-              "沈腾",
-              "欢迎来龙餐馆"
-            ],
+            "source_name": "国家电影局",
+            "entities": [],
             "numbers": [],
-            "quote_zh": "由文牧野执导，宁浩监制，沈腾领衔主演",
+            "quote_zh": "通过回归大众电影本源、重建电影文化价值来塑造大众电影的文化品",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -232,18 +222,19 @@
           {
             "id": "C12",
             "type": "verified_fact",
-            "text": "『歓迎来龍餐館』は8月11日に正式公開される。",
+            "text": "孙军民表示，北京市全面学习贯彻习近平文化思想，深入学习贯彻习近平总书记给田华等8位电影艺术家重要回信精神。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
+            "source_name": "国家电影局",
             "entities": [
-              "欢迎来龙餐馆"
+              "习近平",
+              "田华"
             ],
             "numbers": [
-              "8月11日"
+              "8位"
             ],
-            "quote_zh": "将于8月11日正式上映",
+            "quote_zh": "北京市全面学习贯彻习近平文化思想，深入学习贯彻习近平总书记给",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -252,18 +243,16 @@
           {
             "id": "C13",
             "type": "verified_fact",
-            "text": "『歓迎来龍餐館』のあらすじは、シェフの徐福が借金返済のため中東某国の首都バハタに渡り、龍餐館を経営するというもの。",
+            "text": "孙军民表示，北京市坚持首善标准、守正创新，不断推动首都电影事业百花齐放，电影创作生产持续繁荣，“电影+”融合发展势头强劲，电影节展影响不断扩大。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
+            "source_name": "国家电影局",
             "entities": [
-              "徐福",
-              "巴哈塔",
-              "龙餐馆"
+              "北京市"
             ],
             "numbers": [],
-            "quote_zh": "讲述了厨师徐福（沈腾饰）为偿还债务远赴中东某国首都巴哈塔经营",
+            "quote_zh": "坚持首善标准、守正创新，不断推动首都电影事业百花齐放，电影创",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -272,17 +261,14 @@
           {
             "id": "C14",
             "type": "verified_fact",
-            "text": "戦争勃発後、徐福の運命は激変し、自己保身だけを考えていた彼が、兄弟の馬俊生の死を経て、中東某国の子供たちを救う中国の英雄へと変わっていく。",
+            "text": "孙军民表示，将全力把本届活动打造成彰显人民情怀、首都水准、时代风貌的群众节日。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
-            "entities": [
-              "徐福",
-              "马俊生"
-            ],
+            "source_name": "国家电影局",
+            "entities": [],
             "numbers": [],
-            "quote_zh": "战争爆发后，徐福的命运发生剧烈变化。一向只求自保的他，历经命",
+            "quote_zh": "我们将全力把本届活动打造成彰显人民情怀、首都水准、时代风貌的",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -290,18 +276,18 @@
           },
           {
             "id": "C15",
-            "type": "source_analysis",
-            "text": "界面新聞は、試写会を見た観客が沈騰のこれまでのコメディイメージを突破した演技を評価し、蒋奇明の優れた言語才能も称賛したと報じた。",
+            "type": "verified_fact",
+            "text": "孙军民表示，以“百花奖”重回北京举办为契机，持续优化电影创作环境，积极促进电影创新发展，繁荣互联网条件下新大众文艺。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
+            "source_name": "国家电影局",
             "entities": [
-              "沈腾",
-              "蒋奇明"
+              "百花奖",
+              "北京"
             ],
             "numbers": [],
-            "quote_zh": "有观众在看完点映后，认为沈腾突破了以往喜剧形象，展现出更具厚",
+            "quote_zh": "以“百花奖”重回北京举办为契机，持续优化电影创作环境，积极促",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -309,18 +295,17 @@
           },
           {
             "id": "C16",
-            "type": "source_analysis",
-            "text": "界面新聞は、一部の観客が本作を文牧野監督の『我不是薬神』と比較できると評価したと報じた。",
+            "type": "verified_fact",
+            "text": "开幕式文艺演出以“百花归来 光影初心”为主题，用“三封信”的叙事结构串联起电影与人民和时代之间的深情对话。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "m.jiemian.com",
-            "entities": [
-              "文牧野",
-              "我不是药神"
+            "source_name": "国家电影局",
+            "entities": [],
+            "numbers": [
+              "三封信"
             ],
-            "numbers": [],
-            "quote_zh": "还有观众认为，该片可以和文牧野导演的《我不是药神》一较高下",
+            "quote_zh": "开幕式文艺演出以“百花归来 光影初心”为主题，用“三封信”的",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -329,77 +314,57 @@
           {
             "id": "C17",
             "type": "verified_fact",
-            "text": "2026年夏休み映画シーズンの総興行収入（前売り含む）が92億元を突破した。",
+            "text": "文艺演出后放映了开幕影片《密档》。",
             "evidence_refs": [
-              "E4"
+              "E1"
             ],
-            "source_name": "news.cn",
-            "entities": [],
-            "numbers": [
-              "92亿元",
-              "2026"
-            ],
-            "quote_zh": "2026暑期档电影总票房（含预售）突破92亿元",
-            "anchor": true,
-            "scope": "root_event",
-            "editorial_role": "key_numbers",
-            "angle_kind": "other"
-          },
-          {
-            "id": "C18",
-            "type": "verified_fact",
-            "text": "8月13日19時時点で、『歓迎来龍餐館』の累計興行収入が4億元を突破した。",
-            "evidence_refs": [
-              "E4"
-            ],
-            "source_name": "news.cn",
+            "source_name": "国家电影局",
             "entities": [
-              "欢迎来龙餐馆"
-            ],
-            "numbers": [
-              "4亿元",
-              "8月13日",
-              "19时"
-            ],
-            "quote_zh": "截至8月13日19时影片累计票房已破4亿元",
-            "anchor": true,
-            "scope": "root_event",
-            "editorial_role": "key_numbers",
-            "angle_kind": "other"
-          },
-          {
-            "id": "C19",
-            "type": "verified_fact",
-            "text": "文牧野監督は、食事は人と人との感情の流れが最も直接的に表れるものであり、母親が電話でよく「好好吃饭」と言っていたと語った。",
-            "evidence_refs": [
-              "E4"
-            ],
-            "source_name": "news.cn",
-            "entities": [
-              "文牧野"
+              "《密档》"
             ],
             "numbers": [],
-            "quote_zh": "吃饭是人与人之间情感流动最直接的东西，自己当年上学的时候，母",
+            "quote_zh": "文艺演出后放映了开幕影片《密档》。",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
             "angle_kind": "other"
           },
           {
-            "id": "C20",
+            "id": "C18",
             "type": "verified_fact",
-            "text": "文牧野監督は、本作で沈騰の新たな一面が見られ、沈騰は自分が思い描く最高の徐福の姿を演じていると述べた。",
+            "text": "秦振贵、邓光辉等中宣部电影局和中国影协负责人出席开幕式。",
             "evidence_refs": [
-              "E4"
+              "E1"
             ],
-            "source_name": "news.cn",
+            "source_name": "国家电影局",
             "entities": [
-              "文牧野",
-              "沈腾",
-              "徐福"
+              "秦振贵",
+              "邓光辉",
+              "中宣部电影局",
+              "中国影协"
             ],
             "numbers": [],
-            "quote_zh": "影片里能看到很不一样的沈腾。沈腾在里面基本上塑造了我心中最好",
+            "quote_zh": "秦振贵、邓光辉等中宣部电影局和中国影协负责人出席开幕式。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "第38届大众电影百花奖系列活动为期4天，涵盖开幕式、提名者表彰仪式、百花影展、百花电影论坛、电影文化主题特展、公益慰问演出、华语青年电影周、颁奖典礼暨闭幕式、文商旅体融合等活动。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "国家电影局",
+            "entities": [
+              "第38届大众电影百花奖"
+            ],
+            "numbers": [
+              "4天"
+            ],
+            "quote_zh": "第38届大众电影百花奖系列活动为期4天，涵盖开幕式、提名者表",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -408,83 +373,63 @@
         ],
         "terms": [
           {
-            "term": "豆瓣",
-            "gloss_ja": "豆瓣",
-            "what_is": "中国の映画・書籍・音楽などのレビューサイト。",
-            "why_now": "本作の豆瓣評価8.4が沈騰主演映画の最高記録を更新した。",
-            "explain_quote_zh": "豆瓣评分8.4分，刷新了沈腾主演电影的最高分纪录",
+            "term": "大众电影百花奖",
+            "gloss_ja": "大衆映画百花賞",
+            "what_is": "中国で最も歴史が古く、大衆の基盤が厚い映画賞。",
+            "why_now": "第38回が北京で開催され、開幕式が行われた。",
+            "explain_quote_zh": "大众电影百花奖，是我国历史最悠久、群众根基最深厚的电影奖项。",
             "explain_evidence_refs": [
               "E1"
             ]
           },
           {
-            "term": "淘票票",
-            "gloss_ja": "淘票票",
-            "what_is": "中国のオンライン映画チケット販売・情報プラットフォーム。",
-            "why_now": "本作の試写会評価9.8がここ3年の国産映画最高記録を更新した。",
-            "explain_quote_zh": "淘票票点映评分高达9.8分，也创下近三年国产片点映最高纪录",
+            "term": "观众投票评选",
+            "gloss_ja": "観客投票による選考",
+            "what_is": "中国で唯一、観客投票によって選考される国家級の賞。",
+            "why_now": "百花賞の重要な特徴として開幕式で言及された。",
+            "explain_quote_zh": "作为中国唯一依托观众投票评选的国家级奖项",
             "explain_evidence_refs": [
               "E1"
             ]
           },
           {
-            "term": "点映",
-            "gloss_ja": "試写会",
-            "what_is": "正式公開前に限定的に行われる上映。",
-            "why_now": "本作の試写会および前売り興行収入が1億3400万元に達した。",
-            "explain_quote_zh": "点映及预售票房达到1.34亿元",
-            "explain_evidence_refs": [
-              "E2"
-            ]
-          },
-          {
-            "term": "预售",
-            "gloss_ja": "前売り",
-            "what_is": "公開前のチケット販売。",
-            "why_now": "本作の試写会および前売り興行収入が1億3400万元に達した。",
-            "explain_quote_zh": "点映及预售票房达到1.34亿元",
-            "explain_evidence_refs": [
-              "E2"
-            ]
-          },
-          {
-            "term": "暑期档",
-            "gloss_ja": "夏休み映画シーズン",
-            "what_is": "中国で6月から8月にかけての映画興行の繁忙期。",
-            "why_now": "2026年夏休み映画シーズンの総興行収入が92億元を突破した。",
-            "explain_quote_zh": "2026暑期档电影总票房（含预售）突破92亿元",
-            "explain_evidence_refs": [
-              "E4"
-            ]
-          },
-          {
-            "term": "票房",
-            "gloss_ja": "興行収入",
-            "what_is": "映画のチケット販売による収入。",
-            "why_now": "本作の興行収入が3億元を突破した。",
-            "explain_quote_zh": "票房超3亿元",
+            "term": "十五五",
+            "gloss_ja": "第15次五カ年計画",
+            "what_is": "中国の第15次五カ年計画期間。",
+            "why_now": "百花賞がこの時期に北京に戻ってきたことが強調された。",
+            "explain_quote_zh": "在“十五五”开局之年，百花奖重返首都",
             "explain_evidence_refs": [
               "E1"
             ]
           },
           {
-            "term": "出品方",
-            "gloss_ja": "製作会社",
-            "what_is": "映画の製作に出資する会社。",
-            "why_now": "本作の製作会社である北京文化と儒意電影の株価がストップ高となった。",
-            "explain_quote_zh": "出品方北京文化当日开盘后一字涨停，联合出品方儒意电影午后涨停",
+            "term": "电影+",
+            "gloss_ja": "映画＋",
+            "what_is": "映画と他の産業との融合発展。",
+            "why_now": "北京市の映画産業の現状として言及された。",
+            "explain_quote_zh": "“电影+”融合发展势头强劲",
             "explain_evidence_refs": [
-              "E2"
+              "E1"
             ]
           },
           {
-            "term": "涨停",
-            "gloss_ja": "ストップ高",
-            "what_is": "株価が1日の値幅制限の上限まで上昇すること。",
-            "why_now": "本作の製作会社の株価がストップ高となった。",
-            "explain_quote_zh": "北京文化当日开盘后一字涨停，联合出品方儒意电影午后涨停",
+            "term": "新大众文艺",
+            "gloss_ja": "新大衆文芸",
+            "what_is": "インターネット条件下での新しい大衆文芸。",
+            "why_now": "百花賞を機に繁栄させることが北京市の方針として示された。",
+            "explain_quote_zh": "繁荣互联网条件下新大众文艺",
             "explain_evidence_refs": [
-              "E2"
+              "E1"
+            ]
+          },
+          {
+            "term": "文商旅体融合",
+            "gloss_ja": "文化・商業・観光・スポーツ融合",
+            "what_is": "文化、商業、観光、スポーツの融合活動。",
+            "why_now": "百花賞の一連の活動に含まれるとされた。",
+            "explain_quote_zh": "文商旅体融合等精彩纷呈的活动",
+            "explain_evidence_refs": [
+              "E1"
             ]
           }
         ],
@@ -495,38 +440,31 @@
         },
         "unresolved": [],
         "evidence_roles": {
-          "E1": "root_corroboration",
-          "E2": "root_corroboration",
-          "E3": "root_corroboration",
-          "E4": "root_corroboration"
+          "E1": "root_corroboration"
         }
       },
       "fallback_reason": ""
     },
     {
-      "topic_key": "龙餐馆偷票房争议",
+      "topic_key": "丁禹兮给粉丝买黄金",
       "ledger": {
-        "topic_key": "龙餐馆偷票房争议",
+        "topic_key": "丁禹兮给粉丝买黄金",
         "claims": [
           {
             "id": "C1",
             "type": "verified_fact",
-            "text": "周星驰の经纪人陈震宇が8月13日夜、SNSで『龍餐館』の映画チケットのスクリーンショットを公開し、「河南省上蔡県偉業城で『功夫女足』を買ったのに、なぜ他人のチケットが渡されたのか」と疑問を呈した。",
+            "text": "2026年8月17日、丁禹兮は上海の老鳳祥のイベント会場で自費で黄金のネックレスを購入し、以前彼のコンサートで彼氏からプロポーズされたファンに贈ると述べた。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "周星驰",
-              "陈震宇",
-              "龙餐馆",
-              "功夫女足",
-              "河南省上蔡县伟业城"
+              "丁禹兮",
+              "老鳳祥"
             ],
             "numbers": [
-              "8月13日"
+              "2026年8月17日"
             ],
-            "quote_zh": "陈震宇8月13日晚间在社交平台晒出一张关于《龙餐馆》电影票的",
+            "quote_zh": "2026年8月17日，丁禹兮在上海老凤祥活动现场自费买下一条",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -535,18 +473,15 @@
           {
             "id": "C2",
             "type": "verified_fact",
-            "text": "陈震宇の投稿後、「周星驰经纪人内涵龙餐馆偷票房」という関連トピックが微博のホットサーチに入った。",
+            "text": "丁禹兮はこのネックレスを「娘家人からの嫁入り道具」と表現した。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "周星驰",
-              "陈震宇",
-              "龙餐馆"
+              "丁禹兮"
             ],
             "numbers": [],
-            "quote_zh": "“周星驰经纪人内涵龙餐馆偷票房”相关话题冲上热搜",
+            "quote_zh": "明确表示这是“作为娘家给的嫁妆”",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -555,20 +490,15 @@
           {
             "id": "C3",
             "type": "verified_fact",
-            "text": "『龍餐館』公式微博は8月14日午後、この事件は映画館の操作ミスによるもので、映画館はすでに返金・訂正と対応する映画の興行データの補完を完了し、謝罪と是正説明を発表したと声明を出した。",
+            "text": "丁禹兮はライブ配信で、あるファンが自分のコンサートで彼氏からプロポーズされた動画を見たと明かした。",
             "evidence_refs": [
-              "E1",
-              "E3"
+              "E1"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "龙餐馆",
-              "微博"
+              "丁禹兮"
             ],
-            "numbers": [
-              "8月14日"
-            ],
-            "quote_zh": "《龙餐馆》官方微博8月14日下午发文称，经核实，该事件为涉事",
+            "numbers": [],
+            "quote_zh": "丁禹兮在直播中透露，自己刷到一位粉丝在自己演唱会上被男友求婚",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -577,17 +507,13 @@
           {
             "id": "C4",
             "type": "verified_fact",
-            "text": "『龍餐館』の製作側は、この操作に関与しておらず、指示もしていないと述べた。",
+            "text": "プロポーズの際、彼氏は鳳凰の指輪を贈り、女性側も返礼を準備していた。",
             "evidence_refs": [
-              "E1",
-              "E3"
+              "E1"
             ],
-            "source_name": "界面新闻",
-            "entities": [
-              "龙餐馆"
-            ],
+            "entities": [],
             "numbers": [],
-            "quote_zh": "《欢迎来龙餐馆》片方未参与、未授意该操作",
+            "quote_zh": "当时男友送出一枚凤凰戒指，女方也默契地准备了回礼",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -596,20 +522,15 @@
           {
             "id": "C5",
             "type": "verified_fact",
-            "text": "問題の映画館である上蔡奥斯卡巨幕影城は、8月12日に発生した『功夫女足』のチケット操作ミスについて説明し謝罪した。",
+            "text": "丁禹兮はスタジオに連絡してそのファンにネックレスを送るよう手配した。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "上蔡奥斯卡巨幕影城",
-              "功夫女足"
+              "丁禹兮"
             ],
-            "numbers": [
-              "8月12日"
-            ],
-            "quote_zh": "涉事影城——上蔡奥斯卡巨幕影城曾发文，就8月12日发生的《功",
+            "numbers": [],
+            "quote_zh": "并安排工作室联系该粉丝寄送",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -618,20 +539,16 @@
           {
             "id": "C6",
             "type": "verified_fact",
-            "text": "映画館の説明によると、顧客は『功夫女足』の購入を希望したが、開映から20分以上経過しておりシステム上チケットを発券できず、顧客が強く希望したため、スタッフが誤って『龍餐館』のチケットを発券し、手書きで『功夫女足』に変更した。",
+            "text": "丁禹兮はその場でファンのID「KING9金金」を正確に読み上げた。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "功夫女足",
-              "龙餐馆"
+              "丁禹兮",
+              "KING9金金"
             ],
-            "numbers": [
-              "20分钟"
-            ],
-            "quote_zh": "当时顾客要求购买《功夫女足》，但已过开场时间20分钟，系统无",
+            "numbers": [],
+            "quote_zh": "他当场完整念出了粉丝的ID“KING9金金”",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -640,18 +557,21 @@
           {
             "id": "C7",
             "type": "verified_fact",
-            "text": "その後、当直マネージャーが顧客の観賞した『功夫女足』の興行データを補完し、誤って発券された『龍餐館』のチケットを返金処理した。",
+            "text": "2026年1月25日、丁禹兮は上海のイベント会場でその場でカードを使い、ネックレス1本とブレスレット3本（総額6万元以上）を購入し、4人のファンにランダムで贈った。",
             "evidence_refs": [
-              "E1",
-              "E2"
+              "E1"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "功夫女足",
-              "龙餐馆"
+              "丁禹兮"
             ],
-            "numbers": [],
-            "quote_zh": "事后，值班经理将顾客观看的《功夫女足》票房数据完成补录，将误",
+            "numbers": [
+              "2026年1月25日",
+              "1",
+              "3",
+              "6万元",
+              "4"
+            ],
+            "quote_zh": "今年1月25日，丁禹兮就曾在上海活动现场临时刷卡，购买一条项",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -660,14 +580,20 @@
           {
             "id": "C8",
             "type": "verified_fact",
-            "text": "映画館は、この事件がチケット管理と従業員の操作規範における欠陥を露呈したと認め、当事者従業員への批判教育と全従業員への通達を行った。",
+            "text": "2025年12月、丁禹兮は15万元をかけて単価5600元のネックレス27本を購入し、その場にいたファンに贈り、ブランドの全国在庫をすべて確保した。",
             "evidence_refs": [
-              "E2"
+              "E1"
             ],
-            "source_name": "新浪财经",
-            "entities": [],
-            "numbers": [],
-            "quote_zh": "影院承认此次事件暴露出票务管理及员工操作规范上的漏洞，向两部",
+            "entities": [
+              "丁禹兮"
+            ],
+            "numbers": [
+              "2025年12月",
+              "15万元",
+              "27",
+              "5600元"
+            ],
+            "quote_zh": "2025年12月，他曾花15万元买下27条单价5600元的项",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -676,16 +602,17 @@
           {
             "id": "C9",
             "type": "verified_fact",
-            "text": "『龍餐館』の製作側は、いかなる興行収入のごまかしや違法なチケット変更などの市場秩序を乱す行為に断固反対し、厳しく取り締まると表明した。",
+            "text": "丁禹兮はこれまでにもファンにミルクティーや花を何度も購入し、最近では7人のメイクアップアーティストを現場に呼んでファンのメイクを行い、純金のスマホスタンドも贈った。",
             "evidence_refs": [
-              "E3"
+              "E1"
             ],
-            "source_name": "环球网",
             "entities": [
-              "龙餐馆"
+              "丁禹兮"
             ],
-            "numbers": [],
-            "quote_zh": "我方始终坚决反对、严厉抵制任何偷漏票房、违规改票等扰乱市场秩",
+            "numbers": [
+              "7"
+            ],
+            "quote_zh": "他还多次给粉丝买奶茶、送花，近期也为粉丝请过7位化妆师现场做",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -693,17 +620,17 @@
           },
           {
             "id": "C10",
-            "type": "verified_fact",
-            "text": "『龍餐館』の製作側は、業界関係者と観客に対し、各地の映画館のチケット操作を共同で監視し、違反行為を発見した場合は速やかに報告するよう呼びかけた。",
+            "type": "source_analysis",
+            "text": "新浪娱乐は、この行為を「娘家人太宠了」と評した。",
             "evidence_refs": [
-              "E3"
+              "E1"
             ],
-            "source_name": "环球网",
+            "source_name": "新浪娱乐",
             "entities": [
-              "龙餐馆"
+              "新浪娱乐"
             ],
             "numbers": [],
-            "quote_zh": "我们欢迎行业同仁与广大观众共同监督各地影城票务操作，如发现违",
+            "quote_zh": "丁禹兮给粉丝买黄金当嫁妆：娘家人太宠了",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -711,19 +638,17 @@
           },
           {
             "id": "C11",
-            "type": "verified_fact",
-            "text": "『龍餐館』は文牧野が監督し、沈騰が主演を務める。",
+            "type": "source_analysis",
+            "text": "新浪娱乐は、このようなファンを家族として扱い「娘家人」として嫁入り道具を贈るやり方は中国のエンタメ業界では極めて珍しいと報じた。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "界面新闻",
+            "source_name": "新浪娱乐",
             "entities": [
-              "龙餐馆",
-              "文牧野",
-              "沈腾"
+              "新浪娱乐"
             ],
             "numbers": [],
-            "quote_zh": "《龙餐馆》由文牧野执导、沈腾领衔主演",
+            "quote_zh": "这种将粉丝当家人、以“娘家人”身份送嫁妆的做法，在内娱极为罕",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -731,155 +656,125 @@
           },
           {
             "id": "C12",
-            "type": "verified_fact",
-            "text": "猫眼専業版のデータによると、8月14日時点で『龍餐館』の累計興行収入は5.17億元、観客動員数は232万人に達した。",
+            "type": "source_analysis",
+            "text": "新浪娱乐は、この出来事が韓国のソーシャルメディアにも伝わり、韓国のネットユーザーが「中男送金子」というミームで中国の男性スターのファンサービスを称賛したと報じた。",
             "evidence_refs": [
               "E1"
             ],
-            "source_name": "界面新闻",
+            "source_name": "新浪娱乐",
             "entities": [
-              "龙餐馆",
-              "猫眼专业版"
+              "新浪娱乐"
             ],
-            "numbers": [
-              "5.17亿元",
-              "232万人",
-              "8月14日"
-            ],
-            "quote_zh": "截至8月14日界面新闻发稿前，《龙餐馆》累计票房达到5.17",
+            "numbers": [],
+            "quote_zh": "事件传到韩国社交媒体，韩国网友用“中男送金子”玩梗",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "key_numbers",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C13",
             "type": "verified_fact",
-            "text": "猫眼は『龍餐館』の総興行収入を26.83億元、灯塔専業版は30.15億元と予測している。",
+            "text": "丁禹兮はこの出来事で微博のホットサーチに載り、「内娱宠粉天花板」と呼ばれた。",
             "evidence_refs": [
-              "E1"
+              "E2"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "龙餐馆",
-              "猫眼",
-              "灯塔专业版"
+              "丁禹兮",
+              "微博"
             ],
-            "numbers": [
-              "26.83亿元",
-              "30.15亿元"
-            ],
-            "quote_zh": "猫眼预测，该片总票房将达到26.83亿元；灯塔专业版预测，该",
+            "numbers": [],
+            "quote_zh": "登上热搜，被网友称为“内娱宠粉天花板”",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "key_numbers",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C14",
             "type": "verified_fact",
-            "text": "『龍餐館』の豆瓣スコアは8.4から8.5に上昇し、現在夏休み期間の豆瓣スコア1位で、沈騰主演映画の最高スコア記録を更新した。",
+            "text": "丁禹兮はファンに「生活の中で喜ばしいことに出会えますように」と祝福の言葉を送った。",
             "evidence_refs": [
-              "E1"
+              "E2"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "龙餐馆",
-              "豆瓣",
-              "沈腾"
+              "丁禹兮"
             ],
-            "numbers": [
-              "8.4",
-              "8.5"
-            ],
-            "quote_zh": "该片豆瓣评分已由8.4涨至8.5，暂居暑期档豆瓣评分第一，创",
+            "numbers": [],
+            "quote_zh": "并祝福大家“在生活中都能遇到喜事”",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "key_numbers",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C15",
-            "type": "verified_fact",
-            "text": "『龍餐館』の公開後、複数の出資会社の株価が連日新高値を更新し、北京文化は4連続ストップ高を達成した。",
+            "type": "source_analysis",
+            "text": "k.sina.com.cnは、ファンがこの行為を「内娱独一份的宠粉」「比黄金更贵的是丁禹兮的真心」と表現したと報じた。",
             "evidence_refs": [
-              "E1"
+              "E2"
             ],
-            "source_name": "界面新闻",
+            "source_name": "k.sina.com.cn",
             "entities": [
-              "龙餐馆",
-              "北京文化"
+              "k.sina.com.cn"
             ],
-            "numbers": [
-              "4连板"
-            ],
-            "quote_zh": "该片上映后，多家出品方股价连日创下新高。其中，实现四连板的北",
+            "numbers": [],
+            "quote_zh": "粉丝用“内娱独一份的宠粉”“比黄金更贵的是丁禹兮的真心”来形",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "industry_spillover",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C16",
-            "type": "verified_fact",
-            "text": "北京文化は8月11日、2026年8月10日と11日の2営業日連続で終値の上昇率の乖離値が累計20%を超え、株式取引異常変動に該当すると公告した。",
+            "type": "source_analysis",
+            "text": "k.sina.com.cnは、多くのネットユーザーが「丁禹兮のような娘家人がいて本当に良かった」と感じ、これがファンとアイドルの双方向の愛の具体的な表れだと報じた。",
             "evidence_refs": [
-              "E1"
+              "E2"
             ],
-            "source_name": "界面新闻",
+            "source_name": "k.sina.com.cn",
             "entities": [
-              "北京文化"
+              "k.sina.com.cn"
             ],
-            "numbers": [
-              "8月11日",
-              "2026年8月10日",
-              "2026年8月11日",
-              "20%"
-            ],
-            "quote_zh": "北京文化（000802.SZ）8月11日公告称，公司连续两个",
+            "numbers": [],
+            "quote_zh": "不少网友感叹“有丁禹兮这样的娘家人真好”，认为这是粉丝与偶像",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "industry_spillover",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C17",
             "type": "verified_fact",
-            "text": "北京文化は、同社が共同出資した一部の映画プロジェクトが2026年夏休み期間に公開されたが、出資比率が低く、業績に大きな影響はないと予想していると述べた。",
+            "text": "丁禹兮は過去にもイベントでファンへの感謝として自費で黄金のブレスレットやネックレスを購入し、15万元で27本のネックレスを買ってランダムに配ったことがある。",
             "evidence_refs": [
-              "E1"
+              "E2"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "北京文化"
+              "丁禹兮"
             ],
             "numbers": [
-              "2026年"
+              "15万元",
+              "27"
             ],
-            "quote_zh": "公司作为联合出品方的部分电影项目已于2026年暑期档上映，公",
+            "quote_zh": "此前他曾在活动上为感谢粉丝自掏腰包购买黄金手链和项链，也曾花",
             "anchor": true,
             "scope": "root_event",
-            "editorial_role": "industry_spillover",
+            "editorial_role": "other",
             "angle_kind": "other"
           },
           {
             "id": "C18",
             "type": "verified_fact",
-            "text": "『龍餐館』の出資会社は計10社で、坏猴子（上海）文化伝播有限公司、中国電影産業集団股份有限公司、儒意電影娯楽股份有限公司などが含まれる。",
+            "text": "丁禹兮はコンサート開催都市で地上広告を出し、コーヒーやカスタムカードなどを準備する逆応援も行ってきた。",
             "evidence_refs": [
-              "E1"
+              "E2"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "龙餐馆",
-              "坏猴子（上海）文化传播有限公司",
-              "中国电影产业集团股份有限公司",
-              "儒意电影娱乐股份有限公司"
+              "丁禹兮"
             ],
-            "numbers": [
-              "10家"
-            ],
-            "quote_zh": "《龙餐馆》出品方共计10家，包括坏猴子（上海）文化传播有限公",
+            "numbers": [],
+            "quote_zh": "他还曾为粉丝在演唱会城市投放地广、准备咖啡和定制小卡等逆应援",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -887,22 +782,17 @@
           },
           {
             "id": "C19",
-            "type": "verified_fact",
-            "text": "『龍餐館』の共同出資会社は計24社で、北京京西文化旅遊股份有限公司（北京文化）、浙江横店影業、華夏電影発行有限公司などが含まれる。",
+            "type": "source_analysis",
+            "text": "k.sina.com.cnは、ファンが丁禹兮を「お金を惜しまず、さらに心を尽くす」と評し、献身的な性格の表れだと報じた。",
             "evidence_refs": [
-              "E1"
+              "E2"
             ],
-            "source_name": "界面新闻",
+            "source_name": "k.sina.com.cn",
             "entities": [
-              "龙餐馆",
-              "北京京西文化旅游股份有限公司",
-              "浙江横店影业",
-              "华夏电影发行有限公司"
+              "k.sina.com.cn"
             ],
-            "numbers": [
-              "24家"
-            ],
-            "quote_zh": "联合出品方共计24家，包括北京京西文化旅游股份有限公司（北京",
+            "numbers": [],
+            "quote_zh": "粉丝形容他“肯花钱更肯花心思”，是付出型人格的体现",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -911,17 +801,17 @@
           {
             "id": "C20",
             "type": "verified_fact",
-            "text": "『龍餐館』の配給会社は北京上獅文化集団有限公司である。",
+            "text": "丁禹兮は数日前にパッキングのvlogを公開し、自分が着用したアクセサリーを一つ一つ梱包してファンへのプレゼントにし、深夜2時までかかったという。",
             "evidence_refs": [
-              "E1"
+              "E3"
             ],
-            "source_name": "界面新闻",
             "entities": [
-              "龙餐馆",
-              "北京上狮文化集团有限公司"
+              "丁禹兮"
             ],
-            "numbers": [],
-            "quote_zh": "发行方为北京上狮文化集团有限公司",
+            "numbers": [
+              "2"
+            ],
+            "quote_zh": "前几天发了个打包vlog，亲手把自己戴过的首饰一条条打包成礼",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -930,83 +820,83 @@
         ],
         "terms": [
           {
-            "term": "偷票房",
-            "gloss_ja": "興行収入のごまかし",
-            "what_is": "映画館が違法操作で公式統計に入るべき興行収入を横取り・移転する行為。",
-            "why_now": "今回の『龍餐館』疑惑の核心であり、周星馳经纪人の告発で注目された。",
-            "explain_quote_zh": "所谓偷票房是指影视行业内部分影院通过违规操作，截留、转移本该",
+            "term": "娘家人",
+            "gloss_ja": "実家の家族",
+            "what_is": "花嫁の実家側の親族を指す言葉。",
+            "why_now": "丁禹兮がファンへの贈り物を「娘家人からの嫁入り道具」と表現し、ファンを家族のように扱う姿勢を示した。",
+            "explain_quote_zh": "明确表示这是“作为娘家给的嫁妆”",
             "explain_evidence_refs": [
               "E1"
             ]
           },
           {
-            "term": "手写票",
-            "gloss_ja": "手書きチケット",
-            "what_is": "機械発券ではなく手書きで発行される映画チケット。",
-            "why_now": "『功夫女足』上映時に手書きチケットが報告され、偷票房の手段として疑われた。",
-            "explain_quote_zh": "有网友当时反映，观看《功夫女足》时，收到手写电影票",
+            "term": "嫁妆",
+            "gloss_ja": "嫁入り道具",
+            "what_is": "結婚する女性が実家から持参する金品。",
+            "why_now": "丁禹兮がファンに贈った黄金のネックレスを「嫁入り道具」と位置づけ、祝福の意味を込めた。",
+            "explain_quote_zh": "要送给一位此前在他演唱会上被男友求婚的粉丝，并称这是“娘家人",
             "explain_evidence_refs": [
               "E1"
             ]
           },
           {
-            "term": "阴阳票",
-            "gloss_ja": "二重チケット",
-            "what_is": "実際の観賞作品と異なる作品名を印字したチケットで興行収入を移転する手段。",
-            "why_now": "偷票房の一般的な手段として挙げられ、今回の事件でも類似の疑惑が持たれた。",
-            "explain_quote_zh": "常见的偷票房手段包括手写白条替代机打票、诱导退票现金购票、‌",
+            "term": "逆应援",
+            "gloss_ja": "逆応援",
+            "what_is": "アイドルがファンに対して行う応援活動。",
+            "why_now": "丁禹兮がファンに黄金やドローンショーなどを贈る行為が「逆応援」として話題になった。",
+            "explain_quote_zh": "《司宫令》杀青直接安排800架无人机给粉丝搞逆应援",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "宠粉",
+            "gloss_ja": "ファンを寵愛する",
+            "what_is": "芸能人がファンを大切にし、特別に扱うこと。",
+            "why_now": "丁禹兮の一連の行為が「寵粉」の典型例として称賛された。",
+            "explain_quote_zh": "被网友称为“内娱宠粉天花板”",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "双向奔赴",
+            "gloss_ja": "双方向の愛",
+            "what_is": "ファンとアイドルが互いに愛情を示し合う関係。",
+            "why_now": "丁禹兮の行為とファンの反応が「双方向の愛」の具体例として語られた。",
+            "explain_quote_zh": "认为这是粉丝与偶像双向奔赴的具体体现",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "内娱",
+            "gloss_ja": "中国国内エンタメ",
+            "what_is": "中国本土のエンターテインメント業界。",
+            "why_now": "丁禹兮の行為が「内娱では珍しい」と評され、業界内での特異性が強調された。",
+            "explain_quote_zh": "在内娱极为罕见",
             "explain_evidence_refs": [
               "E1"
             ]
           },
           {
-            "term": "排片",
-            "gloss_ja": "上映スケジュール",
-            "what_is": "映画館が各作品に割り当てる上映回数や時間帯の計画。",
-            "why_now": "ネットユーザーが当日の排片を確認し、『功夫女足』の上映がなかったと指摘した。",
-            "explain_quote_zh": "有人去查了当天这家影院的排片，发现根本就没有排《功夫女足》",
+            "term": "热搜",
+            "gloss_ja": "ホットサーチ",
+            "what_is": "微博のリアルタイム人気検索ランキング。",
+            "why_now": "丁禹兮の行為が微博のホットサーチに載り、広く注目を集めた。",
+            "explain_quote_zh": "相关话题迅速登上微博热搜",
             "explain_evidence_refs": [
-              "E4"
+              "E2"
             ]
           },
           {
-            "term": "票房占比",
-            "gloss_ja": "興行収入シェア",
-            "what_is": "全作品の合計興行収入に占める特定作品の割合。",
-            "why_now": "『龍餐館』の興行収入シェアが半分を超えたと報じられ、人気の高さを示した。",
-            "explain_quote_zh": "票房占比超过一半",
+            "term": "杀青",
+            "gloss_ja": "クランクアップ",
+            "what_is": "映画やドラマの撮影が終了すること。",
+            "why_now": "丁禹兮が出演した『司宮令』のクランクアップ時にドローンショーを行った。",
+            "explain_quote_zh": "《司宫令》杀青直接安排800架无人机给粉丝搞逆应援",
             "explain_evidence_refs": [
-              "E4"
-            ]
-          },
-          {
-            "term": "上座率",
-            "gloss_ja": "座席占有率",
-            "what_is": "上映回ごとの座席数に対する観客数の割合。",
-            "why_now": "『龍餐館』の上座率が同業他作品を上回ったと報じられた。",
-            "explain_quote_zh": "上座率把同档期的片子都甩在了后面",
-            "explain_evidence_refs": [
-              "E4"
-            ]
-          },
-          {
-            "term": "豆瓣评分",
-            "gloss_ja": "豆瓣スコア",
-            "what_is": "中国の映画・書籍レビューサイト「豆瓣」におけるユーザー評価の平均点。",
-            "why_now": "『龍餐館』の豆瓣スコアが8.5に上昇し、夏休み期間1位となった。",
-            "explain_quote_zh": "该片豆瓣评分已由8.4涨至8.5，暂居暑期档豆瓣评分第一",
-            "explain_evidence_refs": [
-              "E1"
-            ]
-          },
-          {
-            "term": "猫眼专业版",
-            "gloss_ja": "猫眼専業版",
-            "what_is": "中国の映画チケット販売・データ分析プラットフォーム。",
-            "why_now": "『龍餐館』の興行収入や観客動員数などのデータが引用された。",
-            "explain_quote_zh": "猫眼专业版数据显示，截至8月14日界面新闻发稿前，《龙餐馆》",
-            "explain_evidence_refs": [
-              "E1"
+              "E3"
             ]
           }
         ],
@@ -1019,8 +909,7 @@
         "evidence_roles": {
           "E1": "root_corroboration",
           "E2": "root_corroboration",
-          "E3": "root_corroboration",
-          "E4": "root_corroboration"
+          "E3": "root_corroboration"
         }
       },
       "fallback_reason": ""
