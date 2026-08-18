@@ -100,6 +100,7 @@ type SelectionTrace = {
     tone_mode?: ToneMode;
     comment_stage?: TopicGenerationMeta["comment_stage"];
     comment_grounding?: TopicGenerationMeta["comment_grounding"];
+    evidence_quality?: TopicGenerationMeta["evidence_quality"];
   }>;
   information_gate: {
     enabled: boolean;
@@ -248,7 +249,8 @@ export function buildSelectionTrace(args: {
         action: article.generationMeta?.claim_check?.action ?? "none",
         tone_mode: article.generationMeta?.tone_mode,
         comment_stage: article.generationMeta?.comment_stage,
-        comment_grounding: article.generationMeta?.comment_grounding
+        comment_grounding: article.generationMeta?.comment_grounding,
+        evidence_quality: article.generationMeta?.evidence_quality
       })),
     information_gate: args.informationGate ?? { enabled: false, evaluated: 0, excluded: 0, excluded_topics: [] },
     editorial_value: args.editorialValue ?? { enabled: false, llm: "fallback", candidates: [] },

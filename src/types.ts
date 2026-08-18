@@ -207,6 +207,13 @@ export type FactLedgerClaim = {
     | "working_method"
     | "production_support"
     | "daily_support"
+    | "story_premise"
+    | "genre_contrast"
+    | "comic_mechanism"
+    | "modern_life_bridge"
+    | "adaptation_context"
+    | "audience_evidence"
+    | "source_caution"
     | "other";
 };
 
@@ -235,6 +242,14 @@ export type FactLedger = {
   unresolved: string[];
   /** Provenance is assigned from validated input evidence, never model output. */
   evidence_roles?: Record<string, EvidenceRole>;
+  /** Source-integrity diagnostics are deterministic and never model-authored. */
+  evidence_quality?: Array<{
+    evidence_ref: string;
+    classification: "primary" | "editorial_media" | "promotional_or_repost" | "platform_self_media" | "ai_generated";
+    usable_for_verified_facts: boolean;
+    reason: string;
+    duplicate_of?: string;
+  }>;
 };
 
 export type TermExpansionTrace = {
@@ -269,15 +284,22 @@ export type ClaimCheckRule =
   | "ending_repetition"
   | "comment_opening_duplicate"
   | "comment_paraphrase"
+  | "comment_claim_refs_missing"
+  | "comment_no_new_editorial_claim"
+  | "comment_insight_claim_missing"
+  | "comment_number_watch_template"
   | "comment_number_not_in_ledger"
   | "comment_entity_not_in_ledger"
   | "comment_ungrounded_background"
   | "related_claim_missing_related_evidence"
   | "root_claim_uses_related_evidence"
   | "claim_evidence_ref_unknown"
+  | "evidence_quality_insufficient"
+  | "verified_claim_low_trust"
   | "simplified_char_residue"
   | "hedged_verified_fact"
   | "long_sentence"
+  | "literal_translation_residue"
   | "terminology_avoid";
 
 export type ClaimCheckViolation = {
@@ -299,6 +321,7 @@ export type TopicGenerationMeta = {
   ledger_used: boolean;
   ledger_fallback_reason: string;
   ledger?: FactLedger;
+  evidence_quality?: FactLedger["evidence_quality"];
   ai_models?: {
     base: { provider: AiProvider; model: string };
     ledger: { provider: AiProvider; model: string };
@@ -343,6 +366,67 @@ export type TopicGenerationMeta = {
     regenerated: boolean;
     passed: boolean;
     reasons: string[];
+  };
+  review_revision?: ReviewRevisionTrace;
+};
+
+export type ReviewPatchableField =
+  | "title_ja"
+  | "lead"
+  | "what_happened"
+  | "reaction_view"
+  | "why_it_matters"
+  | "japan_context_note"
+  | `detail_sections.${number}.heading`
+  | `detail_sections.${number}.body`;
+
+export type ReviewRevisionIntent = {
+  mode: "limited_patch" | "full_rewrite" | "clarification_required";
+  allowed_fields: ReviewPatchableField[];
+  explicit_fields: ReviewPatchableField[];
+  anchors_by_field: Partial<Record<ReviewPatchableField, string[]>>;
+  clarification_reason: string;
+};
+
+export type ReviewPatchOperation = {
+  field: ReviewPatchableField;
+  operation: "replace" | "replace_field";
+  before: string;
+  after: string;
+  evidence_claim_refs: string[];
+  reason: string;
+};
+
+export type ReviewPatchDocument = {
+  mode: "limited_patch";
+  clarification_required: boolean;
+  clarification_reason: string;
+  patches: ReviewPatchOperation[];
+};
+
+export type ReviewRevisionTrace = {
+  mode: "limited_patch" | "full_rewrite";
+  changed_fields: ReviewPatchableField[];
+  changes: Array<{
+    field: ReviewPatchableField;
+    before: string;
+    after: string;
+    evidence_claim_refs: string[];
+    reason: string;
+  }>;
+  preservation: {
+    untouched_fields_exact: boolean;
+    source_list_exact: boolean;
+    related_sources_exact: boolean;
+    reaction_view_preserved_when_untargeted: boolean;
+    claim_refs_before: number;
+    claim_refs_after: number;
+    important_numbers_before: string[];
+    important_numbers_after: string[];
+    entities_before: string[];
+    entities_after: string[];
+    narrative_chars_before: number;
+    narrative_chars_after: number;
   };
 };
 

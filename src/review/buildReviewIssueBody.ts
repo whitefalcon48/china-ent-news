@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { readOrCreateStoredReviewState, writeReviewState } from "./reviewState.js";
-import type { ProcessedArticle, ReviewState, SourceRef } from "../types.js";
+import type { ProcessedArticle, ReviewRevisionTrace, ReviewState, SourceRef } from "../types.js";
 
 export function buildReviewIssueBody(state: ReviewState, articles: ProcessedArticle[]) {
   if (!state.articles.length) {
@@ -68,6 +68,22 @@ ${detailSections}
 ソース: ${sources.map(formatSource).join(" / ")}${relatedSources.length ? `\n\n関連角度のソース: ${relatedSources.map(formatSource).join(" / ")}` : ""}`;
 }
 
+export function formatReviewRevisionSummary(trace: ReviewRevisionTrace | undefined) {
+  if (!trace) return "";
+  const mode = trace.mode === "full_rewrite" ? "明示された全体書き直し" : "指定箇所だけの限定パッチ";
+  const changes = trace.changes.map((change) => {
+    const reason = change.reason || `${preview(change.before)} → ${preview(change.after)}`;
+    return `- \`${change.field}\`: ${reason}`;
+  });
+  return `### 変更範囲
+
+- 適用方式: ${mode}
+${changes.join("\n")}
+- 非対象フィールド: ${trace.preservation.untouched_fields_exact ? "完全一致を確認" : "全体書き直しのため対象外"}
+- source_list / related_sources: ${trace.preservation.source_list_exact && trace.preservation.related_sources_exact ? "保持" : "変更あり"}
+- claim refs: ${trace.preservation.claim_refs_before}件 → ${trace.preservation.claim_refs_after}件`;
+}
+
 async function main() {
   if (process.env.REVIEW_GATE === "false") return;
   const dataDir = path.resolve(process.env.SITE_DATA_DIR || "data");
@@ -113,6 +129,11 @@ async function latestDate(dataDir: string) {
 
 function formatSource(source: SourceRef) {
   return source.url ? `[${source.name}](${source.url})` : source.name;
+}
+
+function preview(value: string) {
+  const compact = value.replace(/\s+/g, " ").trim();
+  return `「${compact.length > 42 ? `${compact.slice(0, 42)}…` : compact || "空"}」`;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

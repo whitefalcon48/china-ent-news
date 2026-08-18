@@ -3,6 +3,7 @@ import path from "node:path";
 import { consumeLlmCall, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { buildDeepSeekJsonRequest } from "./deepSeekRequest.js";
 import { describeError, formatEvidenceForPrompt } from "./summarizeWithGemini.js";
+import { assessEvidenceIntegrity, type EvidenceIntegrityDiagnostic } from "./evidence/sourceIntegrity.js";
 import type { AiProvider, ClaimType, EvidenceRole, FactLedger, FactLedgerClaim, RawArticle, TopicCandidate } from "./types.js";
 
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
@@ -88,7 +89,14 @@ export async function extractFactLedger(
           anchor_unverified: 0,
           dropped_explanations: [] as Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }>
         };
-        const ledger = normalizeFactLedger(parseJsonFromModelText(text), topic.topic_key, evidenceText(evidence), anchor, getEvidenceRoles(evidence));
+        const ledger = normalizeFactLedger(
+          parseJsonFromModelText(text),
+          topic.topic_key,
+          evidenceText(evidence),
+          anchor,
+          getEvidenceRoles(evidence),
+          assessEvidenceIntegrity(evidence)
+        );
         return { ledger, anchor };
       };
       lastResponse = await generate(prompt);
@@ -189,10 +197,16 @@ claimの分類（type）:
 - source_analysis: 元媒体による分析・見方・評価・将来予測。source_name（媒体名）を必ず入れる。
 - unsupported: evidence中に現れるが根拠が確認できない情報（伝聞、真偽不明の噂など）。記事には使われない。
 
+根拠品質:
+- evidence一覧の integrity が ai_generated / platform_self_media / promotional_or_repost の資料は、別URLに同じ文があっても verified_fact の根拠にしない。
+- verified_fact は integrity が primary または editorial_media のEを最低1件含む場合だけ作る。低品質資料にしかない宣伝評価・数字・人物評価は unsupported にする。
+- 「現象級」「市場で有望視」「期待値が高い」などの宣伝評価は事実へ言い換えない。信頼できる媒体自身の分析として使える場合だけ source_analysis とし、source_name を付ける。
+
 規則:
 - claimのtextは必ず日本語1文で書く。中国語の文をそのまま写さない（人名・作品名などの固有名詞は原文表記のままでよい）。
 - claimは1件1文。root_eventは重要な順に最大20件、related_angleは検証済みEごとに最低1件・最大4件を追加できる（全体最大24件）。
-- editorial_role は記事内での役割を表す。数字の基準・比較は key_numbers、補助金・政策は policy_support、映画館や現場の変化は venue_change、制作・配給・興行・雇用・周辺消費への波及は industry_spillover、人物の現在の状態は personal_condition、本人の工夫は working_method、制作現場の支援は production_support、日常の補助手段は daily_support、それ以外は other とする。
+- editorial_role は記事内での役割を表す。数字の基準・比較は key_numbers、補助金・政策は policy_support、映画館や現場の変化は venue_change、制作・配給・興行・雇用・周辺消費への波及は industry_spillover、人物の現在の状態は personal_condition、本人の工夫は working_method、制作現場の支援は production_support、日常の補助手段は daily_support とする。
+- 作品の内容を日本語読者へ説明できるclaimは、主人公と物語の前提=story_premise、ジャンルの定番との差=genre_contrast、具体的に笑いが生まれる仕掛け=comic_mechanism、現代の会社員・生活感覚との接続=modern_life_bridge、原作・アニメ・漫画から別媒体へ広がった実績=adaptation_context、予約・読者・評価など観測可能な受け手の実績=audience_evidence、情報源の宣伝性や未確認部分=source_caution とする。単なる配信日・出演者列挙は other。
 - 同じ内容の言い換えで20件を埋めない。evidenceにある異なる数字、政策、現場変化、波及先、人物の具体的な方法を優先する。
 - entities（人物・作品・組織の固有名詞）とnumbers（数字・日付）は原文の表記のまま入れる。claimの文中に出てくる数字・日付・序数（第八届など）は必ずnumbersにも入れる。
 - quote_zhには、そのclaimの根拠となるevidence原文の該当箇所を、原文の文字列のまま30字以内で抜き出して入れる。要約・言い換えをせず、原文にある文字列をそのまま写す。
@@ -217,7 +231,7 @@ claimの分類（type）:
 返すJSON:
 {
   "topic_key": "<入力値をそのまま>",
-  "claims": [{ "id": "C1", "type": "verified_fact", "scope": "root_event", "angle_kind": "other", "editorial_role": "other", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
+  "claims": [{ "id": "C1", "type": "verified_fact", "scope": "root_event", "angle_kind": "other", "editorial_role": "story_premise", "text": "", "evidence_refs": ["E1"], "source_name": "", "entities": [], "numbers": [], "quote_zh": "" }],
   "terms": [{ "term": "", "gloss_ja": "", "what_is": "", "why_now": "", "explain_quote_zh": "", "explain_evidence_refs": [] }],
   "japan_availability": { "status": "not_in_evidence", "detail": "", "evidence_refs": [] },
   "unresolved": []
@@ -285,12 +299,14 @@ export function normalizeFactLedger(
   topicKey: string,
   evidence: string,
   anchorDiagnostics?: { dropped_explanations: Array<{ topic_key: string; term: string; reason: "anchor_not_found" | "anchor_missing" }> },
-  evidenceRoles: Record<string, EvidenceRole> = {}
+  evidenceRoles: Record<string, EvidenceRole> = {},
+  evidenceQuality: EvidenceIntegrityDiagnostic[] = []
 ): FactLedger {
   const object = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
   const rawClaims = Array.isArray(object.claims) ? object.claims : [];
   const normalizedEvidence = normalizeAnchorText(evidence);
-  const normalizedClaims = rawClaims.slice(0, 30).map((item, index) => normalizeClaim(item, index, normalizedEvidence, evidenceRoles));
+  const qualityByRef = new Map(evidenceQuality.map((item) => [item.evidence_ref, item]));
+  const normalizedClaims = rawClaims.slice(0, 30).map((item, index) => normalizeClaim(item, index, normalizedEvidence, evidenceRoles, qualityByRef));
   const claims = [
     ...normalizedClaims.filter((claim) => claim.scope !== "related_angle").slice(0, 20),
     ...normalizedClaims.filter((claim) => claim.scope === "related_angle").slice(0, 4)
@@ -310,7 +326,9 @@ export function normalizeFactLedger(
       };
       if (normalized.what_is || normalized.why_now) {
         const quote = normalizeAnchorText(normalized.explain_quote_zh || "");
-        if (!quote || !normalizedEvidence.includes(quote)) {
+        const qualities = normalized.explain_evidence_refs.map((ref) => qualityByRef.get(ref)).filter((item): item is EvidenceIntegrityDiagnostic => Boolean(item));
+        const lowTrustOnly = qualities.length > 0 && !qualities.some((item) => item.usable_for_verified_facts);
+        if (!quote || !normalizedEvidence.includes(quote) || lowTrustOnly) {
           anchorDiagnostics?.dropped_explanations.push({
             topic_key: topicKey,
             term: normalized.term,
@@ -340,7 +358,8 @@ export function normalizeFactLedger(
     terms,
     japan_availability: japanAvailability,
     unresolved: toStringArray(object.unresolved),
-    evidence_roles: evidenceRoles
+    evidence_roles: evidenceRoles,
+    evidence_quality: evidenceQuality
   };
 }
 
@@ -348,7 +367,13 @@ function evidenceText(evidence: RawArticle[]) {
   return evidence.map((article) => `${article.title}\n${article.rawContent || ""}\n${article.excerpt || ""}`).join("\n");
 }
 
-function normalizeClaim(value: unknown, index: number, normalizedEvidence: string, evidenceRoles: Record<string, EvidenceRole>): FactLedgerClaim {
+function normalizeClaim(
+  value: unknown,
+  index: number,
+  normalizedEvidence: string,
+  evidenceRoles: Record<string, EvidenceRole>,
+  qualityByRef: Map<string, EvidenceIntegrityDiagnostic>
+): FactLedgerClaim {
   const claim = value && typeof value === "object" ? value as Record<string, unknown> : {};
   let type = normalizeClaimType(claim.type);
   const sourceName = toText(claim.source_name);
@@ -356,6 +381,8 @@ function normalizeClaim(value: unknown, index: number, normalizedEvidence: strin
   const quote = toText(claim.quote_zh).slice(0, 30) || undefined;
   const normalizedQuote = normalizeAnchorText(quote || "");
   const rawEvidenceRefs = toStringArray(claim.evidence_refs);
+  const qualities = rawEvidenceRefs.map((ref) => qualityByRef.get(ref)).filter((item): item is EvidenceIntegrityDiagnostic => Boolean(item));
+  if (type !== "unsupported" && qualities.length > 0 && !qualities.some((item) => item.usable_for_verified_facts)) type = "unsupported";
   const referencedRoles = rawEvidenceRefs.map((ref) => evidenceRoles[ref]).filter((role): role is EvidenceRole => Boolean(role));
   // Scope is determined by the actual evidence roles, never by an LLM label.
   // This avoids a single root article being incorrectly marked as a related
@@ -378,16 +405,27 @@ function normalizeClaim(value: unknown, index: number, normalizedEvidence: strin
     quote_zh: quote,
     anchor: Boolean(normalizedQuote && normalizedEvidence.includes(normalizedQuote)),
     scope: inferredScope,
-    editorial_role: normalizeEditorialRole(claim.editorial_role),
+    editorial_role: normalizeEditorialRole(claim.editorial_role, `${toText(claim.text)} ${quote ?? ""}`),
     ...(claim.angle_kind === "person_response" || claim.angle_kind === "career_retrospective" || claim.angle_kind === "audience_reaction" || claim.angle_kind === "work_context" || claim.angle_kind === "other" ? { angle_kind: claim.angle_kind } : {})
   };
 }
 
-function normalizeEditorialRole(value: unknown): NonNullable<FactLedgerClaim["editorial_role"]> {
+function normalizeEditorialRole(value: unknown, claimText = ""): NonNullable<FactLedgerClaim["editorial_role"]> {
   return value === "key_numbers" || value === "policy_support" || value === "venue_change" || value === "industry_spillover"
     || value === "personal_condition" || value === "working_method" || value === "production_support" || value === "daily_support"
+    || value === "story_premise" || value === "genre_contrast" || value === "comic_mechanism" || value === "modern_life_bridge"
+    || value === "adaptation_context" || value === "audience_evidence" || value === "source_caution"
     ? value
-    : "other";
+    : inferEditorialRole(claimText);
+}
+
+function inferEditorialRole(text: string): NonNullable<FactLedgerClaim["editorial_role"]> {
+  if (/定番|従来|反套路|截然不同|旧路子|不走.*(?:套路|路線)/u.test(text)) return "genre_contrast";
+  if (/笑い|笑料|コメディ|喜劇|反差|逃生|脱出|地道|トンネル|結界|保命|身代わり|惹事|莽撞/u.test(text)) return "comic_mechanism";
+  if (/サラリーマン|会社員|働く人|打工人|現代.*(?:仕事|労働|職場)/u.test(text)) return "modern_life_bridge";
+  if (/原作|アニメ|漫画|実写|改編|シーズン|豆瓣|読者|ファン数|收藏/u.test(text)) return "adaptation_context";
+  if (/主人公|物語|転生|重生|生存哲学|目標|生き残/u.test(text)) return "story_premise";
+  return "other";
 }
 
 function getEvidenceRoles(evidence: RawArticle[]): Record<string, EvidenceRole> {

@@ -1,13 +1,14 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatReviewArticle } from "./buildReviewIssueBody.js";
+import { formatReviewArticle, formatReviewRevisionSummary } from "./buildReviewIssueBody.js";
 import { parseReviewComment, type ReviewDecision } from "./parseReviewComment.js";
 import { readReviewState, today, writeReviewState } from "./reviewState.js";
 import { reviseStoredArticle } from "./reviseArticle.js";
 import { rescueEmptyReview } from "./rescueEmptyReview.js";
 import { ToneOnlyRevisionContractError } from "../toneOnlyRevision.js";
 import { captureManualPublication, findManualReviewPath, markManualIntakePublished } from "./manualPublication.js";
+import { ReviewRevisionClarificationRequiredError } from "./revisionPatch.js";
 import type { ProcessedArticle, ReviewArticle, ReviewFeedback, ReviewState } from "../types.js";
 
 async function main() {
@@ -78,8 +79,14 @@ async function main() {
         target.status = "revised_pending";
         target.title = revised.summary?.title_ja || target.title;
         replies.push(formatReviewArticle(target.index, revised, true));
+        const revisionSummary = formatReviewRevisionSummary(revised.generationMeta?.review_revision);
+        if (revisionSummary) replies.push(revisionSummary);
       } catch (error) {
         target.status = "pending";
+        if (error instanceof ReviewRevisionClarificationRequiredError) {
+          replies.push(`⚠️ ${target.index}番は clarification_required です。修正対象を安全に限定できないため、元の記事を保持して保留に戻しました。\n\n${error.message}`);
+          continue;
+        }
         if (error instanceof ToneOnlyRevisionContractError) {
           replies.push(`⚠️ ${target.index}番は、口調だけの修正として安全に確認できなかったため、元の記事を保持して保留に戻しました。\n\n${error.message}`);
           continue;

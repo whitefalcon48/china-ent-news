@@ -43,11 +43,13 @@ export function applyDisplayKanji(summary: SummarizedArticle): { summary: Summar
   for (const field of PUBLIC_FIELDS) {
     next[field] = convertDisplayText(next[field]);
   }
-  next.detail_sections = summary.detail_sections?.map((section) => ({
-    ...section,
-    heading: convertDisplayText(section.heading),
-    body: convertDisplayText(section.body)
-  }));
+  if (summary.detail_sections) {
+    next.detail_sections = summary.detail_sections.map((section) => ({
+      ...section,
+      heading: convertDisplayText(section.heading),
+      body: convertDisplayText(section.body)
+    }));
+  }
   return { summary: next, residues: inspectDisplayKanjiResidues(next) };
 }
 

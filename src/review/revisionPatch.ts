@@ -1,0 +1,540 @@
+import { inspectDisplayKanjiResidues } from "../displayKanji.js";
+import { runClaimCheck, runCommentCheck } from "../claimCheck.js";
+import { getToneMode } from "../toneMode.js";
+import { assertToneOnlyRevisionContract } from "../toneOnlyRevision.js";
+import type {
+  ClaimCheckResult,
+  FactLedger,
+  ReviewPatchDocument,
+  ReviewPatchOperation,
+  ReviewPatchableField,
+  ReviewReasonTag,
+  ReviewRevisionIntent,
+  ReviewRevisionTrace,
+  SummarizedArticle,
+  TopicCandidate
+} from "../types.js";
+
+const TOP_LEVEL_FIELDS = [
+  "title_ja",
+  "lead",
+  "what_happened",
+  "reaction_view",
+  "why_it_matters",
+  "japan_context_note"
+] as const satisfies readonly ReviewPatchableField[];
+
+const FIELD_ALIASES: Array<{ pattern: RegExp; fields: Array<(typeof TOP_LEVEL_FIELDS)[number]> }> = [
+  { pattern: /(?:タイトル|見出し|title_ja)/u, fields: ["title_ja"] },
+  { pattern: /(?:リード|導入|lead)/u, fields: ["lead"] },
+  { pattern: /(?:本文|何が起きた|what_happened)/u, fields: ["what_happened"] },
+  { pattern: /(?:反応・見られ方|reaction_view|SNS反応|微博の反応)/u, fields: ["reaction_view"] },
+  { pattern: /(?:ビンタンの注目ポイント|注目ポイント|why_it_matters)/u, fields: ["why_it_matters"] },
+  { pattern: /(?:ビンタンからの補足|補足|japan_context_note)/u, fields: ["japan_context_note"] }
+];
+
+const FULL_REWRITE = /(?:全文|記事全体|全体|全体の本文).{0,18}(?:書き直|作り直|再生成|再構成|リライト)|(?:記事|本文).{0,10}(?:全面的に|すべて|全部).{0,8}(?:書き直|作り直|再生成|再構成|リライト)|(?:完全|全面)(?:再生成|リライト)|構成.{0,10}(?:作り直|再構成)/u;
+const SHORTENING_REQUEST = /(?:削除|短く|簡潔|要約|圧縮)/u;
+
+export class ReviewRevisionContractError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ReviewRevisionContractError";
+  }
+}
+
+export class ReviewRevisionClarificationRequiredError extends ReviewRevisionContractError {
+  readonly code = "clarification_required";
+
+  constructor(message: string) {
+    super(message);
+    this.name = "ReviewRevisionClarificationRequiredError";
+  }
+}
+
+export function detectReviewRevisionIntent(
+  summary: SummarizedArticle,
+  instruction: string,
+  reasonTag: ReviewReasonTag | string = "その他"
+): ReviewRevisionIntent {
+  if (FULL_REWRITE.test(instruction)) {
+    return {
+      mode: "full_rewrite",
+      allowed_fields: listPatchableFields(summary),
+      explicit_fields: listPatchableFields(summary),
+      anchors_by_field: {},
+      clarification_reason: ""
+    };
+  }
+
+  const explicitFields = new Set<ReviewPatchableField>();
+  for (const alias of FIELD_ALIASES) {
+    if (alias.pattern.test(instruction)) alias.fields.forEach((field) => explicitFields.add(field));
+  }
+  if (/(?:詳しく見る|詳細セクション|detail_sections)/u.test(instruction)) {
+    (summary.detail_sections ?? []).forEach((_section, index) => {
+      explicitFields.add(`detail_sections.${index}.heading`);
+      explicitFields.add(`detail_sections.${index}.body`);
+    });
+  }
+  if (reasonTag === "口調" && explicitFields.size === 0) explicitFields.add("why_it_matters");
+
+  const candidateAnchors = extractInstructionAnchors(summary, instruction);
+  const anchorsByField: Partial<Record<ReviewPatchableField, string[]>> = {};
+  const allowedFields = new Set<ReviewPatchableField>(explicitFields);
+  for (const field of listPatchableFields(summary)) {
+    const value = readPatchableField(summary, field);
+    const matches = candidateAnchors.filter((anchor) => value.includes(anchor));
+    if (matches.length > 0) {
+      anchorsByField[field] = [...new Set(matches)];
+      allowedFields.add(field);
+    }
+  }
+
+  if (allowedFields.size === 0) {
+    return {
+      mode: "clarification_required",
+      allowed_fields: [],
+      explicit_fields: [],
+      anchors_by_field: {},
+      clarification_reason: "修正対象のフィールドまたは元記事内の完全一致箇所を特定できませんでした"
+    };
+  }
+
+  return {
+    mode: "limited_patch",
+    allowed_fields: [...allowedFields],
+    explicit_fields: [...explicitFields],
+    anchors_by_field: anchorsByField,
+    clarification_reason: ""
+  };
+}
+
+export function buildLimitedReviewPatchPrompt(
+  summary: SummarizedArticle,
+  ledger: FactLedger,
+  instruction: string,
+  intent: ReviewRevisionIntent
+) {
+  const allowedContent = Object.fromEntries(intent.allowed_fields.map((field) => [field, readPatchableField(summary, field)]));
+  return `あなたは保存済み記事への限定修正パッチを作ります。記事全文を再生成してはいけません。
+
+修正指示:
+${instruction}
+
+変更可能フィールド:
+${JSON.stringify(intent.allowed_fields)}
+
+変更可能フィールドの現在値:
+${JSON.stringify(allowedContent, null, 2)}
+
+元記事内で検出した完全一致アンカー:
+${JSON.stringify(intent.anchors_by_field, null, 2)}
+
+事実台帳:
+${JSON.stringify({ claims: ledger.claims, terms: ledger.terms }, null, 2)}
+
+厳守事項:
+- 出力は記事全文ではなく、次の限定パッチJSONだけにする。
+- field は変更可能フィールドからだけ選ぶ。
+- 通常は operation="replace" とし、before は現在値に1回だけ現れる完全一致文字列にする。対象箇所以外の文を before に含めない。
+- operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。
+- after は修正指示に必要な最小限の変更だけにする。周辺文、別フィールド、文順を変えない。
+- 日付、金額、人数、引用、背景説明を追加・訂正する場合は、根拠となる claim ID を evidence_claim_refs に入れる。根拠が無ければ変更せず clarification_required=true にする。
+- 中国語の原語が指示に含まれていても、公表する after には簡体字を残さず、日本語用漢字と自然な日本語説明にする。
+- 元が空の reaction_view に、指示されていないSNS反応・引用・一般化を追加しない。
+- source_list、related_sources、非対象フィールド、非対象のclaim refsは変更対象にできない。
+- 安全に限定できない、複数箇所のどれか判別できない、根拠が足りない場合は patches=[] とし clarification_required=true にする。
+
+JSON形状:
+{
+  "mode": "limited_patch",
+  "clarification_required": false,
+  "clarification_reason": "",
+  "patches": [
+    {
+      "field": "what_happened",
+      "operation": "replace",
+      "before": "現在値に1回だけある文字列",
+      "after": "訂正後の文字列",
+      "evidence_claim_refs": ["C1"],
+      "reason": "変更概要"
+    }
+  ]
+}`;
+}
+
+export function normalizeReviewPatchDocument(value: unknown): ReviewPatchDocument {
+  const input = value && typeof value === "object" ? value as Record<string, unknown> : {};
+  if (input.mode !== "limited_patch") throw new ReviewRevisionContractError("限定パッチの mode が不正です");
+  const rawPatches = Array.isArray(input.patches) ? input.patches : [];
+  const patches = rawPatches.map((raw, index) => normalizePatchOperation(raw, index));
+  return {
+    mode: "limited_patch",
+    clarification_required: input.clarification_required === true,
+    clarification_reason: typeof input.clarification_reason === "string" ? input.clarification_reason.trim() : "",
+    patches
+  };
+}
+
+export function applyValidatedReviewPatch(
+  before: SummarizedArticle,
+  topic: TopicCandidate,
+  ledger: FactLedger,
+  instruction: string,
+  reasonTag: ReviewReasonTag | string,
+  intent: ReviewRevisionIntent,
+  document: ReviewPatchDocument
+): { summary: SummarizedArticle; trace: ReviewRevisionTrace; claimCheck: ClaimCheckResult } {
+  if (intent.mode === "clarification_required") {
+    throw new ReviewRevisionClarificationRequiredError(intent.clarification_reason);
+  }
+  if (intent.mode !== "limited_patch") throw new ReviewRevisionContractError("限定修正ではないintentをpatch mergeへ渡せません");
+  if (document.clarification_required) {
+    throw new ReviewRevisionClarificationRequiredError(document.clarification_reason || "安全に限定できる修正パッチを作れませんでした");
+  }
+  if (document.patches.length === 0) {
+    throw new ReviewRevisionClarificationRequiredError("修正対象を特定できるパッチが返りませんでした");
+  }
+
+  const allowed = new Set(intent.allowed_fields);
+  const explicit = new Set(intent.explicit_fields);
+  const knownClaims = new Map(ledger.claims.map((claim) => [claim.id, claim]));
+  const originalFieldValues = new Map(listPatchableFields(before).map((field) => [field, readPatchableField(before, field)]));
+  const replacedChars = new Map<ReviewPatchableField, number>();
+  let after = structuredClone(before);
+
+  for (const patch of document.patches) {
+    if (!allowed.has(patch.field)) throw new ReviewRevisionContractError(`許可されていないフィールドです: ${patch.field}`);
+    const current = readPatchableField(after, patch.field);
+    const original = originalFieldValues.get(patch.field) ?? "";
+    if (patch.operation === "replace_field") {
+      if (!explicit.has(patch.field)) throw new ReviewRevisionContractError(`フィールド全体の置換は明示対象だけに許可されます: ${patch.field}`);
+      if (patch.before !== current) throw new ReviewRevisionContractError(`replace_field の before が現在値と一致しません: ${patch.field}`);
+    } else {
+      if (!patch.before) throw new ReviewRevisionContractError(`replace の before は空にできません: ${patch.field}`);
+      const occurrences = countOccurrences(current, patch.before);
+      if (occurrences !== 1) throw new ReviewRevisionContractError(`before は現在値に1回だけ必要です: ${patch.field} (${occurrences}回)`);
+      if (!explicit.has(patch.field)) {
+        const anchors = intent.anchors_by_field[patch.field] ?? [];
+        if (!anchors.some((anchor) => patch.before.includes(anchor))) {
+          throw new ReviewRevisionContractError(`検出済みアンカーを含まない変更です: ${patch.field}`);
+        }
+      }
+      const total = (replacedChars.get(patch.field) ?? 0) + patch.before.length;
+      replacedChars.set(patch.field, total);
+      if (original.length > 0 && total / original.length > 0.65 && !explicit.has(patch.field)) {
+        throw new ReviewRevisionContractError(`限定修正の範囲を超えて本文を置換しようとしています: ${patch.field}`);
+      }
+    }
+    if (patch.before === patch.after) throw new ReviewRevisionContractError(`変更前後が同じです: ${patch.field}`);
+    for (const ref of patch.evidence_claim_refs) {
+      const claim = knownClaims.get(ref);
+      if (!claim || claim.type === "unsupported") throw new ReviewRevisionContractError(`利用できない根拠claimです: ${ref}`);
+    }
+    if (reasonTag === "事実" && patch.evidence_claim_refs.length === 0) {
+      throw new ReviewRevisionContractError(`事実訂正に根拠claimがありません: ${patch.field}`);
+    }
+    assertNewNumbersGrounded(patch, ledger);
+    const next = patch.operation === "replace_field" ? patch.after : current.replace(patch.before, patch.after);
+    after = writePatchableField(after, patch.field, next);
+    after = addPatchClaimRefs(after, patch.field, patch.evidence_claim_refs);
+  }
+
+  if (reasonTag === "口調") assertToneOnlyRevisionContract(before, after);
+  const trace = buildReviewRevisionTrace(before, after, document.patches, intent, instruction);
+  assertNoNewDisplayResidues(before, after);
+  const beforeClaimCheck = runClaimCheck(before, ledger);
+  const afterClaimCheck = runClaimCheck(after, ledger);
+  assertNoNewGates(beforeClaimCheck, afterClaimCheck, "記事claim check");
+  const toneMode = getToneMode(topic, ledger);
+  const beforeComment = runCommentCheck(before.why_it_matters, "", ledger, topic, toneMode, {
+    bodyText: articleBodyText(before),
+    bodyClaimRefs: articleBodyClaimRefs(before),
+    commentClaimRefs: before.claim_refs.why_it_matters
+  });
+  const afterComment = runCommentCheck(after.why_it_matters, "", ledger, topic, toneMode, {
+    bodyText: articleBodyText(after),
+    bodyClaimRefs: articleBodyClaimRefs(after),
+    commentClaimRefs: after.claim_refs.why_it_matters
+  });
+  assertNoNewGates({ ...beforeClaimCheck, violations: beforeComment }, { ...afterClaimCheck, violations: afterComment }, "コメントclaim check");
+  return { summary: after, trace, claimCheck: afterClaimCheck };
+}
+
+function extractInstructionAnchors(summary: SummarizedArticle, instruction: string) {
+  const values = listPatchableFields(summary).map((field) => readPatchableField(summary, field));
+  const quoted = [...instruction.matchAll(/[「『“"]([^」』”"]{2,})[」』”"]/gu)].map((match) => match[1].trim());
+  const originalTokens = values.flatMap((value) => value.match(/\d{4}年\d{1,2}月(?:\d{1,2}日)?|\d+(?:\.\d+)?(?:億|亿|万)?元(?:以上|相当)?|\d+人(?:の[^、。]{0,12})?/gu) ?? []);
+  return [...new Set([...quoted, ...originalTokens.filter((token) => instruction.includes(token))])]
+    .filter((anchor) => values.some((value) => value.includes(anchor)));
+}
+
+function normalizePatchOperation(raw: unknown, index: number): ReviewPatchOperation {
+  const input = raw && typeof raw === "object" ? raw as Record<string, unknown> : {};
+  const field = typeof input.field === "string" ? input.field : "";
+  if (!isPatchableFieldSyntax(field)) throw new ReviewRevisionContractError(`patches[${index}].field が不正です`);
+  const operation = input.operation === "replace_field" ? "replace_field" : input.operation === "replace" ? "replace" : undefined;
+  if (!operation) throw new ReviewRevisionContractError(`patches[${index}].operation が不正です`);
+  if (typeof input.before !== "string" || typeof input.after !== "string") {
+    throw new ReviewRevisionContractError(`patches[${index}] の before/after は文字列が必要です`);
+  }
+  return {
+    field,
+    operation,
+    before: input.before,
+    after: input.after,
+    evidence_claim_refs: Array.isArray(input.evidence_claim_refs)
+      ? [...new Set(input.evidence_claim_refs.filter((ref): ref is string => typeof ref === "string"))]
+      : [],
+    reason: typeof input.reason === "string" ? input.reason.trim() : ""
+  };
+}
+
+function assertNewNumbersGrounded(patch: ReviewPatchOperation, ledger: FactLedger) {
+  const beforeNumbers = new Set(extractNumbers(patch.before));
+  const added = extractNumbers(patch.after).filter((number) => !beforeNumbers.has(number));
+  if (added.length === 0) return;
+  const evidenceText = ledger.claims
+    .filter((claim) => patch.evidence_claim_refs.includes(claim.id))
+    .flatMap((claim) => [claim.text, ...claim.numbers, claim.quote_zh ?? ""])
+    .join(" ");
+  const missing = added.filter((number) => !evidenceText.includes(number));
+  if (missing.length > 0) throw new ReviewRevisionContractError(`追加した数字を根拠claimで確認できません: ${missing.join(", ")}`);
+}
+
+export function buildReviewRevisionTrace(
+  before: SummarizedArticle,
+  after: SummarizedArticle,
+  patches: ReviewPatchOperation[],
+  intent: ReviewRevisionIntent,
+  instruction: string
+): ReviewRevisionTrace {
+  const changed = new Set(patches.map((patch) => patch.field));
+  for (const field of listPatchableFields(before)) {
+    if (!changed.has(field) && readPatchableField(before, field) !== readPatchableField(after, field)) {
+      throw new ReviewRevisionContractError(`非対象フィールドが変化しました: ${field}`);
+    }
+  }
+  if (JSON.stringify(before.source_list) !== JSON.stringify(after.source_list)) throw new ReviewRevisionContractError("source_list が変化しました");
+  if (JSON.stringify(before.related_sources) !== JSON.stringify(after.related_sources)) throw new ReviewRevisionContractError("related_sources が変化しました");
+  if (!changed.has("reaction_view") && before.reaction_view !== after.reaction_view) {
+    throw new ReviewRevisionContractError("非対象の reaction_view が変化しました");
+  }
+  const explicit = new Set(intent.explicit_fields);
+  for (const patch of patches) {
+    if (patch.operation !== "replace_field") continue;
+    if (patch.before && !SHORTENING_REQUEST.test(instruction) && patch.after.length < patch.before.length * 0.7) {
+      throw new ReviewRevisionContractError(`フィールド全体の情報量が大きく減っています: ${patch.field}`);
+    }
+    if (!explicit.has(patch.field)) throw new ReviewRevisionContractError(`非明示フィールドの全体置換です: ${patch.field}`);
+  }
+  const beforeRefs = allClaimRefs(before);
+  const afterRefs = allClaimRefs(after);
+  const removedRefs = beforeRefs.filter((ref) => !afterRefs.includes(ref));
+  if (removedRefs.length > 0) throw new ReviewRevisionContractError(`既存claim refsが失われました: ${removedRefs.join(", ")}`);
+  const beforeNumbers = extractNumbers(articleNarrative(before));
+  const afterNumbers = extractNumbers(articleNarrative(after));
+  const removedNumbers = beforeNumbers.filter((number) => !afterNumbers.includes(number));
+  const authorizedBefore = patches.map((patch) => patch.before).join("\n");
+  const unauthorizedNumbers = removedNumbers.filter((number) => !authorizedBefore.includes(number) || !instruction.includes(number));
+  if (unauthorizedNumbers.length > 0) {
+    throw new ReviewRevisionContractError(`指示されていない重要数字が失われました: ${unauthorizedNumbers.join(", ")}`);
+  }
+  const beforeEntities = visibleEntities(before);
+  const afterEntities = visibleEntities(after);
+  const unauthorizedEntities = beforeEntities.filter((entity) => !afterEntities.includes(entity) && !instruction.includes(entity));
+  if (unauthorizedEntities.length > 0) {
+    throw new ReviewRevisionContractError(`指示されていない人物・作品が失われました: ${unauthorizedEntities.join(", ")}`);
+  }
+  return {
+    mode: "limited_patch",
+    changed_fields: [...changed],
+    changes: patches.map((patch) => ({
+      field: patch.field,
+      before: patch.before,
+      after: patch.after,
+      evidence_claim_refs: [...patch.evidence_claim_refs],
+      reason: patch.reason
+    })),
+    preservation: {
+      untouched_fields_exact: true,
+      source_list_exact: true,
+      related_sources_exact: true,
+      reaction_view_preserved_when_untargeted: !changed.has("reaction_view") ? before.reaction_view === after.reaction_view : true,
+      claim_refs_before: beforeRefs.length,
+      claim_refs_after: afterRefs.length,
+      important_numbers_before: beforeNumbers,
+      important_numbers_after: afterNumbers,
+      entities_before: beforeEntities,
+      entities_after: afterEntities,
+      narrative_chars_before: articleNarrative(before).length,
+      narrative_chars_after: articleNarrative(after).length
+    }
+  };
+}
+
+export function buildFullRewriteTrace(before: SummarizedArticle, after: SummarizedArticle): ReviewRevisionTrace {
+  const changedFields = listPatchableFields(before).filter((field) => readPatchableField(before, field) !== readPatchableField(after, field));
+  const beforeRefs = allClaimRefs(before);
+  const afterRefs = allClaimRefs(after);
+  return {
+    mode: "full_rewrite",
+    changed_fields: changedFields,
+    changes: changedFields.map((field) => ({
+      field,
+      before: readPatchableField(before, field),
+      after: readPatchableField(after, field),
+      evidence_claim_refs: [],
+      reason: "明示された全体書き直し"
+    })),
+    preservation: {
+      untouched_fields_exact: true,
+      source_list_exact: JSON.stringify(before.source_list) === JSON.stringify(after.source_list),
+      related_sources_exact: JSON.stringify(before.related_sources) === JSON.stringify(after.related_sources),
+      reaction_view_preserved_when_untargeted: true,
+      claim_refs_before: beforeRefs.length,
+      claim_refs_after: afterRefs.length,
+      important_numbers_before: extractNumbers(articleNarrative(before)),
+      important_numbers_after: extractNumbers(articleNarrative(after)),
+      entities_before: visibleEntities(before),
+      entities_after: visibleEntities(after),
+      narrative_chars_before: articleNarrative(before).length,
+      narrative_chars_after: articleNarrative(after).length
+    }
+  };
+}
+
+function assertNoNewDisplayResidues(before: SummarizedArticle, after: SummarizedArticle) {
+  const beforeSet = new Set(inspectDisplayKanjiResidues(before).map((item) => `${item.field}:${item.chars.join("")}`));
+  const added = inspectDisplayKanjiResidues(after).filter((item) => !beforeSet.has(`${item.field}:${item.chars.join("")}`));
+  if (added.length > 0) throw new ReviewRevisionContractError(`修正で表示用漢字の残留が増えました: ${added.map((item) => item.field).join(", ")}`);
+}
+
+function assertNoNewGates(before: ClaimCheckResult, after: ClaimCheckResult, label: string) {
+  const beforeKeys = new Set(before.violations.filter((item) => item.severity === "gate").map(gateKey));
+  const added = after.violations.filter((item) => item.severity === "gate" && !beforeKeys.has(gateKey(item)));
+  if (added.length > 0) throw new ReviewRevisionContractError(`${label}で新しいgateが発生しました: ${added.map((item) => item.rule).join(", ")}`);
+}
+
+function gateKey(item: { section: string; rule: string; detail: string }) {
+  return `${item.section}:${item.rule}`;
+}
+
+function addPatchClaimRefs(summary: SummarizedArticle, field: ReviewPatchableField, refs: string[]) {
+  if (refs.length === 0) return summary;
+  const next = structuredClone(summary);
+  if (field.startsWith("detail_sections.")) {
+    const index = Number(field.split(".")[1]);
+    const section = next.detail_sections?.[index];
+    if (!section) throw new ReviewRevisionContractError(`detail section がありません: ${field}`);
+    section.claim_refs = stableUnion(section.claim_refs, refs);
+    return next;
+  }
+  const claimField = field === "reaction_view"
+    ? "reaction_view"
+    : field === "why_it_matters"
+      ? "why_it_matters"
+      : field === "japan_context_note"
+        ? "japan_context_note"
+        : "what_happened";
+  next.claim_refs[claimField] = stableUnion(next.claim_refs[claimField], refs);
+  return next;
+}
+
+function listPatchableFields(summary: SummarizedArticle): ReviewPatchableField[] {
+  const detailFields = (summary.detail_sections ?? []).flatMap((_section, index) => [
+    `detail_sections.${index}.heading`,
+    `detail_sections.${index}.body`
+  ] as ReviewPatchableField[]);
+  return [...TOP_LEVEL_FIELDS, ...detailFields];
+}
+
+function readPatchableField(summary: SummarizedArticle, field: ReviewPatchableField) {
+  if (isTopLevelField(field)) return summary[field];
+  const [, indexText, property] = field.split(".");
+  const section = summary.detail_sections?.[Number(indexText)];
+  if (!section || (property !== "heading" && property !== "body")) throw new ReviewRevisionContractError(`フィールドが存在しません: ${field}`);
+  return section[property];
+}
+
+function writePatchableField(summary: SummarizedArticle, field: ReviewPatchableField, value: string) {
+  const next = structuredClone(summary);
+  if (isTopLevelField(field)) {
+    next[field] = value;
+    return next;
+  }
+  const [, indexText, property] = field.split(".");
+  const section = next.detail_sections?.[Number(indexText)];
+  if (!section || (property !== "heading" && property !== "body")) throw new ReviewRevisionContractError(`フィールドが存在しません: ${field}`);
+  section[property] = value;
+  return next;
+}
+
+function isPatchableFieldSyntax(field: string): field is ReviewPatchableField {
+  return TOP_LEVEL_FIELDS.includes(field as (typeof TOP_LEVEL_FIELDS)[number]) || /^detail_sections\.\d+\.(?:heading|body)$/.test(field);
+}
+
+function isTopLevelField(field: ReviewPatchableField): field is (typeof TOP_LEVEL_FIELDS)[number] {
+  return TOP_LEVEL_FIELDS.includes(field as (typeof TOP_LEVEL_FIELDS)[number]);
+}
+
+function countOccurrences(text: string, needle: string) {
+  let count = 0;
+  let position = 0;
+  while (needle && (position = text.indexOf(needle, position)) >= 0) {
+    count += 1;
+    position += needle.length;
+  }
+  return count;
+}
+
+function extractNumbers(text: string) {
+  return [...new Set(text.match(/\d+(?:[.,]\d+)?(?:億|亿|万)?(?:円|元|人|本|件|回|日|月|年|点|%|％)?/gu) ?? [])];
+}
+
+function visibleEntities(summary: SummarizedArticle) {
+  const text = articleNarrative(summary);
+  return [...new Set([
+    ...summary.main_entities.people,
+    ...summary.main_entities.works,
+    ...summary.main_entities.organizations
+  ].filter((entity) => entity && text.includes(entity)))];
+}
+
+function articleNarrative(summary: SummarizedArticle) {
+  return [
+    summary.title_ja,
+    summary.lead,
+    summary.what_happened,
+    summary.reaction_view,
+    summary.why_it_matters,
+    summary.japan_context_note,
+    ...(summary.detail_sections ?? []).flatMap((section) => [section.heading, section.body])
+  ].join("\n");
+}
+
+function articleBodyText(summary: SummarizedArticle) {
+  return [summary.lead, summary.what_happened, ...(summary.detail_sections ?? []).map((section) => section.body)].join("\n");
+}
+
+function articleBodyClaimRefs(summary: SummarizedArticle) {
+  return [...new Set([
+    ...(summary.claim_refs.what_happened ?? []),
+    ...(summary.detail_sections ?? []).flatMap((section) => section.claim_refs ?? [])
+  ])];
+}
+
+function allClaimRefs(summary: SummarizedArticle) {
+  return [...new Set([
+    ...summary.claim_refs.what_happened,
+    ...summary.claim_refs.why_it_matters,
+    ...summary.claim_refs.reaction_view,
+    ...summary.claim_refs.japan_context_note,
+    ...(summary.detail_sections ?? []).flatMap((section) => section.claim_refs)
+  ])];
+}
+
+function stableUnion(current: string[], added: string[]) {
+  return [...current, ...added.filter((ref) => !current.includes(ref))];
+}

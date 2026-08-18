@@ -1,5 +1,18 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-18 実装・ローカル検証完了（Issue #56 編集インサイト・自然な日本語／Issue #57 限定修正契約）
+
+- ✅ Issue #56『師兄太穏健』の収集根拠5件を分離監査。E1〜E3は本文にAI生成の明示、E4は独立検証のない宣伝文、E5はプラットフォーム自媒体で、5/5がverified factの単独根拠には不適格だった。根拠を `primary / editorial_media / promotional_or_repost / platform_self_media / ai_generated` に決定的分類し、低品質根拠だけのclaimを `unsupported` へ降格。全rootが利用不可、またはverified claimが低品質根拠だけの場合は生成前に停止し、診断をledger・generation meta・selection traceへ残す。
+- ✅ 原因2では既存ledgerのC8（現代の会社員感覚）、C11・C14（原作・アニメ）、C15（勝つより生存を優先）、C16（逃げ道3本・結界10層）、C17（逃走・身代わり・救命の備え）が、旧注目ポイントのC2・C5・C3（予約数・番位・抽象的な反套路）に使われていなかった。`story_premise / genre_contrast / comic_mechanism / modern_life_bridge / adaptation_context / audience_evidence / source_caution` を共通編集役割とし、本文未使用の具体インサイトclaimを注目ポイント候補へ渡す。
+- ✅ 原因3では旧 `why_it_matters` 指示が「次の数字・発表」を作品固有の面白さと同列に置き、「予約数＋今後を見たい」を許していた。作品記事ではジャンルの定番との差、行動が笑いになる仕組み、現代感覚との接続、原作・アニメ・実写間の変化から根拠がある関係を説明させる。数字と将来観測だけ、本文claimの言い換えだけ、抽象的なジャンル差だけをgateにした。根拠付き分析は複数claimの関係説明として許可し、根拠のない評論禁止を弱めずに原因5を解消する。sober記事は強制的な面白さ・感嘆符の対象外のまま維持する。
+- ✅ 原因4ではterm ledgerに説明があっても、公表文に裸の直訳を残せる状態だった。`反套路 / 軽喜劇 / 現象級 / 脆いサラリーマン / 病危 / 打工人` 等を、固定の置換語ではなく設定・行動・読み味を説明する日本語へ展開するpromptと全公開欄gateを追加。直接表記が再試行後も残れば記事を破棄し、8月17日データや作品固有文はコードへ埋め込まない。
+- ✅ 追加根拠の取得可否を確認し、起点作品・人物＋イベントに `官方 / 剧情 / 原作 / 动画` を加えたroot探索と、Youku・iQiyi・起点読書の公式分類を追加。公式配信ページ、原作掲載元、公式アニメ資料を宣伝転載より優先してfact ledgerへ渡せる。既存本番記事の再生成・Issue再作成・公開はこのブランチでは行わない。
+- ✅ Issue #57を実測比較。OWNER指示は日付・金額・人数・用語説明の部分訂正だったが、旧 `reviseStoredArticle` は `why_it_matters` の単純削除以外を `reviseTopicFromSavedData` へ渡し、理由タグ「口調」でない場合は `existingSummary` を固定材料にせず全JSONを新規生成していた。そのため過去の贈答例が落ち、空だった `reaction_view` へ未指示の微博引用・一般化が追加され、注目ポイントも書き換わった。日次・持ち込みは同じ関数を通るため両方に同じ欠陥があった。
+- ✅ 通常修正を限定パッチへ変更。明示欄名と元記事内の完全一致アンカーから変更可能フィールドをLLM前に固定し、返却JSONを `field / operation / before / after / evidence_claim_refs / reason` に限定する。全文・全体・構成の書き直しが明示された時だけ完全再生成。曖昧、対象不一致、事実claim不足は `clarification_required` で止め、保存前の元記事を保持する。
+- ✅ mergeは完全一致1箇所だけへ適用し、非対象文・配列、空のreaction、既存claim refs、重要数字、人物・作品、過去事例、`source_list`、`related_sources` を比較。対象fieldの根拠claimは既存refsを残して追加し、新しいclaim/comment/表記gateや情報量の大幅減少があれば書き込まない。Issue返信には適用方式・変更field・概要・非対象保持・claim refs件数を表示する。
+- ✅ Issue #57 fixtureで6訂正だけが反映され、2026年1月の贈答、ネックレス・ブレスレット、ミルクティー・花、空reaction、ソース配列、確度Bを保持。Actions型の本文全置換＋反応追加を拒否し、曖昧指示をclarification、明示的な全体書き直しだけをfull rewriteと確認。通常日次topicと持ち込みtopicへ同一patchを適用して完全一致を確認した。
+- ✅ 検証: `npm run check`、`npm run test:evidence-integrity`、`npm run test:editorial-insight`、`npm run test:scoped-review-revision`、`npm run test:lightweight-review-edit`、`npm run test:sources`、`npm run test:bingtang-comment-tone`、`npm run test:terminology`、`npm run test:review-presentation`、`npm run test:related-evidence`、`npm run test:supplement-claim`、`npm run test:manual-intake`、`npm run test:site-feed`、`npm run test:kanji` 成功。本番再生成・レビューIssueへの再コメント・本番データ再適用・公開は未実施。
+
 ## 2026-08-17 実装・ローカル検証完了（topic反復cooldown・日次構成分散）
 
 - ✅ 8月17日のボツ2件、selection trace、topic candidates、8月4〜17日のレビュー履歴を比較。fresh topicは39件中box_office 2件だけで候補全体は多様だった一方、最終EVS 7点以上は映画2件だけだった。直近の承認14件は「映画」9件＋「興行」1件で、『歓迎来龍餐館』は8月9・11・15日に採用、14日にpending、16・17日に重複却下されていた。

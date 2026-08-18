@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { formatReviewArticle } from "./review/buildReviewIssueBody.js";
+import { formatReviewArticle, formatReviewRevisionSummary } from "./review/buildReviewIssueBody.js";
 import { renderUi } from "./review/uiServer.js";
 import type { ProcessedArticle } from "./types.js";
 import type { ReviewUiData } from "./review/fetchReviewData.js";
@@ -43,6 +43,30 @@ assert.doesNotMatch(formatReviewArticle(1, withUndefinedSupplement), /ビンタ�
 const revised = formatReviewArticle(1, article("修正版の補足"), true);
 assert.match(revised, /^## 🔄 修正版 1/m);
 assert.match(revised, /\*\*ビンタンからの補足\*\*: 修正版の補足/);
+
+const revisionScope = formatReviewRevisionSummary({
+  mode: "limited_patch",
+  changed_fields: ["what_happened"],
+  changes: [{ field: "what_happened", before: "旧日付", after: "新日付", evidence_claim_refs: ["C2"], reason: "日付を訂正" }],
+  preservation: {
+    untouched_fields_exact: true,
+    source_list_exact: true,
+    related_sources_exact: true,
+    reaction_view_preserved_when_untargeted: true,
+    claim_refs_before: 4,
+    claim_refs_after: 5,
+    important_numbers_before: [],
+    important_numbers_after: [],
+    entities_before: [],
+    entities_after: [],
+    narrative_chars_before: 100,
+    narrative_chars_after: 102
+  }
+});
+assert.match(revisionScope, /指定箇所だけの限定パッチ/u);
+assert.match(revisionScope, /`what_happened`: 日付を訂正/u);
+assert.match(revisionScope, /非対象フィールド: 完全一致を確認/u);
+assert.match(revisionScope, /claim refs: 4件 → 5件/u);
 
 const withRelatedAngle = article("");
 withRelatedAngle.summary!.related_sources = [

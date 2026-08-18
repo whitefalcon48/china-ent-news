@@ -8,6 +8,8 @@ import type {
   ToneMode,
   TopicCandidate
 } from "./types.js";
+import { isEditorialInsightClaim } from "./editorialInsight.js";
+import { inspectLiteralTranslationResidues, inspectLiteralTranslationText } from "./translationQuality.js";
 
 const SECTION_NAMES = [
   "lead",
@@ -34,6 +36,20 @@ export const BACKGROUND_GROUNDING_THRESHOLD = 0.35;
 export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): ClaimCheckResult {
   const violations: ClaimCheckViolation[] = [];
   const evidenceRoles = ledger.evidence_roles ?? {};
+  const evidenceQuality = ledger.evidence_quality ?? [];
+  if (evidenceQuality.length) {
+    const rootQuality = evidenceQuality.filter((item) => evidenceRoles[item.evidence_ref] !== "related_angle");
+    if (rootQuality.length && !rootQuality.some((item) => item.usable_for_verified_facts)) {
+      violations.push(toViolation("fact_ledger", "evidence_quality_insufficient", "gate", rootQuality.map((item) => `${item.evidence_ref}:${item.reason}`).join(", ")));
+    }
+    const qualityByRef = new Map(evidenceQuality.map((item) => [item.evidence_ref, item]));
+    for (const claim of ledger.claims.filter((item) => item.type === "verified_fact")) {
+      const qualities = claim.evidence_refs.map((ref) => qualityByRef.get(ref)).filter((item): item is NonNullable<typeof item> => Boolean(item));
+      if (qualities.length && !qualities.some((item) => item.usable_for_verified_facts)) {
+        violations.push(toViolation("fact_ledger", "verified_claim_low_trust", "gate", `${claim.id}: ${claim.evidence_refs.join(", ")}`));
+      }
+    }
+  }
   if (Object.keys(evidenceRoles).length) {
     for (const claim of ledger.claims.filter((item) => item.type !== "unsupported")) {
       const roles = claim.evidence_refs.map((ref) => evidenceRoles[ref]);
@@ -70,6 +86,9 @@ export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): C
     if (unknownRefs.length) {
       violations.push(toViolation(`detail_sections.${index}`, "claim_evidence_ref_unknown", "gate", unknownRefs.join(", ")));
     }
+  }
+  for (const residue of inspectLiteralTranslationResidues(summary)) {
+    violations.push(toViolation(residue.field, "literal_translation_residue", "gate", `${residue.term}: ${residue.guidance}`));
   }
 
   if (
@@ -252,10 +271,59 @@ export function runCommentCheck(
   ledger: FactLedger,
   topic: TopicCandidate,
   toneMode: ToneMode,
-  context: { usedOpenings?: string[]; bodyText?: string } = {}
+  context: { usedOpenings?: string[]; bodyText?: string; commentClaimRefs?: string[]; bodyClaimRefs?: string[] } = {}
 ): ClaimCheckViolation[] {
   const text = whyItMatters;
   const violations: ClaimCheckViolation[] = [];
+  for (const residue of inspectLiteralTranslationText(text, "comment")) {
+    violations.push(toViolation("comment", "literal_translation_residue", "gate", `${residue.term}: ${residue.guidance}`));
+  }
+  const validClaimIds = new Set(ledger.claims.map((claim) => claim.id));
+  const commentClaimRefs = [...new Set((context.commentClaimRefs ?? []).filter((ref) => validClaimIds.has(ref)))];
+  const bodyClaimRefs = new Set(context.bodyClaimRefs ?? []);
+  const commentClaims = ledger.claims.filter((claim) => commentClaimRefs.includes(claim.id));
+  const availableInsightClaims = ledger.claims.filter((claim) =>
+    claim.type !== "unsupported" && claim.anchor !== false && !bodyClaimRefs.has(claim.id) && isEditorialInsightClaim(claim)
+  );
+  if (text.trim() && commentClaimRefs.length === 0) {
+    violations.push(toViolation("comment", "comment_claim_refs_missing", "gate", "注目ポイントにclaim refsがありません"));
+  }
+  if (
+    toneMode === "normal"
+    && text.trim()
+    && commentClaimRefs.length > 0
+    && commentClaimRefs.every((ref) => bodyClaimRefs.has(ref))
+    && !commentClaims.some(isEditorialInsightClaim)
+  ) {
+    violations.push(toViolation("comment", "comment_no_new_editorial_claim", "gate", "本文で使用済みのclaimだけを言い換えています"));
+  }
+  if (toneMode === "normal" && availableInsightClaims.length > 0 && !availableInsightClaims.some((claim) => commentClaimRefs.includes(claim.id))) {
+    violations.push(toViolation("comment", "comment_insight_claim_missing", "gate", `編集インサイト候補を参照していません: ${availableInsightClaims.map((claim) => claim.id).join(", ")}`));
+  }
+  const commentInsightRoles = new Set(commentClaims.filter(isEditorialInsightClaim).map((claim) => claim.editorial_role));
+  const ledgerHasConcreteWorkMechanism = ledger.claims.some((claim) =>
+    claim.type !== "unsupported"
+    && (["story_premise", "comic_mechanism", "modern_life_bridge", "adaptation_context"] as const).some((role) => claim.editorial_role === role)
+  );
+  if (
+    toneMode === "normal"
+    && (topic.main_entities?.works?.length ?? 0) > 0
+    && ledgerHasConcreteWorkMechanism
+    && commentInsightRoles.size === 1
+    && commentInsightRoles.has("genre_contrast")
+  ) {
+    violations.push(toViolation("comment", "comment_insight_claim_missing", "gate", "ジャンルの違いだけでなく、物語上の仕掛け・笑いの構造・現代感覚・映像化のいずれかを根拠claimで説明してください"));
+  }
+  if (
+    toneMode === "normal"
+    && /(?:予約|再生|閲覧|読者|フォロワー|数字)/u.test(text)
+    && /(?:ここから|今後|次に|見たい|追いたい|気にな)/u.test(text)
+    && !/(?:違い|なぜ|仕掛け|組み合わせ|逆手|笑い|面白|おもしろ|定番)/u.test(text)
+    && commentClaims.length > 0
+    && commentClaims.every((claim) => claim.editorial_role === "key_numbers" || claim.editorial_role === "audience_evidence" || claim.editorial_role === "other")
+  ) {
+    violations.push(toViolation("comment", "comment_number_watch_template", "gate", "数字と今後の観測だけで、作品固有の面白さを説明していません"));
+  }
   if (/反応が(予想|期待)され|好意的な反応|ファンから.{0,12}(反応|声)が(集ま|上が|出)/.test(text) && (topic.source_mix.sns || 0) + (topic.source_mix.rumor || 0) === 0) {
     violations.push(toViolation("comment", "fabricated_reaction", "gate", matchingSentence(text, /反応が(予想|期待)され|好意的な反応|ファンから.{0,12}(反応|声)が(集ま|上が|出)/)));
   }
@@ -278,7 +346,12 @@ export function runCommentCheck(
       claim.quote_zh || ""
     ]).flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean)
   );
+  const referencedNumbers = new Set(
+    commentClaims.flatMap((claim) => [...claim.numbers, claim.text, claim.quote_zh || ""])
+      .flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean)
+  );
   const ledgerEntities = ledger.claims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
+  const referencedEntities = commentClaims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
   const groundedBackground = [
     ...ledger.claims.map((claim) => claim.text),
     ...ledger.terms
@@ -292,13 +365,16 @@ export function runCommentCheck(
     if (!detail) continue;
     for (const token of extractNumberTokens(detail)) {
       const normalized = normalizeNumberToken(token);
-      if (normalized && !ledgerNumbers.has(normalized)) {
+      if (normalized && (!ledgerNumbers.has(normalized) || (commentClaims.length > 0 && !referencedNumbers.has(normalized)))) {
         violations.push(toViolation("comment", "comment_number_not_in_ledger", "gate", detail));
         break;
       }
     }
     for (const entity of extractBracketedEntities(detail)) {
-      if (!ledgerEntities.some((ledgerEntity) => ledgerEntity.includes(entity) || entity.includes(ledgerEntity))) {
+      if (
+        !ledgerEntities.some((ledgerEntity) => ledgerEntity.includes(entity) || entity.includes(ledgerEntity))
+        || (commentClaims.length > 0 && !referencedEntities.some((ledgerEntity) => ledgerEntity.includes(entity) || entity.includes(ledgerEntity)))
+      ) {
         violations.push(toViolation("comment", "comment_entity_not_in_ledger", "warning", detail));
         break;
       }

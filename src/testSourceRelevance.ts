@@ -113,6 +113,7 @@ assert.deepEqual(
 
 const kungFuTopic = {
   ...baseTopic,
+  topic_type: "release",
   topic_key: "功夫女足上映",
   title_hint: "《功夫女足》正式上映",
   event_sentence: "映画『功夫女足』の公開が発表された",
@@ -122,9 +123,10 @@ const kungFuTopic = {
 const kungFuBoxOffice = evidence("《功夫女足》票房突破，観客の口コミも話題に", "https://example.com/kungfu-boxoffice");
 assert.deepEqual(
   rankRelatedAngleSearchQueries(kungFuTopic).slice(0, 2),
-  ["功夫女足 口碑", "功夫女足 票房"],
-  "work topics explore at least two independent angles by default"
+  ["功夫女足 原作", "功夫女足 动画"],
+  "release topics seek adaptation context instead of another surface metric"
 );
+assert.ok(rankTopicSearchQueries(kungFuTopic).slice(0, 2).some((query) => query.includes("官方")), "root corroboration actively seeks an official work source");
 assert.equal(
   assessSourceRelevance(kungFuTopic, kungFuBoxOffice, "功夫女足 票房", "related_angle").reason,
   "accepted_related_entity_and_angle",
@@ -156,6 +158,7 @@ assert.deepEqual(
 );
 assert.equal(inferRelatedAngleKind("谢贤 回应"), "person_response");
 assert.equal(inferRelatedAngleKind("谢贤 生涯回顾"), "career_retrospective");
+assert.equal(inferRelatedAngleKind("功夫女足 原作改编"), "work_context");
 assert.equal(isSafePublicationSourceUrl("https://www.douyin.com/search/%E7%8E%8B%E5%B9%B4%E5%B0%86%E6%88%90"), false);
 assert.equal(isSafePublicationSourceUrl("https://www.youtube.com/playlist?list=test"), false);
 assert.equal(isSafePublicationSourceUrl("https://pic.rsvp-rentals.com/html/example.html"), false);
