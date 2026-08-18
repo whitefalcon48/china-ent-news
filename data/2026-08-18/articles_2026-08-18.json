@@ -45,12 +45,12 @@
     "summary": {
       "title_ja": "丁禹兮、ファンに黄金のネックレスを「嫁入り道具」として贈り話題に",
       "badge": "NEWS",
-      "lead": "中国の俳優・丁禹兮さんが、自身のコンサートでプロポーズされたファンに、自費で購入した黄金のネックレスを「娘家人からの嫁入り道具」として贈り、話題になっています。",
-      "what_happened": "2026年8月17日、丁禹兮さんは上海の老鳳祥のイベント会場で、自費で黄金のネックレスを購入し、以前自身のコンサートで彼氏からプロポーズされたファンに贈ると述べました。彼はこのネックレスを「娘家人からの嫁入り道具」と表現し、スタジオに連絡してそのファンに送るよう手配しました。また、その場でファンのID「KING9金金」を正確に読み上げました。\n\n丁禹兮さんはこれまでもファンへの贈り物を積極的に行っており、2026年1月25日には上海のイベントでカードを使い、ネックレス1本とブレスレット3本（総額6万元以上）を購入し、4人のファンに贈りました。2025年12月には15万元をかけて単価5600元のネックレス27本を購入し、その場にいたファンに配りました。さらに、ミルクティーや花を贈ったり、7人のメイクアップアーティストを現場に呼んでファンのメイクを行ったり、純金のスマホスタンドを贈るなどのエピソードもあります。",
-      "reaction_view": "",
-      "why_it_matters": "「娘家人」という言葉、中国の結婚文化では花嫁の実家の家族を指すんです。丁禹兮さんがファンを家族のように扱って、黄金のネックレスを「嫁入り道具」として贈ったのがすごく心に残りました！次は、このネックレスが実際にファンの手に渡ったかどうか、そしてファンがどんな反応をするのかを確認したいです。",
+      "lead": "中国の俳優・丁禹兮さんが、自身のコンサートでプロポーズされたファンに、自費で購入した黄金のネックレスを「娘家人からの嫁入り道具」として贈り、微博のホットサーチで話題となっています。",
+      "what_happened": "2026年8月17日、丁禹兮さんは上海の老鳳祥イベントで、自費で黄金のネックレスを購入し、以前自身のコンサートで彼氏からプロポーズされたファンに贈ると述べました。彼はこのネックレスを「娘家人（花嫁側の身内・実家側の人々）からの嫁入り道具」と表現し、スタジオを通じてファンに送る手配をしました。また、その場でファンのID「KING9金金」を正確に読み上げました。この出来事は微博のホットサーチに載り、「内娱宠粉天花板（中国エンタメ界でファンを最も大切にする人）」と呼ばれました。また、複数のメイク担当者を現場に呼んでファンのメイクを施したり、黄金製のスマホスタンドを贈ったこともあります。",
+      "reaction_view": "微博では「内娱独一份的宠粉（中国エンタメ界で唯一無二のファンへの愛情）」「比黄金更贵的是丁禹兮的真心（黄金より貴いのは丁禹兮の真心）」といった声が上がり、多くのネットユーザーが「丁禹兮のような娘家人がいて本当に良かった」と感じ、ファンとアイドルの双方向の愛の具体例として称賛しました。",
+      "why_it_matters": "「娘家人」という言葉、中国のファンダムでは芸能人がファンを家族のように扱うのが珍しいんです。丁禹兮さんは過去にも自費で黄金を贈っていて、今回はプロポーズされたファンに「嫁入り道具」として贈りました。次はこのファンが実際に受け取った後の反応や、他の芸能人への影響を見たいです！",
       "editor_comment": "",
-      "japan_context_note": "日本ではあまり知られていないかもしれませんが、中国のエンタメ業界では「逆応援」といって、アイドルがファンにプレゼントやサービスをする文化があります。丁禹兮さんの今回の行為はその典型例で、ファンを「娘家人」（実家の家族）と表現し、結婚を祝う「嫁入り道具」を贈るという、中国の結婚文化を反映した粋な計らいなんです。日本ではなかなか見られない光景なので、中国エンタメの面白さが伝わると嬉しいです。",
+      "japan_context_note": "",
       "category": "エンタメ",
       "confidence": "B",
       "source_type": "media_report",
@@ -76,7 +76,7 @@
       "has_official_source": false,
       "has_multiple_sources": true,
       "has_sns_signal": false,
-      "article_type": "news_event",
+      "article_type": "unknown",
       "skip_reason": "",
       "verification_status": "verified",
       "topic_key": "丁禹兮给粉丝买黄金",
@@ -86,17 +86,19 @@
         ],
         "works": [],
         "organizations": [
-          "老鳳祥"
+          "老鳳祥",
+          "新浪娱乐"
         ]
       },
       "related_sources": [],
       "tags": [
         "ファン文化",
         "逆応援",
+        "微博",
         "丁禹兮"
       ],
       "publish_priority": "medium",
-      "publish_reason": "中国で話題のファンサービス事例であり、日本では知られていない中国エンタメの文脈を伝える価値があるため。",
+      "publish_reason": "中国で話題のファンサービス事例であり、日本ではあまり知られていない中国エンタメの文脈を伝える価値があるため。",
       "claim_refs": {
         "what_happened": [
           "C1",
@@ -107,18 +109,23 @@
           "C6",
           "C7",
           "C8",
-          "C9"
+          "C9",
+          "C13",
+          "C14",
+          "C17",
+          "C18"
         ],
         "why_it_matters": [
-          "C1",
           "C2",
-          "C5"
+          "C7",
+          "C8",
+          "C11"
         ],
-        "reaction_view": [],
-        "japan_context_note": [
-          "C11",
-          "C18"
-        ]
+        "reaction_view": [
+          "C15",
+          "C16"
+        ],
+        "japan_context_note": []
       },
       "detail_sections": []
     },
@@ -736,27 +743,16 @@
           "model": "deepseek-v4-pro"
         }
       },
-      "ledger_anchor": {
-        "topic_key": "丁禹兮给粉丝买黄金",
-        "claims_total": 20,
-        "anchor_unverified": 0,
-        "dropped_explanations": []
-      },
-      "term_expansion": {
-        "enabled": true,
-        "attempted": [],
-        "succeeded": [],
-        "failed": []
-      },
       "display_normalization": {
         "residues": []
       },
       "comment_grounding": {
         "topic_key": "丁禹兮给粉丝买黄金",
         "refs": [
-          "C1",
           "C2",
-          "C5"
+          "C7",
+          "C8",
+          "C11"
         ],
         "gated_sentences_removed": [],
         "unmatched_numbers": []
@@ -765,7 +761,7 @@
         "topic_key": "丁禹兮给粉丝买黄金",
         "violations": [],
         "gated_violation_count": 0,
-        "action": "none"
+        "action": "text_removed"
       },
       "tone_mode": "normal",
       "comment_stage": {
@@ -773,16 +769,13 @@
         "used": true,
         "regenerated": true,
         "fallback_reason": "",
-        "exclamation_count": 1,
-        "opening": "娘家人という言葉、中",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "exclamation_count": 1
       },
       "article_depth": {
         "profile": "standard",
         "eligible_claims": 20,
-        "used_claims": 6,
-        "coverage_ratio": 0.3,
+        "used_claims": 9,
+        "coverage_ratio": 0.45,
         "detail_sections": 0,
         "important_number_claims": 6,
         "used_number_claims": 1,
