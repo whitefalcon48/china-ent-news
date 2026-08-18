@@ -310,6 +310,7 @@ function toSerperEvidence(item: SerperOrganicItem, query: string, lane: SourceRe
 
 function getSerperSourceType(hostname: string): SourceTypeLabel {
   if (/(^|\.)(?:people\.com\.cn|peopleapp\.com)$/.test(hostname)) return "official";
+  if (/(^|\.)(?:youku\.com|iqiyi\.com|qidian\.com)$/.test(hostname)) return "official";
   if (/(^|\.)weibo\.com$/.test(hostname) || /(^|\.)bilibili\.com$/.test(hostname)) return "sns";
   if (/(^|\.)douban\.com$/.test(hostname) || /(^|\.)maoyan\.com$/.test(hostname) || /piaofang/.test(hostname)) return "data";
   return "media_report";

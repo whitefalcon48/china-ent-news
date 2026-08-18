@@ -85,6 +85,10 @@ export function rankTopicSearchQueries(topic: TopicCandidate) {
     if (!normalized || normalized === topicKey || unique.has(normalized)) continue;
     unique.set(normalized, query);
   }
+  for (const query of sourceSeekingQueries(topic)) {
+    const normalized = normalizeText(query);
+    if (normalized && !unique.has(normalized)) unique.set(normalized, query);
+  }
   const ranked = [...unique.values()].sort((left, right) => querySpecificity(topic, right) - querySpecificity(topic, left));
   return ranked.length ? ranked : [topic.topic_key].filter(Boolean);
 }
@@ -124,7 +128,7 @@ export function inferRelatedAngleKind(query: string, title = ""): RelatedAngleKi
   if (/回应|发声|悼念|追忆|回忆|谈及|称|表示/.test(text)) return "person_response";
   if (/生涯|从影|代表作|回顾|影史|评价/.test(text)) return "career_retrospective";
   if (/粉丝|热议|争议|口碑|热搜|讨论/.test(text)) return "audience_reaction";
-  if (/票房|幕后|上映|公映|点映|制作|作品/.test(text)) return "work_context";
+  if (/票房|幕后|上映|公映|点映|制作|作品|原作|改编|改編|动画|動畫|动漫|動漫|漫画|実写|官方简介|官方簡介/.test(text)) return "work_context";
   return "other";
 }
 
@@ -140,7 +144,21 @@ function querySpecificity(topic: TopicCandidate, query: string) {
   const terms = splitQuery(query);
   const entityTerms = getEntityTokens(topic);
   const contextCount = terms.filter((term) => !isEntityTerm(term, entityTerms)).length;
-  return terms.length * 100 + contextCount * 30 + normalizeText(query).length;
+  const sourceQualityBonus = /官方/u.test(query) ? 120 : 0;
+  const eventBonus = /(?:20\d{2}年)?\d{1,2}月\d{1,2}日|定档|定檔|开播|開播|上线|上線|上映|发布|發布/u.test(query) ? 80 : 0;
+  return terms.length * 100 + contextCount * 30 + normalizeText(query).length + sourceQualityBonus + eventBonus;
+}
+
+function sourceSeekingQueries(topic: TopicCandidate) {
+  const entity = topic.main_entities.works[0] || topic.main_entities.people[0] || topic.main_entities.organizations[0] || "";
+  if (!entity) return [];
+  const text = `${topic.topic_key} ${topic.title_hint} ${topic.event_sentence}`;
+  const event = text.match(/(?:定档|定檔|开播|開播|上线|上線|上映|发布|發布|官宣)/u)?.[0] ?? "";
+  const date = text.match(/(?:20\d{2}年)?\d{1,2}月\d{1,2}日/u)?.[0] ?? "";
+  return [
+    [entity, "官方", event, date].filter(Boolean).join(" "),
+    ...(topic.main_entities.works.length ? [[entity, "官方", "剧情", "原作"].join(" ")] : [])
+  ].filter((query) => query.split(/\s+/u).length >= 3);
 }
 
 function matchesSpecificQuery(topic: TopicCandidate, query: string, normalizedText: string) {
@@ -223,7 +241,9 @@ function relatedAngleTerms(topic: TopicCandidate) {
     : topic.topic_type === "box_office"
       ? ["热搜", "热议", "观众讨论"]
     : topic.main_entities.works.length
-      ? ["口碑", "票房", "幕后", "争议"]
+      ? topic.topic_type === "release" || topic.topic_type === "drama_production"
+        ? ["原作", "动画", "官方简介", "口碑"]
+        : ["口碑", "原作", "幕后", "争议"]
       : ["作品", "粉丝", "回应", "动态"];
   return [...new Set([...defaults, ...candidates])].slice(0, 4);
 }

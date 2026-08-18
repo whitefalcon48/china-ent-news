@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { applyLightweightWhyItMattersEdit } from "./review/lightweightWhyItMattersEdit.js";
 import { reviseStoredArticle, tryApplyLightweightWhyItMattersEdit } from "./review/reviseArticle.js";
+import { ReviewRevisionClarificationRequiredError } from "./review/revisionPatch.js";
 import { formatToneOnlyReviewInstruction } from "./summarizeWithGemini.js";
 import { assertToneOnlyRevisionContract, ToneOnlyRevisionContractError } from "./toneOnlyRevision.js";
 import type { FactLedger, ProcessedArticle, SummarizedArticle, TopicCandidate } from "./types.js";
@@ -172,6 +173,17 @@ try {
   assert.equal(persisted[0].summary?.why_it_matters, revised.summary?.why_it_matters, "決定的編集をarticles JSONに保存する");
   const { why_it_matters: _storedWhy, ...storedOtherFields } = persisted[0].summary!;
   assert.deepEqual(storedOtherFields, beforeOtherFields, "保存後も他summaryフィールドとclaim_refsを不変に保つ");
+  const persistedBeforeAmbiguous = await fs.readFile(path.join(directory, "articles_2026-08-11.json"), "utf8");
+  await assert.rejects(
+    () => reviseStoredArticle(directory, 1, "日付と用語を正しくしてください。", "事実"),
+    ReviewRevisionClarificationRequiredError,
+    "対象を限定できない指示はclarificationで止める"
+  );
+  assert.equal(
+    await fs.readFile(path.join(directory, "articles_2026-08-11.json"), "utf8"),
+    persistedBeforeAmbiguous,
+    "clarification時は保存前の元記事をバイト単位で保持する"
+  );
 } finally {
   await fs.rm(directory, { recursive: true, force: true });
 }

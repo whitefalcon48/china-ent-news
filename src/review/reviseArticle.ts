@@ -1,29 +1,37 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { runClaimCheck, runCommentCheck } from "../claimCheck.js";
-import { applyDisplayKanji } from "../displayKanji.js";
-import { reviseTopicFromSavedData } from "../summarizeWithGemini.js";
+import { applyDisplayKanji, inspectDisplayKanjiResidues } from "../displayKanji.js";
+import { generateLimitedReviewPatch, reviseTopicFromSavedData } from "../summarizeWithGemini.js";
 import { getToneMode } from "../toneMode.js";
-import { ToneOnlyRevisionContractError } from "../toneOnlyRevision.js";
 import { applyLightweightWhyItMattersEdit } from "./lightweightWhyItMattersEdit.js";
-import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, SummarizedArticle, TopicCandidate } from "../types.js";
+import {
+  applyValidatedReviewPatch,
+  buildFullRewriteTrace,
+  buildReviewRevisionTrace,
+  detectReviewRevisionIntent,
+  ReviewRevisionClarificationRequiredError
+} from "./revisionPatch.js";
+import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, ReviewPatchOperation, ReviewReasonTag, SummarizedArticle, TopicCandidate } from "../types.js";
 
-export async function reviseStoredArticle(directory: string, index: number, comment: string, reasonTag = "その他") {
+export async function reviseStoredArticle(directory: string, index: number, comment: string, reasonTag: ReviewReasonTag | string = "その他") {
   const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
   if (!articleFile) throw new Error(`articles JSON not found: ${directory}`);
   const articlePath = path.join(directory, articleFile);
   const articles = JSON.parse(await fs.readFile(articlePath, "utf8")) as ProcessedArticle[];
   const article = articles[index - 1];
   if (!article?.topic) throw new Error(`topic data not found for article ${index}`);
+  if (!article.summary) throw new ReviewRevisionClarificationRequiredError("元記事が見つからないため、変更箇所を比較できません");
   const ledger = await findLedger(directory, article.topic.topic_key);
-  if (reasonTag === "口調" && !article.summary) {
-    throw new ToneOnlyRevisionContractError("元の要約が見つからないため比較できません");
-  }
-  if (reasonTag === "口調" && !ledger) {
-    throw new ToneOnlyRevisionContractError("事実台帳が見つからないため claim refs を固定できません");
+  const intent = detectReviewRevisionIntent(article.summary, comment, reasonTag);
+  if (intent.mode === "clarification_required") throw new ReviewRevisionClarificationRequiredError(intent.clarification_reason);
+  if (intent.mode === "limited_patch" && !ledger) {
+    throw new ReviewRevisionClarificationRequiredError("事実台帳が見つからないため、限定修正の根拠claimを確認できません");
   }
   const lightweight = tryApplyLightweightWhyItMattersEdit(article.summary, article.topic, ledger, comment);
-  if (lightweight) {
+  if (intent.mode === "limited_patch" && lightweight) {
+    const patch = minimalWhyItMattersPatch(article.summary.why_it_matters, lightweight.summary.why_it_matters);
+    const trace = buildReviewRevisionTrace(article.summary, lightweight.summary, [patch], intent, comment);
     articles[index - 1] = {
       ...article,
       summary: lightweight.summary,
@@ -34,6 +42,7 @@ export async function reviseStoredArticle(directory: string, index: number, comm
         ledger_fallback_reason: article.generationMeta?.ledger_fallback_reason ?? "",
         display_normalization: { residues: lightweight.residues },
         claim_check: lightweight.claimCheck,
+        review_revision: trace,
         comment_stage: {
           attempted: false,
           used: false,
@@ -46,17 +55,67 @@ export async function reviseStoredArticle(directory: string, index: number, comm
     await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
     return articles[index - 1];
   }
+  if (intent.mode === "limited_patch") {
+    const document = await generateLimitedReviewPatch(article.summary, ledger!, comment, intent);
+    const patched = applyValidatedReviewPatch(article.summary, article.topic, ledger!, comment, reasonTag, intent, document);
+    articles[index - 1] = {
+      ...article,
+      summary: patched.summary,
+      generationMeta: {
+        ...article.generationMeta,
+        topic_key: article.generationMeta?.topic_key ?? article.topic.topic_key,
+        ledger_used: true,
+        ledger_fallback_reason: "",
+        ledger: ledger ?? undefined,
+        display_normalization: { residues: inspectDisplayKanjiResidues(patched.summary) },
+        claim_check: patched.claimCheck,
+        review_revision: patched.trace,
+        comment_stage: {
+          attempted: true,
+          used: patched.trace.changed_fields.includes("why_it_matters"),
+          regenerated: false,
+          fallback_reason: "review_limited_patch",
+          exclamation_count: (patched.summary.why_it_matters.match(/[！!]/g) ?? []).length
+        }
+      }
+    };
+    await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
+    return articles[index - 1];
+  }
   const evidence = rebuildEvidence(article);
-  const revised = await reviseTopicFromSavedData(article.topic, evidence, ledger, comment, undefined, undefined, article.summary, reasonTag === "口調");
-  articles[index - 1] = { ...article, summary: revised.summary, generationMeta: revised.meta };
+  const revised = await reviseTopicFromSavedData(article.topic, evidence, ledger, comment, undefined, undefined, article.summary, false);
+  articles[index - 1] = {
+    ...article,
+    summary: revised.summary,
+    generationMeta: { ...revised.meta, review_revision: buildFullRewriteTrace(article.summary, revised.summary) }
+  };
   await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
   return articles[index - 1];
+}
+
+function minimalWhyItMattersPatch(before: string, after: string): ReviewPatchOperation {
+  let prefix = 0;
+  while (prefix < before.length && prefix < after.length && before[prefix] === after[prefix]) prefix += 1;
+  let suffix = 0;
+  while (
+    suffix < before.length - prefix
+    && suffix < after.length - prefix
+    && before[before.length - 1 - suffix] === after[after.length - 1 - suffix]
+  ) suffix += 1;
+  return {
+    field: "why_it_matters",
+    operation: "replace",
+    before: before.slice(prefix, before.length - suffix),
+    after: after.slice(prefix, after.length - suffix),
+    evidence_claim_refs: [],
+    reason: "指定された一意な文言を限定編集"
+  };
 }
 
 /**
  * A review comment may use this no-network path only when it makes one
  * unambiguous edit inside `why_it_matters`.  Validation failures intentionally
- * return null so the established revision path remains the fallback.
+ * return null so the shared limited-patch path remains the fallback.
  */
 export function tryApplyLightweightWhyItMattersEdit(
   summary: SummarizedArticle | undefined,
@@ -80,14 +139,23 @@ export function tryApplyLightweightWhyItMattersEdit(
   if ([...afterGates].some((key) => !beforeGates.has(key))) return null;
 
   const toneMode = getToneMode(topic, ledger);
-  const beforeCommentGates = gateKeys(runCommentCheck(summary.why_it_matters, "", ledger, topic, toneMode));
+  const bodyClaimRefs = [
+    ...summary.claim_refs.what_happened,
+    ...(summary.detail_sections ?? []).flatMap((section) => section.claim_refs)
+  ];
+  const commentContext = {
+    bodyText: `${summary.lead}\n${summary.what_happened}`,
+    bodyClaimRefs,
+    commentClaimRefs: summary.claim_refs.why_it_matters
+  };
+  const beforeCommentGates = gateKeys(runCommentCheck(summary.why_it_matters, "", ledger, topic, toneMode, commentContext));
   const afterCommentGates = gateKeys(runCommentCheck(
     normalized.summary.why_it_matters,
     "",
     ledger,
     topic,
     toneMode,
-    { bodyText: `${summary.lead}\n${summary.what_happened}` }
+    commentContext
   ));
   if ([...afterCommentGates].some((key) => !beforeCommentGates.has(key))) return null;
 
