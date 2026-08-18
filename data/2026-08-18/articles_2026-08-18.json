@@ -45,12 +45,12 @@
     "summary": {
       "title_ja": "丁禹兮、ファンに黄金のネックレスを「嫁入り道具」として贈り話題に",
       "badge": "NEWS",
-      "lead": "中国の俳優・丁禹兮さんが、自身のコンサートでプロポーズされたファンに、自費で購入した黄金のネックレスを「娘家人からの嫁入り道具」として贈り、微博のホットサーチで話題となっています。",
-      "what_happened": "2026年8月17日、丁禹兮さんは上海の老鳳祥イベントで、自費で黄金のネックレスを購入し、以前自身のコンサートで彼氏からプロポーズされたファンに贈ると述べました。彼はこのネックレスを「娘家人（花嫁側の身内・実家側の人々）からの嫁入り道具」と表現し、スタジオを通じてファンに送る手配をしました。また、その場でファンのID「KING9金金」を正確に読み上げました。この出来事は微博のホットサーチに載り、「内娱宠粉天花板（中国エンタメ界でファンを最も大切にする人）」と呼ばれました。また、複数のメイク担当者を現場に呼んでファンのメイクを施したり、黄金製のスマホスタンドを贈ったこともあります。",
-      "reaction_view": "微博では「内娱独一份的宠粉（中国エンタメ界で唯一無二のファンへの愛情）」「比黄金更贵的是丁禹兮的真心（黄金より貴いのは丁禹兮の真心）」といった声が上がり、多くのネットユーザーが「丁禹兮のような娘家人がいて本当に良かった」と感じ、ファンとアイドルの双方向の愛の具体例として称賛しました。",
-      "why_it_matters": "「娘家人」という言葉、中国のファンダムでは芸能人がファンを家族のように扱うのが珍しいんです。丁禹兮さんは過去にも自費で黄金を贈っていて、今回はプロポーズされたファンに「嫁入り道具」として贈りました。次はこのファンが実際に受け取った後の反応や、他の芸能人への影響を見たいです！",
+      "lead": "中国の俳優・丁禹兮さんが、自身のコンサートでプロポーズされたファンに、自費で購入した黄金のネックレスを「娘家人からの嫁入り道具」として贈り、話題になっています。",
+      "what_happened": "2026年8月17日、丁禹兮さんは上海の老鳳祥のイベント会場で、自費で黄金のネックレスを購入し、以前自身のコンサートで彼氏からプロポーズされたファンに贈ると述べました。彼はこのネックレスを「娘家人からの嫁入り道具」と表現し、スタジオに連絡してそのファンに送るよう手配しました。また、その場でファンのID「KING9金金」を正確に読み上げました。\n\n丁禹兮さんはこれまでもファンへの贈り物を積極的に行っており、2026年1月25日には上海のイベントでカードを使い、ネックレス1本とブレスレット3本（総額数万元相当）を購入し、4人のファンに贈りました。2025年6月17日の上海・范思哲イベントでは、単価約5600元のネックレス27本を約15万元で購入し、その場にいたファンに配りました。さらに、ミルクティーや花を贈ったり、複数のメイク担当者を現場に呼んでファンのメイクを行ったり、黄金／金製のスマホスタンドを贈るなどのエピソードもあります。",
+      "reaction_view": "",
+      "why_it_matters": "「娘家人」という言葉、中国の結婚文化では花嫁側の身内・実家側の人々を指すんです。丁禹兮さんがファンを家族のように扱って、黄金のネックレスを「嫁入り道具」として贈ったのがすごく心に残りました！次は、このネックレスが実際にファンの手に渡ったかどうか、そしてファンがどんな反応をするのかを確認したいです。",
       "editor_comment": "",
-      "japan_context_note": "",
+      "japan_context_note": "日本ではあまり知られていないかもしれませんが、中国のファンダムでは、芸能人側がファンへプレゼントやサービスを返す行為を「逆応援」と呼ぶことがあります。丁禹兮さんの今回の行為はその典型例で、ファンを「娘家人」（実家の家族）と表現し、結婚を祝う「嫁入り道具」を贈るという、中国の結婚文化を反映した粋な計らいなんです。日本ではなかなか見られない光景なので、中国エンタメの面白さが伝わると嬉しいです。",
       "category": "エンタメ",
       "confidence": "B",
       "source_type": "media_report",
@@ -76,7 +76,7 @@
       "has_official_source": false,
       "has_multiple_sources": true,
       "has_sns_signal": false,
-      "article_type": "unknown",
+      "article_type": "news_event",
       "skip_reason": "",
       "verification_status": "verified",
       "topic_key": "丁禹兮给粉丝买黄金",
@@ -86,15 +86,13 @@
         ],
         "works": [],
         "organizations": [
-          "老鳳祥",
-          "新浪娱乐"
+          "老鳳祥"
         ]
       },
       "related_sources": [],
       "tags": [
         "ファン文化",
         "逆応援",
-        "微博",
         "丁禹兮"
       ],
       "publish_priority": "medium",
@@ -109,23 +107,20 @@
           "C6",
           "C7",
           "C8",
-          "C9",
-          "C13",
-          "C14",
-          "C17",
-          "C18"
+          "C9"
         ],
         "why_it_matters": [
+          "C1",
           "C2",
-          "C7",
-          "C8",
-          "C11"
+          "C5",
+          "R57-C5"
         ],
-        "reaction_view": [
-          "C15",
-          "C16"
-        ],
-        "japan_context_note": []
+        "reaction_view": [],
+        "japan_context_note": [
+          "C11",
+          "C18",
+          "R57-C6"
+        ]
       },
       "detail_sections": []
     },
@@ -374,21 +369,20 @@
           {
             "id": "C7",
             "type": "verified_fact",
-            "text": "2026年1月25日、丁禹兮は上海のイベント会場でその場でカードを使い、ネックレス1本とブレスレット3本（総額6万元以上）を購入し、4人のファンにランダムで贈った。",
+            "text": "2026年1月25日、丁禹兮は上海のイベントでネックレス1本とブレスレット3本を購入し、4人のファンへ贈った。各商品の公開価格から総額は数万元相当だった。",
             "evidence_refs": [
-              "E1"
+              "R57-E2",
+              "R57-E3"
             ],
             "entities": [
               "丁禹兮"
             ],
             "numbers": [
               "2026年1月25日",
-              "1",
-              "3",
-              "6万元",
-              "4"
+              "1本",
+              "3本",
+              "4人"
             ],
-            "quote_zh": "今年1月25日，丁禹兮就曾在上海活动现场临时刷卡，购买一条项",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -397,20 +391,22 @@
           {
             "id": "C8",
             "type": "verified_fact",
-            "text": "2025年12月、丁禹兮は15万元をかけて単価5600元のネックレス27本を購入し、その場にいたファンに贈り、ブランドの全国在庫をすべて確保した。",
+            "text": "2025年6月17日の上海・范思哲イベントで、丁禹兮は単価約5600元のネックレス27本を約15万元で購入し、会場のファンへ贈った。",
             "evidence_refs": [
-              "E1"
+              "R57-E1",
+              "R57-E4"
             ],
             "entities": [
               "丁禹兮"
             ],
             "numbers": [
-              "2025年12月",
-              "15万元",
-              "27",
-              "5600元"
+              "2025年",
+              "6月",
+              "17日",
+              "5600元",
+              "27本",
+              "15万元"
             ],
-            "quote_zh": "2025年12月，他曾花15万元买下27条单价5600元的项",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -419,21 +415,44 @@
           {
             "id": "C9",
             "type": "verified_fact",
-            "text": "丁禹兮はこれまでにもファンにミルクティーや花を何度も購入し、最近では7人のメイクアップアーティストを現場に呼んでファンのメイクを行い、純金のスマホスタンドも贈った。",
+            "text": "丁禹兮はファンへミルクティーや花を贈り、複数のメイク担当者を現場に呼び、黄金または金製のスマホスタンドも贈った。",
             "evidence_refs": [
               "E1"
             ],
             "entities": [
               "丁禹兮"
             ],
-            "numbers": [
-              "7"
-            ],
-            "quote_zh": "他还多次给粉丝买奶茶、送花，近期也为粉丝请过7位化妆师现场做",
+            "numbers": [],
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
             "angle_kind": "other"
+          },
+          {
+            "id": "R57-C5",
+            "type": "verified_fact",
+            "text": "娘家人は、結婚した女性から見た実家側の身内・人々を指す表現である。",
+            "evidence_refs": [
+              "R57-E7"
+            ],
+            "entities": [],
+            "numbers": [],
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other"
+          },
+          {
+            "id": "R57-C6",
+            "type": "verified_fact",
+            "text": "中国語圏のファンダムでは、芸能人側がファンへ贈り物やサービスを返す行為を『逆応援』と呼ぶことがある。",
+            "evidence_refs": [
+              "R57-E8"
+            ],
+            "entities": [],
+            "numbers": [],
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other"
           },
           {
             "id": "C10",
@@ -726,8 +745,52 @@
         "evidence_roles": {
           "E1": "root_corroboration",
           "E2": "root_corroboration",
-          "E3": "root_corroboration"
-        }
+          "E3": "root_corroboration",
+          "R57-E1": "root_corroboration",
+          "R57-E2": "root_corroboration",
+          "R57-E3": "root_corroboration",
+          "R57-E4": "root_corroboration",
+          "R57-E7": "root_corroboration",
+          "R57-E8": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "R57-E1",
+            "classification": "platform_self_media",
+            "usable_for_verified_facts": false,
+            "reason": "当日の公開投稿で日付確認にのみ使用し、単独根拠にはしない"
+          },
+          {
+            "evidence_ref": "R57-E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "封面新聞が受領したファンへ取材し、品目と公開価格を確認"
+          },
+          {
+            "evidence_ref": "R57-E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "新浪財経の取材転載で品目と価格帯を確認"
+          },
+          {
+            "evidence_ref": "R57-E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "聯合早報が27人、単価、総額を報道"
+          },
+          {
+            "evidence_ref": "R57-E7",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "教育部国語辞典の語義"
+          },
+          {
+            "evidence_ref": "R57-E8",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "複数記事で確認できるファンダム用語の用例"
+          }
+        ]
       },
       "ai_models": {
         "base": {
@@ -749,10 +812,10 @@
       "comment_grounding": {
         "topic_key": "丁禹兮给粉丝买黄金",
         "refs": [
+          "C1",
           "C2",
-          "C7",
-          "C8",
-          "C11"
+          "C5",
+          "R57-C5"
         ],
         "gated_sentences_removed": [],
         "unmatched_numbers": []
@@ -761,24 +824,24 @@
         "topic_key": "丁禹兮给粉丝买黄金",
         "violations": [],
         "gated_violation_count": 0,
-        "action": "text_removed"
+        "action": "none"
       },
       "tone_mode": "normal",
       "comment_stage": {
         "attempted": true,
         "used": true,
-        "regenerated": true,
-        "fallback_reason": "",
+        "regenerated": false,
+        "fallback_reason": "review_limited_patch",
         "exclamation_count": 1
       },
       "article_depth": {
         "profile": "standard",
-        "eligible_claims": 20,
+        "eligible_claims": 22,
         "used_claims": 9,
-        "coverage_ratio": 0.45,
+        "coverage_ratio": 0.409,
         "detail_sections": 0,
-        "important_number_claims": 6,
-        "used_number_claims": 1,
+        "important_number_claims": 5,
+        "used_number_claims": 3,
         "regenerated": false,
         "passed": true,
         "reasons": []

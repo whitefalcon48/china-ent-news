@@ -557,21 +557,20 @@
           {
             "id": "C7",
             "type": "verified_fact",
-            "text": "2026年1月25日、丁禹兮は上海のイベント会場でその場でカードを使い、ネックレス1本とブレスレット3本（総額6万元以上）を購入し、4人のファンにランダムで贈った。",
+            "text": "2026年1月25日、丁禹兮は上海のイベントでネックレス1本とブレスレット3本を購入し、4人のファンへ贈った。各商品の公開価格から総額は数万元相当だった。",
             "evidence_refs": [
-              "E1"
+              "R57-E2",
+              "R57-E3"
             ],
             "entities": [
               "丁禹兮"
             ],
             "numbers": [
               "2026年1月25日",
-              "1",
-              "3",
-              "6万元",
-              "4"
+              "1本",
+              "3本",
+              "4人"
             ],
-            "quote_zh": "今年1月25日，丁禹兮就曾在上海活动现场临时刷卡，购买一条项",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -580,20 +579,22 @@
           {
             "id": "C8",
             "type": "verified_fact",
-            "text": "2025年12月、丁禹兮は15万元をかけて単価5600元のネックレス27本を購入し、その場にいたファンに贈り、ブランドの全国在庫をすべて確保した。",
+            "text": "2025年6月17日の上海・范思哲イベントで、丁禹兮は単価約5600元のネックレス27本を約15万元で購入し、会場のファンへ贈った。",
             "evidence_refs": [
-              "E1"
+              "R57-E1",
+              "R57-E4"
             ],
             "entities": [
               "丁禹兮"
             ],
             "numbers": [
-              "2025年12月",
-              "15万元",
-              "27",
-              "5600元"
+              "2025年",
+              "6月",
+              "17日",
+              "5600元",
+              "27本",
+              "15万元"
             ],
-            "quote_zh": "2025年12月，他曾花15万元买下27条单价5600元的项",
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
@@ -602,21 +603,44 @@
           {
             "id": "C9",
             "type": "verified_fact",
-            "text": "丁禹兮はこれまでにもファンにミルクティーや花を何度も購入し、最近では7人のメイクアップアーティストを現場に呼んでファンのメイクを行い、純金のスマホスタンドも贈った。",
+            "text": "丁禹兮はファンへミルクティーや花を贈り、複数のメイク担当者を現場に呼び、黄金または金製のスマホスタンドも贈った。",
             "evidence_refs": [
               "E1"
             ],
             "entities": [
               "丁禹兮"
             ],
-            "numbers": [
-              "7"
-            ],
-            "quote_zh": "他还多次给粉丝买奶茶、送花，近期也为粉丝请过7位化妆师现场做",
+            "numbers": [],
             "anchor": true,
             "scope": "root_event",
             "editorial_role": "other",
             "angle_kind": "other"
+          },
+          {
+            "id": "R57-C5",
+            "type": "verified_fact",
+            "text": "娘家人は、結婚した女性から見た実家側の身内・人々を指す表現である。",
+            "evidence_refs": [
+              "R57-E7"
+            ],
+            "entities": [],
+            "numbers": [],
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other"
+          },
+          {
+            "id": "R57-C6",
+            "type": "verified_fact",
+            "text": "中国語圏のファンダムでは、芸能人側がファンへ贈り物やサービスを返す行為を『逆応援』と呼ぶことがある。",
+            "evidence_refs": [
+              "R57-E8"
+            ],
+            "entities": [],
+            "numbers": [],
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other"
           },
           {
             "id": "C10",
@@ -909,8 +933,52 @@
         "evidence_roles": {
           "E1": "root_corroboration",
           "E2": "root_corroboration",
-          "E3": "root_corroboration"
-        }
+          "E3": "root_corroboration",
+          "R57-E1": "root_corroboration",
+          "R57-E2": "root_corroboration",
+          "R57-E3": "root_corroboration",
+          "R57-E4": "root_corroboration",
+          "R57-E7": "root_corroboration",
+          "R57-E8": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "R57-E1",
+            "classification": "platform_self_media",
+            "usable_for_verified_facts": false,
+            "reason": "当日の公開投稿で日付確認にのみ使用し、単独根拠にはしない"
+          },
+          {
+            "evidence_ref": "R57-E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "封面新聞が受領したファンへ取材し、品目と公開価格を確認"
+          },
+          {
+            "evidence_ref": "R57-E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "新浪財経の取材転載で品目と価格帯を確認"
+          },
+          {
+            "evidence_ref": "R57-E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "聯合早報が27人、単価、総額を報道"
+          },
+          {
+            "evidence_ref": "R57-E7",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "教育部国語辞典の語義"
+          },
+          {
+            "evidence_ref": "R57-E8",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "複数記事で確認できるファンダム用語の用例"
+          }
+        ]
       },
       "fallback_reason": ""
     }
