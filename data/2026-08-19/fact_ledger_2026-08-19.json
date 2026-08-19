@@ -1,0 +1,563 @@
+{
+  "date": "2026-08-19",
+  "generated_at": "2026-08-19T02:23:37.091Z",
+  "ledgers": [
+    {
+      "topic_key": "章子怡投资回报超130倍套现3亿",
+      "ledger": {
+        "topic_key": "章子怡投资回报超130倍套现3亿",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "上美股份は全額出資子会社の上海青道を通じて上海怡頁生物科技有限公司の株式29%を総額約3.84億元で取得する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上美股份",
+              "上海青道",
+              "上海怡頁生物科技有限公司"
+            ],
+            "numbers": [
+              "29%",
+              "3.84亿元"
+            ],
+            "quote_zh": "拟通过全资附属公司上海青道收购上海怡页生物科技有限公司合计2",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "章子怡が支配する共青城大脚投資合伙企业は保有する上海怡頁の株式23%を約3.045億元で売却する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "章子怡",
+              "共青城大脚投資合伙企业",
+              "上海怡頁"
+            ],
+            "numbers": [
+              "23%",
+              "3.045亿元"
+            ],
+            "quote_zh": "章子怡控股的共青城大脚投资合伙企业（有限合伙）出售所持上海怡",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "上美股份の副総裁である劉明は保有する上海怡頁の株式6%を約7943.96万元で売却する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "劉明",
+              "上海怡頁"
+            ],
+            "numbers": [
+              "6%",
+              "7943.96万元"
+            ],
+            "quote_zh": "上美股份副总裁刘明出售所持6%股权，对价约7943.96万元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "共青城大脚投資合伙企业は2018年に設立され、登録資本金は300万元で、章子怡が99%、父の章元孝が1%を出資している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "共青城大脚投資合伙企业",
+              "章子怡",
+              "章元孝"
+            ],
+            "numbers": [
+              "2018",
+              "300万元",
+              "99%",
+              "1%"
+            ],
+            "quote_zh": "共青城大脚投资合伙企业 (有限合伙) 成立于2018年，位于",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "取引完了後、上美股份の上海怡頁に対する直接持株比率は51%から80%に上昇し、章子怡は約6%、劉明は5%の株式を保持する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上美股份",
+              "上海怡頁",
+              "章子怡",
+              "劉明"
+            ],
+            "numbers": [
+              "51%",
+              "80%",
+              "6%",
+              "5%"
+            ],
+            "quote_zh": "此次交易完成后，上美股份对上海怡页的直接持股比例将由51%提",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "取引完了後も章子怡はブランド共同創設者の身分を維持し、「newpage 一页」のブランド代言人を続ける。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "章子怡",
+              "newpage 一页"
+            ],
+            "numbers": [],
+            "quote_zh": "章子怡品牌联合创始人身份不变，并继续担任“newpage 一",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "上海怡頁は上美股份傘下の乳幼児向けスキンケアブランド「newpage 一页」の運営主体であり、同ブランドは2022年5月に正式にローンチされ、創業者チームには章子怡と育児専門家の崔玉涛が含まれる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上海怡頁",
+              "上美股份",
+              "newpage 一页",
+              "章子怡",
+              "崔玉涛"
+            ],
+            "numbers": [
+              "2022年5月"
+            ],
+            "quote_zh": "上海怡页是上美股份旗下婴童功效护肤品牌 \"newpage 一",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "天眼查の情報によると、大脚投資と劉明の上海怡頁に対する払込出資額はそれぞれ290万元と110万元であり、章子怡が今回売却する23%の株式に対応する原始コストは約230万元で、4年間の帳簿上のリターンは130倍を超える。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "大脚投資",
+              "劉明",
+              "上海怡頁",
+              "章子怡"
+            ],
+            "numbers": [
+              "290万元",
+              "110万元",
+              "23%",
+              "230万元",
+              "4年",
+              "130倍"
+            ],
+            "quote_zh": "大脚投资和刘明对上海怡页的认缴出资额分别为290万元和110",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "上海怡頁の2023年のブランド売上高は1.52億元で前年比498%増、2024年は3.76億元、2025年は約8.8億元に達し、税引後利益は約1.32億元だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上海怡頁"
+            ],
+            "numbers": [
+              "2023年",
+              "1.52亿元",
+              "498%",
+              "2024年",
+              "3.76亿元",
+              "2025年",
+              "8.8亿元",
+              "1.32亿元"
+            ],
+            "quote_zh": "2023年品牌营收达1.52亿元，同比增长 498%；202",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "「newpage 一页」はローンチから3年半で累計売上高が10億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "newpage 一页"
+            ],
+            "numbers": [
+              "3年半",
+              "10亿元"
+            ],
+            "quote_zh": "上线三年半，品牌累计营收已突破10亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "上美股份の2025年通期総収入91.78億元のうち、「newpage 一页」の貢献比率は約9.6%で、韓束に次ぐグループ第二の成長曲線となっている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上美股份",
+              "newpage 一页",
+              "韓束"
+            ],
+            "numbers": [
+              "2025年",
+              "91.78亿元",
+              "9.6%"
+            ],
+            "quote_zh": "在上美股份2025年全年91.78亿元的总收入中，“newp",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "同期に上美股份傘下の別の乳幼児ブランド「紅色小象」の売上高は2.98億元で前年比20.8%減少し、newpage 一页のマタニティ・ベビー部門における主力地位がさらに際立った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上美股份",
+              "紅色小象",
+              "newpage 一页"
+            ],
+            "numbers": [
+              "2.98亿元",
+              "20.8%"
+            ],
+            "quote_zh": "同期，上美旗下另一婴童品牌红色小象收入2.98亿元，同比下滑",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "上美股份は今回の増資により中核子会社の支配権をさらに強化する意向であり、2026年に「2+2+2」戦略を打ち出し、2つのスキンケア100億ブランド、2つのマタニティ・ベビー有力ブランド、2つの新鋭ブランドを育成する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上美股份"
+            ],
+            "numbers": [
+              "2026年",
+              "2+2+2"
+            ],
+            "quote_zh": "对于上美股份而言，此次增持意在进一步巩固对核心子公司的控制权",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "共青城大脚投資合伙企业は章子怡専属の専門化投資会社であり、同プラットフォームを通じて章子怡は美容・スキンケア分野を超え、即席燕窩ブランドの小仙炖や高級マタニティ・ベビー用品ブランドの漂漂羽毛などに投資し、多元化消費投資マトリクスを構築している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "共青城大脚投資合伙企业",
+              "章子怡",
+              "小仙炖",
+              "漂漂羽毛"
+            ],
+            "numbers": [],
+            "quote_zh": "共青城大脚投资合伙企业是章子怡专属的专业化投资公司，依托该平",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "章子怡は上海飛宝文化伝媒の株式9.35%を保有し、中核自然人株主の一人である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "章子怡",
+              "上海飛宝文化伝媒"
+            ],
+            "numbers": [
+              "9.35%"
+            ],
+            "quote_zh": "章子怡持有上海飞宝文化传媒9.35%股权，是公司核心自然人股",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "章子怡は傘下の投資プラットフォームを通じて海南青怡影視文化有限公司を支配し、複数の個人映画スタジオを全額出資で運営し、コンテンツ制作・プロジェクト運営・芸能マネジメントをカバーする文娯ビジネス体系を構築している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "章子怡",
+              "海南青怡影視文化有限公司"
+            ],
+            "numbers": [],
+            "quote_zh": "章子怡通过旗下投资平台控股海南青怡影视文化有限公司，同时全资",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "章子怡は早期に映画大手の博納影業に自然人として投資し、同社のA株上場に伴い映画分野での安定した財務投資を実現した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "章子怡",
+              "博納影業"
+            ],
+            "numbers": [],
+            "quote_zh": "她早年入局影视龙头博纳影业，以自然人身份参与早期投资，伴随公",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "章子怡は2016年から2017年にかけて新消費分野に進出し、美容機器ブランドの美麗策のエンジェルラウンド、児童向けアフタースクール教育ブランドの可愛学のB1ラウンドに参加し、児童向け補助食品ブランドの米小芽にも投資した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "章子怡",
+              "美麗策",
+              "可愛学",
+              "米小芽"
+            ],
+            "numbers": [
+              "2016年",
+              "2017年",
+              "B1"
+            ],
+            "quote_zh": "章子怡早在2016至2017年布局新消费赛道。公开融资信息显",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "章子怡は北京青山基業天使投資合伙企业に出資してLPとして一級市場のアーリーステージベンチャー投資に参加し、単一プロジェクト投資モデルから脱却した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "章子怡",
+              "北京青山基業天使投資合伙企业"
+            ],
+            "numbers": [],
+            "quote_zh": "通过参股北京青山基业天使投资合伙企业，以LP身份参与一级市场",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "8月11日、上美股份は公告を発表し、全額出資子会社の上海青道が大脚投資の保有する上海怡頁の株式23%を約3.045億元で買収すると発表した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "上美股份",
+              "上海青道",
+              "大脚投資",
+              "上海怡頁"
+            ],
+            "numbers": [
+              "8月11日",
+              "23%",
+              "3.045亿元"
+            ],
+            "quote_zh": "8月11日，港股上市公司上美股份（韩束母公司）发布公告，其全",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "套现",
+            "gloss_ja": "現金化",
+            "what_is": "保有する株式や資産を売却して現金を得ること。",
+            "why_now": "章子怡が保有株式を売却して3億元超を現金化したことが話題となっている。",
+            "explain_quote_zh": "章子怡套现3亿",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "对价",
+            "gloss_ja": "対価",
+            "what_is": "取引において支払われる金銭やその他の価値。",
+            "why_now": "株式売却の取引金額を示す用語として使われている。",
+            "explain_quote_zh": "对价约3.045亿元",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "全资附属公司",
+            "gloss_ja": "完全子会社",
+            "what_is": "親会社が100%出資する子会社。",
+            "why_now": "上美股份が上海青道を通じて買収を行った。",
+            "explain_quote_zh": "全资附属公司上海青道",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "认缴出资额",
+            "gloss_ja": "払込出資額",
+            "what_is": "会社設立時に出資者が引き受けた出資額。",
+            "why_now": "章子怡の原始投資コストの計算に使われた。",
+            "explain_quote_zh": "认缴出资额分别为290万元和110万元",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "账面回报",
+            "gloss_ja": "帳簿上のリターン",
+            "what_is": "投資元本に対する評価益の倍率。",
+            "why_now": "章子怡の投資リターンが130倍超と報じられた。",
+            "explain_quote_zh": "四年间账面回报超过130倍",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "增长曲线",
+            "gloss_ja": "成長曲線",
+            "what_is": "企業の成長を牽引する事業やブランド。",
+            "why_now": "newpage一页が上美股份の第二の成長曲線と位置づけられた。",
+            "explain_quote_zh": "已成为继韩束之后集团的第二条增长曲线",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "LP",
+            "gloss_ja": "リミテッドパートナー",
+            "what_is": "投資ファンドに出資する有限責任組合員。",
+            "why_now": "章子怡がLPとしてベンチャー投資に参加した。",
+            "explain_quote_zh": "以LP身份参与一级市场早期创投",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "热搜",
+            "gloss_ja": "ホットサーチ",
+            "what_is": "微博などのSNSで急上昇した話題ランキング。",
+            "why_now": "「章子怡套现3亿」が微博のホットサーチ入りした。",
+            "explain_quote_zh": "“章子怡套现3亿”登上微博热搜",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "platform_self_media",
+            "usable_for_verified_facts": false,
+            "reason": "platform_self_media_page"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
