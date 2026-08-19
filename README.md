@@ -1,452 +1,229 @@
-# 中国エンタメニュース Phase 0
+# 中国エンタメニュース収集・公開パイプライン
 
-中国の映画・ドラマ・芸能ニュース候補を集め、AIで日本語の軽いニュースメモに整理し、Markdownで出力するための最小プロジェクトです。
+中国語圏で実際に話題になっている映画・ドラマ・芸能・業界ニュースを集め、根拠を確認したうえで日本語のニュース記事に整え、レビュー後に静的サイトへ公開するパイプラインです。
 
-この段階では、まだサイト化・自動公開・画像取得はしません。目的は「収集元の質」と「AI出力の読みやすさ」を確認することです。
+単なる翻訳・要約ではなく、中国現地の評価・熱搜・興行・制作環境と、日本語圏で見えている中国エンタメ像とのズレを拾うことを目的にしています。
+
+- 本番サイト: <https://bingtangnews.0-w-0.net/>
+- GitHub Pagesフォールバック: <https://whitefalcon48.github.io/china-ent-news/>
+- 編集方針: [`docs/editorial-character.md`](docs/editorial-character.md)
+- フェーズ状況と受け入れ基準: [`docs/roadmap.md`](docs/roadmap.md)
+
+## 現在のパイプライン
+
+```text
+固定ソース + Weibo熱搜
+  → 日付補完
+  → URL / タイトル重複除去
+  → 記事分類・スコアリング
+  → topicKey生成・topic統合
+  → topic候補生成・ソース拡張
+  → 鮮度 / 履歴 / ソース数 / カテゴリ上限で選定
+  → fact ledger・claim・記事深度・表記ゲート
+  → LLM要約・編集コメント
+  → Markdown / 日次データ保存
+  → GitHubレビューIssue
+  → OWNER承認
+  → 静的サイト・OGP・X投稿文面
+```
+
+topic単位で複数ソースを扱う **topic-first** が既定です。`TOPIC_FIRST=false` を設定した場合のみ、旧来の記事単位選定へ戻せます。
 
 ## できること
 
-- 設定ファイルに書いた収集元からニュース候補を取得します。
-- URLとタイトルの近さで、簡単に重複を減らします。
-- DeepSeekまたはGeminiで、日本語の軽いニュースメモに整理します。
-- コラム、レビュー、インタビュー、静的ページは原則除外します。
-- articleType、topic_key、source_countなどの内部データを持ちます。
-- `output/YYYY-MM-DD-deepseek.md` など、provider名つきMarkdownを出力します。
+- `config/sources.json` のRSS・HTMLソースから記事候補を取得
+- Weibo熱搜をRSSHub経由で取得し、芸能・ファン文化などの候補を合流
+- URL正規化、タイトル類似、topicKeyによる重複整理
+- RSSHub / Serperによる追加ソース探索と本文検証
+- source type（公式・媒体・SNS・データ）を分けた根拠管理
+- fact ledger、claim check、記事深度、編集価値、用語・漢字・翻訳の品質ゲート
+- DeepSeekまたはGeminiによる要約・編集コメント生成
+- 日次候補をGitHub Issueで人間レビュー
+- OWNERが持ち込んだURLを、日次生成とは分離して即時処理
+- 承認済み記事から、アーカイブ・個別記事・タグ検索・OGPを含む静的サイトを生成
+- 日次ダイジェストと個別投稿候補のX文面を生成
+- 固定フィクスチャを使ったモデル比較
 
-## Phase 0の現在の方針
+## 編集・公開の契約
 
-目標は、検証レポートではなく、ナルエビちゃんニュース型の最新順フィードです。
+記事には、読者向けの見出し・リード・「何が起きた？」・「反応・見られ方」・「ビンタンの注目ポイント」・出典を持たせます。内部では、根拠資料、claim refs、source mix、鮮度、選定理由を保持します。
 
-編集キャラクター方針は以下に保存しています。
+特に次のルールを守ります。
 
-```text
-docs/editorial-character.md
-```
+- 元記事にないSNS反応、背景、数字、人物評価を作らない
+- 噂や熱搜は、確認できた観測として扱い、事実のように断定しない
+- 公式ソースだけで完結するtopicは低優先度にする
+- 外部取得の失敗はgraceful fallbackにし、全体を止めず診断ログへ残す
+- 通常フィードは `today` / `yesterday` / `recent` の候補だけを対象にする
+- 同じtopicの再掲載は履歴を照合し、新しい根拠や更新がなければcooldownで止める
+- `reliability: A` のソースに限り、`requireEntertainmentKeywords: true` の設定でエンタメキーワードゲートを適用する
+- AI生成やclaim gateに失敗した記事は、薄い状態のまま公開しない
 
-このサイトは、中国語記事を日本語に翻訳・要約するニュースサイトではありません。中国現地で実際に評価され、語られ、消費されているエンタメと、日本語圏で見えている中国エンタメ像のズレを埋めることを目的にしています。
-
-表に出すMarkdownは、以下のような軽い構成にしています。
-
-```markdown
-## 【カテゴリ｜確度B】タイトル
-
-リード文。2〜3行で、何が起きたかがわかる文章。
-
-### 何が起きた？
-短く整理。
-
-### 反応・見られ方
-SNS反応や複数メディアでの見られ方がある場合のみ。
-
-### ひとこと
-必要な場合のみ。
-
-ソース：媒体名1、媒体名2
-```
-
-裏側では、以下を内部データとして持ちます。
-
-- `source_count`
-- `source_list`
-- `has_official_source`
-- `has_multiple_sources`
-- `has_sns_signal`
-- `article_type`
-- `skip_reason`
-- `verification_status`
-- `topic_key`
-- `main_entities`
-- `related_sources`
-
-Phase 0の品質検証では、現時点では `deepseek` を推奨providerにします。Gemini対応も残しています。
-
-## 出力品質の目安
-
-1記事あたりの標準ボリュームは、日本語でおおむね400〜700字です。
-
-- 通常記事: 400〜700字
-- 公式発表系: 300〜500字でも可
-- ゴシップ・騒動系: 500〜800字
-
-raw本文が短すぎる記事は、無理に薄い本文を出さず、出力対象から外します。現在はAI処理前に記事ページ本文を取得し、`rawContentLength` をログに出します。
-
-```text
-AI処理中: タイトル
-source: 1905电影网 新闻
-rawContentLength: 1240
-articleType: news_event
-category: 映画
-```
-
-`rawContentLength` は、AIに渡した元本文のおおよその文字数です。ここが短い記事が多い場合、出力が薄くなる原因を判断できます。
-
-## バッジと内部メタデータ
-
-通常ニュースとSNS観測メモは、同じフィード内に混ぜます。ただし、バッジで明確に分けます。
-
-```text
-NEWS
-HOT SEARCH
-WATCH
-OFFICIAL
-DATA
-PR WATCH
-```
-
-内部データには以下を持ちます。
-
-```json
-{
-  "badge": "NEWS",
-  "source_type": "media_report",
-  "published_date": "",
-  "event_date": "",
-  "freshness_label": "recent",
-  "newsworthiness_score": 0,
-  "japan_visibility": "unknown",
-  "japan_gap": "unknown",
-  "context_value": "medium",
-  "sns_heat": "none",
-  "editor_comment": "",
-  "japan_context_note": ""
-}
-```
-
-表示では、バッジ、確度、鮮度、情報源タイプ、ソースリンク、ひとことを優先して見せます。
-
-```markdown
-## 【NEWS｜映画｜確度B｜6/20】張頌文が金爵賞男優賞、上海映画祭は“中国映画の現在地”が見える結果に
-
-情報源タイプ：media_report
-
-### ひとこと
-...
-```
-
-## 鮮度管理
-
-`published_date` は元記事の公開日、`event_date` は出来事の発生日です。
-
-`freshness_label` values:
-
-- `today`: age 0 days
-- `yesterday`: age 1 day
-- `recent`: age 2-7 days
-- `stale`: age 8-30 days
-- `old`: age 31+ days
-- `unknown`: date is missing
-
-Normal feed candidates should be `today`, `yesterday`, or `recent`. `stale`, `old`, and `unknown` are excluded before AI processing.
-
-## topic統合
-
-同じ作品、人物、映画祭、イベントに関する記事は、できるだけ1トピックに寄せます。
-
-- `topic_key` が近いものをまとめます。
-- 複数ソースがある場合は、1記事内の `source_list` に統合します。
-- 統合しきれない場合も、ログに `重複候補` として出します。
-
-## HOT SEARCH / 热搜メモ
-
-Weibo热搜の芸能・ファン文化・噂・炎上系は、`HOT SEARCH` バッジ付きで通常フィード内に混ぜます。
-
-RSSHub経由（`RSSHUB_BASE_URL` + `WEIBO_HOT_SEARCH_ROUTES`、既定は `https://rsshub.app` の `/weibo/search/hot`）で取得し、エンタメ判定キーワードに一致した項目だけを `article_type: sns_trend` / `source_type: sns` の候補として合流させます。`WEIBO_HOT_SEARCH_ENABLED=false` で停止できます。
-
-取得できない場合は graceful fallback としてログにルート別status（failed/empty/timeout）を出し、存在しないSNS反応は作りません。公開RSSHubインスタンスはローカル環境からタイムアウトすることがあります（GitHub Actions上では成功する場合があります）。
+レビューゲートが有効な環境では、生成しただけの記事は公開されません。`review.json` が完了し、記事が `approved` になったものだけがサイトビルドへ入ります。
 
 ## セットアップ
 
-最初に、このフォルダで以下を実行します。
+Node.js 22系を推奨します。
 
 ```bash
 npm install
 ```
 
-## APIキーの設定
-
-`.env.example` をコピーして、同じ場所に `.env` という名前のファイルを作ります。
+`.env.example` を `.env` にコピーし、利用するAIと必要なキーを設定します。
 
 ```env
 AI_PROVIDER=deepseek
-
-GEMINI_API_KEY=ここにGeminiのAPIキー
-GEMINI_MODEL=gemini-2.5-flash-lite
 
 DEEPSEEK_API_KEY=ここにDeepSeekのAPIキー
 DEEPSEEK_MODEL=deepseek-v4-flash
 LEDGER_AI_MODEL=deepseek-v4-pro
 COMMENT_AI_MODEL=deepseek-v4-pro
 
-MAX_ARTICLES=8
+# Geminiを使う場合
+GEMINI_API_KEY=ここにGeminiのAPIキー
+GEMINI_MODEL=gemini-2.5-flash-lite
 
-# 人間レビュー有効時のみ。7点合格が0件なら6点候補を最大3件レビュー対象へ救済
+# ソース拡張を使う場合
+SERPER_API_KEY=ここにSerperのAPIキー
+
+MAX_ARTICLES=8
 EVS_REVIEW_RESCUE=true
 EVS_REVIEW_RESCUE_THRESHOLD=6
 EVS_REVIEW_RESCUE_LIMIT=3
 ```
 
-APIキーはコードに直接書かず、必ず `.env` またはGitHub Secretsに入れてください。
+APIキーはコードや通常ログに書かず、ローカルでは `.env`、GitHub ActionsではSecretsに保存してください。
 
-`EVS_REVIEW_RESCUE` は `REVIEW_GATE=true` のときだけ発動します。自動公開時には7点未満の記事を通しません。
+主な環境変数:
 
-## GeminiとDeepSeekの切り替え
+- `AI_PROVIDER`: `deepseek` または `gemini`。通常のGitHub ActionsはDeepSeekを使用
+- `RUN_DATE`: `YYYY-MM-DD` の日付を指定して再生成
+- `REVIEW_GATE`: `false` にするとローカル確認用にレビューを無効化。通常運用では有効のままにする
+- `SERPER_API_KEY`: 追加ソース探索に使用。未設定時はその経路だけgraceful fallback
+- `WEIBO_HOT_SEARCH_ENABLED=false`: Weibo熱搜を停止
+- `RSSHUB_BASE_URL`: RSSHubの接続先を変更
+- `TOPIC_FIRST=false`: topic-firstを無効化
+- `SITE_DATA_DIR` / `SITE_OUTPUT_DIR`: データ・サイト出力先を変更
 
-使うAIは `.env` の `AI_PROVIDER` で切り替えます。
+## ローカルでの実行
 
-```env
-AI_PROVIDER=deepseek
+変更後の最低限の確認:
+
+```bash
+npm run check
 ```
 
-または:
+AIを呼ばずに収集元・日付・鮮度・除外理由を確認:
 
-```env
-AI_PROVIDER=gemini
+```bash
+npm run audit:sources
 ```
 
-必要なAPIキーは以下です。
-
-```env
-GEMINI_API_KEY=...
-DEEPSEEK_API_KEY=...
-```
-
-モデル名は必要に応じて変更できます。
-
-```env
-GEMINI_MODEL=gemini-2.5-flash-lite
-DEEPSEEK_MODEL=deepseek-v4-flash
-LEDGER_AI_MODEL=deepseek-v4-pro
-COMMENT_AI_MODEL=deepseek-v4-pro
-```
-
-## 実行方法
+通常のニュース生成:
 
 ```bash
 npm run start
+# npm run dev でも同じ
 ```
 
-開発中は以下でも同じように動きます。
-
-```bash
-npm run dev
-```
-
-Gemini APIの接続だけを確認したい場合は、以下を実行します。
-
-```bash
-npm run test:gemini
-```
-
-このテストでは、`.env` の `GEMINI_API_KEY` が読み込めているかを表示します。APIキー本体は表示しません。
-
-DeepSeek APIの接続だけを確認したい場合は、以下を実行します。
-
-```bash
-npm run test:deepseek
-```
-
-このテストでは、`.env` の `DEEPSEEK_API_KEY` が読み込めているかを表示します。APIキー本体は表示しません。
-
-実行すると、画面に以下のような結果が出ます。
+ローカル生成の主な出力は `output/` です。
 
 ```text
-取得した記事数
-重複除去後の記事数
-AI処理した記事数
-Markdown出力先
-エラーがあった収集元
-```
-
-## 出力ファイルの確認
-
-出力先は以下です。
-
-```text
-output/YYYY-MM-DD-gemini.md
 output/YYYY-MM-DD-deepseek.md
+output/selection_trace_YYYY-MM-DD.json
+output/topic_candidates_YYYY-MM-DD.json
+output/source-audit-YYYY-MM-DD.json
+output/source-audit-YYYY-MM-DD.md
 ```
 
-Markdownの中では、SNS反応や未確認情報など、空だった項目は表示されません。
+日次データを保存し、既存データからサイトを生成する場合:
 
-ソースは媒体名だけでなく、可能な限りMarkdownリンクで出力します。
-
-```markdown
-ソース：[1905电影网 新闻](https://...)、[界面新闻 影视产业](https://...)
+```bash
+npm run persist:data
+npm run build:site
 ```
 
-## GitHub ActionsでGemini接続を確認する
+`build:site` の既定出力は `dist/site` です。サイトURLやベースパスを指定する場合は次のようにします。
 
-ローカル環境からGemini APIに接続できない場合でも、GitHub Actions上で接続できるかを確認できます。
+```bash
+SITE_URL=https://bingtangnews.0-w-0.net SITE_BASE_PATH= SITE_OUTPUT_DIR=dist/lolipop-site npm run build:site
+```
 
-この確認では、まだ毎朝自動実行やCloudflare Pages連携はしません。Gemini API接続テストだけを手動で実行します。
+Windows PowerShellでは、実行前に `$env:SITE_URL` などへ設定してください。
 
-### 1. GitHubリポジトリを作る
+## GitHub Actionsの運用
 
-この `china-ent-news` フォルダをGitHubリポジトリとして作成し、GitHubへアップロードします。
+### `generate-news`
 
-### 2. Secretを登録する
+毎日のニュース生成と、手動再生成を行います。手動実行では次を指定できます。
 
-GitHubのリポジトリ画面で、以下を開きます。
+- `run_date`: 過去日を含む生成日
+- `provider`: `deepseek` または `gemini`
+- `refresh_review`: 保存済み候補を置き換えて新しいレビューIssueを作るか
+- `write_compare_fixture`: モデル比較用フィクスチャを保存するか
+
+このworkflowは、ニュース生成 → artifact保存 → `data/` への日次データ保存 → レビューIssue作成までを行います。通常は `REVIEW_GATE=true` で動き、承認前にサイトへ公開しません。
+
+### 日次レビュー
+
+生成されたIssueには、次の形式でOWNERがコメントします。
 
 ```text
-Settings → Secrets and variables → Actions → New repository secret
+1 採用
+2 却下 選定 却下理由
+3 修正 口調 修正指示
+残り採用
 ```
 
-次のSecretを登録します。
+理由タグは `選定`、`口調`、`用語`、`事実`、`構成`、`その他` です。通常の記事がEVS 7点以上に届かない場合は、条件を満たすとIssue内の `救済再生成` でEVS 6点候補を最大3件までレビュー対象にできます。
+
+`review-apply` は承認・修正・却下を反映し、承認完了後にサイトを再ビルドします。日次記事の公開URLは `/archive/YYYY-MM-DD/`、個別記事は `/t/YYYY-MM-DD/<番号>/` です。
+
+### `manual-news-intake`
+
+常設Issue（`manual-news-intake` ラベル）へ、OWNERが1コメント1 URLで投稿すると、日次ランキングを待たずに持ち込みルートが始まります。
 
 ```text
-Name: GEMINI_API_KEY
-Value: GeminiのAPIキー
+https://example.com/news/123
+気になった理由：ファンの反応が大きい
 ```
 
-APIキー本体はGitHub Actionsのログには表示されません。
+URL安全検査、topic化、root / related evidence、fact ledger、claim・表記ゲートを通過した記事だけが専用レビューIssueへ進みます。承認前は公開されません。状態と中間データは `data/manual-intake/<comment-id>/` に保存され、同じコメントの再実行でIssueを二重作成しません。
 
-### 3. Actionsから手動実行する
+詳細は [`docs/design-manual-news-intake.md`](docs/design-manual-news-intake.md) を参照してください。
 
-GitHubのリポジトリ画面で、以下を開きます。
+### `deploy-site`
+
+`main`への関連ファイルのpush、または手動実行でサイトをビルドします。
+
+- 本番: `dist/lolipop-site` → LolipopへFTPS配信
+- フォールバック: `dist/site` → GitHub Pages
+- 配信対象の生成・レビュー・デプロイは `china-ent-news-production` concurrency groupで直列化
+
+詳細は [`docs/deployment-lolipop.md`](docs/deployment-lolipop.md) を参照してください。
+
+## X投稿文面
+
+承認済みの日次データから、X換算280以内の日次ダイジェストと個別投稿候補を生成します。
+
+```bash
+npm run post:x
+```
+
+既定はdry-runで、`output/x_posts_YYYY-MM-DD.md` を作ります。実投稿は `X_POST_LIVE=true` と以下のSecretsを設定したworkflowからのみ行います。
 
 ```text
-Actions → test-gemini → Run workflow
+X_API_KEY
+X_API_SECRET
+X_ACCESS_TOKEN
+X_ACCESS_SECRET
 ```
 
-実行内容は以下だけです。
+運用はまず生成文面を人が確認して予約投稿する半手動方式です。詳細は [`docs/x-bot-operations.md`](docs/x-bot-operations.md) を参照してください。
 
-```text
-npm install
-npm run test:gemini
-```
+## 収集元の追加
 
-### 4. 結果ログを確認する
-
-成功した場合は、ログに以下のように表示されます。
-
-```text
-GEMINI_API_KEY: 読み込み済み
-接続結果: 成功
-```
-
-失敗した場合は、HTTPステータスやネットワークエラーの詳細が表示されます。APIキー本体は表示されません。
-
-## GitHub ActionsでニュースMarkdownを生成する
-
-GitHub Actions上で、ニュース収集からGemini要約、Markdown生成まで通るかを手動で確認できます。
-
-この確認では、まだGitHubへの自動commit、毎朝自動実行、Cloudflare Pages連携はしません。生成されたMarkdownをartifactとしてダウンロードして確認します。
-
-### 1. GitHubリポジトリを用意する
-
-`china-ent-news` フォルダをGitHubリポジトリとしてアップロードします。
-
-### 2. Secretを登録する
-
-GeminiとDeepSeekを比較する場合は、両方のSecretを登録します。GitHubのリポジトリ画面で以下を開きます。
-
-```text
-Settings → Secrets and variables → Actions → New repository secret
-```
-
-次のSecretを登録します。
-
-```text
-Name: GEMINI_API_KEY
-Value: GeminiのAPIキー
-```
-
-```text
-Name: DEEPSEEK_API_KEY
-Value: DeepSeekのAPIキー
-```
-
-APIキー本体はGitHub Actionsのログには表示されません。
-
-### 3. Actionsから手動実行する
-
-GitHubのリポジトリ画面で、以下を開きます。
-
-```text
-Actions → generate-news → Run workflow
-```
-
-`provider` で使うAIを選びます。
-
-```text
-gemini
-deepseek
-```
-
-実行内容は以下です。
-
-```text
-npm install
-npm run start
-```
-
-### 4. artifactをダウンロードする
-
-workflowの実行が完了したら、実行結果ページの `Artifacts` から以下をダウンロードします。
-
-```text
-generated-news-markdown-gemini
-generated-news-markdown-deepseek
-```
-
-中に `output/YYYY-MM-DD-gemini.md` または `output/YYYY-MM-DD-deepseek.md` が入っています。このMarkdownを見て、軽いニュースメモとして読めるか、コラムや静的ページが除外されているかを確認してください。
-
-### 5. ログを見る
-
-ログには、取得した記事数、articleType別件数、除外件数、除外理由、topic_key生成件数、最終出力件数、source別配分、provider名が表示されます。APIキー本体は表示されません。
-
-追加で、以下も表示します。
-
-- badge別件数
-- source_type別件数
-- freshness_label別件数
-- topic統合件数
-- 重複候補
-- HOT SEARCH取得成功/失敗
-- newsworthiness_score 上位記事
-
-カテゴリ配分も表示されます。
-
-```text
-最終出力のカテゴリ配分
-- 映画: n件
-- ドラマ・配信: n件
-- 芸能・俳優: n件
-- 業界動向: n件
-- 公式発表: n件
-```
-
-現在のAI処理対象選定では、同一sourceに加えてカテゴリ上限も設定しています。
-
-- 映画: 最大3本
-- ドラマ・配信: 最大2本
-- 芸能・俳優: 最大2本
-- 業界動向: 最大2本
-- 公式発表: 最大2本
-- 海外中国映画祭・文化交流: 最大1本
-
-海外の中国映画祭開幕記事、文化交流イベントの定型発表、協定締結だけの記事、似た公式発表、内容が薄い告知は低優先度扱いにします。ゼロにはしませんが、1回の出力で複数並ばないようにしています。
-
-### 6. GeminiとDeepSeekの比較ポイント
-
-同じ日に `gemini` と `deepseek` の両方で `generate-news` を実行し、Markdownを見比べます。
-
-確認すること:
-
-- 中国人名・作品名が壊れていないか
-- 元記事にない背景や一般論を補っていないか
-- 表面のMarkdownが硬い検証レポートではなく、軽いニュースメモになっているか
-- コラム、レビュー、インタビュー、静的ページが除外されているか
-- `何が起きた？` が短く整理されているか
-- SNS情報がない記事で、反応を勝手に作っていないか
-- 1ソースだけなのに無理に複数視点を作っていないか
-- ゴシップや未確認情報で断定表現になっていないか
-- 日本語が翻訳調ではなく、自然に再構成されているか
-
-## 収集元の追加方法
-
-収集元は `config/sources.json` で管理します。
+収集元は `config/sources.json` に追加します。
 
 ```json
 {
@@ -457,162 +234,80 @@ generated-news-markdown-deepseek
   "reliability": "B",
   "sourceType": "media_report",
   "includeUrlPatterns": ["/news/"],
-  "excludeUrlPatterns": ["/video/", "/photo/", "gallery"],
+  "excludeUrlPatterns": ["/video/", "/photo/"],
   "requireEntertainmentKeywords": false,
   "enabled": true
 }
 ```
 
-`sourceType` はソースの種類の宣言です（`official` / `media_report` / `sns` / `data`）。source_mix集計とバッジ判定は、キーワード推定よりこの宣言を優先します。
+`type` は `rss` または `html`、`sourceType` は `official` / `media_report` / `sns` / `data` です。source typeとreliabilityは、候補の優先度・バッジ・source mixの根拠になるため、実態に合わせて設定してください。
 
-エンタメ判定キーワードのゲートは、`reliability: "A"`（行政・エンタメ以外が混ざるサイト）にだけ適用します。キュレーション済みエンタメ媒体（B/C/D）は、芸能人名やゴシップ見出しがキーワードに一致しないため、原則スキップします。ページがサイト全体の記事を配信してしまうソース（例: JSレンダリングでチャンネル抽出できない澎湃）は `requireEntertainmentKeywords: true` でゲートを強制できます。
+## 主なコマンド
 
-`type` は `rss` または `html` です。最初はRSSを優先してください。HTMLはページ構造が変わると取得できなくなることがあります。
+| コマンド | 用途 |
+|---|---|
+| `npm run check` | TypeScript型チェック |
+| `npm run start` | ニュース収集・選定・AI生成 |
+| `npm run audit:sources` | AIなしの収集元診断 |
+| `npm run build:site` | `data/` から静的サイトを生成 |
+| `npm run persist:data` | `output/` の日次生成物を `data/` に保存 |
+| `npm run review:issue` | 日次レビューIssueを作成 |
+| `npm run review:apply` | レビューコメントを反映 |
+| `npm run intake:process` | 持ち込みコメントを処理 |
+| `npm run post:x` | X文面を生成。既定はdry-run |
+| `npm run compare:models` | 固定フィクスチャでモデル比較 |
+| `npm run test:site-feed` | サイトフィード・公開条件の回帰テスト |
+| `npm run test:review-presentation` | レビュー表示と記事契約の回帰テスト |
+| `npm run test:manual-intake` | 持ち込みルートの回帰テスト |
 
-`includeUrlPatterns` は、候補に含めたいURLパターンです。空欄ならすべて対象になります。
+全スクリプトは `package.json` の `scripts` にあります。
 
-`excludeUrlPatterns` は、候補から除外したいURLパターンです。動画ページ、画像ギャラリー、広告ページなどを外すために使います。Phase 0では、1905电影网の `/video/` 系URLを除外しています。
+## データと主要ファイル
 
-`reliability` は以下の目安です。
-
-- `A`: 公式発表、本人発言、公的機関、公式データ
-- `B`: 大手メディア、業界メディア、複数報道
-- `C`: SNS話題、ファン反応、豆瓣・Weibo中心
-- `D`: 营销号、匿名投稿、スクショ中心
-
-`D` 単独の記事化は原則避けます。
-
-## 編集方針
-
-AIには、次の方針で整理するよう指示しています。
-
-- 元記事にない情報を補わない
-- 未確認情報を断定しない
-- 表面は軽いニュースメモにする
-- 検証情報は内部データとして持つ
-- コラム、論説、レビュー、インタビュー、静的ページは単独掲載しない
-- ソースはリンク付きで出す
-- 映画・映画祭系だけに偏らないよう、カテゴリ配分を制御する
-- raw本文が短すぎる記事は掲載しない
-- タイトルには、事実だけでなく「なぜ面白いか」の角度を少し入れる
-- 内部メモ型の表現ではなく、読者向けの `ひとこと` として編集者キャラの短い見方を出す
-- 日本語圏では見えにくい文脈がある場合だけ、`日本語圏では見えにくいポイント` を出す
-- 公式発表は確度Aでも、中立とは限らない。官製PRや文化輸出の文脈を考慮する
-- HOT SEARCHや噂は断定せず、現地温度の観測メモとして扱う
-- ゴシップでは本人・事務所・公式発表の有無を慎重に扱う
-- 出典が弱い場合は確度を下げる
-- 翻訳調ではなく、日本語として読みやすく再構成する
-- 人物を貶める表現を避ける
-
-ニュース選別では、以下を優先します。
-
-- 日本語圏では知られていないが中国では重要
-- 中国現地の評価・興行・热搜で強い
-- 社会や制作環境の変化が見える
-- 中国特有のファン文化が関係する
-- 国家宣伝、文化輸出、海外中国映画祭などの文脈がある
-- 日本公開、配信、字幕情報に関係する
-- 複数ソースで確認できる
-
-以下は優先度を下げます。
-
-- 公式ソースだけで完結し、媒体報道・SNS反応・データの裏付けがないトピック（topic scoreで減点）
-- 単なる受賞一覧
-- 単なるノミネート羅列
-- 式典が開催された、来賓が挨拶しただけの記事
-- 官製PRをそのまま流すだけの記事
-- コラム・論説・レビューそのもの
-- ソースが弱い噂を事実のように扱う記事
-- 動画一覧、画像ギャラリー、常設ページ
-
-articleTypeは以下の分類です。
-
-掲載候補:
-
-- `news_event`
-- `official_announcement`
-- `data_report`
-- `gossip_rumor`
-- `sns_trend`
-
-原則除外:
-
-- `column_opinion`
-- `review`
-- `interview`
-- `static_page`
-- `unknown`
-
-## よくあるエラー
-
-### `GEMINI_API_KEY is not set`
-
-`.env` がないか、APIキーが入っていません。`.env.example` をコピーして `.env` を作ってください。
-
-### `DEEPSEEK_API_KEY is not set`
-
-DeepSeekを使う設定なのにAPIキーが入っていません。`.env` またはGitHub Secretsに `DEEPSEEK_API_KEY` を設定してください。
-
-### 取得した記事数が0件になる
-
-収集元のページ構造が変わった、アクセスが一時的にブロックされた、またはキーワード判定に引っかかっていない可能性があります。`config/sources.json` に別のRSSや公開ページを追加してください。
-
-### Gemini API error
-
-APIキー、モデル名、利用上限、ネットワーク接続を確認してください。モデル名は `.env` の `GEMINI_MODEL` で変更できます。
-
-### Gemini APIで `fetch failed` が出る
-
-ニュース取得は成功しているのにAI処理だけ `fetch failed` になる場合は、GoogleのGemini APIへ接続できていない可能性があります。
-
-まず以下を実行してください。
-
-```bash
-npm run test:gemini
+```text
+src/index.ts                 メインパイプライン、選定、selection trace
+src/fetchSources.ts          固定ソース取得、URL・日付・本文抽出
+src/fetchHotSearch.ts        Weibo熱搜取得
+src/classifyArticle.ts       記事分類・ニュース価値スコア
+src/topicKey.ts              topicKey生成の唯一の実装
+src/topicCandidates.ts       topic候補とtopicスコア
+src/expandSources.ts         RSSHub / Serperによるソース拡張
+src/factLedger.ts            根拠台帳の生成
+src/claimCheck.ts             claimと根拠の確認
+src/summarizeWithGemini.ts   DeepSeek / Gemini呼び出しと要約
+src/review/                  レビューIssue、修正、承認処理
+src/intake/                  持ち込みニュース処理
+src/site/                    静的サイト、OGP、X文面
+config/sources.json          収集元定義
+data/YYYY-MM-DD/             日次の正本データ
+data/manual-intake/          持ち込みニュースの正本データ
 ```
 
-確認すること:
+## よくある確認
 
-- `.env` が `package.json` と同じフォルダにあるか
-- 変数名が `GEMINI_API_KEY` になっているか
-- APIキーが有効か
-- `GEMINI_MODEL` の名前が正しいか
-- Google APIへの通信がネットワークやVPNで制限されていないか
-- 会社・学校・地域のネットワーク制限で `generativelanguage.googleapis.com` に接続できない状態ではないか
-- セキュリティソフトやプロキシがNode.jsからの通信を止めていないか
+### ローカルで候補が少ない
 
-通常実行でAI処理に失敗した記事は、Markdownには出さず、ログに原因を出します。
+まず `npm run audit:sources` を実行し、取得失敗・古い記事・エンタメゲート・重複除外を確認します。通常生成では鮮度、topic履歴、source/category上限、根拠ゲートを通るため、取得件数と最終記事数は一致しません。
 
-### JSON parse error
+### ローカルのGemini接続だけ失敗する
 
-AIがJSON以外の文字列を返した場合、可能な範囲でJSON部分だけを取り出して処理します。それでも失敗した記事は、処理全体を止めずにログへ原因を出し、Markdownには掲載しません。
+この環境ではGemini APIへの接続がタイムアウトすることがあります。`npm run test:gemini` でキーと接続を確認し、AI込みの検証はGitHub Actionsの `generate-news`（通常はDeepSeek）で行います。APIキー未設定の場合は `.env` またはActions Secretsを確認してください。
 
-### Markdownはできたが記事が少ない
+### 生成できたのに公開されない
 
-Phase 0では品質確認を優先しているため、コラム・レビュー・インタビュー・静的ページ・AI処理失敗記事は出力しません。そのため、出力が3〜5本程度になることがあります。
+レビューゲートが有効な場合、生成成功だけでは公開されません。対象日付の `data/YYYY-MM-DD/review.json` で、レビューが `completed`、対象記事が `approved` かを確認してください。
 
-## Source audit mode
+### topicや選定理由を調べたい
 
-Run source diagnostics without calling Gemini or DeepSeek. This mode checks fetch health, URL exclusion, dedupe, date extraction, freshness, category, article type, and exclude reason.
+`output/selection_trace_YYYY-MM-DD.json` と `output/topic_candidates_YYYY-MM-DD.json` を確認します。収集元全体の健康状態は `output/source-audit-YYYY-MM-DD.{json,md}` に出力されます。
 
-Command:
+## 開発時の注意
 
-```bash
-npm run audit:sources
-```
+- 変更前に必ず [`docs/roadmap.md`](docs/roadmap.md) を読み、該当タスクの受け入れ基準を確認する
+- topicKeyのロジックを別ファイルへ再実装しない
+- selection traceとsource auditの診断項目を壊さない
+- 外部取得は必ずgraceful fallbackにする
+- APIキー・raw HTML・API応答全文・URL query/hashなどの秘密または不要な生データを保存しない
+- 生成品質を左右するLLMプロンプト初版、フェーズ設計レビュー、品質原因分析、アーキテクチャ分岐は、roadmapのSol推奨ルールに従う
 
-Outputs:
-
-- `output/source-audit-YYYY-MM-DD.json`
-- `output/source-audit-YYYY-MM-DD.md`
-
-Freshness rules:
-
-- `today`: age 0 days
-- `yesterday`: age 1 day
-- `recent`: age 2-7 days
-- `stale`: age 8-30 days
-- `old`: age 31+ days
-- `unknown`: date is missing
-
-Normal generation applies the same freshness gate before AI processing. Only `today` / `yesterday` / `recent` articles are normal candidates, and articles before 2026 are excluded from the normal feed. The audit Markdown makes it easier to see usable sources, empty sources, old-heavy sources, and movie-heavy sources.
+関連する設計資料は `docs/` にまとめています。
