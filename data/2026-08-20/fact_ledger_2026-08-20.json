@@ -1,0 +1,453 @@
+{
+  "date": "2026-08-20",
+  "generated_at": "2026-08-20T02:21:14.628Z",
+  "ledgers": [
+    {
+      "topic_key": "影之刃零",
+      "ledger": {
+        "topic_key": "影之刃零",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "索尼于8月18日10:00举办了首个专属于国产游戏的State of Play发布会，即《影之刃零》SOP专场。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "索尼",
+              "State of Play",
+              "影之刃零"
+            ],
+            "numbers": [
+              "8月18日10:00"
+            ],
+            "quote_zh": "8月18日10：00，索尼举办了首个专属于国产游戏的Stat",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "《影之刃零》SOP专场公布了游戏全新超长实机演示视频，由制作人梁其伟、创意总监及重要角色“魔渊”的扮演者甄子丹共同出镜进行了18分钟的详尽解析。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "梁其伟",
+              "甄子丹",
+              "魔渊",
+              "影之刃零"
+            ],
+            "numbers": [
+              "18分钟"
+            ],
+            "quote_zh": "公布了游戏全新超长实机演示视频，由游戏制作人梁其伟，和创意总",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "《影之刃零》讲述玩家扮演曾为“组织”效力的顶尖杀手“魂”，遭同僚背叛被陷害为刺杀首领的凶手，在与结义兄弟左殇的决战中被刺穿心脏，生命垂危。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "魂",
+              "左殇",
+              "组织"
+            ],
+            "numbers": [],
+            "quote_zh": "玩家将扮演曾为“组织”效力的顶尖杀手“魂”，却遭到同僚背叛而",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "神秘医者“鬼手”救了魂的性命，但魂的生命只剩下六十六天，必须利用有限时间在武林乱局中绝境求生并揭开背后的阴谋。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "鬼手",
+              "魂"
+            ],
+            "numbers": [
+              "六十六天"
+            ],
+            "quote_zh": "神秘医者“鬼手”救了魂的性命，却也让魂付出了沉重的代价——生",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "游戏以八幅纯手绘中国水墨地图无缝衔接，构建了名为“影境”的江湖世界，并以庞镇为重要中心区域。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "影境",
+              "庞镇"
+            ],
+            "numbers": [
+              "八幅"
+            ],
+            "quote_zh": "以八幅纯手绘中国水墨地图无缝衔接，构建了一个神秘的“影境”江",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "魂可使用多达30种主武器和25种副武器（影之武装），通过搭配武器技能和机制应对不同战局。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "魂",
+              "影之武装"
+            ],
+            "numbers": [
+              "30种",
+              "25种"
+            ],
+            "quote_zh": "魂可使用多达30种主武器，以及25种副武器（影之武装）",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "游戏提供“逆炼符”作为洗点道具，可以无损回收旧武器的升级材料并即时投入到新武器上。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "逆炼符"
+            ],
+            "numbers": [],
+            "quote_zh": "游戏中还提供“逆炼符”这样的洗点道具，可以无损回收之前用于提",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "游戏设有“入阵者”、“破局者”、“逆天者”三档难度模式，以及二周目“六十六天”模式，后者增加永久死亡机制且剧情推进和战败均消耗66天倒计时。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "入阵者",
+              "破局者",
+              "逆天者",
+              "六十六天"
+            ],
+            "numbers": [
+              "三档",
+              "66天"
+            ],
+            "quote_zh": "最简单的【“入阵者”模式】...标准的【“破局者”模式】..",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "本次实机演示展示了一段完整的多阶段舞狮BOSS战，将舞狮传统文化元素与功夫朋克及创新玩法相融合。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "舞狮"
+            ],
+            "numbers": [],
+            "quote_zh": "本次实机演示就展示了一段完整的多阶段舞狮BOSS战",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "《影之刃零》现已在PS5、PS5 Pro、Steam、Epic、WeGame、TapTap PC全平台开启预购，并将于10月29日全球同步发售。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "PS5",
+              "PS5 Pro",
+              "Steam",
+              "Epic",
+              "WeGame",
+              "TapTap PC",
+              "影之刃零"
+            ],
+            "numbers": [
+              "10月29日"
+            ],
+            "quote_zh": "现已在PS5、PS5 Pro、Steam、Epic、WeGa",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "《影之刃零》官方网站显示发售日期为2026年10月29日，并提供基础版、豪华版、典藏版三种版本。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "影之刃零"
+            ],
+            "numbers": [
+              "2026/10/29"
+            ],
+            "quote_zh": "发售日期 2026/10/29",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "豪华版包含专属外观“武林传说”和“机械魔躯”、游戏内特典设定集和音乐集，典藏版包含主角1/12可动人偶等实体物品。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "武林传说",
+              "机械魔躯",
+              "影之刃零"
+            ],
+            "numbers": [
+              "1/12"
+            ],
+            "quote_zh": "专属[[accent]]外观[[/accent]]：武林传说",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "《影之刃零》将于8月12日早上10:00开启全平台预售，并同步公开游戏售价及PC版详细配置需求。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "影之刃零"
+            ],
+            "numbers": [
+              "8月12日早上10:00"
+            ],
+            "quote_zh": "将于8月12日早上10:00开启全平台预售，并将同步公开游戏",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "伴随预售开启，官方将放出长达11分钟的全新实机演示视频，展示游戏剧情、角色、战斗系统等全新内容。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "影之刃零"
+            ],
+            "numbers": [
+              "11分钟"
+            ],
+            "quote_zh": "伴随预售开启，官方还将放出一段长达11分钟的全新实机演示视频",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "官方放出了一支30秒先导预热短片，用20秒展示女主沐小葵的实机脸部特写，复杂神态暗藏剧情伏笔。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "沐小葵"
+            ],
+            "numbers": [
+              "30秒",
+              "20秒"
+            ],
+            "quote_zh": "官方还放出了一支带有自嘲和炫技性质的30秒先导预热短片...",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "《影之刃零》是经典武侠独立游戏《雨血》系列的正统续作。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "影之刃零",
+              "雨血"
+            ],
+            "numbers": [],
+            "quote_zh": "作为经典武侠独立游戏《雨血》系列的正统续作",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "机核网认为，《影之刃零》很可能硬生生地将一个架空世界观的原创IP推向大众视野，走出有别于《黑神话：悟空》的另一条国产3A单机之路。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "source_name": "机核网",
+            "entities": [
+              "影之刃零",
+              "黑神话：悟空"
+            ],
+            "numbers": [],
+            "quote_zh": "《影之刃零》很可能硬生生地将一个架空世界观的原创IP推向大众",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "State of Play",
+            "gloss_ja": "ソニーのゲーム発表会",
+            "what_is": "ソニーが開催するゲーム情報発表イベント。",
+            "why_now": "今回初めて中国国産ゲーム専用のState of Playが開催された。",
+            "explain_quote_zh": "索尼举办了首个专属于国产游戏的State of Play发布",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "功夫朋克",
+            "gloss_ja": "カンフーパンク",
+            "what_is": "中国武術とパンク要素を融合した独自の美学スタイル。",
+            "why_now": "本作の創作核心として、伝統と革新の融合を表現している。",
+            "explain_quote_zh": "以独创的“功夫朋克”美学完成现代化创新演绎",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "影境",
+            "gloss_ja": "影境",
+            "what_is": "本作の舞台となる水墨画風の江湖世界。",
+            "why_now": "八枚の手描き水墨画マップで構築された世界観が特徴。",
+            "explain_quote_zh": "以八幅纯手绘中国水墨地图无缝衔接，构建了一个神秘的“影境”江",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "影之武装",
+            "gloss_ja": "影の武装",
+            "what_is": "本作における副武器の総称。",
+            "why_now": "25種類の副武器が用意され、戦闘の多様性を生む。",
+            "explain_quote_zh": "25种副武器（影之武装）",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "逆炼符",
+            "gloss_ja": "逆錬符",
+            "what_is": "武器強化素材を無損で回収できるアイテム。",
+            "why_now": "プレイヤーが気軽にビルドを試せる仕組みとして紹介された。",
+            "explain_quote_zh": "提供“逆炼符”这样的洗点道具，可以无损回收之前用于提升旧武器",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "六十六天",
+            "gloss_ja": "66日間",
+            "explain_evidence_refs": []
+          },
+          {
+            "term": "雨血",
+            "gloss_ja": "雨血",
+            "what_is": "本作の前身となる武侠インディーゲームシリーズ。",
+            "why_now": "本作はその正統続編として位置づけられている。",
+            "explain_quote_zh": "作为经典武侠独立游戏《雨血》系列的正统续作",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
