@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-21",
+  "status": "pending",
+  "created_at": "2026-08-21T02:26:35.828Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "《牛来》预测票房8900万导演发声",
+      "title": "《牛来》预测票房8900万，一位破防的院线电影导演有话说",
+      "event_sentence": "电影《牛来》预测票房8900万，导演对此发表看法。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "龙餐馆偷票房争议",
+      "title": "被周星驰经纪人质疑偷票房，《龙餐馆》：系影院操作失误",
+      "event_sentence": "被周星驰经纪人质疑偷票房，《龙餐馆》回应系影院操作失误。",
+      "topic_type": "box_office",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "medium",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "电影空枪票房评分",
+      "title": "电影《空枪》的票房和平台评分表现如何？",
+      "event_sentence": "新浪娱乐报道电影《空枪》的票房和平台评分表现。",
+      "topic_type": "box_office",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 80,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "《功夫女足》上映半日票房破亿",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星驰导演作品《功夫女足》上映半日票房破亿，引爆暑期档。",
+      "topic_type": "box_office",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "专访董润年谈职场迷茫",
+      "title": "迷茫，是这一代人的职场底色｜专访董润年",
+      "event_sentence": "导演董润年接受专访，探讨当代职场人的迷茫现象。",
+      "topic_type": "unknown",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "《年会不能停",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "《年会不能停！2》上映4天票房破亿，但远不及市场预期。",
+      "topic_type": "box_office",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "欢迎来龙餐馆票房",
+      "title": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿",
+      "event_sentence": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿。",
+      "topic_type": "box_office",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局は、デジタルシネマLED上映配給マスターデータとデータパケット技術要件など2つの業界標準を発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "蓝盈莹曹骏分手原因",
+      "title": "蓝盈莹和曹骏当初为什么分手？",
+      "event_sentence": "新浪娱乐专栏探讨蓝盈莹和曹骏当初分手的原因。",
+      "topic_type": "unknown",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "黑神话",
+      "title": "《黑神话：钟馗》发布超长实机，首次展示主角战斗与部分剧情片段",
+      "event_sentence": "《黑神话：钟馗》发布超长实机，首次展示主角战斗与部分剧情片段。",
+      "topic_type": "release",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "章子怡投资套现3亿",
+      "title": "四年投资回报超130倍，章子怡套现3个亿",
+      "event_sentence": "章子怡四年投资回报超130倍，套现3亿元。",
+      "topic_type": "industry_context",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "八仙",
+      "title": "《八仙！》满意度领衔 口碑佳作接力拉动市场上行",
+      "event_sentence": "映画『八仙！』が満足度でトップとなり、口碑の高い作品が市場を牽引している。",
+      "topic_type": "industry_context",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
