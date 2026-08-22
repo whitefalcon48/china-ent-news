@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-22",
+  "status": "pending",
+  "created_at": "2026-08-22T02:18:55.334Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "电影《空枪》",
+      "title": "《空枪》票房口碑如何，值得一看吗？",
+      "event_sentence": "朱一龙在电影《空枪》中啃菠萝油，带动港式茶点卖断货。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "medium",
+      "baseline_score": 74,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "《功夫女足》上映票房破亿",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星驰导演作品《功夫女足》上映半日票房破亿，引爆暑期档。",
+      "topic_type": "box_office",
+      "baseline_rank": 2,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "《年会不能停",
+      "title": "《年会不能停！2》上映4天票房破亿，但远不及市场预期",
+      "event_sentence": "《年会不能停！2》上映4天票房破亿，但远不及市场预期。",
+      "topic_type": "box_office",
+      "baseline_rank": 3,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "《欢迎来龙餐馆》点映预售票房高",
+      "title": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿",
+      "event_sentence": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿。",
+      "topic_type": "box_office",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "《龙餐馆》被质疑偷票房",
+      "title": "被周星驰经纪人质疑偷票房，《龙餐馆》：系影院操作失误",
+      "event_sentence": "《龙餐馆》被周星驰经纪人质疑偷票房，片方回应称系影院操作失误。",
+      "topic_type": "box_office",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "medium",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家电影局が映画業界標準『数字影院LED放映发行母版和数据包技术要求』と『数字影院沉浸式音频处理器技术要求和测量方法』を発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "2026年“中华文化广播电视传播工程”重点项目",
+      "title": "国家广播电视总局办公厅关于公布2026年“中华文化广播电视传播工程”重点项目的通知",
+      "event_sentence": "国家広播電視総局弁公庁が2026年「中華文化広播電視伝播工程」重点プロジェクトを発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 65,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "2026年度电视剧引导扶持项目评审结果",
+      "title": "国家广播电视总局办公厅关于公布2026年度电视剧引导扶持项目评审结果的通知",
+      "event_sentence": "国家広播電視総局弁公庁が2026年度テレビドラマ誘導支援プロジェクトの審査結果を発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 65,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "《早春晴朗》开播",
+      "title": "优酷《早春晴朗》8月26日开播，井柏然孙千上演都市职场秘恋",
+      "event_sentence": "优酷剧集《早春晴朗》于8月26日开播，由井柏然和孙千主演。",
+      "topic_type": "release",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "《他予回声》新团亮相及首次测试招募",
+      "title": "乐元素3D偶像游戏《他予回声》新团亮相，首次测试招募同步开启",
+      "event_sentence": "乐元素3D偶像游戏《他予回声》新团亮相，并同步开启首次测试招募。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "章子怡投资套现3亿",
+      "title": "四年投资回报超130倍，章子怡套现3个亿",
+      "event_sentence": "章子怡四年投资回报超130倍，套现3个亿。",
+      "topic_type": "industry_context",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "八仙",
+      "title": "《八仙！》满意度领衔 口碑佳作接力拉动市场上行",
+      "event_sentence": "映画『八仙！』が満足度でトップとなり、口碑の高い作品が市場を牽引している。",
+      "topic_type": "industry_context",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}

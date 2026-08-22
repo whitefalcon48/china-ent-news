@@ -1,0 +1,553 @@
+{
+  "date": "2026-08-22",
+  "generated_at": "2026-08-22T02:20:17.324Z",
+  "ledgers": [
+    {
+      "topic_key": "八仙",
+      "ledger": {
+        "topic_key": "八仙",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "中国映画観客満足度調査の2026年暑期档段階的調査で、『八仙！』は満足度87.1点を獲得し、調査対象12作品の中でトップとなった。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "八仙！",
+              "中国映画観客満足度調査"
+            ],
+            "numbers": [
+              "87.1",
+              "12"
+            ],
+            "quote_zh": "《八仙！》分别以87.1分、87.0分居头部第一梯队",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "『八仙！』は2026年調査ランキングTOP10に入った7作品のうちの1つで、年度ランキングで上位2位以内に入った。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "7",
+              "10",
+              "2"
+            ],
+            "quote_zh": "这12部影片中有7部跻身2026年调查榜单TOP10，《八仙",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "『八仙！』は2024年から2026年の直近3年間の暑期档歴史TOP10ランキングに入った。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "2024",
+              "2026",
+              "3",
+              "10"
+            ],
+            "quote_zh": "对标2024-2026年近三年暑期档历史TOP10榜单，《八",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "『八仙！』は観賞性で第1位、思想性で第2位となった。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "1",
+              "2"
+            ],
+            "quote_zh": "档期满意度冠军《八仙！》观赏性居第一位，思想性位列第二",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "『八仙！』の観客の「楽しい」という感情の割合は65.9%で、暑期档で第2位だった。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "65.9%",
+              "2"
+            ],
+            "quote_zh": "观众观影感受中“快乐”占比 65.9%，居档期第二",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "『八仙！』は伝統的な八仙神話体系を再構築し、子供向けの楽しさと大人の文化的共感を両立させた国風アニメーションである。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [],
+            "quote_zh": "影片重构传统八仙神话体系，兼顾少儿趣味与成年观众文化共鸣",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "『八仙！』は一般観客と専門観客の両方のランキングで上位2位以内に入り、双方から高い評価を得た。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "2"
+            ],
+            "quote_zh": "《八仙！》《欢迎来龙餐馆》双双位列双榜单前二，实现双向认可",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "『八仙！』は一線・二線都市と三線以下の都市の観客分布が比較的均衡していた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [],
+            "quote_zh": "普通观众和专业观众共同给予高度认可的《八仙！》和《欢迎来龙餐",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "『八仙！』は7月中旬に公開され、7月19日に暑期档の日別興行収入が7月末までの最高値である3.5億元に達する一因となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "7",
+              "19",
+              "3.5億元"
+            ],
+            "quote_zh": "7月中旬《八仙！》欢乐上位，进一步助力推动大盘攀高，7月19",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "『八仙！』は8月に入っても興行収入が好調で、8月1日に今年の暑期档の日別興行収入の新記録となる3.6億元を達成する一因となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "8",
+              "1",
+              "3.6億元"
+            ],
+            "quote_zh": "8月1日创下今年暑期档大盘日票房新高点，达3.6亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "『八仙！』を含む高満足度作品の公開が続いたことで、暑期档の市場は複数回の興行収入のピークを形成した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [],
+            "quote_zh": "市场形成多轮票房波峰",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "『八仙！』は高満足度作品として、暑期档の市場を牽引する役割を果たした。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [],
+            "quote_zh": "高满意度影片陆续接力带动市场不断升温",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "『八仙！』は2026年暑期档で調査された12作品のうち、満足度が85点を超えた6作品の1つである。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "12",
+              "6",
+              "85"
+            ],
+            "quote_zh": "暑期档目前调查的12部影片中有6部满意度超85分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "『八仙！』は2026年暑期档の満足度ランキングで第1位だった。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "1"
+            ],
+            "quote_zh": "《八仙！》《欢迎来龙餐馆》领衔榜单",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "『八仙！』の満足度は87.1点で、『欢迎来龙餐馆』の87.0点を0.1点上回った。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "八仙！",
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "87.1",
+              "87.0",
+              "0.1"
+            ],
+            "quote_zh": "分别以87.1分、87.0分居头部第一梯队",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "『八仙！』は2026年調査ランキングで年度第1位だった。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "1"
+            ],
+            "quote_zh": "《八仙！》《欢迎来龙餐馆》高居年度前两位",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "『八仙！』は2024-2026年の暑期档歴史TOP10ランキングで、2025年の『南京照相馆』『罗小黑战记2』『浪浪山小妖怪』などの作品と並んでランクインした。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！",
+              "南京照相馆",
+              "罗小黑战记2",
+              "浪浪山小妖怪"
+            ],
+            "numbers": [
+              "2024",
+              "2026",
+              "2025",
+              "10"
+            ],
+            "quote_zh": "与2025年《南京照相馆》《罗小黑战记2》《浪浪山小妖怪》等",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "『八仙！』は観賞性で暑期档第1位だった。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "1"
+            ],
+            "quote_zh": "档期满意度冠军《八仙！》观赏性居第一位",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "『八仙！』は思想性で暑期档第2位だった。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "2"
+            ],
+            "quote_zh": "思想性位列第二",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "『八仙！』の観客の「楽しい」という感情の割合は65.9%だった。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "65.9%"
+            ],
+            "quote_zh": "观众观影感受中“快乐”占比 65.9%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "中国电影观众满意度调查",
+            "gloss_ja": "中国映画観客満足度調査",
+            "what_is": "中国映画芸術研究センターと芸恩データが共同で行う映画評価システム。",
+            "why_now": "『八仙！』がこの調査でトップとなり、口碑の高さが示された。",
+            "explain_quote_zh": "中国电影观众满意度调查由中国电影艺术研究中心联合艺恩数据进行",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休み映画シーズン",
+            "what_is": "中国で6月から8月にかけての映画興行の最盛期。",
+            "why_now": "『八仙！』がこの期間の満足度でトップとなり、市場を牽引した。",
+            "explain_quote_zh": "2026年暑期档",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "国风动画",
+            "gloss_ja": "中国風アニメーション",
+            "what_is": "中国の伝統文化や美術様式を取り入れたアニメ作品。",
+            "why_now": "『八仙！』が国风动画として高評価を得た。",
+            "explain_quote_zh": "国风动画《八仙！》",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "观赏性",
+            "gloss_ja": "観賞性",
+            "what_is": "映画の面白さや見ごたえを測る指標。",
+            "why_now": "『八仙！』がこの指標で第1位となった。",
+            "explain_quote_zh": "观赏性居第一位",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "思想性",
+            "gloss_ja": "思想性",
+            "what_is": "映画のテーマやメッセージの深さを測る指標。",
+            "why_now": "『八仙！』がこの指標で第2位となった。",
+            "explain_quote_zh": "思想性位列第二",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "传播度",
+            "gloss_ja": "伝播度",
+            "what_is": "映画の話題性や口コミの広がりを測る指標。",
+            "why_now": "『八仙！』はこの指標で上位に入った。",
+            "explain_quote_zh": "传播度",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "新鲜度",
+            "gloss_ja": "新鮮度",
+            "what_is": "映画の独創性や新しさを測る指標。",
+            "why_now": "『八仙！』はこの指標でも評価された。",
+            "explain_quote_zh": "新鲜度",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "口碑",
+            "gloss_ja": "口コミ・評判",
+            "what_is": "観客の評価や評判。",
+            "why_now": "『八仙！』の口碑が高く、市場を牽引した。",
+            "explain_quote_zh": "口碑佳作接力拉动市场上行",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E3"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
