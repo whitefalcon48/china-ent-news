@@ -1,13 +1,13 @@
 {
   "date": "2026-08-22",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 62,
   "articles": [
     {
       "index": 1,
       "topic_key": "八仙",
       "title": "国風アニメ『八仙！』が観客満足度トップ、口碑で市場を牽引",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
