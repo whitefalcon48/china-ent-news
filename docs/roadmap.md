@@ -1,5 +1,13 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-23 実装・ローカル検証完了（Issue #63 必須field rewriteの現在値bind）
+
+- ✅ PR #65 merge後のreview-apply run `32631657560`、Issue #63コメント、run後commit `d1b208c`、保存記事、限定patch prompt/validatorを照合。runは `b93e1df` をcheckoutし、記事JSONを変更せずfeedbackだけを追加して安全停止した。ログにモデル返却JSONはなくartifactも0件のため不一致文字列自体は復元不能だが、保存済み `why_it_matters` をpromptへ渡した後、モデル返却の `replace_field.before` が同値でなく完全一致gateに止められた経路を確認した。
+- ✅ 原因は、フィールド全体の再構成が明示され、変更fieldもシステム側で限定済みなのに、長い現在値をLLMへ `before` として一字一句echoさせ、その不安定な複製を安全境界にしていたこと。`before` は編集判断ではなく保存記事から決定でき、長文のコピー・空白・句読点差をLLMへ委ねる必要がなかった。
+- ✅ promptは必須 `replace_field` の `before` を空文字とし、validatorが保存記事の実際の現在値をbindする契約へ変更。bind対象は `required_field_rewrites` に検出済みのfieldだけで、明示されていない全体置換や通常の部分置換には適用しない。trace・情報量・claim・表記・非対象fieldの各gateはbind後の実現在値とafterを比較するため維持される。
+- ✅ run時の保存済み注目ポイントを使ったIssue #63実データ型fixtureで、不一致beforeを返した応答でも用語置換とC13・C15〜C19による実質的再構成を適用し、traceのbeforeが保存値になることを確認。不一致beforeでも浅い追記は引き続き `clarification_required`、Issue #57型の非対象全体置換は引き続き拒否する。
+- ✅ `npm run check`、`test:scoped-review-revision`、`test:lightweight-review-edit`、`test:review-presentation`、`test:evidence-integrity`、`test:editorial-insight`、`test:terminology`、`test:kanji`、`test:bingtang-comment-tone`、`test:manual-intake` が成功。本番記事再適用・Issueコメント・公開・main統合・pushは未実施。
+
 ## 2026-08-23 実装・ローカル検証完了（Issue #63 再送時の利用不可claim安全処理）
 
 - ✅ review-apply run `32630575011`、Issue #63の再送コメントとActions返信、`data/2026-08-23` の保存記事・fact ledger・claim refs・適用経路を照合。モデルへ全claimを渡していたため、明示用語置換 `二創→二次創作` に対し、修正元の語を本文に含むC2を根拠として選べた。C2はAI生成と明示されたE1だけに基づく `unsupported` であり、保存前validatorが「利用できない根拠claim」として拒否した。記事は未変更、レビュー状態だけ `pending` に戻る安全停止だった。
