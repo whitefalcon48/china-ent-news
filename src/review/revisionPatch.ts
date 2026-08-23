@@ -142,6 +142,7 @@ export function buildLimitedReviewPatchPrompt(
   intent: ReviewRevisionIntent
 ) {
   const allowedContent = Object.fromEntries(intent.allowed_fields.map((field) => [field, readPatchableField(summary, field)]));
+  const usableClaims = ledger.claims.filter(isUsableReviewClaim);
   return `あなたは保存済み記事への限定修正パッチを作ります。記事全文を再生成してはいけません。
 
 修正指示:
@@ -162,18 +163,18 @@ ${JSON.stringify(intent.required_replacements, null, 2)}
 フィールド全体の実質的な再構成が必要な箇所:
 ${JSON.stringify(intent.required_field_rewrites, null, 2)}
 
-事実台帳:
-${JSON.stringify({ claims: ledger.claims, terms: ledger.terms }, null, 2)}
+利用可能な事実台帳（claims は evidence_claim_refs に指定できるものだけ）:
+${JSON.stringify({ claims: usableClaims, terms: ledger.terms }, null, 2)}
 
 厳守事項:
 - 出力は記事全文ではなく、次の限定パッチJSONだけにする。
 - field は変更可能フィールドからだけ選ぶ。
 - 通常は operation="replace" とし、before は現在値に1回だけ現れる完全一致文字列にする。対象箇所以外の文を before に含めない。
-- 省略禁止の明示置換は、指定された全組を target_fields の全出現へ反映する。一部だけ処理して成功扱いにしてはいけない。
+- 省略禁止の明示置換は、指定された全組を target_fields の全出現へ反映する。一部だけ処理して成功扱いにしてはいけない。OWNERが before→after を明示した純粋な用語置換には根拠claimが不要なので、evidence_claim_refs=[] にする。元の語を含むclaimを探して付けてはいけない。
 - operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。上記の「実質的な再構成が必要な箇所」には必ず replace_field を使う。
 - 通常の置換では、after は修正指示に必要な最小限の変更だけにし、周辺文、別フィールド、文順を変えない。
 - 再構成対象フィールドには最小変更ルールを適用しない。既存文の前後へ説明を1文足すだけ、ほぼ同じ文順・表現を残すだけでは不合格。指示された分かりにくさ・浅さを解消するよう、根拠claim同士の因果・対比・仕組み・変化のいずれかを説明する文章へ組み直す。
-- 再構成の evidence_claim_refs には、書き直したフィールドで使った利用可能なclaimをすべて入れる。unsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
+- 再構成の evidence_claim_refs には、上の「利用可能な事実台帳」にあるclaim IDから、書き直したフィールドで実際に使ったものをすべて入れる。表示されていないIDやunsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
 - why_it_matters の再構成では、あらすじの追加だけで終わらせず、なぜ再評価・注目が起きるのか、作品や出来事の何が面白い／重要なのかを、事実台帳にある複数事実の関係として説明する。台帳に無い評論を足さない。
 - 日付、金額、人数、引用、背景説明を追加・訂正する場合は、根拠となる claim ID を evidence_claim_refs に入れる。根拠が無ければ変更せず clarification_required=true にする。
 - 中国語の原語が指示に含まれていても、公表する after には簡体字を残さず、日本語用漢字と自然な日本語説明にする。
@@ -192,7 +193,7 @@ JSON形状:
       "operation": "replace",
       "before": "現在値に1回だけある文字列",
       "after": "訂正後の文字列",
-      "evidence_claim_refs": ["C1"],
+      "evidence_claim_refs": [],
       "reason": "変更概要"
     }
   ]
@@ -235,11 +236,12 @@ export function applyValidatedReviewPatch(
   const allowed = new Set(intent.allowed_fields);
   const explicit = new Set(intent.explicit_fields);
   const knownClaims = new Map(ledger.claims.map((claim) => [claim.id, claim]));
+  const patches = prepareReviewPatchEvidenceRefs(document.patches, intent, ledger, reasonTag);
   const originalFieldValues = new Map(listPatchableFields(before).map((field) => [field, readPatchableField(before, field)]));
   const replacedChars = new Map<ReviewPatchableField, number>();
   let after = structuredClone(before);
 
-  for (const patch of document.patches) {
+  for (const patch of patches) {
     if (!allowed.has(patch.field)) throw new ReviewRevisionContractError(`許可されていないフィールドです: ${patch.field}`);
     const current = readPatchableField(after, patch.field);
     const original = originalFieldValues.get(patch.field) ?? "";
@@ -265,7 +267,7 @@ export function applyValidatedReviewPatch(
     if (patch.before === patch.after) throw new ReviewRevisionContractError(`変更前後が同じです: ${patch.field}`);
     for (const ref of patch.evidence_claim_refs) {
       const claim = knownClaims.get(ref);
-      if (!claim || claim.type === "unsupported") throw new ReviewRevisionContractError(`利用できない根拠claimです: ${ref}`);
+      if (!claim || !isUsableReviewClaim(claim)) throw new ReviewRevisionContractError(`利用できない根拠claimです: ${ref}`);
     }
     if (reasonTag === "事実" && patch.evidence_claim_refs.length === 0) {
       throw new ReviewRevisionContractError(`事実訂正に根拠claimがありません: ${patch.field}`);
@@ -276,9 +278,9 @@ export function applyValidatedReviewPatch(
     after = addPatchClaimRefs(after, patch.field, patch.evidence_claim_refs);
   }
 
-  assertRequiredInstructionCoverage(before, after, document.patches, intent, ledger);
+  assertRequiredInstructionCoverage(before, after, patches, intent, ledger);
   if (reasonTag === "口調") assertToneOnlyRevisionContract(before, after);
-  const trace = buildReviewRevisionTrace(before, after, document.patches, intent, instruction);
+  const trace = buildReviewRevisionTrace(before, after, patches, intent, instruction);
   assertNoNewDisplayResidues(before, after);
   const beforeClaimCheck = runClaimCheck(before, ledger);
   const afterClaimCheck = runClaimCheck(after, ledger);
@@ -371,6 +373,53 @@ function normalizePatchOperation(raw: unknown, index: number): ReviewPatchOperat
   };
 }
 
+function prepareReviewPatchEvidenceRefs(
+  patches: ReviewPatchOperation[],
+  intent: ReviewRevisionIntent,
+  ledger: FactLedger,
+  reasonTag: ReviewReasonTag | string
+) {
+  const knownClaims = new Map(ledger.claims.map((claim) => [claim.id, claim]));
+  return patches.map((patch) => {
+    // Dropping evidence is safe only when the resulting text is exactly the
+    // deterministic OWNER-provided terminology replacement and nothing else.
+    if (isPureRequiredTerminologyReplacement(patch, intent, reasonTag)) {
+      return { ...patch, evidence_claim_refs: [] };
+    }
+    const unavailable = patch.evidence_claim_refs.filter((ref) => {
+      const claim = knownClaims.get(ref);
+      return !claim || !isUsableReviewClaim(claim);
+    });
+    if (unavailable.length > 0) {
+      throw new ReviewRevisionClarificationRequiredError(
+        `事実を伴う修正に利用できない根拠claimが含まれています: ${patch.field} (${unavailable.join(", ")})`
+      );
+    }
+    return { ...patch, evidence_claim_refs: [...patch.evidence_claim_refs] };
+  });
+}
+
+function isPureRequiredTerminologyReplacement(
+  patch: ReviewPatchOperation,
+  intent: ReviewRevisionIntent,
+  reasonTag: ReviewReasonTag | string
+) {
+  if (reasonTag !== "用語" || patch.operation !== "replace") return false;
+  const requirements = intent.required_replacements.filter((replacement) => (
+    replacement.target_fields.includes(patch.field) && patch.before.includes(replacement.before)
+  ));
+  if (requirements.length === 0) return false;
+  let expectedAfter = patch.before;
+  for (const replacement of requirements) {
+    expectedAfter = expectedAfter.split(replacement.before).join(replacement.after);
+  }
+  return expectedAfter !== patch.before && expectedAfter === patch.after;
+}
+
+function isUsableReviewClaim(claim: FactLedger["claims"][number]) {
+  return claim.type !== "unsupported";
+}
+
 function assertNewNumbersGrounded(patch: ReviewPatchOperation, ledger: FactLedger) {
   const beforeNumbers = new Set(extractNumbers(patch.before));
   const added = extractNumbers(patch.after).filter((number) => !beforeNumbers.has(number));
@@ -407,7 +456,7 @@ function assertRequiredInstructionCoverage(
     }
   }
 
-  const usableClaims = new Set(ledger.claims.filter((claim) => claim.type !== "unsupported").map((claim) => claim.id));
+  const usableClaims = new Set(ledger.claims.filter(isUsableReviewClaim).map((claim) => claim.id));
   for (const field of intent.required_field_rewrites) {
     const rewritePatch = patches.find((patch) => patch.field === field && patch.operation === "replace_field");
     if (!rewritePatch) {
