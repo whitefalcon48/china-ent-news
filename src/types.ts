@@ -307,6 +307,7 @@ export type ClaimCheckViolation = {
   rule: ClaimCheckRule;
   severity: "gate" | "warning";
   detail: string;
+  number_token?: string;
 };
 
 export type ClaimCheckResult = {
