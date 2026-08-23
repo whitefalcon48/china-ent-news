@@ -4,6 +4,7 @@
 
 - ✅ Issue #63の元記事、OWNERコメント、Actions返信、`data/2026-08-23` の保存結果・fact ledger・claim refs、review-apply run `32626170652` と適用経路を照合。OWNER指示は `二創→二次創作` と注目ポイントの再構成の2件だったが、保存差分は `why_it_matters` へのC13由来の物語説明追加だけで、`what_happened` の `二創` は残っていた。
 - ✅ 用語修正が無視された原因を、限定patchのアンカー抽出が引用符付き文字列・日付・金額・人数だけを対象とし、引用符のない `X→Y` を解析しなかったことと特定。`what_happened` が変更可能fieldへ入らず、LLMへも渡らなかった。記事・作品固有語を持たない共通の矢印置換抽出を追加し、複数組と各target fieldの全出現を必須要件として検証する。修正元が存在しない、または1件でも未反映なら保存せず `clarification_required` で止める。
+- ✅ 受付監査の追確認で、Unicode矢印とASCII `->` に加え、レビュー入力や中継でASCII矢印がHTML entity化された `-&gt;` / `-&amp;gt;` も検出前に `->` へ正規化する回帰を追加。いずれも同じ明示置換・全件充足契約へ通す。
 - ✅ 再構成が実質的な再構成にならなかった原因を、全限定patchへ一律に「最小変更・文順を変えない」と指示し、1件以上のpatchがあれば複数指示の充足を検証せず合格できたことと特定。field名と同じ節に再構成・書き直し等がある場合を限定patch内のfield rewriteとして分離し、`replace_field`、利用可能な根拠claim、実質的な組み替えを必須化した。既存文の包含または5文字連続片90%以上の保持は薄い追記・言い換えとして拒否し、根拠ある改善を作れなければ `clarification_required` へ戻す。
 - ✅ Issue #57の限定patch保持は維持。非対象本文、空の `reaction_view`、`source_list`、`related_sources`、既存claim refs、重要数字、人物・作品名を変更不可のままにし、対象fieldのrefsは既存値を残して追加する。全文・記事全体の明示的な書き直しだけは従来どおりfull rewriteへ送る。
 - ✅ Issue #63型fixtureで、用語だけ／再構成だけの部分応答と、冒頭へ物語説明を足したActions型応答をともに拒否。合格fixtureでは `二創募集` を `二次創作募集` へ直し、注目ポイントをC15〜C19に基づく「不倫後の支援・再婚後の葛藤・悪人に割り切れない複雑さが評価変化を生む」という関係説明へ再構成し、変更fieldを `what_happened` / `why_it_matters` の2つに限定した。

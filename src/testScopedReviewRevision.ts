@@ -243,6 +243,14 @@ assert.equal(
 const multipleReplacementInstruction = "二創→二次創作。長年の沈黙→長い沈黙。";
 const multipleReplacementIntent = detectReviewRevisionIntent(issue63Before, multipleReplacementInstruction, "用語");
 assert.equal(multipleReplacementIntent.required_replacements.length, 2, "複数の矢印置換を順番にすべて抽出する");
+for (const arrow of ["->", "-&gt;", "-&amp;gt;"]) {
+  const entityIntent = detectReviewRevisionIntent(issue63Before, `二創${arrow}二次創作。`, "用語");
+  assert.deepEqual(entityIntent.required_replacements, [{
+    before: "二創",
+    after: "二次創作",
+    target_fields: ["what_happened"]
+  }], `${arrow} をASCII矢印と同じ明示置換として受理する`);
+}
 assert.throws(
   () => applyValidatedReviewPatch(
     issue63Before,

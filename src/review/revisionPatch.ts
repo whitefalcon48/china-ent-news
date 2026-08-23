@@ -307,7 +307,8 @@ function extractInstructionAnchors(summary: SummarizedArticle, instruction: stri
 }
 
 function detectRequiredLiteralReplacements(summary: SummarizedArticle, instruction: string) {
-  const candidates = [...instruction.matchAll(LITERAL_ARROW_REPLACEMENT)].map((match) => ({
+  const normalizedInstruction = normalizeHtmlEncodedArrows(instruction);
+  const candidates = [...normalizedInstruction.matchAll(LITERAL_ARROW_REPLACEMENT)].map((match) => ({
     before: firstCaptured(match.slice(1, 6)),
     after: firstCaptured(match.slice(6, 11))
   })).filter((item) => item.before && item.after && item.before !== item.after);
@@ -321,6 +322,10 @@ function detectRequiredLiteralReplacements(summary: SummarizedArticle, instructi
     return { ...candidate, target_fields: targetFields };
   });
   return { requirements, unmatched };
+}
+
+function normalizeHtmlEncodedArrows(instruction: string) {
+  return instruction.replace(/-&(?:amp;)*gt;/gu, "->");
 }
 
 function firstCaptured(values: Array<string | undefined>) {
