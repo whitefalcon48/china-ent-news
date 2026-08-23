@@ -1,5 +1,13 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-23 実装・ローカル検証完了（Issue #63 再送時の利用不可claim安全処理）
+
+- ✅ review-apply run `32630575011`、Issue #63の再送コメントとActions返信、`data/2026-08-23` の保存記事・fact ledger・claim refs・適用経路を照合。モデルへ全claimを渡していたため、明示用語置換 `二創→二次創作` に対し、修正元の語を本文に含むC2を根拠として選べた。C2はAI生成と明示されたE1だけに基づく `unsupported` であり、保存前validatorが「利用できない根拠claim」として拒否した。記事は未変更、レビュー状態だけ `pending` に戻る安全停止だった。
+- ✅ 限定patch promptへ渡すclaimを `verified_fact` / `source_analysis` に限定し、表示されていないIDは選択禁止と明示。OWNERが明示した純粋な用語置換は `evidence_claim_refs=[]`、再構成は利用可能claimだけを実際の根拠として列挙する契約へ分離した。作品名・日付・専用語句に依存する条件は追加していない。
+- ✅ validatorはreason tagが「用語」で、`before` へ検出済みの明示置換だけを適用すると `after` に完全一致するパッチに限り、モデルが付けたclaim refsを不要情報として空配列へ正規化する。再構成・事実を伴う変更・未知claimに利用不可refが1件でも混じれば、refを推測置換／黙って除去せず `clarification_required` で停止する。既存claim refsは限定patch保持契約どおり削除しない。
+- ✅ Issue #63実データ型fixtureに、E1由来の `unsupported` C2とC13・C15〜C19の利用可能claimを収録。用語patchのC2だけは除去して用語修正と根拠ある再構成を完了し、再構成側へC2を混ぜた応答は停止することを確認。Issue #57の非対象本文、空 `reaction_view`、source配列、重要数字、人物・作品、既存claim refs保持も継続検証する。
+- ✅ 検証: `npm run check`、`npm run test:scoped-review-revision`、`npm run test:lightweight-review-edit`、`npm run test:review-presentation`、`npm run test:evidence-integrity`、`npm run test:editorial-insight`、`npm run test:terminology`、`npm run test:kanji`、`npm run test:bingtang-comment-tone`、`npm run test:manual-intake` 成功。本番記事再適用、Issue #63へのコメント、本番再生成・公開、main統合、pushは未実施。
+
 ## 2026-08-23 実装・ローカル検証完了（Issue #63 複数指示の完全適用・再構成品質）
 
 - ✅ Issue #63の元記事、OWNERコメント、Actions返信、`data/2026-08-23` の保存結果・fact ledger・claim refs、review-apply run `32626170652` と適用経路を照合。OWNER指示は `二創→二次創作` と注目ポイントの再構成の2件だったが、保存差分は `why_it_matters` へのC13由来の物語説明追加だけで、`what_happened` の `二創` は残っていた。

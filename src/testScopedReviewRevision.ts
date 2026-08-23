@@ -205,6 +205,19 @@ const issue63Claim = (
 const issue63Ledger: FactLedger = {
   topic_key: issue63Before.topic_key,
   claims: [
+    {
+      id: "C2",
+      type: "unsupported",
+      text: "公式微博は二創募集、ドラマレビューコンテスト、クイズ大会、性格診断テストを開始し、賞金と主演の非売品サイン写真を賞品として提供した。",
+      evidence_refs: ["E1"],
+      entities: ["我的前半生", "微博"],
+      numbers: [],
+      quote_zh: "上线二创征集、剧评大赛、答题赛和人格测试，并设置奖金与主演绝",
+      anchor: true,
+      scope: "root_event",
+      editorial_role: "other",
+      angle_kind: "other"
+    },
     issue63Claim("C13", "羅子君が離婚後、唐晶と賀涵の助けで職場に入り自己成長する物語である。", ["羅子君", "陳俊生", "唐晶", "賀涵"], "story_premise"),
     issue63Claim("C15", "陳俊生は同僚の凌玲と不倫し、羅子君と離婚して凌玲と再婚する。", ["陳俊生", "凌玲", "羅子君"], "story_premise"),
     issue63Claim("C16", "陳俊生は離婚後も子どもや前妻一家の面倒を見続けた。", ["陳俊生", "羅子君"]),
@@ -214,7 +227,11 @@ const issue63Ledger: FactLedger = {
   ],
   terms: [],
   japan_availability: { status: "not_in_evidence", detail: "", evidence_refs: [] },
-  unresolved: []
+  unresolved: [],
+  evidence_quality: [
+    { evidence_ref: "E1", classification: "ai_generated", usable_for_verified_facts: false, reason: "explicit_ai_generation_disclosure" },
+    { evidence_ref: "E2", classification: "editorial_media", usable_for_verified_facts: true, reason: "editorial_source_without_integrity_markers" }
+  ]
 };
 
 const issue63Topic = {
@@ -345,6 +362,95 @@ assert.ok(issue63Result.summary.claim_refs.why_it_matters.includes("C19"));
 assert.deepEqual(issue63Result.trace.preservation.important_numbers_after, issue63Result.trace.preservation.important_numbers_before);
 assert.deepEqual(issue63Result.trace.preservation.entities_after, issue63Result.trace.preservation.entities_before);
 
+const issue63ActionsRetryPatch: ReviewPatchDocument = {
+  mode: "limited_patch",
+  clarification_required: false,
+  clarification_reason: "",
+  patches: [
+    {
+      field: "what_happened",
+      operation: "replace",
+      before: "二創",
+      after: "二次創作",
+      evidence_claim_refs: ["C2"],
+      reason: "用語を修正"
+    },
+    groundedRewritePatch
+  ]
+};
+const issue63ActionsRetryResult = applyValidatedReviewPatch(
+  issue63Before,
+  issue63Topic,
+  issue63Ledger,
+  issue63Instruction,
+  "用語",
+  issue63Intent,
+  issue63ActionsRetryPatch
+);
+assert.doesNotMatch(issue63ActionsRetryResult.summary.what_happened, /二創/u);
+assert.match(issue63ActionsRetryResult.summary.what_happened, /二次創作/u);
+assert.equal(
+  issue63ActionsRetryResult.summary.what_happened,
+  issue63Before.what_happened.replace("二創", "二次創作"),
+  "本文はOWNER指定の用語だけを置換する"
+);
+assert.equal(issue63ActionsRetryResult.summary.why_it_matters, groundedWhyItMatters);
+assert.deepEqual(
+  issue63ActionsRetryResult.trace.changes[0].evidence_claim_refs,
+  [],
+  "OWNERが明示した純粋な用語置換から、モデルが付けた不要なunsupported claim refだけを除去する"
+);
+assert.deepEqual(
+  issue63ActionsRetryResult.summary.claim_refs.what_happened,
+  issue63Before.claim_refs.what_happened,
+  "用語置換は既存claim refsを保持し、新しい根拠refを追加しない"
+);
+
+const issue63ExpandedTermPatch: ReviewPatchDocument = {
+  ...issue63ActionsRetryPatch,
+  patches: [
+    {
+      ...issue63ActionsRetryPatch.patches[0],
+      after: "二次創作（ファン制作コンテンツ）"
+    },
+    groundedRewritePatch
+  ]
+};
+assert.throws(
+  () => applyValidatedReviewPatch(
+    issue63Before,
+    issue63Topic,
+    issue63Ledger,
+    issue63Instruction,
+    "用語",
+    issue63Intent,
+    issue63ExpandedTermPatch
+  ),
+  ReviewRevisionClarificationRequiredError,
+  "明示置換を超える説明を足したパッチは純粋な用語置換とみなさず、利用不可refを除去して続行しない"
+);
+
+const issue63UnsupportedRewritePatch: ReviewPatchDocument = {
+  ...issue63ActionsRetryPatch,
+  patches: [
+    issue63ActionsRetryPatch.patches[0],
+    { ...groundedRewritePatch, evidence_claim_refs: ["C15", "C16", "C2"] }
+  ]
+};
+assert.throws(
+  () => applyValidatedReviewPatch(
+    issue63Before,
+    issue63Topic,
+    issue63Ledger,
+    issue63Instruction,
+    "用語",
+    issue63Intent,
+    issue63UnsupportedRewritePatch
+  ),
+  ReviewRevisionClarificationRequiredError,
+  "再構成へunsupported claimが混じった場合は、推測で差し替えたり除去して続行せずclarification_requiredで止める"
+);
+
 const noGroundingIntent = detectReviewRevisionIntent(issue63Before, "注目ポイントを再構成する。", "構成");
 const noGroundingPatch: ReviewPatchDocument = {
   mode: "limited_patch",
@@ -413,6 +519,10 @@ const issue63Prompt = buildLimitedReviewPatchPrompt(issue63Before, issue63Ledger
 assert.match(issue63Prompt, /省略禁止の明示置換/u);
 assert.match(issue63Prompt, /薄い追記/u);
 assert.match(issue63Prompt, /根拠から実質的な改善を作れない場合.*clarification_required=true/u);
+assert.equal(issue63Prompt.includes(issue63Ledger.claims[0].text), false, "unsupported claim本文をモデルの選択肢へ渡さない");
+assert.equal(issue63Prompt.includes('"id": "C2"'), false, "利用不可claim IDをモデルの選択肢へ渡さない");
+assert.equal(issue63Prompt.includes('"id": "C15"'), true, "再構成には利用可能claimだけを渡す");
+assert.match(issue63Prompt, /明示置換.*evidence_claim_refs=\[\]/su, "用語の明示置換にはclaim refsを付けないよう明示する");
 
 const manualTopic = { ...topic, evidence_articles: [{ category: "持ち込みニュース" }] } as unknown as TopicCandidate;
 const manualResult = applyValidatedReviewPatch(before, manualTopic, ledger, ownerInstruction, "事実", intent, patch);
