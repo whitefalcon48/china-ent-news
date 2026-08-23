@@ -318,7 +318,7 @@ const shallowIssue63Patch: ReviewPatchDocument = {
     {
       field: "why_it_matters",
       operation: "replace_field",
-      before: issue63Before.why_it_matters,
+      before: "LLMが返した現在値と不一致のbefore",
       after: `このドラマは、裕福で安逸な生活を送る専業主婦の${issue63Before.why_it_matters.replace("です！", "です。")}`,
       evidence_claim_refs: ["C13", "C15"],
       reason: "物語説明を追加"
@@ -327,7 +327,7 @@ const shallowIssue63Patch: ReviewPatchDocument = {
 };
 assert.throws(
   () => applyValidatedReviewPatch(issue63Before, issue63Topic, issue63Ledger, issue63Instruction, "用語", issue63Intent, shallowIssue63Patch),
-  ReviewRevisionClarificationRequiredError,
+  (error: unknown) => error instanceof ReviewRevisionClarificationRequiredError && /薄い追記・言い換え/u.test(error.message),
   "既存文の冒頭へ説明を足しただけの再構成を拒否する"
 );
 
@@ -361,6 +361,53 @@ assert.ok(issue63Result.summary.claim_refs.what_happened.includes("C1"));
 assert.ok(issue63Result.summary.claim_refs.why_it_matters.includes("C19"));
 assert.deepEqual(issue63Result.trace.preservation.important_numbers_after, issue63Result.trace.preservation.important_numbers_before);
 assert.deepEqual(issue63Result.trace.preservation.entities_after, issue63Result.trace.preservation.entities_before);
+
+const issue63Run326316Before: SummarizedArticle = {
+  ...issue63Before,
+  why_it_matters: "このドラマは、裕福で安逸な生活を送る専業主婦の羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで職場に入り、自己成長していく物語です。陳俊生は同僚の凌玲と不倫して羅子君と離婚し、凌玲と再婚します。この設定が、放送当時は「クズ男」と叩かれた陳俊生を、今では「中国の良い元夫」と呼ばせるほど視聴者の見方を変えたんです。"
+};
+const issue63Run326316GroundedWhy = "羅子君が離婚後に唐晶と賀涵の助けで職場へ踏み出し、自己成長する物語の一方で、その離婚を引き起こした陳俊生も単純な悪役には描かれません。陳俊生は不倫で羅子君と別れながら、離婚後も子どもや前妻一家を支え、再婚後には別の葛藤を抱えます。臆病さや欲深さと良心が同居する人物だからこそ、放送当初の「クズ男」から「中国の良い元夫」へ評価が揺れた。この割り切れなさが、時間を置いて見直す面白さなんです！";
+const issue63Run326316Intent = detectReviewRevisionIntent(issue63Run326316Before, issue63Instruction, "用語");
+const issue63Run326316Patch: ReviewPatchDocument = {
+  mode: "limited_patch",
+  clarification_required: false,
+  clarification_reason: "",
+  patches: [
+    { field: "what_happened", operation: "replace", before: "二創", after: "二次創作", evidence_claim_refs: [], reason: "用語を修正" },
+    {
+      ...groundedRewritePatch,
+      before: issue63Before.why_it_matters,
+      after: issue63Run326316GroundedWhy,
+      evidence_claim_refs: ["C13", "C15", "C16", "C17", "C18", "C19"]
+    }
+  ]
+};
+const issue63Run326316Result = applyValidatedReviewPatch(
+  issue63Run326316Before,
+  issue63Topic,
+  issue63Ledger,
+  issue63Instruction,
+  "用語",
+  issue63Run326316Intent,
+  issue63Run326316Patch
+);
+assert.equal(
+  issue63Run326316Result.summary.what_happened,
+  issue63Run326316Before.what_happened.replace("二創", "二次創作"),
+  "run 32631657560型でも明示用語置換だけを本文へ適用する"
+);
+assert.equal(issue63Run326316Result.summary.why_it_matters, issue63Run326316GroundedWhy);
+assert.equal(
+  issue63Run326316Result.trace.changes.find((change) => change.field === "why_it_matters")?.before,
+  issue63Run326316Before.why_it_matters,
+  "必須field rewriteのtraceにはLLM echoではなく保存記事の実際の現在値を記録する"
+);
+assert.deepEqual(issue63Run326316Result.trace.changed_fields, ["what_happened", "why_it_matters"]);
+assert.equal(issue63Run326316Result.summary.reaction_view, issue63Run326316Before.reaction_view);
+assert.deepEqual(issue63Run326316Result.summary.source_list, issue63Run326316Before.source_list);
+assert.deepEqual(issue63Run326316Result.summary.related_sources, issue63Run326316Before.related_sources);
+assert.deepEqual(issue63Run326316Result.trace.preservation.important_numbers_after, issue63Run326316Result.trace.preservation.important_numbers_before);
+assert.deepEqual(issue63Run326316Result.trace.preservation.entities_after, issue63Run326316Result.trace.preservation.entities_before);
 
 const issue63ActionsRetryPatch: ReviewPatchDocument = {
   mode: "limited_patch",
@@ -523,6 +570,7 @@ assert.equal(issue63Prompt.includes(issue63Ledger.claims[0].text), false, "unsup
 assert.equal(issue63Prompt.includes('"id": "C2"'), false, "利用不可claim IDをモデルの選択肢へ渡さない");
 assert.equal(issue63Prompt.includes('"id": "C15"'), true, "再構成には利用可能claimだけを渡す");
 assert.match(issue63Prompt, /明示置換.*evidence_claim_refs=\[\]/su, "用語の明示置換にはclaim refsを付けないよう明示する");
+assert.match(issue63Prompt, /replace_field.*before.*空文字/su, "必須field rewriteで長い現在値をLLMにechoさせない");
 
 const manualTopic = { ...topic, evidence_articles: [{ category: "持ち込みニュース" }] } as unknown as TopicCandidate;
 const manualResult = applyValidatedReviewPatch(before, manualTopic, ledger, ownerInstruction, "事実", intent, patch);

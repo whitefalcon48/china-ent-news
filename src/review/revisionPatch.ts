@@ -171,7 +171,7 @@ ${JSON.stringify({ claims: usableClaims, terms: ledger.terms }, null, 2)}
 - field は変更可能フィールドからだけ選ぶ。
 - 通常は operation="replace" とし、before は現在値に1回だけ現れる完全一致文字列にする。対象箇所以外の文を before に含めない。
 - 省略禁止の明示置換は、指定された全組を target_fields の全出現へ反映する。一部だけ処理して成功扱いにしてはいけない。OWNERが before→after を明示した純粋な用語置換には根拠claimが不要なので、evidence_claim_refs=[] にする。元の語を含むclaimを探して付けてはいけない。
-- operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。上記の「実質的な再構成が必要な箇所」には必ず replace_field を使う。
+- operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。上記の「実質的な再構成が必要な箇所」には必ず replace_field を使い、before は空文字にする。保存記事の実際の現在値はシステムがbindするため、長文をコピー・要約・補正してbeforeへ入れてはいけない。afterにはフィールド全体の書き直し後を入れる。
 - 通常の置換では、after は修正指示に必要な最小限の変更だけにし、周辺文、別フィールド、文順を変えない。
 - 再構成対象フィールドには最小変更ルールを適用しない。既存文の前後へ説明を1文足すだけ、ほぼ同じ文順・表現を残すだけでは不合格。指示された分かりにくさ・浅さを解消するよう、根拠claim同士の因果・対比・仕組み・変化のいずれかを説明する文章へ組み直す。
 - 再構成の evidence_claim_refs には、上の「利用可能な事実台帳」にあるclaim IDから、書き直したフィールドで実際に使ったものをすべて入れる。表示されていないIDやunsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
@@ -236,7 +236,11 @@ export function applyValidatedReviewPatch(
   const allowed = new Set(intent.allowed_fields);
   const explicit = new Set(intent.explicit_fields);
   const knownClaims = new Map(ledger.claims.map((claim) => [claim.id, claim]));
-  const patches = prepareReviewPatchEvidenceRefs(document.patches, intent, ledger, reasonTag);
+  const patches = bindRequiredFieldRewriteBefore(
+    before,
+    prepareReviewPatchEvidenceRefs(document.patches, intent, ledger, reasonTag),
+    intent
+  );
   const originalFieldValues = new Map(listPatchableFields(before).map((field) => [field, readPatchableField(before, field)]));
   const replacedChars = new Map<ReviewPatchableField, number>();
   let after = structuredClone(before);
@@ -396,6 +400,21 @@ function prepareReviewPatchEvidenceRefs(
       );
     }
     return { ...patch, evidence_claim_refs: [...patch.evidence_claim_refs] };
+  });
+}
+
+function bindRequiredFieldRewriteBefore(
+  before: SummarizedArticle,
+  patches: ReviewPatchOperation[],
+  intent: ReviewRevisionIntent
+) {
+  const requiredFieldRewrites = new Set(intent.required_field_rewrites);
+  return patches.map((patch) => {
+    if (patch.operation !== "replace_field" || !requiredFieldRewrites.has(patch.field)) return patch;
+    // The current value is authoritative process input. Asking an LLM to echo a
+    // long field byte-for-byte adds no safety; all rewrite scope and after-text
+    // gates remain enforced below.
+    return { ...patch, before: readPatchableField(before, patch.field) };
   });
 }
 
