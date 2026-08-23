@@ -1,0 +1,450 @@
+{
+  "date": "2026-08-23",
+  "generated_at": "2026-08-23T02:27:48.368Z",
+  "ledgers": [
+    {
+      "topic_key": "我的前半生主演现状",
+      "ledger": {
+        "topic_key": "我的前半生主演现状",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "unsupported",
+            "text": "2026年8月22日、ドラマ『我的前半生』の公式微博が長年の沈黙を破って更新を再開し、「暑期爆款」キャンペーンの復活を宣言した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "我的前半生",
+              "微博"
+            ],
+            "numbers": [
+              "2026年8月22日"
+            ],
+            "quote_zh": "8月22日，《我的前半生》官方微博时隔多年恢复更新",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "unsupported",
+            "text": "公式微博は二創募集、ドラマレビューコンテスト、クイズ大会、性格診断テストを開始し、賞金と主演の非売品サイン写真を賞品として提供した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "我的前半生",
+              "微博"
+            ],
+            "numbers": [],
+            "quote_zh": "上线二创征集、剧评大赛、答题赛和人格测试，并设置奖金与主演绝",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "unsupported",
+            "text": "同ドラマのショート動画プラットフォームでの関連コンテンツ再生増加量は49億回を超え、微博の累計閲覧数は32.8億に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "我的前半生",
+              "微博"
+            ],
+            "numbers": [
+              "49億回",
+              "32.8億"
+            ],
+            "quote_zh": "短视频平台相关内容播放增量超过49亿次，微博累计阅读量达32",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "unsupported",
+            "text": "複数の関連トピックが微博のホットサーチにランクインした。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "微博"
+            ],
+            "numbers": [],
+            "quote_zh": "多个相关话题登上热搜",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "unsupported",
+            "text": "プロデューサーの黄澜は、再ブームの理由を、優れた俳優が真実の人間性を演じたこと、名場面がネットミーム化して視聴者の軽快な楽しみへの欲求に合致したこと、そして羅子君の困難に立ち向かう姿勢が必要な心理的エネルギーを与えたことだと分析した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "黄澜",
+            "entities": [
+              "黄澜",
+              "羅子君"
+            ],
+            "numbers": [],
+            "quote_zh": "制片人黄澜认为翻红源于好演员诠释真实人性、桥段被玩成热梗契合",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "unsupported",
+            "text": "雷佳音は『我的前半生』の陳俊生役で広く知られるようになり、その後金鶏賞主演男優賞、飛天賞優秀男優賞など重要な賞を獲得し、ネットユーザーから「視帝大満貫」と冗談交じりに呼ばれている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "雷佳音",
+              "陳俊生",
+              "金鶏賞",
+              "飛天賞"
+            ],
+            "numbers": [],
+            "quote_zh": "雷佳音：凭借《我的前半生》中陈俊生一角被观众熟知，此后事业一",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "unsupported",
+            "text": "馬伊琍は羅子君役で白玉蘭賞最優秀主演女優賞を受賞し、ドラマ外ではハッピーエンドをオープンエンドに変更することを主張し、専門的な見識があると称賛され、近年は女性の権利のために声を上げ続けている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "馬伊琍",
+              "羅子君",
+              "白玉蘭賞"
+            ],
+            "numbers": [],
+            "quote_zh": "马伊琍：凭罗子君一角斩获白玉兰最佳女主角奖，戏外她坚持将大团",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "unsupported",
+            "text": "袁泉は唐晶役で高い評価を受け、その後の作品でも安定した評価を得ている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "袁泉",
+              "唐晶"
+            ],
+            "numbers": [],
+            "quote_zh": "袁泉在剧中饰演唐晶广受好评，后续作品口碑稳定",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "unsupported",
+            "text": "呉越は『県委大院』などの作品で白玉蘭賞最優秀主演女優賞を受賞し、演技力が認められ続けている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "呉越",
+              "県委大院",
+              "白玉蘭賞"
+            ],
+            "numbers": [],
+            "quote_zh": "吴越则凭《县委大院》等作品拿下白玉兰视后，演技持续获得认可",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "unsupported",
+            "text": "かつてドラマを追っていた視聴者が中年に差し掛かり、結婚、職場、中年の危機といったテーマに対して新たな気づきを得て、キャラクターを非難するのではなく、それぞれの葛藤や選択を理解するようになった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "当年追剧的观众如今步入中年，看待婚姻、职场、中年困境等议题有",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "unsupported",
+            "text": "同ドラマは完璧な人物を意図的に作らず、俳優がキャラクターの複雑さや迷いを繊細かつ真に迫って演じたため、良い作品は時の試練に耐えると評価されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "该剧没有刻意塑造完美人物，演员将角色的复杂与犹豫演得细腻真切",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "unsupported",
+            "text": "このドラマは、時間を超えて残るのはトラフィックやマーケティングではなく、堅実な脚本と真実の人間性であることを証明したとされる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "这部剧证明真正能穿越时间的不是流量和营销，而是扎实的剧本和真",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "ドラマ『我的前半生』は、裕福で安逸な生活を送る専業主婦の羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで困難を乗り越え、職場に入り、自己成長の中で人生の次の段階へ進む物語である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "我的前半生",
+              "羅子君",
+              "陳俊生",
+              "唐晶",
+              "賀涵"
+            ],
+            "numbers": [],
+            "quote_zh": "该剧讲述了生活优越安逸的全职太太罗子君与丈夫陈俊生离婚后一切",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "ドラマ『我的前半生』は2017年7月4日に東方衛視と北京衛視で初放送された。",
+            "evidence_refs": [
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "我的前半生",
+              "東方衛視",
+              "北京衛視"
+            ],
+            "numbers": [
+              "2017年7月4日"
+            ],
+            "quote_zh": "该剧于2017年7月4日在东方卫视、北京卫视首播",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "ドラマ版では、羅子君の夫の陳俊生が同僚の凌玲と不倫し、羅子君と離婚して凌玲と再婚する。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "陳俊生",
+              "凌玲",
+              "羅子君"
+            ],
+            "numbers": [],
+            "quote_zh": "和同事凌玲产生感情，婚内出轨，之后与罗子君离婚、迎娶凌玲",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "陳俊生は離婚の際に罪悪感から財産の大部分を羅子君に分け与え、その後も子供や前妻の家族の面倒を見続けた。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "陳俊生",
+              "羅子君"
+            ],
+            "numbers": [],
+            "quote_zh": "离婚时内心愧疚，把大部分财产分割给罗子君，对孩子、前妻一家持",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "陳俊生は再婚後の生活が想像以上に幸せではなく、再婚家庭の矛盾が絶えず、新たな悩みに陥り、結婚という囲いから別の囲いへ落ちた。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "陳俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "再婚后的生活远没有想象幸福，重组家庭矛盾不断，他陷入新的苦恼",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "陳俊生というキャラクターは純粋な悪人ではなく、臆病で欲深く、それでいて良心も残っており、複雑な人間性の描写によって視聴者は単純に彼を憎むことができなかった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "陳俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "这个角色不是纯粹的坏人，懦弱、贪心、又尚存良知，复杂的人性塑",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "放送当初、陳俊生はネット上で「クズ男」と非難されたが、後に義理堅い一面から「中国好前夫」とネットユーザーに呼ばれるようになった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "陳俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "陈俊生先被全网骂“渣男”，后期因为重情义的一面，又被网友戏称",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "雷佳音は陳俊生役でブレイクした後、『人世間』で白玉蘭賞、飛天賞、金鷹賞の三つの主演男優賞を獲得し、映画『第二十条』で金鶏賞主演男優賞を受賞して、映画とテレビの両方で活躍する実力派俳優となった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "雷佳音",
+              "人世間",
+              "白玉蘭賞",
+              "飛天賞",
+              "金鷹賞",
+              "第二十条",
+              "金鶏賞"
+            ],
+            "numbers": [],
+            "quote_zh": "雷佳音后续出演《人世间》拿下白玉兰、飞天、金鹰三大视帝，电影",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "暑期爆款",
+            "gloss_ja": "夏のヒット作",
+            "explain_evidence_refs": []
+          },
+          {
+            "term": "前夫哥",
+            "gloss_ja": "元夫くん",
+            "what_is": "ドラマの登場人物・陳俊生に対する視聴者からの愛称。",
+            "why_now": "雷佳音が演じた陳俊生がこの愛称で親しまれた。",
+            "explain_quote_zh": "观众称他为“前夫哥”",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "中国好前夫",
+            "gloss_ja": "中国の良い元夫",
+            "what_is": "陳俊生の義理堅い一面を称えるネット上の呼び名。",
+            "why_now": "放送後、陳俊生の評価が変化したことを示す。",
+            "explain_quote_zh": "又被网友戏称“中国好前夫”",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "ai_generated",
+            "usable_for_verified_facts": false,
+            "reason": "explicit_ai_generation_disclosure"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
