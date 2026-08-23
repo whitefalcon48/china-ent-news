@@ -35,6 +35,8 @@ const FIELD_ALIASES: Array<{ pattern: RegExp; fields: Array<(typeof TOP_LEVEL_FI
 
 const FULL_REWRITE = /(?:全文|記事全体|全体|全体の本文).{0,18}(?:書き直|作り直|再生成|再構成|リライト)|(?:記事|本文).{0,10}(?:全面的に|すべて|全部).{0,8}(?:書き直|作り直|再生成|再構成|リライト)|(?:完全|全面)(?:再生成|リライト)|構成.{0,10}(?:作り直|再構成)/u;
 const SHORTENING_REQUEST = /(?:削除|短く|簡潔|要約|圧縮)/u;
+const FIELD_REWRITE_REQUEST = /(?:再構成|再編|組み直|書き直|作り直|リライト|再生成)/u;
+const LITERAL_ARROW_REPLACEMENT = /(?:^|[\s、。．,，；;！？!?])(?:「([^」\r\n]{1,80})」|『([^』\r\n]{1,80})』|“([^”\r\n]{1,80})”|"([^"\r\n]{1,80})"|([^→⇒\r\n\s、。．,，；;！？!?]{1,80}?))\s*(?:→|⇒|->)\s*(?:「([^」\r\n]{1,80})」|『([^』\r\n]{1,80})』|“([^”\r\n]{1,80})”|"([^"\r\n]{1,80})"|([^\r\n\s、。．,，；;！？!?]{1,80}))/gu;
 
 export class ReviewRevisionContractError extends Error {
   constructor(message: string) {
@@ -63,6 +65,8 @@ export function detectReviewRevisionIntent(
       allowed_fields: listPatchableFields(summary),
       explicit_fields: listPatchableFields(summary),
       anchors_by_field: {},
+      required_replacements: [],
+      required_field_rewrites: [],
       clarification_reason: ""
     };
   }
@@ -79,7 +83,24 @@ export function detectReviewRevisionIntent(
   }
   if (reasonTag === "口調" && explicitFields.size === 0) explicitFields.add("why_it_matters");
 
-  const candidateAnchors = extractInstructionAnchors(summary, instruction);
+  const replacementDetection = detectRequiredLiteralReplacements(summary, instruction);
+  if (replacementDetection.unmatched.length > 0) {
+    return {
+      mode: "clarification_required",
+      allowed_fields: [],
+      explicit_fields: [...explicitFields],
+      anchors_by_field: {},
+      required_replacements: replacementDetection.requirements,
+      required_field_rewrites: [],
+      clarification_reason: `明示置換の修正元が記事内に見つかりませんでした: ${replacementDetection.unmatched.join(", ")}`
+    };
+  }
+
+  const requiredFieldRewrites = detectRequiredFieldRewrites(summary, instruction);
+  const candidateAnchors = [
+    ...extractInstructionAnchors(summary, instruction),
+    ...replacementDetection.requirements.map((replacement) => replacement.before)
+  ];
   const anchorsByField: Partial<Record<ReviewPatchableField, string[]>> = {};
   const allowedFields = new Set<ReviewPatchableField>(explicitFields);
   for (const field of listPatchableFields(summary)) {
@@ -97,6 +118,8 @@ export function detectReviewRevisionIntent(
       allowed_fields: [],
       explicit_fields: [],
       anchors_by_field: {},
+      required_replacements: replacementDetection.requirements,
+      required_field_rewrites: requiredFieldRewrites,
       clarification_reason: "修正対象のフィールドまたは元記事内の完全一致箇所を特定できませんでした"
     };
   }
@@ -106,6 +129,8 @@ export function detectReviewRevisionIntent(
     allowed_fields: [...allowedFields],
     explicit_fields: [...explicitFields],
     anchors_by_field: anchorsByField,
+    required_replacements: replacementDetection.requirements,
+    required_field_rewrites: requiredFieldRewrites,
     clarification_reason: ""
   };
 }
@@ -131,6 +156,12 @@ ${JSON.stringify(allowedContent, null, 2)}
 元記事内で検出した完全一致アンカー:
 ${JSON.stringify(intent.anchors_by_field, null, 2)}
 
+省略禁止の明示置換（target_fields の全出現を処理）:
+${JSON.stringify(intent.required_replacements, null, 2)}
+
+フィールド全体の実質的な再構成が必要な箇所:
+${JSON.stringify(intent.required_field_rewrites, null, 2)}
+
 事実台帳:
 ${JSON.stringify({ claims: ledger.claims, terms: ledger.terms }, null, 2)}
 
@@ -138,8 +169,12 @@ ${JSON.stringify({ claims: ledger.claims, terms: ledger.terms }, null, 2)}
 - 出力は記事全文ではなく、次の限定パッチJSONだけにする。
 - field は変更可能フィールドからだけ選ぶ。
 - 通常は operation="replace" とし、before は現在値に1回だけ現れる完全一致文字列にする。対象箇所以外の文を before に含めない。
-- operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。
-- after は修正指示に必要な最小限の変更だけにする。周辺文、別フィールド、文順を変えない。
+- 省略禁止の明示置換は、指定された全組を target_fields の全出現へ反映する。一部だけ処理して成功扱いにしてはいけない。
+- operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。上記の「実質的な再構成が必要な箇所」には必ず replace_field を使う。
+- 通常の置換では、after は修正指示に必要な最小限の変更だけにし、周辺文、別フィールド、文順を変えない。
+- 再構成対象フィールドには最小変更ルールを適用しない。既存文の前後へ説明を1文足すだけ、ほぼ同じ文順・表現を残すだけでは不合格。指示された分かりにくさ・浅さを解消するよう、根拠claim同士の因果・対比・仕組み・変化のいずれかを説明する文章へ組み直す。
+- 再構成の evidence_claim_refs には、書き直したフィールドで使った利用可能なclaimをすべて入れる。unsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
+- why_it_matters の再構成では、あらすじの追加だけで終わらせず、なぜ再評価・注目が起きるのか、作品や出来事の何が面白い／重要なのかを、事実台帳にある複数事実の関係として説明する。台帳に無い評論を足さない。
 - 日付、金額、人数、引用、背景説明を追加・訂正する場合は、根拠となる claim ID を evidence_claim_refs に入れる。根拠が無ければ変更せず clarification_required=true にする。
 - 中国語の原語が指示に含まれていても、公表する after には簡体字を残さず、日本語用漢字と自然な日本語説明にする。
 - 元が空の reaction_view に、指示されていないSNS反応・引用・一般化を追加しない。
@@ -241,6 +276,7 @@ export function applyValidatedReviewPatch(
     after = addPatchClaimRefs(after, patch.field, patch.evidence_claim_refs);
   }
 
+  assertRequiredInstructionCoverage(before, after, document.patches, intent, ledger);
   if (reasonTag === "口調") assertToneOnlyRevisionContract(before, after);
   const trace = buildReviewRevisionTrace(before, after, document.patches, intent, instruction);
   assertNoNewDisplayResidues(before, after);
@@ -268,6 +304,50 @@ function extractInstructionAnchors(summary: SummarizedArticle, instruction: stri
   const originalTokens = values.flatMap((value) => value.match(/\d{4}年\d{1,2}月(?:\d{1,2}日)?|\d+(?:\.\d+)?(?:億|亿|万)?元(?:以上|相当)?|\d+人(?:の[^、。]{0,12})?/gu) ?? []);
   return [...new Set([...quoted, ...originalTokens.filter((token) => instruction.includes(token))])]
     .filter((anchor) => values.some((value) => value.includes(anchor)));
+}
+
+function detectRequiredLiteralReplacements(summary: SummarizedArticle, instruction: string) {
+  const normalizedInstruction = normalizeHtmlEncodedArrows(instruction);
+  const candidates = [...normalizedInstruction.matchAll(LITERAL_ARROW_REPLACEMENT)].map((match) => ({
+    before: firstCaptured(match.slice(1, 6)),
+    after: firstCaptured(match.slice(6, 11))
+  })).filter((item) => item.before && item.after && item.before !== item.after);
+  const unique = candidates.filter((candidate, index) => candidates.findIndex((item) => (
+    item.before === candidate.before && item.after === candidate.after
+  )) === index);
+  const unmatched: string[] = [];
+  const requirements = unique.map((candidate) => {
+    const targetFields = listPatchableFields(summary).filter((field) => readPatchableField(summary, field).includes(candidate.before));
+    if (targetFields.length === 0) unmatched.push(`${candidate.before}→${candidate.after}`);
+    return { ...candidate, target_fields: targetFields };
+  });
+  return { requirements, unmatched };
+}
+
+function normalizeHtmlEncodedArrows(instruction: string) {
+  return instruction.replace(/-&(?:amp;)*gt;/gu, "->");
+}
+
+function firstCaptured(values: Array<string | undefined>) {
+  return values.find((value) => typeof value === "string" && value.trim())?.trim() ?? "";
+}
+
+function detectRequiredFieldRewrites(summary: SummarizedArticle, instruction: string) {
+  const fields = new Set<ReviewPatchableField>();
+  const clauses = instruction.split(/[。．；;！？!?\r\n]+/u).map((clause) => clause.trim()).filter(Boolean);
+  for (const clause of clauses) {
+    if (!FIELD_REWRITE_REQUEST.test(clause)) continue;
+    for (const alias of FIELD_ALIASES) {
+      if (alias.pattern.test(clause)) alias.fields.forEach((field) => fields.add(field));
+    }
+    if (/(?:詳しく見る|詳細セクション|detail_sections)/u.test(clause)) {
+      (summary.detail_sections ?? []).forEach((_section, index) => {
+        fields.add(`detail_sections.${index}.heading`);
+        fields.add(`detail_sections.${index}.body`);
+      });
+    }
+  }
+  return [...fields];
 }
 
 function normalizePatchOperation(raw: unknown, index: number): ReviewPatchOperation {
@@ -301,6 +381,72 @@ function assertNewNumbersGrounded(patch: ReviewPatchOperation, ledger: FactLedge
     .join(" ");
   const missing = added.filter((number) => !evidenceText.includes(number));
   if (missing.length > 0) throw new ReviewRevisionContractError(`追加した数字を根拠claimで確認できません: ${missing.join(", ")}`);
+}
+
+function assertRequiredInstructionCoverage(
+  before: SummarizedArticle,
+  after: SummarizedArticle,
+  patches: ReviewPatchOperation[],
+  intent: ReviewRevisionIntent,
+  ledger: FactLedger
+) {
+  for (const replacement of intent.required_replacements) {
+    for (const field of replacement.target_fields) {
+      const originalValue = readPatchableField(before, field);
+      const originalCount = countOccurrences(originalValue, replacement.before);
+      const relevantPatches = patches.filter((patch) => patch.field === field && patch.before.includes(replacement.before));
+      const coveredCount = relevantPatches.reduce((total, patch) => total + countOccurrences(patch.before, replacement.before), 0);
+      const producedCount = relevantPatches.reduce((total, patch) => total + countOccurrences(patch.after, replacement.after), 0);
+      const finalValue = readPatchableField(after, field);
+      const leftUnchanged = !replacement.after.includes(replacement.before) && finalValue.includes(replacement.before);
+      if (originalCount === 0 || coveredCount < originalCount || producedCount < originalCount || leftUnchanged) {
+        throw new ReviewRevisionClarificationRequiredError(
+          `明示置換を全件反映できませんでした: ${field} の ${replacement.before}→${replacement.after}`
+        );
+      }
+    }
+  }
+
+  const usableClaims = new Set(ledger.claims.filter((claim) => claim.type !== "unsupported").map((claim) => claim.id));
+  for (const field of intent.required_field_rewrites) {
+    const rewritePatch = patches.find((patch) => patch.field === field && patch.operation === "replace_field");
+    if (!rewritePatch) {
+      throw new ReviewRevisionClarificationRequiredError(`再構成指示がフィールド全体の書き直しになっていません: ${field}`);
+    }
+    const usableEvidenceRefs = new Set(rewritePatch.evidence_claim_refs.filter((ref) => usableClaims.has(ref)));
+    if (usableEvidenceRefs.size === 0) {
+      throw new ReviewRevisionClarificationRequiredError(`根拠claimに基づく再構成を作れませんでした: ${field}`);
+    }
+    if (field === "why_it_matters" && usableEvidenceRefs.size < 2) {
+      throw new ReviewRevisionClarificationRequiredError(`注目ポイントを関係説明へ再構成できる根拠claimが不足しています: ${field}`);
+    }
+    if (isSuperficialFieldRewrite(rewritePatch.before, rewritePatch.after)) {
+      throw new ReviewRevisionClarificationRequiredError(`再構成が既存文への薄い追記・言い換えに留まっています: ${field}`);
+    }
+  }
+}
+
+function isSuperficialFieldRewrite(before: string, after: string) {
+  const normalizedBefore = normalizeRewriteComparison(before);
+  const normalizedAfter = normalizeRewriteComparison(after);
+  if (!normalizedBefore || !normalizedAfter || normalizedBefore === normalizedAfter) return true;
+  if (normalizedAfter.includes(normalizedBefore)) return true;
+  if (normalizedBefore.length < 40) return false;
+  const beforeShingles = characterShingles(normalizedBefore, 5);
+  const afterShingles = characterShingles(normalizedAfter, 5);
+  if (beforeShingles.size === 0) return false;
+  const retained = [...beforeShingles].filter((shingle) => afterShingles.has(shingle)).length / beforeShingles.size;
+  return retained >= 0.9;
+}
+
+function normalizeRewriteComparison(value: string) {
+  return value.normalize("NFKC").replace(/[\s、。．,，；;：:！？!?「」『』“”"'（）()\[\]【】]/gu, "");
+}
+
+function characterShingles(value: string, size: number) {
+  const shingles = new Set<string>();
+  for (let index = 0; index <= value.length - size; index += 1) shingles.add(value.slice(index, index + size));
+  return shingles;
 }
 
 export function buildReviewRevisionTrace(

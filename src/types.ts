@@ -385,6 +385,12 @@ export type ReviewRevisionIntent = {
   allowed_fields: ReviewPatchableField[];
   explicit_fields: ReviewPatchableField[];
   anchors_by_field: Partial<Record<ReviewPatchableField, string[]>>;
+  required_replacements: Array<{
+    before: string;
+    after: string;
+    target_fields: ReviewPatchableField[];
+  }>;
+  required_field_rewrites: ReviewPatchableField[];
   clarification_reason: string;
 };
 
