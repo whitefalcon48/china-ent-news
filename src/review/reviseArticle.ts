@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { runClaimCheck, runCommentCheck } from "../claimCheck.js";
 import { applyDisplayKanji, inspectDisplayKanjiResidues } from "../displayKanji.js";
+import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError, type LlmCallBudget } from "../llmCallBudget.js";
 import { generateLimitedReviewPatch, reviseTopicFromSavedData } from "../summarizeWithGemini.js";
 import { getToneMode } from "../toneMode.js";
 import { applyLightweightWhyItMattersEdit } from "./lightweightWhyItMattersEdit.js";
@@ -10,9 +11,18 @@ import {
   buildFullRewriteTrace,
   buildReviewRevisionTrace,
   detectReviewRevisionIntent,
-  ReviewRevisionClarificationRequiredError
+  ReviewRevisionClarificationRequiredError,
+  ReviewRevisionFieldRewriteRepairableError,
+  type ReviewFieldRewriteRepairFeedback
 } from "./revisionPatch.js";
-import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, ReviewPatchOperation, ReviewReasonTag, SummarizedArticle, TopicCandidate } from "../types.js";
+import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, ReviewPatchDocument, ReviewPatchOperation, ReviewReasonTag, ReviewRevisionIntent, SummarizedArticle, TopicCandidate } from "../types.js";
+
+export const LIMITED_REVIEW_MAX_LLM_CALLS = 2;
+
+export type LimitedReviewPatchGenerator = (
+  budget: LlmCallBudget,
+  repairFeedback?: ReviewFieldRewriteRepairFeedback
+) => Promise<ReviewPatchDocument>;
 
 export async function reviseStoredArticle(directory: string, index: number, comment: string, reasonTag: ReviewReasonTag | string = "その他") {
   const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
@@ -56,8 +66,14 @@ export async function reviseStoredArticle(directory: string, index: number, comm
     return articles[index - 1];
   }
   if (intent.mode === "limited_patch") {
-    const document = await generateLimitedReviewPatch(article.summary, ledger!, comment, intent);
-    const patched = applyValidatedReviewPatch(article.summary, article.topic, ledger!, comment, reasonTag, intent, document);
+    const patched = await generateAndApplyLimitedReviewPatch(
+      article.summary,
+      article.topic,
+      ledger!,
+      comment,
+      reasonTag,
+      intent
+    );
     articles[index - 1] = {
       ...article,
       summary: patched.summary,
@@ -73,8 +89,8 @@ export async function reviseStoredArticle(directory: string, index: number, comm
         comment_stage: {
           attempted: true,
           used: patched.trace.changed_fields.includes("why_it_matters"),
-          regenerated: false,
-          fallback_reason: "review_limited_patch",
+          regenerated: patched.generationAttempts > 1,
+          fallback_reason: patched.generationAttempts > 1 ? "review_limited_patch_repair" : "review_limited_patch",
           exclamation_count: (patched.summary.why_it_matters.match(/[！!]/g) ?? []).length
         }
       }
@@ -91,6 +107,66 @@ export async function reviseStoredArticle(directory: string, index: number, comm
   };
   await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
   return articles[index - 1];
+}
+
+/**
+ * Generate and validate a limited patch against one immutable saved summary.
+ * Only same/shallow required-field rewrites are eligible for one repair. Both
+ * attempts share a two-call provider budget, and no caller-visible article is
+ * returned until the complete patch document passes every validator.
+ */
+export async function generateAndApplyLimitedReviewPatch(
+  before: SummarizedArticle,
+  topic: TopicCandidate,
+  ledger: FactLedger,
+  instruction: string,
+  reasonTag: ReviewReasonTag | string,
+  intent: ReviewRevisionIntent,
+  generateDocument?: LimitedReviewPatchGenerator
+) {
+  const budget = createLlmCallBudget(LIMITED_REVIEW_MAX_LLM_CALLS);
+  const generate = generateDocument ?? ((currentBudget, repairFeedback) => (
+    generateLimitedReviewPatch(before, ledger, instruction, intent, undefined, currentBudget, repairFeedback)
+  ));
+  let repairFeedback: ReviewFieldRewriteRepairFeedback | undefined;
+
+  for (let generationAttempts = 1; generationAttempts <= 2; generationAttempts += 1) {
+    let document: ReviewPatchDocument;
+    try {
+      document = await generate(budget, repairFeedback);
+    } catch (error) {
+      if (error instanceof LlmCallBudgetExceededError) {
+        throw new ReviewRevisionClarificationRequiredError(
+          `限定修正のLLM呼び出し上限（${LIMITED_REVIEW_MAX_LLM_CALLS}回）に達したため、元記事を維持します`
+        );
+      }
+      throw error;
+    }
+
+    try {
+      return {
+        ...applyValidatedReviewPatch(before, topic, ledger, instruction, reasonTag, intent, document),
+        generationAttempts,
+        llmCallsUsed: budget.used
+      };
+    } catch (error) {
+      if (!(error instanceof ReviewRevisionFieldRewriteRepairableError)) throw error;
+      const canRetry = generationAttempts === 1 && hasLlmBudgetRemaining(budget);
+      if (!canRetry) {
+        if (generationAttempts === 1) {
+          throw new ReviewRevisionClarificationRequiredError(
+            `限定修正のLLM呼び出し上限（${LIMITED_REVIEW_MAX_LLM_CALLS}回）に達したため、元記事を維持します`
+          );
+        }
+        throw new ReviewRevisionClarificationRequiredError(
+          `必須フィールドの再構成を1回だけ修復しましたが実質的な変更にならなかったため、元記事を維持します: ${error.field}`
+        );
+      }
+      repairFeedback = { field: error.field, reason: error.repairReason };
+    }
+  }
+
+  throw new ReviewRevisionClarificationRequiredError("限定修正を安全に完了できなかったため、元記事を維持します");
 }
 
 function minimalWhyItMattersPatch(before: string, after: string): ReviewPatchOperation {

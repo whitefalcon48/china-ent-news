@@ -1,5 +1,14 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-23 実装・ローカル検証完了（Issue #63 必須再構成の限定修復）
+
+- ✅ PR #67 merge後のreview-apply run `32633725688`、Issue #63コメント、run後commit `9d0e459`、保存記事、限定patch prompt/validatorを照合。runは `a457bb9` をcheckoutし、記事JSONを変更せずfeedbackだけを追加してpendingへ戻し、公開系stepは全skipだった。ログにモデル返却JSONやartifactはないためrefs等の全容は復元不能だが、保存値bind後の `変更前後が同じです: why_it_matters` はモデルのafterが保存済み現在値と同文だったことを確定する。
+- ✅ 原因は、promptが必須 `replace_field` と実質再構成を要求していても、モデルが現行文を完成済み回答としてそのままafterへ複製し得る一方、適用経路がモデル生成→検証の1回だけで、同文gateの構造化フィードバックをモデルへ返す修復経路を持たなかったこと。同文は保存前validatorが正しく拒否したが、利用可能なC13・C15〜C19が残っていても単発停止していた。
+- ✅ 必須field rewriteの同文afterまたは薄い追記・言い換えだけを修復可能な品質失敗として型分けし、利用可能claimが再構成を支えられる場合に限って1回だけ再生成する。2回目のpromptへ対象fieldと失敗理由を構造化して渡し、同文再利用禁止、claim関係に基づく新しい構成、OWNER指示全件を含む限定patch JSON、修復不能時の `clarification_required` を明示した。全文再生成へのfallbackは追加していない。
+- ✅ 初回と修復は保存前の同一summaryを入力とし、両方を合わせたprovider call上限を2回に固定。2回目も同文・薄い追記なら `clarification_required`、不正／利用不可ref・範囲違反・根拠不足は推測修復せず即停止し、完全なpatch documentが全gateを通るまで記事JSONを書かない。成功時だけ `comment_stage.regenerated=true` / `review_limited_patch_repair` を記録する。
+- ✅ run時の保存本文・注目ポイント・C13・C15〜C19を使うfixtureで「初回same after→2回目に用語置換＋grounded rewrite全件」を通過し、`what_happened` / `why_it_matters` 以外、空 `reaction_view`、source配列、related_sources、重要数字、人物・作品、既存claim refsを保持。2回目same、薄い追記、C2混入は2回で安全停止し、根拠claimなしは1回で停止、Issue #57型の非対象全体置換は再試行せず従来どおり拒否する。
+- ✅ `npm run check`、`test:scoped-review-revision`、`test:lightweight-review-edit`、`test:review-presentation`、`test:evidence-integrity`、`test:editorial-insight`、`test:supplement-claim`、`test:related-evidence`、`test:bingtang-comment-tone`、`test:terminology`、`test:kanji`、`test:manual-intake` が成功。本番記事再適用・Issueコメント・公開・main統合・pushは未実施。
+
 ## 2026-08-23 実装・ローカル検証完了（Issue #63 `二次創作`のnumber誤検出）
 
 - ✅ PR #66 merge後のreview-apply run `32632520237`、Issue #63コメント、run後commit `2110f89`、保存記事、fact ledger、限定patchとclaim checkを照合。runは `9a929b3` をcheckoutし、記事JSONを変更せずfeedback 1行だけを追加してpendingへ戻り、公開系stepは全skipだった。ログにモデルpatch JSONはなくartifactも0件のため再構成after自体は復元不能。

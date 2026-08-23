@@ -16,7 +16,7 @@ import { assessEvidenceIntegrity } from "./evidence/sourceIntegrity.js";
 import { selectEditorialInsightClaims } from "./editorialInsight.js";
 import { formatTranslationQualityForPrompt, inspectLiteralTranslationResidues } from "./translationQuality.js";
 import { assertToneOnlyRevisionContract, ToneOnlyRevisionContractError } from "./toneOnlyRevision.js";
-import { buildLimitedReviewPatchPrompt, normalizeReviewPatchDocument } from "./review/revisionPatch.js";
+import { buildLimitedReviewPatchPrompt, normalizeReviewPatchDocument, type ReviewFieldRewriteRepairFeedback } from "./review/revisionPatch.js";
 import { ArticleDepthGateError, assessArticleDepth, extractCanonicalDepthNumbers, getArticleDepthRequirements, isClaimReflectedInText, type ArticleDepthProfile } from "./articleDepth.js";
 import type {
   AiProvider,
@@ -362,9 +362,10 @@ export async function generateLimitedReviewPatch(
   comment: string,
   intent: ReviewRevisionIntent,
   provider: AiProvider = getAiProvider(),
-  budget?: LlmCallBudget
+  budget?: LlmCallBudget,
+  repairFeedback?: ReviewFieldRewriteRepairFeedback
 ): Promise<ReviewPatchDocument> {
-  const prompt = buildLimitedReviewPatchPrompt(summary, ledger, comment, intent);
+  const prompt = buildLimitedReviewPatchPrompt(summary, ledger, comment, intent, repairFeedback);
   const text = await generateJson(provider, prompt, budget);
   return normalizeReviewPatchDocument(parseJsonFromModelText(text));
 }

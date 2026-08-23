@@ -12,6 +12,8 @@ import {
   ReviewRevisionClarificationRequiredError,
   ReviewRevisionContractError
 } from "./review/revisionPatch.js";
+import { consumeLlmCall } from "./llmCallBudget.js";
+import { generateAndApplyLimitedReviewPatch, LIMITED_REVIEW_MAX_LLM_CALLS } from "./review/reviseArticle.js";
 import type { FactLedger, ReviewPatchDocument, SummarizedArticle, TopicCandidate } from "./types.js";
 
 const ownerInstruction = "2025年12月を2025年6月17日に訂正（上海・范思哲イベント、単価約5600元のネックレス27本を約15万元で購入）。「6万元以上」は「数万元相当」に、「7人のメイクアップアーティスト」は「複数のメイク担当者」に、「純金のスマホスタンド」は「黄金／金製のスマホスタンド」に修正。「中国のエンタメ業界では『逆応援』という文化があります」は「中国のファンダムでは、芸能人側がファンへプレゼントやサービスを返す行為を『逆応援（逆应援）』と呼ぶことがあります」に修正。「娘家人」は「花嫁側の身内・実家側の人々」と補足。確度Bは維持。";
@@ -472,6 +474,140 @@ assert.deepEqual(issue63Run326316Result.summary.related_sources, issue63Run32631
 assert.deepEqual(issue63Run326316Result.trace.preservation.important_numbers_after, issue63Run326316Result.trace.preservation.important_numbers_before);
 assert.deepEqual(issue63Run326316Result.trace.preservation.entities_after, issue63Run326316Result.trace.preservation.entities_before);
 
+const issue63Run326337SamePatch: ReviewPatchDocument = {
+  ...issue63Run326316Patch,
+  patches: [
+    issue63Run326316Patch.patches[0],
+    {
+      ...issue63Run326316Patch.patches[1],
+      before: "",
+      after: issue63Run326316Before.why_it_matters,
+      evidence_claim_refs: ["C13", "C15"]
+    }
+  ]
+};
+const issue63Run326337BeforeSnapshot = structuredClone(issue63Run326316Before);
+let issue63RepairCalls = 0;
+const issue63RepairFeedback: unknown[] = [];
+const issue63Run326337Result = await generateAndApplyLimitedReviewPatch(
+  issue63Run326316Before,
+  issue63Topic,
+  issue63Ledger,
+  issue63Instruction,
+  "用語",
+  issue63Run326316Intent,
+  async (budget, feedback) => {
+    consumeLlmCall(budget);
+    issue63RepairCalls += 1;
+    issue63RepairFeedback.push(feedback);
+    return issue63RepairCalls === 1 ? issue63Run326337SamePatch : issue63Run326316Patch;
+  }
+);
+assert.equal(LIMITED_REVIEW_MAX_LLM_CALLS, 2, "限定修正のprovider call上限を2回に固定する");
+assert.equal(issue63RepairCalls, 2, "run 32633725688型の同文afterだけを1回再試行する");
+assert.deepEqual(issue63RepairFeedback, [undefined, { field: "why_it_matters", reason: "same_after" }]);
+assert.equal(issue63Run326337Result.generationAttempts, 2);
+assert.equal(issue63Run326337Result.llmCallsUsed, 2);
+assert.equal(issue63Run326337Result.summary.what_happened, issue63Run326325TermOnly.what_happened);
+assert.equal(issue63Run326337Result.summary.why_it_matters, issue63Run326316GroundedWhy);
+assert.equal(issue63Run326337Result.summary.reaction_view, issue63Run326316Before.reaction_view);
+assert.deepEqual(issue63Run326337Result.summary.source_list, issue63Run326316Before.source_list);
+assert.deepEqual(issue63Run326337Result.summary.related_sources, issue63Run326316Before.related_sources);
+assert.deepEqual(issue63Run326316Before, issue63Run326337BeforeSnapshot, "再試行は保存前summaryを変更しない");
+
+let transientProviderGenerations = 0;
+await assert.rejects(
+  () => generateAndApplyLimitedReviewPatch(
+    issue63Run326316Before,
+    issue63Topic,
+    issue63Ledger,
+    issue63Instruction,
+    "用語",
+    issue63Run326316Intent,
+    async (budget) => {
+      consumeLlmCall(budget);
+      consumeLlmCall(budget);
+      transientProviderGenerations += 1;
+      return issue63Run326337SamePatch;
+    }
+  ),
+  (error: unknown) => error instanceof ReviewRevisionClarificationRequiredError && /LLM呼び出し上限（2回）/u.test(error.message),
+  "provider内部の空応答再試行で2 callを使った場合は追加の修復生成を呼ばない"
+);
+assert.equal(transientProviderGenerations, 1);
+assert.deepEqual(issue63Run326316Before, issue63Run326337BeforeSnapshot);
+
+async function assertIssue63RepairStopsOn(
+  secondDocument: ReviewPatchDocument,
+  message: string,
+  expectedMessage: RegExp
+) {
+  let calls = 0;
+  await assert.rejects(
+    () => generateAndApplyLimitedReviewPatch(
+      issue63Run326316Before,
+      issue63Topic,
+      issue63Ledger,
+      issue63Instruction,
+      "用語",
+      issue63Run326316Intent,
+      async (budget) => {
+        consumeLlmCall(budget);
+        calls += 1;
+        return calls === 1 ? issue63Run326337SamePatch : secondDocument;
+      }
+    ),
+    (error: unknown) => error instanceof ReviewRevisionClarificationRequiredError && expectedMessage.test(error.message),
+    message
+  );
+  assert.equal(calls, 2, `${message}: 3回目のLLM呼び出しを行わない`);
+  assert.deepEqual(issue63Run326316Before, issue63Run326337BeforeSnapshot, `${message}: 元記事を完全保持する`);
+}
+
+await assertIssue63RepairStopsOn(
+  issue63Run326337SamePatch,
+  "再試行も同文なら安全停止する",
+  /1回だけ修復/u
+);
+await assertIssue63RepairStopsOn(
+  {
+    ...issue63Run326316Patch,
+    patches: [
+      issue63Run326316Patch.patches[0],
+      {
+        ...issue63Run326316Patch.patches[1],
+        before: "",
+        after: `物語の説明です。${issue63Run326316Before.why_it_matters}`,
+        evidence_claim_refs: ["C13", "C15"]
+      }
+    ]
+  },
+  "再試行も薄い追記なら安全停止する",
+  /1回だけ修復/u
+);
+await assertIssue63RepairStopsOn(
+  {
+    ...issue63Run326316Patch,
+    patches: [
+      issue63Run326316Patch.patches[0],
+      { ...issue63Run326316Patch.patches[1], before: "", evidence_claim_refs: ["C15", "C2"] }
+    ]
+  },
+  "再試行が利用不可claimを返したら安全停止する",
+  /利用できない根拠claim/u
+);
+
+const issue63RepairPrompt = buildLimitedReviewPatchPrompt(
+  issue63Run326316Before,
+  issue63Ledger,
+  issue63Instruction,
+  issue63Run326316Intent,
+  { field: "why_it_matters", reason: "same_after" }
+);
+assert.match(issue63RepairPrompt, /今回が唯一の修復機会/u);
+assert.match(issue63RepairPrompt, /OWNER指示の全件を含む完全な限定パッチJSON/u);
+assert.match(issue63RepairPrompt, /同じ after を再利用しない/u);
+
 const issue63UngroundedCountPatch: ReviewPatchDocument = {
   ...issue63Run326316Patch,
   patches: [
@@ -634,6 +770,33 @@ assert.throws(
   "根拠ある再構成を作れない場合は薄い修正を保存せずclarification_requiredで止める"
 );
 
+let insufficientLedgerCalls = 0;
+await assert.rejects(
+  () => generateAndApplyLimitedReviewPatch(
+    issue63Run326316Before,
+    issue63Topic,
+    { ...issue63Ledger, claims: [] },
+    issue63Instruction,
+    "用語",
+    issue63Run326316Intent,
+    async (budget) => {
+      consumeLlmCall(budget);
+      insufficientLedgerCalls += 1;
+      return {
+        ...issue63Run326337SamePatch,
+        patches: [
+          issue63Run326337SamePatch.patches[0],
+          { ...issue63Run326337SamePatch.patches[1], evidence_claim_refs: [] }
+        ]
+      };
+    }
+  ),
+  (error: unknown) => error instanceof ReviewRevisionClarificationRequiredError && /根拠claim/u.test(error.message),
+  "利用可能claimが不足する同文afterは再試行せずclarification_requiredに止める"
+);
+assert.equal(insufficientLedgerCalls, 1);
+assert.deepEqual(issue63Run326316Before, issue63Run326337BeforeSnapshot);
+
 const actionsStyleRewrite: ReviewPatchDocument = {
   mode: "limited_patch",
   clarification_required: false,
@@ -662,6 +825,25 @@ assert.throws(
   ReviewRevisionContractError,
   "Issue #57型の全体書き換えと空reaction追加を拒否する"
 );
+let issue57RetryCalls = 0;
+await assert.rejects(
+  () => generateAndApplyLimitedReviewPatch(
+    before,
+    topic,
+    ledger,
+    ownerInstruction,
+    "事実",
+    intent,
+    async (budget) => {
+      consumeLlmCall(budget);
+      issue57RetryCalls += 1;
+      return actionsStyleRewrite;
+    }
+  ),
+  ReviewRevisionContractError,
+  "Issue #57型の限定範囲違反を再試行で迂回しない"
+);
+assert.equal(issue57RetryCalls, 1, "Issue #57型の非repairable違反ではLLMを再呼び出ししない");
 
 const ambiguous = detectReviewRevisionIntent(before, "日付と用語を正しくしてください。", "事実");
 assert.equal(ambiguous.mode, "clarification_required");

@@ -60,6 +60,30 @@ export class ReviewRevisionClarificationRequiredError extends ReviewRevisionCont
   }
 }
 
+export type ReviewFieldRewriteRepairReason = "same_after" | "superficial_rewrite";
+
+export type ReviewFieldRewriteRepairFeedback = {
+  field: ReviewPatchableField;
+  reason: ReviewFieldRewriteRepairReason;
+};
+
+/**
+ * A required field rewrite reached a safe, evidence-backed scope, but the
+ * generated text did not actually rewrite the field. The caller may make one
+ * bounded repair attempt; without that caller this remains a clarification.
+ */
+export class ReviewRevisionFieldRewriteRepairableError extends ReviewRevisionClarificationRequiredError {
+  constructor(
+    readonly field: ReviewPatchableField,
+    readonly repairReason: ReviewFieldRewriteRepairReason
+  ) {
+    super(repairReason === "same_after"
+      ? `再構成の変更後が現在値と同じです: ${field}`
+      : `再構成が既存文への薄い追記・言い換えに留まっています: ${field}`);
+    this.name = "ReviewRevisionFieldRewriteRepairableError";
+  }
+}
+
 export function detectReviewRevisionIntent(
   summary: SummarizedArticle,
   instruction: string,
@@ -145,10 +169,20 @@ export function buildLimitedReviewPatchPrompt(
   summary: SummarizedArticle,
   ledger: FactLedger,
   instruction: string,
-  intent: ReviewRevisionIntent
+  intent: ReviewRevisionIntent,
+  repairFeedback?: ReviewFieldRewriteRepairFeedback
 ) {
   const allowedContent = Object.fromEntries(intent.allowed_fields.map((field) => [field, readPatchableField(summary, field)]));
   const usableClaims = ledger.claims.filter(isUsableReviewClaim);
+  const repairInstruction = repairFeedback ? `
+
+前回案の検証失敗（今回が唯一の修復機会）:
+${JSON.stringify(repairFeedback, null, 2)}
+
+- 前回は required field rewrite の after が現在値と同じか、既存文への薄い追記・言い換えでした。同じ after を再利用しないでください。
+- 上記フィールドは、利用可能claim同士の関係が分かる新しい構成・文順で、フィールド全体を書き直してください。
+- 修復出力もOWNER指示の全件を含む完全な限定パッチJSONにしてください。明示置換など他の必須patchを省略してはいけません。
+- 修復できなければ、推測や薄い変更で埋めず clarification_required=true にしてください。` : "";
   return `あなたは保存済み記事への限定修正パッチを作ります。記事全文を再生成してはいけません。
 
 修正指示:
@@ -171,6 +205,7 @@ ${JSON.stringify(intent.required_field_rewrites, null, 2)}
 
 利用可能な事実台帳（claims は evidence_claim_refs に指定できるものだけ）:
 ${JSON.stringify({ claims: usableClaims, terms: ledger.terms }, null, 2)}
+${repairInstruction}
 
 厳守事項:
 - 出力は記事全文ではなく、次の限定パッチJSONだけにする。
@@ -178,6 +213,7 @@ ${JSON.stringify({ claims: usableClaims, terms: ledger.terms }, null, 2)}
 - 通常は operation="replace" とし、before は現在値に1回だけ現れる完全一致文字列にする。対象箇所以外の文を before に含めない。
 - 省略禁止の明示置換は、指定された全組を target_fields の全出現へ反映する。一部だけ処理して成功扱いにしてはいけない。OWNERが before→after を明示した純粋な用語置換には根拠claimが不要なので、evidence_claim_refs=[] にする。元の語を含むclaimを探して付けてはいけない。
 - operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。上記の「実質的な再構成が必要な箇所」には必ず replace_field を使い、before は空文字にする。保存記事の実際の現在値はシステムがbindするため、長文をコピー・要約・補正してbeforeへ入れてはいけない。afterにはフィールド全体の書き直し後を入れる。
+- replace_field の after に現在値と同じ文を返してはいけない。同文は修正未実施として拒否される。
 - 通常の置換では、after は修正指示に必要な最小限の変更だけにし、周辺文、別フィールド、文順を変えない。
 - 再構成対象フィールドには最小変更ルールを適用しない。既存文の前後へ説明を1文足すだけ、ほぼ同じ文順・表現を残すだけでは不合格。指示された分かりにくさ・浅さを解消するよう、根拠claim同士の因果・対比・仕組み・変化のいずれかを説明する文章へ組み直す。
 - 再構成の evidence_claim_refs には、上の「利用可能な事実台帳」にあるclaim IDから、書き直したフィールドで実際に使ったものをすべて入れる。表示されていないIDやunsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
@@ -274,7 +310,6 @@ export function applyValidatedReviewPatch(
         throw new ReviewRevisionContractError(`限定修正の範囲を超えて本文を置換しようとしています: ${patch.field}`);
       }
     }
-    if (patch.before === patch.after) throw new ReviewRevisionContractError(`変更前後が同じです: ${patch.field}`);
     for (const ref of patch.evidence_claim_refs) {
       const claim = knownClaims.get(ref);
       if (!claim || !isUsableReviewClaim(claim)) throw new ReviewRevisionContractError(`利用できない根拠claimです: ${ref}`);
@@ -283,6 +318,13 @@ export function applyValidatedReviewPatch(
       throw new ReviewRevisionContractError(`事実訂正に根拠claimがありません: ${patch.field}`);
     }
     assertNewNumbersGrounded(patch, ledger);
+    if (patch.before === patch.after) {
+      if (patch.operation === "replace_field" && intent.required_field_rewrites.includes(patch.field)) {
+        assertLedgerCanSupportFieldRewrite(patch.field, ledger);
+        throw new ReviewRevisionFieldRewriteRepairableError(patch.field, "same_after");
+      }
+      throw new ReviewRevisionContractError(`変更前後が同じです: ${patch.field}`);
+    }
     const next = patch.operation === "replace_field" ? patch.after : current.replace(patch.before, patch.after);
     after = writePatchableField(after, patch.field, next);
     after = addPatchClaimRefs(after, patch.field, patch.evidence_claim_refs);
@@ -500,8 +542,18 @@ function assertRequiredInstructionCoverage(
       throw new ReviewRevisionClarificationRequiredError(`注目ポイントを関係説明へ再構成できる根拠claimが不足しています: ${field}`);
     }
     if (isSuperficialFieldRewrite(rewritePatch.before, rewritePatch.after)) {
-      throw new ReviewRevisionClarificationRequiredError(`再構成が既存文への薄い追記・言い換えに留まっています: ${field}`);
+      throw new ReviewRevisionFieldRewriteRepairableError(field, "superficial_rewrite");
     }
+  }
+}
+
+function assertLedgerCanSupportFieldRewrite(field: ReviewPatchableField, ledger: FactLedger) {
+  const usableClaimCount = new Set(ledger.claims.filter(isUsableReviewClaim).map((claim) => claim.id)).size;
+  if (usableClaimCount === 0) {
+    throw new ReviewRevisionClarificationRequiredError(`根拠claimに基づく再構成を作れませんでした: ${field}`);
+  }
+  if (field === "why_it_matters" && usableClaimCount < 2) {
+    throw new ReviewRevisionClarificationRequiredError(`注目ポイントを関係説明へ再構成できる根拠claimが不足しています: ${field}`);
   }
 }
 
