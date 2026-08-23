@@ -1,5 +1,11 @@
 import { inspectDisplayKanjiResidues } from "../displayKanji.js";
-import { runClaimCheck, runCommentCheck } from "../claimCheck.js";
+import {
+  extractNormalizedClaimNumberTokens,
+  extractNumberTokens,
+  normalizeNumberToken,
+  runClaimCheck,
+  runCommentCheck
+} from "../claimCheck.js";
 import { getToneMode } from "../toneMode.js";
 import { assertToneOnlyRevisionContract } from "../toneOnlyRevision.js";
 import type {
@@ -176,7 +182,7 @@ ${JSON.stringify({ claims: usableClaims, terms: ledger.terms }, null, 2)}
 - 再構成対象フィールドには最小変更ルールを適用しない。既存文の前後へ説明を1文足すだけ、ほぼ同じ文順・表現を残すだけでは不合格。指示された分かりにくさ・浅さを解消するよう、根拠claim同士の因果・対比・仕組み・変化のいずれかを説明する文章へ組み直す。
 - 再構成の evidence_claim_refs には、上の「利用可能な事実台帳」にあるclaim IDから、書き直したフィールドで実際に使ったものをすべて入れる。表示されていないIDやunsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
 - why_it_matters の再構成では、あらすじの追加だけで終わらせず、なぜ再評価・注目が起きるのか、作品や出来事の何が面白い／重要なのかを、事実台帳にある複数事実の関係として説明する。台帳に無い評論を足さない。
-- 日付、金額、人数、引用、背景説明を追加・訂正する場合は、根拠となる claim ID を evidence_claim_refs に入れる。根拠が無ければ変更せず clarification_required=true にする。
+- 日付、金額、人数、回数などの数字表現を追加・訂正する場合は、その数字を本文またはnumbersに持つ claim ID を evidence_claim_refs に入れる。アラビア数字だけでなく「二人」「三回」等の漢数字も同じ扱いとし、人物名の数から人数を作らない。根拠が無ければ変更せず clarification_required=true にする。
 - 中国語の原語が指示に含まれていても、公表する after には簡体字を残さず、日本語用漢字と自然な日本語説明にする。
 - 元が空の reaction_view に、指示されていないSNS反応・引用・一般化を追加しない。
 - source_list、related_sources、非対象フィールド、非対象のclaim refsは変更対象にできない。
@@ -440,15 +446,20 @@ function isUsableReviewClaim(claim: FactLedger["claims"][number]) {
 }
 
 function assertNewNumbersGrounded(patch: ReviewPatchOperation, ledger: FactLedger) {
-  const beforeNumbers = new Set(extractNumbers(patch.before));
-  const added = extractNumbers(patch.after).filter((number) => !beforeNumbers.has(number));
+  const beforeNumbers = normalizedNumberTokens(patch.before);
+  const added = [...normalizedNumberTokens(patch.after)].filter((number) => !beforeNumbers.has(number));
   if (added.length === 0) return;
-  const evidenceText = ledger.claims
+  const evidenceNumbers = new Set(ledger.claims
     .filter((claim) => patch.evidence_claim_refs.includes(claim.id))
-    .flatMap((claim) => [claim.text, ...claim.numbers, claim.quote_zh ?? ""])
-    .join(" ");
-  const missing = added.filter((number) => !evidenceText.includes(number));
-  if (missing.length > 0) throw new ReviewRevisionContractError(`追加した数字を根拠claimで確認できません: ${missing.join(", ")}`);
+    .flatMap(extractNormalizedClaimNumberTokens));
+  const missing = added.filter((number) => !evidenceNumbers.has(number));
+  if (missing.length > 0) {
+    throw new ReviewRevisionClarificationRequiredError(`追加した数字を選択済み根拠claimで確認できません: ${missing.join(", ")}`);
+  }
+}
+
+function normalizedNumberTokens(text: string) {
+  return new Set(extractNumberTokens(text).map(normalizeNumberToken).filter(Boolean));
 }
 
 function assertRequiredInstructionCoverage(
@@ -631,8 +642,8 @@ function assertNoNewGates(before: ClaimCheckResult, after: ClaimCheckResult, lab
   if (added.length > 0) throw new ReviewRevisionContractError(`${label}で新しいgateが発生しました: ${added.map((item) => item.rule).join(", ")}`);
 }
 
-function gateKey(item: { section: string; rule: string; detail: string }) {
-  return `${item.section}:${item.rule}`;
+function gateKey(item: { section: string; rule: string; detail: string; number_token?: string }) {
+  return item.number_token ? `${item.section}:${item.rule}:${item.number_token}` : `${item.section}:${item.rule}`;
 }
 
 function addPatchClaimRefs(summary: SummarizedArticle, field: ReviewPatchableField, refs: string[]) {

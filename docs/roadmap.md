@@ -1,5 +1,14 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-23 実装・ローカル検証完了（Issue #63 `二次創作`のnumber誤検出）
+
+- ✅ PR #66 merge後のreview-apply run `32632520237`、Issue #63コメント、run後commit `2110f89`、保存記事、fact ledger、限定patchとclaim checkを照合。runは `9a929b3` をcheckoutし、記事JSONを変更せずfeedback 1行だけを追加してpendingへ戻り、公開系stepは全skipだった。ログにモデルpatch JSONはなくartifactも0件のため再構成after自体は復元不能。
+- ✅ 実保存記事へ必須用語置換だけを適用して再現し、新規数字を特定。旧tokenizerは元語 `二創` を `二`→`2`、修正語 `二次創作` を `二次`→回数の`2回`として抽出したため、台帳にない高リスク数字`2回`として `what_happened:number_not_in_ledger` gateを新設していた。したがってC13・C15〜C19の再構成内容とは無関係に、機械的用語置換だけで停止する状態だった。
+- ✅ 数字tokenizerを公表用日本語と中国語根拠quoteで分離。公表文では `二次創作` / `二次元` のように後続語へ埋め込まれた「〜次」を回数扱いせず、`第二次`の序数と単独の`二次`、`二人`、`三回`等の実数字は保持する。中国語quoteの `两次访问` は出典用経路で`2回`として保持し、claimのnumbers・本文・entities・quoteを共通正規化する。
+- ✅ 限定patchの追加数字検証も従来の算用数字専用regexから共通tokenizerへ統一し、保存済みbeforeとの差分だけを、patchが選んだ利用可能claimの数字と照合する。根拠のない新規漢数字は `clarification_required`、既存beforeと同じ未解決tokenは新規gateと誤認しない。number violationへ正規化tokenを記録し、gate差分keyも `section+rule+token` として、同じsectionの別number gateによる隠蔽を防いだ。`number_not_in_ledger` gate自体は維持している。
+- ✅ run時の保存本文・注目ポイント・C1〜C3/C13/C15〜C19を使うIssue #63実run型fixtureで、用語置換と根拠ある再構成が通過し、`二次創作`後もnumber gate 0を確認。選択claimにない `二人` は拒否し、beforeに同じtokenがある差分だけは維持。before bind、純粋用語置換の空refs、浅い追記拒否、Issue #57の非対象field・source配列・既存refs・重要数字保持も継続検証した。
+- ✅ `npm run check`、`test:scoped-review-revision`、`test:lightweight-review-edit`、`test:review-presentation`、`test:evidence-integrity`、`test:editorial-insight`、`test:supplement-claim`、`test:related-evidence`、`test:bingtang-comment-tone`、`test:manual-intake`、`test:terminology`、`test:kanji` が成功。本番記事再適用・Issueコメント・公開・main統合・pushは未実施。
+
 ## 2026-08-23 実装・ローカル検証完了（Issue #63 必須field rewriteの現在値bind）
 
 - ✅ PR #65 merge後のreview-apply run `32631657560`、Issue #63コメント、run後commit `d1b208c`、保存記事、限定patch prompt/validatorを照合。runは `b93e1df` をcheckoutし、記事JSONを変更せずfeedbackだけを追加して安全停止した。ログにモデル返却JSONはなくartifactも0件のため不一致文字列自体は復元不能だが、保存済み `why_it_matters` をpromptへ渡した後、モデル返却の `replace_field.before` が同値でなく完全一致gateに止められた経路を確認した。

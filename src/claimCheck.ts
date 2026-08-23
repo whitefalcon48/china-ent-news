@@ -67,12 +67,7 @@ export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): C
     }
   }
   const ledgerNumbers = new Set(
-    ledger.claims.flatMap((claim) => [
-      ...claim.numbers,
-      claim.text,
-      ...claim.entities,
-      claim.quote_zh || ""
-    ]).flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean)
+    ledger.claims.flatMap(extractNormalizedClaimNumberTokens)
   );
   const ledgerEntities = ledger.claims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
   const japanContextNote = summary.japan_context_note ?? "";
@@ -121,7 +116,7 @@ export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): C
       for (const token of sentenceNumberTokens) {
         const normalized = normalizeNumberToken(token);
         if (normalized && !ledgerNumbers.has(normalized)) {
-          violations.push(toViolation(section, "number_not_in_ledger", isHighRiskNumber(normalized) ? "gate" : "warning", detail));
+          violations.push(toViolation(section, "number_not_in_ledger", isHighRiskNumber(normalized) ? "gate" : "warning", detail, normalized));
           break;
         }
       }
@@ -179,9 +174,7 @@ function checkGroundedText(
 ) {
   const claims = ledger.claims.filter((claim) => claimRefs.includes(claim.id));
   const referencedNumbers = new Set(
-    claims.flatMap((claim) => [...claim.numbers, claim.text, claim.quote_zh || ""])
-      .flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken))
-      .filter(Boolean)
+    claims.flatMap(extractNormalizedClaimNumberTokens)
   );
   for (const sentence of splitSentences(text)) {
     const detail = sentence.trim();
@@ -189,7 +182,7 @@ function checkGroundedText(
     for (const token of extractNumberTokens(detail)) {
       const normalized = normalizeNumberToken(token);
       if (normalized && (!ledgerNumbers.has(normalized) || !referencedNumbers.has(normalized))) {
-        violations.push(toViolation(section, "number_not_in_ledger", isHighRiskNumber(normalized) ? "gate" : "warning", detail));
+        violations.push(toViolation(section, "number_not_in_ledger", isHighRiskNumber(normalized) ? "gate" : "warning", detail, normalized));
         break;
       }
     }
@@ -259,7 +252,7 @@ export function normalizeNumberToken(value: string) {
     .trim();
   normalized = normalized.replace(/(\d{4})[-年](\d{1,2})[-月](\d{1,2})日?/, (_, year, month, day) => `${year}年${Number(month)}月${Number(day)}日`);
   normalized = normalized.replace(/[一二三四五六七八九十百千两]+/g, (token) => String(chineseNumber(token)));
-  normalized = normalized.replace(/第(\d+)(?:届|回|期)/g, "第$1");
+  normalized = normalized.replace(/第(\d+)(?:届|回|期|次)/g, "第$1");
   normalized = normalized.replace(/(\d+(?:亿|万)?)(?:次|回|场|場)/g, "$1回");
   normalized = normalized.replace(/亿元/g, "亿元");
   return normalized;
@@ -339,16 +332,10 @@ export function runCommentCheck(
   const desuNeCount = splitSentences(text).filter((sentence) => /ですね[。！!]$/.test(sentence.trim())).length;
   if (desuNeCount >= 3) violations.push(toViolation("comment", "ending_repetition", "warning", `ですね文末: ${desuNeCount}回`));
   const ledgerNumbers = new Set(
-    ledger.claims.flatMap((claim) => [
-      ...claim.numbers,
-      claim.text,
-      ...claim.entities,
-      claim.quote_zh || ""
-    ]).flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean)
+    ledger.claims.flatMap(extractNormalizedClaimNumberTokens)
   );
   const referencedNumbers = new Set(
-    commentClaims.flatMap((claim) => [...claim.numbers, claim.text, claim.quote_zh || ""])
-      .flatMap((value) => extractNumberTokens(value).map(normalizeNumberToken)).filter(Boolean)
+    commentClaims.flatMap(extractNormalizedClaimNumberTokens)
   );
   const ledgerEntities = ledger.claims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
   const referencedEntities = commentClaims.flatMap((claim) => [...claim.entities, claim.text]).filter(Boolean);
@@ -366,7 +353,7 @@ export function runCommentCheck(
     for (const token of extractNumberTokens(detail)) {
       const normalized = normalizeNumberToken(token);
       if (normalized && (!ledgerNumbers.has(normalized) || (commentClaims.length > 0 && !referencedNumbers.has(normalized)))) {
-        violations.push(toViolation("comment", "comment_number_not_in_ledger", "gate", detail));
+        violations.push(toViolation("comment", "comment_number_not_in_ledger", "gate", detail, normalized));
         break;
       }
     }
@@ -450,9 +437,34 @@ function splitSentences(value: string) {
   return value.match(/[^。！？!?]+[。！？!?]?/g) ?? [];
 }
 
-export function extractNumberTokens(value: string) {
-  const pattern = /[0-9０-９]{4}(?:-|年)[0-9０-９]{1,2}(?:-|月)[0-9０-９]{1,2}日?|第(?:[0-9０-９]+|[一二三四五六七八九十百千两]+)(?:届|回|期)|(?:[0-9０-９]+|[一二三四五六七八九十百千两]+)(?:[.,，．][0-9０-９]+)?(?:億|亿|万|萬)?(?:次|回|场|場)|(?:[0-9０-９]+|[一二三四五六七八九十百千两]+)(?:[.,，．][0-9０-９]+)?(?:億円|亿元|億|亿|万人|万|萬|円|元|%|％|年|月|日|本|件|歳|カ国|か国|人)?/g;
+export function extractNumberTokens(value: string, options: { allowEmbeddedCiCounter?: boolean } = {}) {
+  const digits = "[0-9０-９]+";
+  const kanji = "[一二三四五六七八九十百千两]+";
+  const numeric = `(?:${digits}|${kanji})`;
+  const decimal = "(?:[.,，．][0-9０-９]+)?";
+  // In Japanese public text, 次 embedded in a following word is normally an
+  // ordinal/lexical compound (二次創作, 二次元), not a frequency count. Chinese
+  // source quotes can use 两次访问 for "two visits", so claim quote extraction
+  // opts into that source-language form explicitly.
+  const ciCounter = options.allowEmbeddedCiCounter ? "次" : "次(?![\\p{L}\\p{N}])";
+  const pattern = new RegExp([
+    `[0-9０-９]{4}(?:-|年)[0-9０-９]{1,2}(?:-|月)[0-9０-９]{1,2}日?`,
+    `第${numeric}(?:届|回|期|次)`,
+    `${numeric}${decimal}(?:億|亿|万|萬)?(?:${ciCounter}|回|场|場)`,
+    `${digits}${decimal}(?:億円|亿元|億|亿|万人|万|萬|円|元|%|％|年|月|日|本|件|歳|カ国|か国|人)`,
+    `${digits}${decimal}(?!次[\\p{L}\\p{N}])`,
+    `${kanji}(?:億円|亿元|億|亿|万人|万|萬|円|元|%|％|年|月|日|本|件|歳|カ国|か国|人)`
+  ].join("|"), "gu");
   return value.match(pattern) ?? [];
+}
+
+export function extractNormalizedClaimNumberTokens(claim: FactLedgerClaim) {
+  return [...new Set([
+    ...(claim.numbers ?? []).flatMap((value) => extractNumberTokens(value, { allowEmbeddedCiCounter: true })),
+    ...extractNumberTokens(claim.text),
+    ...(claim.entities ?? []).flatMap((value) => extractNumberTokens(value)),
+    ...extractNumberTokens(claim.quote_zh || "", { allowEmbeddedCiCounter: true })
+  ].map(normalizeNumberToken).filter(Boolean))];
 }
 
 function chineseNumber(value: string) {
@@ -501,6 +513,12 @@ function hasMatchingClaim(sentence: string, claims: FactLedgerClaim[]) {
   return claims.some((claim) => claim.type !== "unsupported" && (sentence.includes(claim.text) || claim.text.includes(sentence)));
 }
 
-function toViolation(section: string, rule: ClaimCheckRule, severity: "gate" | "warning", detail: string): ClaimCheckViolation {
-  return { section, rule, severity, detail };
+function toViolation(
+  section: string,
+  rule: ClaimCheckRule,
+  severity: "gate" | "warning",
+  detail: string,
+  numberToken?: string
+): ClaimCheckViolation {
+  return numberToken ? { section, rule, severity, detail, number_token: numberToken } : { section, rule, severity, detail };
 }

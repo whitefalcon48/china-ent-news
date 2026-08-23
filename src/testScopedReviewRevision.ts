@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
 import {
+  extractNormalizedClaimNumberTokens,
+  extractNumberTokens,
+  normalizeNumberToken,
+  runClaimCheck
+} from "./claimCheck.js";
+import {
   applyValidatedReviewPatch,
   buildLimitedReviewPatchPrompt,
   detectReviewRevisionIntent,
@@ -206,6 +212,18 @@ const issue63Ledger: FactLedger = {
   topic_key: issue63Before.topic_key,
   claims: [
     {
+      id: "C1",
+      type: "unsupported",
+      text: "2026年8月22日、ドラマ『我的前半生』の公式微博が長年の沈黙を破って更新を再開した。",
+      evidence_refs: ["E1"],
+      entities: ["我的前半生", "微博"],
+      numbers: ["2026年8月22日"],
+      anchor: true,
+      scope: "root_event",
+      editorial_role: "other",
+      angle_kind: "other"
+    },
+    {
       id: "C2",
       type: "unsupported",
       text: "公式微博は二創募集、ドラマレビューコンテスト、クイズ大会、性格診断テストを開始し、賞金と主演の非売品サイン写真を賞品として提供した。",
@@ -216,6 +234,18 @@ const issue63Ledger: FactLedger = {
       anchor: true,
       scope: "root_event",
       editorial_role: "other",
+      angle_kind: "other"
+    },
+    {
+      id: "C3",
+      type: "unsupported",
+      text: "関連コンテンツの再生増加量は49億回を超え、微博の累計閲覧数は32.8億に達した。",
+      evidence_refs: ["E1"],
+      entities: ["我的前半生", "微博"],
+      numbers: ["49億回", "32.8億"],
+      anchor: true,
+      scope: "root_event",
+      editorial_role: "key_numbers",
       angle_kind: "other"
     },
     issue63Claim("C13", "羅子君が離婚後、唐晶と賀涵の助けで職場に入り自己成長する物語である。", ["羅子君", "陳俊生", "唐晶", "賀涵"], "story_premise"),
@@ -242,6 +272,24 @@ const issue63Topic = {
 } as unknown as TopicCandidate;
 const issue63Instruction = "二創→二次創作。注目ポイントが浅く理解が難しいため、再構成をする。";
 const issue63Intent = detectReviewRevisionIntent(issue63Before, issue63Instruction, "用語");
+assert.deepEqual(extractNumberTokens("二創"), [], "語彙の一部である漢数字を単独の数字として抽出しない");
+assert.deepEqual(extractNumberTokens("二次創作"), [], "二次創作の二次を回数の2回として抽出しない");
+assert.deepEqual(extractNumberTokens("2次創作"), [], "算用数字でも語彙中の2次を回数として抽出しない");
+assert.deepEqual(
+  extractNumberTokens("第二次世界大戦").map(normalizeNumberToken),
+  ["第2"],
+  "第を伴う序数は語彙中でも序数として保持する"
+);
+assert.deepEqual(
+  extractNormalizedClaimNumberTokens({
+    ...issue63Ledger.claims.find((claim) => claim.id === "C13")!,
+    id: "COUNT",
+    text: "訪問を重ねた。",
+    quote_zh: "两次访问"
+  }),
+  ["2回"],
+  "中国語根拠の次は出典用tokenizerで回数として保持する"
+);
 assert.equal(issue63Intent.mode, "limited_patch");
 assert.deepEqual(issue63Intent.required_replacements, [{
   before: "二創",
@@ -364,9 +412,24 @@ assert.deepEqual(issue63Result.trace.preservation.entities_after, issue63Result.
 
 const issue63Run326316Before: SummarizedArticle = {
   ...issue63Before,
+  what_happened: "2026年8月22日、ドラマ『私の前半生』の公式微博が長年の沈黙を破って更新を再開し、「夏のヒット作」キャンペーンの復活を宣言した。公式微博は二創募集、ドラマレビューコンテスト、クイズ大会、性格診断テストを開始し、賞金と主演の非売品サイン写真を賞品として提供している。ショート動画プラットフォームでの関連コンテンツの再生増加量は49億回を超え、微博の累計閲覧数は32.8億に達した。複数の関連トピックが微博のホットサーチにランクインした。プロデューサーの黄澜は、再ブームの理由を、優れた俳優が真実の人間性を演じたこと、名場面がネットミーム化して視聴者の軽快な楽しみへの欲求に合致したこと、そして羅子君の困難に立ち向かう姿勢が必要な心理的エネルギーを与えたことだと分析した。",
   why_it_matters: "このドラマは、裕福で安逸な生活を送る専業主婦の羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで職場に入り、自己成長していく物語です。陳俊生は同僚の凌玲と不倫して羅子君と離婚し、凌玲と再婚します。この設定が、放送当時は「クズ男」と叩かれた陳俊生を、今では「中国の良い元夫」と呼ばせるほど視聴者の見方を変えたんです。"
 };
 const issue63Run326316GroundedWhy = "羅子君が離婚後に唐晶と賀涵の助けで職場へ踏み出し、自己成長する物語の一方で、その離婚を引き起こした陳俊生も単純な悪役には描かれません。陳俊生は不倫で羅子君と別れながら、離婚後も子どもや前妻一家を支え、再婚後には別の葛藤を抱えます。臆病さや欲深さと良心が同居する人物だからこそ、放送当初の「クズ男」から「中国の良い元夫」へ評価が揺れた。この割り切れなさが、時間を置いて見直す面白さなんです！";
+const issue63Run326325TermOnly = {
+  ...issue63Run326316Before,
+  what_happened: issue63Run326316Before.what_happened.replace("二創", "二次創作")
+};
+assert.deepEqual(
+  runClaimCheck(issue63Run326316Before, issue63Ledger).violations.filter((violation) => violation.severity === "gate"),
+  [],
+  "run 32632520237直前の保存記事にはnumber gateがない"
+);
+assert.deepEqual(
+  runClaimCheck(issue63Run326325TermOnly, issue63Ledger).violations.filter((violation) => violation.severity === "gate"),
+  [],
+  "二創→二次創作だけを反映してもnumber_not_in_ledgerを新設しない"
+);
 const issue63Run326316Intent = detectReviewRevisionIntent(issue63Run326316Before, issue63Instruction, "用語");
 const issue63Run326316Patch: ReviewPatchDocument = {
   mode: "limited_patch",
@@ -408,6 +471,58 @@ assert.deepEqual(issue63Run326316Result.summary.source_list, issue63Run326316Bef
 assert.deepEqual(issue63Run326316Result.summary.related_sources, issue63Run326316Before.related_sources);
 assert.deepEqual(issue63Run326316Result.trace.preservation.important_numbers_after, issue63Run326316Result.trace.preservation.important_numbers_before);
 assert.deepEqual(issue63Run326316Result.trace.preservation.entities_after, issue63Run326316Result.trace.preservation.entities_before);
+
+const issue63UngroundedCountPatch: ReviewPatchDocument = {
+  ...issue63Run326316Patch,
+  patches: [
+    issue63Run326316Patch.patches[0],
+    {
+      ...issue63Run326316Patch.patches[1],
+      after: `${issue63Run326316GroundedWhy} 羅子君と陳俊生という二人の関係も見どころです。`
+    }
+  ]
+};
+assert.throws(
+  () => applyValidatedReviewPatch(
+    issue63Run326316Before,
+    issue63Topic,
+    issue63Ledger,
+    issue63Instruction,
+    "用語",
+    issue63Run326316Intent,
+    issue63UngroundedCountPatch
+  ),
+  (error: unknown) => error instanceof ReviewRevisionClarificationRequiredError && /2人/u.test(error.message),
+  "選択claimにない実人数は漢数字でもbeforeとの差分として拒否する"
+);
+
+const issue63LegacyCountBefore: SummarizedArticle = {
+  ...issue63Run326316Before,
+  why_it_matters: `${issue63Run326316Before.why_it_matters} 羅子君と陳俊生という二人の関係が軸です。`
+};
+const issue63LegacyCountIntent = detectReviewRevisionIntent(issue63LegacyCountBefore, issue63Instruction, "用語");
+const issue63LegacyCountPatch: ReviewPatchDocument = {
+  ...issue63Run326316Patch,
+  patches: [
+    issue63Run326316Patch.patches[0],
+    {
+      ...issue63Run326316Patch.patches[1],
+      after: `${issue63Run326316GroundedWhy} 羅子君と陳俊生という二人の関係が軸です。`
+    }
+  ]
+};
+assert.doesNotThrow(
+  () => applyValidatedReviewPatch(
+    issue63LegacyCountBefore,
+    issue63Topic,
+    issue63Ledger,
+    issue63Instruction,
+    "用語",
+    issue63LegacyCountIntent,
+    issue63LegacyCountPatch
+  ),
+  "同じ未解決number tokenがbeforeから残るだけなら新規gateと誤認しない"
+);
 
 const issue63ActionsRetryPatch: ReviewPatchDocument = {
   mode: "limited_patch",
@@ -571,6 +686,7 @@ assert.equal(issue63Prompt.includes('"id": "C2"'), false, "利用不可claim ID�
 assert.equal(issue63Prompt.includes('"id": "C15"'), true, "再構成には利用可能claimだけを渡す");
 assert.match(issue63Prompt, /明示置換.*evidence_claim_refs=\[\]/su, "用語の明示置換にはclaim refsを付けないよう明示する");
 assert.match(issue63Prompt, /replace_field.*before.*空文字/su, "必須field rewriteで長い現在値をLLMにechoさせない");
+assert.match(issue63Prompt, /漢数字.*人物名の数から人数を作らない/su, "再構成で根拠のない漢数字カウントを作らせない");
 
 const manualTopic = { ...topic, evidence_articles: [{ category: "持ち込みニュース" }] } as unknown as TopicCandidate;
 const manualResult = applyValidatedReviewPatch(before, manualTopic, ledger, ownerInstruction, "事実", intent, patch);
