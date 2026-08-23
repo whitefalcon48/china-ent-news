@@ -50,7 +50,7 @@
       "lead": "2017年の大ヒットドラマ『私の前半生』の公式微博が約9年ぶりに更新を再開し、関連コンテンツの再生数が急増。主演たちのその後の活躍も改めて注目を集めている。",
       "what_happened": "2026年8月22日、ドラマ『私の前半生』の公式微博が長年の沈黙を破って更新を再開し、「夏のヒット作」キャンペーンの復活を宣言した。公式微博は二創募集、ドラマレビューコンテスト、クイズ大会、性格診断テストを開始し、賞金と主演の非売品サイン写真を賞品として提供している。ショート動画プラットフォームでの関連コンテンツの再生増加量は49億回を超え、微博の累計閲覧数は32.8億に達した。複数の関連トピックが微博のホットサーチにランクインした。プロデューサーの黄澜は、再ブームの理由を、優れた俳優が真実の人間性を演じたこと、名場面がネットミーム化して視聴者の軽快な楽しみへの欲求に合致したこと、そして羅子君の困難に立ち向かう姿勢が必要な心理的エネルギーを与えたことだと分析した。",
       "reaction_view": "",
-      "why_it_matters": "羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで職場に入り、自己成長していく物語です！陳俊生は同僚の凌玲と不倫して羅子君と離婚し、凌玲と再婚します。この設定が、放送当時は「クズ男」と叩かれた陳俊生を、今では「中国の良い元夫」と呼ばせるほど視聴者の見方を変えたんです。",
+      "why_it_matters": "このドラマは、裕福で安逸な生活を送る専業主婦の羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで職場に入り、自己成長していく物語です。陳俊生は同僚の凌玲と不倫して羅子君と離婚し、凌玲と再婚します。この設定が、放送当時は「クズ男」と叩かれた陳俊生を、今では「中国の良い元夫」と呼ばせるほど視聴者の見方を変えたんです。",
       "editor_comment": "",
       "japan_context_note": "",
       "category": "ドラマ",
@@ -810,12 +810,9 @@
       "comment_stage": {
         "attempted": true,
         "used": true,
-        "regenerated": true,
-        "fallback_reason": "",
-        "exclamation_count": 1,
-        "opening": "羅子君が夫の陳俊生と",
-        "regenerated_opening": false,
-        "regenerated_paraphrase": false
+        "regenerated": false,
+        "fallback_reason": "review_limited_patch",
+        "exclamation_count": 0
       },
       "article_depth": {
         "profile": "standard",
@@ -828,6 +825,57 @@
         "regenerated": false,
         "passed": true,
         "reasons": []
+      },
+      "review_revision": {
+        "mode": "limited_patch",
+        "changed_fields": [
+          "why_it_matters"
+        ],
+        "changes": [
+          {
+            "field": "why_it_matters",
+            "before": "羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで職場に入り、自己成長していく物語です！陳俊生は同僚の凌玲と不倫して羅子君と離婚し、凌玲と再婚します。この設定が、放送当時は「クズ男」と叩かれた陳俊生を、今では「中国の良い元夫」と呼ばせるほど視聴者の見方を変えたんです。",
+            "after": "このドラマは、裕福で安逸な生活を送る専業主婦の羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで職場に入り、自己成長していく物語です。陳俊生は同僚の凌玲と不倫して羅子君と離婚し、凌玲と再婚します。この設定が、放送当時は「クズ男」と叩かれた陳俊生を、今では「中国の良い元夫」と呼ばせるほど視聴者の見方を変えたんです。",
+            "evidence_claim_refs": [
+              "C13"
+            ],
+            "reason": "物語の前提を事実台帳のC13に基づき明確化し、注目ポイントを再構成。"
+          }
+        ],
+        "preservation": {
+          "untouched_fields_exact": true,
+          "source_list_exact": true,
+          "related_sources_exact": true,
+          "reaction_view_preserved_when_untargeted": true,
+          "claim_refs_before": 7,
+          "claim_refs_after": 7,
+          "important_numbers_before": [
+            "2017年",
+            "9年",
+            "2026年",
+            "8月",
+            "22日",
+            "49億回",
+            "32.8億"
+          ],
+          "important_numbers_after": [
+            "2017年",
+            "9年",
+            "2026年",
+            "8月",
+            "22日",
+            "49億回",
+            "32.8億"
+          ],
+          "entities_before": [
+            "黄澜"
+          ],
+          "entities_after": [
+            "黄澜"
+          ],
+          "narrative_chars_before": 598,
+          "narrative_chars_after": 621
+        }
       }
     }
   }
