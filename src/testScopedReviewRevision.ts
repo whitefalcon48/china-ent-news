@@ -154,6 +154,210 @@ assert.equal(result.trace.preservation.untouched_fields_exact, true);
 assert.equal(result.trace.preservation.reaction_view_preserved_when_untargeted, true);
 assert.ok(result.trace.preservation.claim_refs_after >= result.trace.preservation.claim_refs_before);
 
+const issue63Before: SummarizedArticle = {
+  ...before,
+  title_ja: "『私の前半生』公式微博が再始動、主演たちの現在地と再ブームの理由",
+  lead: "2017年の大ヒットドラマ『私の前半生』の公式微博が約9年ぶりに更新を再開し、関連コンテンツの再生数が急増。主演たちのその後の活躍も改めて注目を集めている。",
+  what_happened: "2026年8月22日、ドラマ『私の前半生』の公式微博が長年の沈黙を破って更新を再開した。公式微博は二創募集、ドラマレビューコンテスト、クイズ大会、性格診断テストを開始した。関連コンテンツの再生増加量は49億回を超え、微博の累計閲覧数は32.8億に達した。プロデューサーの黄澜は、名場面がネットミーム化したことなどを再ブームの理由に挙げた。",
+  reaction_view: "",
+  why_it_matters: "羅子君が夫の陳俊生と離婚してすべてを失い、親友の唐晶とその彼氏の賀涵の助けで職場に入り、自己成長していく物語です！陳俊生は同僚の凌玲と不倫して羅子君と離婚し、凌玲と再婚します。この設定が、放送当時は「クズ男」と叩かれた陳俊生を、今では「中国の良い元夫」と呼ばせるほど視聴者の見方を変えたんです。",
+  japan_context_note: "",
+  category: "ドラマ",
+  confidence: "C",
+  topic_key: "我的前半生主演现状",
+  main_entities: {
+    people: ["雷佳音", "馬伊琍", "袁泉", "呉越", "黄澜"],
+    works: ["我的前半生"],
+    organizations: []
+  },
+  source_list: [
+    { name: "新浪娱乐", url: "https://example.com/root" },
+    { name: "関連媒体", url: "https://example.com/related" }
+  ],
+  related_sources: [{ name: "追加資料", url: "https://example.com/context" }],
+  claim_refs: {
+    what_happened: ["C1", "C2", "C3", "C4", "C5"],
+    why_it_matters: ["C13", "C15"],
+    reaction_view: [],
+    japan_context_note: []
+  },
+  detail_sections: []
+};
+
+const issue63Claim = (
+  id: string,
+  text: string,
+  entities: string[],
+  editorialRole: "story_premise" | "other" = "other"
+) => ({
+  id,
+  type: "verified_fact" as const,
+  text,
+  evidence_refs: ["E2"],
+  entities,
+  numbers: [],
+  anchor: true,
+  scope: "root_event" as const,
+  editorial_role: editorialRole,
+  angle_kind: "other" as const
+});
+
+const issue63Ledger: FactLedger = {
+  topic_key: issue63Before.topic_key,
+  claims: [
+    issue63Claim("C13", "羅子君が離婚後、唐晶と賀涵の助けで職場に入り自己成長する物語である。", ["羅子君", "陳俊生", "唐晶", "賀涵"], "story_premise"),
+    issue63Claim("C15", "陳俊生は同僚の凌玲と不倫し、羅子君と離婚して凌玲と再婚する。", ["陳俊生", "凌玲", "羅子君"], "story_premise"),
+    issue63Claim("C16", "陳俊生は離婚後も子どもや前妻一家の面倒を見続けた。", ["陳俊生", "羅子君"]),
+    issue63Claim("C17", "陳俊生は再婚後も家庭の矛盾と新たな悩みを抱えた。", ["陳俊生"]),
+    issue63Claim("C18", "陳俊生は臆病さや欲深さと良心が同居する、単純な悪人ではない人物として描かれた。", ["陳俊生"]),
+    issue63Claim("C19", "陳俊生は放送当初『クズ男』と非難された後、『中国の良い元夫』と呼ばれるようになった。", ["陳俊生"])
+  ],
+  terms: [],
+  japan_availability: { status: "not_in_evidence", detail: "", evidence_refs: [] },
+  unresolved: []
+};
+
+const issue63Topic = {
+  topic_key: issue63Before.topic_key,
+  main_entities: issue63Before.main_entities,
+  source_mix: { media_report: 2 },
+  evidence_articles: []
+} as unknown as TopicCandidate;
+const issue63Instruction = "二創→二次創作。注目ポイントが浅く理解が難しいため、再構成をする。";
+const issue63Intent = detectReviewRevisionIntent(issue63Before, issue63Instruction, "用語");
+assert.equal(issue63Intent.mode, "limited_patch");
+assert.deepEqual(issue63Intent.required_replacements, [{
+  before: "二創",
+  after: "二次創作",
+  target_fields: ["what_happened"]
+}], "引用符のない矢印置換を必須修正として検出する");
+assert.deepEqual(issue63Intent.required_field_rewrites, ["why_it_matters"], "注目ポイントの再構成をfield rewriteとして分離する");
+assert.ok(issue63Intent.allowed_fields.includes("what_happened"));
+assert.ok(issue63Intent.allowed_fields.includes("why_it_matters"));
+assert.equal(
+  detectReviewRevisionIntent(issue63Before, "記事内にない語→訂正語。", "用語").mode,
+  "clarification_required",
+  "明示置換の修正元が見つからない場合は推測で別箇所を直さない"
+);
+
+const multipleReplacementInstruction = "二創→二次創作。長年の沈黙→長い沈黙。";
+const multipleReplacementIntent = detectReviewRevisionIntent(issue63Before, multipleReplacementInstruction, "用語");
+assert.equal(multipleReplacementIntent.required_replacements.length, 2, "複数の矢印置換を順番にすべて抽出する");
+assert.throws(
+  () => applyValidatedReviewPatch(
+    issue63Before,
+    issue63Topic,
+    issue63Ledger,
+    multipleReplacementInstruction,
+    "用語",
+    multipleReplacementIntent,
+    {
+      mode: "limited_patch",
+      clarification_required: false,
+      clarification_reason: "",
+      patches: [{ field: "what_happened", operation: "replace", before: "二創", after: "二次創作", evidence_claim_refs: [], reason: "1件目だけ修正" }]
+    }
+  ),
+  ReviewRevisionClarificationRequiredError,
+  "複数の明示置換のうち一部だけを処理して保存しない"
+);
+
+const groundedWhyItMatters = "陳俊生は不倫で羅子君と離婚した一方、離婚後も子どもや前妻一家を支え、再婚後には別の葛藤を抱えます。単純な悪人ではなく、臆病さや欲深さと良心が同居する人物だからこそ、「クズ男」から「中国の良い元夫」へ評価が揺れたところが面白いんです！";
+const groundedRewritePatch = {
+  field: "why_it_matters" as const,
+  operation: "replace_field" as const,
+  before: issue63Before.why_it_matters,
+  after: groundedWhyItMatters,
+  evidence_claim_refs: ["C15", "C16", "C17", "C18", "C19"],
+  reason: "人物の行動と複雑さを結び、再評価が起きる理由を説明"
+};
+
+const omittedTermPatch: ReviewPatchDocument = {
+  mode: "limited_patch",
+  clarification_required: false,
+  clarification_reason: "",
+  patches: [groundedRewritePatch]
+};
+assert.throws(
+  () => applyValidatedReviewPatch(issue63Before, issue63Topic, issue63Ledger, issue63Instruction, "用語", issue63Intent, omittedTermPatch),
+  ReviewRevisionClarificationRequiredError,
+  "複数指示の一部だけを反映したActions型出力を成功扱いにしない"
+);
+
+const shallowIssue63Patch: ReviewPatchDocument = {
+  mode: "limited_patch",
+  clarification_required: false,
+  clarification_reason: "",
+  patches: [
+    { field: "what_happened", operation: "replace", before: "二創", after: "二次創作", evidence_claim_refs: [], reason: "用語を修正" },
+    {
+      field: "why_it_matters",
+      operation: "replace_field",
+      before: issue63Before.why_it_matters,
+      after: `このドラマは、裕福で安逸な生活を送る専業主婦の${issue63Before.why_it_matters.replace("です！", "です。")}`,
+      evidence_claim_refs: ["C13", "C15"],
+      reason: "物語説明を追加"
+    }
+  ]
+};
+assert.throws(
+  () => applyValidatedReviewPatch(issue63Before, issue63Topic, issue63Ledger, issue63Instruction, "用語", issue63Intent, shallowIssue63Patch),
+  ReviewRevisionClarificationRequiredError,
+  "既存文の冒頭へ説明を足しただけの再構成を拒否する"
+);
+
+const issue63Patch: ReviewPatchDocument = {
+  mode: "limited_patch",
+  clarification_required: false,
+  clarification_reason: "",
+  patches: [
+    { field: "what_happened", operation: "replace", before: "二創", after: "二次創作", evidence_claim_refs: [], reason: "用語を修正" },
+    groundedRewritePatch
+  ]
+};
+const issue63Result = applyValidatedReviewPatch(
+  issue63Before,
+  issue63Topic,
+  issue63Ledger,
+  issue63Instruction,
+  "用語",
+  issue63Intent,
+  issue63Patch
+);
+assert.doesNotMatch(issue63Result.summary.what_happened, /二創/u);
+assert.match(issue63Result.summary.what_happened, /二次創作/u);
+assert.equal(issue63Result.summary.why_it_matters, groundedWhyItMatters);
+assert.deepEqual(issue63Result.trace.changed_fields, ["what_happened", "why_it_matters"]);
+assert.equal(issue63Result.summary.lead, issue63Before.lead);
+assert.equal(issue63Result.summary.reaction_view, "");
+assert.deepEqual(issue63Result.summary.source_list, issue63Before.source_list);
+assert.deepEqual(issue63Result.summary.related_sources, issue63Before.related_sources);
+assert.ok(issue63Result.summary.claim_refs.what_happened.includes("C1"));
+assert.ok(issue63Result.summary.claim_refs.why_it_matters.includes("C19"));
+assert.deepEqual(issue63Result.trace.preservation.important_numbers_after, issue63Result.trace.preservation.important_numbers_before);
+assert.deepEqual(issue63Result.trace.preservation.entities_after, issue63Result.trace.preservation.entities_before);
+
+const noGroundingIntent = detectReviewRevisionIntent(issue63Before, "注目ポイントを再構成する。", "構成");
+const noGroundingPatch: ReviewPatchDocument = {
+  mode: "limited_patch",
+  clarification_required: false,
+  clarification_reason: "",
+  patches: [{ ...groundedRewritePatch, evidence_claim_refs: [] }]
+};
+assert.throws(
+  () => applyValidatedReviewPatch(
+    issue63Before,
+    issue63Topic,
+    { ...issue63Ledger, claims: [] },
+    "注目ポイントを再構成する。",
+    "構成",
+    noGroundingIntent,
+    noGroundingPatch
+  ),
+  ReviewRevisionClarificationRequiredError,
+  "根拠ある再構成を作れない場合は薄い修正を保存せずclarification_requiredで止める"
+);
+
 const actionsStyleRewrite: ReviewPatchDocument = {
   mode: "limited_patch",
   clarification_required: false,
@@ -197,6 +401,10 @@ assert.match(prompt, /記事全文を再生成してはいけません/u);
 assert.match(prompt, /field.*operation.*before.*after.*evidence_claim_refs/su);
 assert.match(prompt, /元が空の reaction_view/u);
 assert.doesNotMatch(prompt, /"source_list"\s*:/u, "LLMへ非対象ソース配列を編集材料として渡さない");
+const issue63Prompt = buildLimitedReviewPatchPrompt(issue63Before, issue63Ledger, issue63Instruction, issue63Intent);
+assert.match(issue63Prompt, /省略禁止の明示置換/u);
+assert.match(issue63Prompt, /薄い追記/u);
+assert.match(issue63Prompt, /根拠から実質的な改善を作れない場合.*clarification_required=true/u);
 
 const manualTopic = { ...topic, evidence_articles: [{ category: "持ち込みニュース" }] } as unknown as TopicCandidate;
 const manualResult = applyValidatedReviewPatch(before, manualTopic, ledger, ownerInstruction, "事実", intent, patch);
