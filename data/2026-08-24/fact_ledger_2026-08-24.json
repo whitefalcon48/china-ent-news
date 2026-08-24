@@ -1,0 +1,478 @@
+{
+  "date": "2026-08-24",
+  "generated_at": "2026-08-24T02:26:50.234Z",
+  "ledgers": [
+    {
+      "topic_key": "黑神话",
+      "ledger": {
+        "topic_key": "黑神话",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年8月20日10:00、游戏科学は黒神話シリーズ第2作『黒神話：鐘馗』の15分間の実機デモを公開した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "游戏科学",
+              "黑神话：钟馗"
+            ],
+            "numbers": [
+              "2026年8月20日10:00",
+              "15分钟"
+            ],
+            "quote_zh": "8月20日10:00，由游戏科学开发的黑神话系列第二部作品《",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "この実機デモは開発中のバージョンで録画され、画面アスペクト比は21:9に設定されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "21:9"
+            ],
+            "quote_zh": "本视频为开发中版本录制，运行时屏幕宽高比设置为21:9",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "製品はまだ開発初期段階にあり、最終的な発売内容は異なる可能性がある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "因产品仍处于研发早期，最终发售内容可能有所不同",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "今回の実機デモでは、『黒神話：悟空』と比較して画質がさらに向上し、写実的な美術スタイルと精細なレンダリング効果により濃厚なゲームの雰囲気を生み出している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "黑神话：悟空"
+            ],
+            "numbers": [],
+            "quote_zh": "相较《黑神话：悟空》实现画质进一步升级，写实化的美术风格与精",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "デモでは新しいゲームUI体系が初公開され、インターフェースのレイアウトは明確で整然としている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "演示首次公开了全新游戏UI体系，界面布局清晰规整",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "ゲームは同類の「ポイントを貯めて技を放つ」コアリソースプレイを踏襲し、プレイヤーは通常攻撃でリソースを貯めて高威力の専用技をアンロックでき、戦闘の戦略性が大幅に向上する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "同时沿用同类攒点释招的核心资源玩法，玩家可通过普攻积攒资源，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "動画公開から10分でBilibiliのホット検索ランキング1位になり、同時オンライン視聴者数は10万人以上に達し、現在も上昇を続けている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "B站"
+            ],
+            "numbers": [
+              "10分钟",
+              "10万+人"
+            ],
+            "quote_zh": "该视频发布十分钟火速登顶B站热搜榜单，同时在线观看人数高达1",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "ゲームサイエンス創業者兼CEOで『黒神話：悟空』プロデューサーの馮驥は、デモ公開後にゲームサイエンス内部の10の仕事原則を通じて、会社がゲームを設計・開発する論理を説明した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "冯骥",
+              "游戏科学"
+            ],
+            "numbers": [
+              "十条"
+            ],
+            "quote_zh": "游戏科学创始人、CEO，《黑神话：悟空》制作人冯骥随后发文，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "馮驥は「まず自分を感動させる」という原則の中で、自分とチームを最優先のターゲットユーザーとして扱い、開発者自身がユーザーとして理解・承認・愛好できるゲームを作らなければならないと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "冯骥"
+            ],
+            "numbers": [],
+            "quote_zh": "在“首先打动自己”这一原则里，他认为，无论何时，请把自己与团",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "馮驥は「美に定式はない」とし、永遠に高級なスタイルや永遠に刺激的なシグナルは存在せず、万能的で万能な美学の公式を追求するのではなく、良い表現方法を探求し続けるべきだと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "冯骥"
+            ],
+            "numbers": [],
+            "quote_zh": "在冯骥看来“美无定式”，没有一种风格永远高级，也没有一种信号",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "馮驥は「起点は最高を見て、終点はリードする」という理念を持ち、同分野のリーダーについて詳しく知り、彼らが採用した開発モデル・設計方法・制作プロセス・技術標準を理解し、何を学べるか、何を学べないか、何を謙虚に受け止めるか、何を革新すべきかを考えるべきだと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "冯骥"
+            ],
+            "numbers": [],
+            "quote_zh": "在冯骥的理念中，“起点看最高，终点当领跑。”他坦言，对同领域",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "馮驥は、ゲームは必需品ではないが、ベンチマークを深く体験・研究することで、このジャンルの3～5年後の合格ラインがどの程度になるかを把握でき、ベンチマークの認識を自社デモ制作の出発点にすることは悪くないと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "冯骥"
+            ],
+            "numbers": [
+              "三五年"
+            ],
+            "quote_zh": "“游戏并非必需品，深入体验与研究标杆的另一重价值，是让我们对",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "馮驥は、長期的な目標が「誰々と同程度になること」であるのは危険であり、ベンチマークを尊重し学ぶのは最終的に自分の尺度を確立するためだと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "冯骥"
+            ],
+            "numbers": [],
+            "quote_zh": "但是，如果长期目标是‘做到和某某差不多’，有点危险。尊重标杆",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "『黒神話：鐘馗』は2025年に科隆ゲームショーのオープニングナイトで初公開され、2026年2月10日に春節特別動画を公開し、2026年8月20日に15分間の実機デモを公開した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "黑神话：钟馗",
+              "科隆游戏展"
+            ],
+            "numbers": [
+              "2025年",
+              "2026-02-10",
+              "2026-08-20",
+              "15分钟"
+            ],
+            "quote_zh": "于 2025 年在科隆游戏展开幕夜首次亮相；2026-02-",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "本作は中国の民間伝説における著名なキャラクター「鐘馗」を主な創作源とするシングルプレイ・アクション・ロールプレイングゲームである。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "钟馗"
+            ],
+            "numbers": [],
+            "quote_zh": "本作是以中国民间传说中的著名角色“钟馗”为主要创意来源的单机",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "新デモでは主人公の戦闘と一部のストーリーシーンが初めて公開された。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "新演示首次展示了主角战斗与部分剧情片段",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "製品はまだ開発初期段階にあり、最終的な発売内容は異なる可能性がある。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "由于产品仍处于研发早期，最终发售内容可能有所不同",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "鐘馗は単なる「鬼を捕まえる人」ではなく、夢に現れる異人、厄払いをする者、門神、宅神であり、幽冥の秩序を回復させる権威でもある。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "钟馗"
+            ],
+            "numbers": [],
+            "quote_zh": "钟馗，不只是一位“捉鬼人” 戴进笔下的钟馗夜游：鬼众随行，显",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "唐宋の夢占いと肖像画の伝統から、歳除の掛け軸、端午の厄払い、地方の「跳鐘馗」儀式、五蝠納福、鐘馗嫁妹まで、これらの蓄積された物語と用途が今日の鐘馗を形作っている。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "钟馗"
+            ],
+            "numbers": [],
+            "quote_zh": "从唐宋的梦兆与画像传统，到岁除悬像、端午驱疫、地方“跳钟馗”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "馮驥は『黒神話：悟空』発売後、長い間ぼんやりと過ごし、強いポジティブな感情は長続きせず、頭に浮かぶのは主に迷い、虚無感、恐怖だったと述べた。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "冯骥",
+              "黑神话：悟空"
+            ],
+            "numbers": [],
+            "quote_zh": "《黑神话：悟空》发售后有相当长一段时间，我过得云里雾里。 一",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "实机演示",
+            "gloss_ja": "実機デモ",
+            "what_is": "開発中のゲームを実際にプレイして見せる映像。",
+            "why_now": "新作の戦闘やUIが初公開され、注目を集めた。",
+            "explain_quote_zh": "发布全新15分钟游戏实机演示",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "攒点释招",
+            "gloss_ja": "ポイントを貯めて技を放つ",
+            "what_is": "通常攻撃でリソースを貯め、高威力の技を解放するシステム。",
+            "why_now": "新作の戦闘システムの核心として紹介された。",
+            "explain_quote_zh": "沿用同类攒点释招的核心资源玩法",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "B站热搜",
+            "gloss_ja": "Bilibiliホット検索",
+            "what_is": "Bilibiliの検索急上昇ランキング。",
+            "why_now": "デモ動画が公開10分で1位になり、人気を示した。",
+            "explain_quote_zh": "发布十分钟火速登顶B站热搜榜单",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "科隆游戏展",
+            "gloss_ja": "科隆ゲームショー",
+            "what_is": "ドイツで開催される世界最大級のゲーム見本市。",
+            "why_now": "本作が2025年に初公開された場。",
+            "explain_quote_zh": "于 2025 年在科隆游戏展开幕夜首次亮相",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "钟馗",
+            "gloss_ja": "鐘馗",
+            "what_is": "中国の民間伝説に登場する鬼を捕まえる神。",
+            "why_now": "本作の主人公のモデル。",
+            "explain_quote_zh": "本作是以中国民间传说中的著名角色“钟馗”为主要创意来源",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "跳钟馗",
+            "gloss_ja": "跳鐘馗",
+            "what_is": "鐘馗に扮して厄を払う地方の民俗儀式。",
+            "why_now": "鐘馗の文化的背景の一部として紹介された。",
+            "explain_quote_zh": "地方“跳钟馗”科仪",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "五蝠纳福",
+            "gloss_ja": "五蝠納福",
+            "what_is": "五匹の蝙蝠が福を招く吉祥の図案。",
+            "why_now": "鐘馗にまつわる伝統的なモチーフの一つ。",
+            "explain_quote_zh": "五蝠纳福",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "钟馗嫁妹",
+            "gloss_ja": "鐘馗嫁妹",
+            "what_is": "鐘馗が妹を嫁がせる伝説の物語。",
+            "why_now": "鐘馗の物語のバリエーションの一つ。",
+            "explain_quote_zh": "钟馗嫁妹",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
