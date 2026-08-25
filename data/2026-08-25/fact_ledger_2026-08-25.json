@@ -1,0 +1,382 @@
+{
+  "date": "2026-08-25",
+  "generated_at": "2026-08-25T02:23:52.368Z",
+  "ledgers": [
+    {
+      "topic_key": "空枪",
+      "ledger": {
+        "topic_key": "空枪",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『空枪』が「敲骨吸髓」版予告編を公開した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "空枪"
+            ],
+            "numbers": [],
+            "quote_zh": "《空枪》发布“敲骨吸髓”版预告",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "『空枪』は韓延が監督し、朱一龍が主演を務める。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "空枪",
+              "韩延",
+              "朱一龙"
+            ],
+            "numbers": [],
+            "quote_zh": "由韩延执导，朱一龙领衔主演",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "予告編では万梓強と陳輝延が利益の探り合いから正面衝突へと至る。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万梓强",
+              "陈辉延"
+            ],
+            "numbers": [],
+            "quote_zh": "万梓强与陈辉延从利益试探到正面交锋",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "万梓強は豪邸のリビングで白粥に大量の塩を入れ、陳輝延に「貧乏人の粥」を飲ませて「平等な対話」を強要する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万梓强",
+              "陈辉延"
+            ],
+            "numbers": [],
+            "quote_zh": "万梓强大把往白粥里加盐，逼迫陈辉延喝下“穷人的粥”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "万梓強はトイレでサービス係扱いされ「タオル1枚20元」と屈辱を味わった記憶から、「息子1人20億」と叫ぶまでになる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万梓强"
+            ],
+            "numbers": [
+              "20元",
+              "20亿"
+            ],
+            "quote_zh": "从洗手间里被当成服务生“一个毛巾20元”的屈辱记忆，到开口叫",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "陳輝延は「もう調べるな、相手は狂人だ」と言い、万梓強を「慈善家のふりをして貧乏人の血と汗を騙し取る、骨までしゃぶるような奴だ」と非難する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "陈辉延",
+              "万梓强"
+            ],
+            "numbers": [],
+            "quote_zh": "陈辉延一句“不要再查了，我遇到的是疯子”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "万梓強は陳輝延の肩に近づき「骨髄を吸う」動作をして、金銭争いの最後の覆いを剥がす。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万梓强",
+              "陈辉延"
+            ],
+            "numbers": [],
+            "quote_zh": "万梓强贴近陈辉延肩膀做出的“吸骨髓”动作",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "購入プラットフォームでの公開時評価は9.7点に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "9.7分"
+            ],
+            "quote_zh": "购票平台开画评分达到9.7分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "観客は朱一龍が万梓強の「のし上がるか、首を落とすか」という冷酷さと複雑な人間性を演じ切ったと評価している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "朱一龙",
+              "万梓强"
+            ],
+            "numbers": [],
+            "quote_zh": "朱一龙将万梓强那种“要么出人头地，要么人头落地”的狠辣与复杂",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "檀健次が演じる警察官・亓宏剛は、泥臭い任侠気質と最後まで食い下がる粘り強さで、90年代の警察官の血気と知恵を立体的に表現していると評価されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "檀健次",
+              "亓宏刚"
+            ],
+            "numbers": [
+              "90年代"
+            ],
+            "quote_zh": "檀健次饰演的警察亓宏刚同样亮眼，行事带着接地气的江湖风骨与死",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "梁家輝は落ち着いた中に秘めた忍耐で影帝の風格を見せていると評価されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "梁家辉"
+            ],
+            "numbers": [],
+            "quote_zh": "梁家辉从容淡定中的暗自强忍更是尽显影帝气场",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "主創たちの多くの見応えある対決シーンは「火花が散り、鳥肌が立つ」と称賛されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "主创们多场精彩的对手戏被赞“火花四溅，看得人汗毛竖起”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "映画は欲望・生存・人間性について深く掘り下げており、上映後に観客の議論を呼んでいる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "片中关于欲望、生存与人性的深度探讨，也引发了映后广大观众的讨",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "主創チームは現在も各地で観客と会うイベントを続けている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "主创团队也持续奔赴多地与观众见面",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "路演が進むにつれ、観客の議論は「強哥はどれほど狂っているのか」から人物の運命そのものへと広がっている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "强哥"
+            ],
+            "numbers": [],
+            "quote_zh": "观众对于影片的讨论也从“强哥到底有多疯”延伸至人物命运本身",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "万梓強は何度も賭けに出て「一発逆転」で成り上がろうとする。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万梓强"
+            ],
+            "numbers": [],
+            "quote_zh": "万梓强不断押上筹码，以一次次“赌一把”换取所谓的出人头地",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "韓延監督は路演で、「空枪」は物語の重要なイメージであり、人物の運命の隠喩でもあると語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "韩延",
+              "空枪"
+            ],
+            "numbers": [],
+            "quote_zh": "导演韩延在路演中所分享的，“空枪”既是故事中的关键意象，也是",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "韓延監督は「幸運は永遠には続かず、賭け続ければ必ず代償を払う」と語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "韩延"
+            ],
+            "numbers": [],
+            "quote_zh": "幸运不会永远降临，持续赌命终有代价",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "物語は1990年代初頭、秩序が崩壊し犯罪が多発する欲望の都市が舞台である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "1990年代初"
+            ],
+            "quote_zh": "上世纪90年代初，这座“遍地黄金”的欲望之城，秩序崩坏，犯罪",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "出稼ぎ労働者の万梓強は運命を変えようとし、客室乗務員の駱嘉苑と出会った後、二人で組んで巨額の金を強奪する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "万梓强",
+              "骆嘉苑"
+            ],
+            "numbers": [],
+            "quote_zh": "打工仔万梓强（朱一龙 饰）一心想改写命运，在结识空姐骆嘉苑（",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
