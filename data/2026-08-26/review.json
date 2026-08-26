@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-26",
+  "status": "pending",
+  "issue_number": 71,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "长视频平台AI竞赛",
+      "title": "長視頻プラットフォーム、AI競争で人材不足とチャネル変化に直面",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 2,
+      "topic_key": "侯明昊演唱会",
+      "title": "侯明昊、深圳で2日連続公演！新曲初披露と微博トレンド入りで話題に",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
+}

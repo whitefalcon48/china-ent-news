@@ -1,0 +1,980 @@
+{
+  "date": "2026-08-26",
+  "generated_at": "2026-08-26T02:31:20.068Z",
+  "ledgers": [
+    {
+      "topic_key": "长视频平台AI竞赛",
+      "ledger": {
+        "topic_key": "长视频平台AI竞赛",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "界面文娱は、長視頻プラットフォームがAI競争で人材不足とチャネル変化という二つの課題に直面していると報じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "界面文娱",
+              "長視頻プラットフォーム"
+            ],
+            "numbers": [],
+            "quote_zh": "人才供给不足、渠道逻辑变化是长视频平台不得不面对的两大关卡",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年の夏休み期間中、優酷の『九門』と『翹楚』のみが熱度1万を突破し、爆款の基準に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "優酷",
+              "九門",
+              "翹楚"
+            ],
+            "numbers": [
+              "1万"
+            ],
+            "quote_zh": "仅有优酷的《九门》和《翘楚》热度破万",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "QuestMobileのデータによると、短劇ユーザーの月間平均使用時間はオンライン動画を上回り、約2倍に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "QuestMobile",
+              "短劇",
+              "オンライン動画"
+            ],
+            "numbers": [
+              "2倍"
+            ],
+            "quote_zh": "短剧用户粘性已经超越在线视频，月人均使用时长实现了近两倍的反",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "QuestMobileのデータによると、月間アクティブユーザー数トップ10の短劇アプリの中で、紅果免費短劇は他の漫劇アプリと約30倍の差をつけている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "QuestMobile",
+              "紅果免費短劇",
+              "漫劇アプリ"
+            ],
+            "numbers": [
+              "30倍"
+            ],
+            "quote_zh": "红果免费短剧距离其它漫剧APP，还有近30倍的差距",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "『網絡劇片發行許可証』を取得した初のAI長編映画『奇譚：紙刃渡荒墟』が愛奇芸で配信された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "網絡劇片發行許可証",
+              "奇譚：紙刃渡荒墟",
+              "愛奇芸"
+            ],
+            "numbers": [],
+            "quote_zh": "获得《网络剧片发行许可证》的首部AI长片《奇谭：纸刃渡荒墟》",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "「靈魂擺渡」IPの「浮生夢」シリーズAIGC長編が相次いで配信された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "靈魂擺渡",
+              "浮生夢",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "“灵魂摆渡”IP的“浮生梦”系列AIGC长片也陆续上线",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "AI時代以前、映画・テレビ人材の育成経路は学院教育や長期の撮影現場経験を通じて固定化されていた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "映画・テレビ人材"
+            ],
+            "numbers": [],
+            "quote_zh": "在AI时代之前，影视人才的养成路径近乎固定",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "AIによる技術の平準化により、映画・テレビ人材の基準がより曖昧になった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "AI",
+              "映画・テレビ人材"
+            ],
+            "numbers": [],
+            "quote_zh": "AI带来的技术平权让影视人才的标准变得更加泛化",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "「Mx-Shell」は映画・ゲームの専門教育を受けずに独学でAI動画ツールを学び、ハリウッドの注目を集める『喪屍清道夫』を制作した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "Mx-Shell",
+              "喪屍清道夫",
+              "ハリウッド"
+            ],
+            "numbers": [],
+            "quote_zh": "“Mx-Shell”没有影视或游戏的科班背景，靠自学音乐、摄",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "7年間モデルを務めた「菲菲飛」はAIツールを学び、『被裁掉的女孩』を制作して「方桃子」を人気AIアーティストにした。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "菲菲飛",
+              "被裁掉的女孩",
+              "方桃子"
+            ],
+            "numbers": [
+              "7年"
+            ],
+            "quote_zh": "曾做过7年模特“菲菲飞”，现学AI工具，打造出《被裁掉的女孩",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "AIプロジェクト責任者によると、採用ではAIツールの熟練度とAI作品の有無が重視され、映画・テレビ業界の経験や専門教育は二の次になる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "AIプロジェクト責任者"
+            ],
+            "numbers": [],
+            "quote_zh": "他们招人更看重对AI工具的熟悉程度，以及是否具有AI作品，具",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "長視頻プラットフォームはAI超創を獲得するため、AI創作者募集計画やハッカソン大会を開催し、数百万の賞金、無料Token、トラフィック支援を提供している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "長視頻プラットフォーム",
+              "AI超創",
+              "Token"
+            ],
+            "numbers": [
+              "数百万"
+            ],
+            "quote_zh": "通过举办AI创作者招募计划、黑客松比赛等活动，用几百万的奖金",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "愛奇芸はAI影視創造営を設立し、鮑徳熹と共同で「鮑徳熹・愛奇芸映画劇場」AIGC商業映画創投計画を開始した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "愛奇芸",
+              "鮑徳熹",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "爱奇艺打造了AI影视创造营，与鲍德熹联合发起“鲍德熹·爱奇艺",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "虎鯨文娯集団とHappyHorseが共同で「HorsePower・AI影像大賽」を主催し、「HappyHorse AI影視実戦営」を開始した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "虎鯨文娯集団",
+              "HappyHorse",
+              "HorsePower・AI影像大賽",
+              "HappyHorse AI影視実戦営"
+            ],
+            "numbers": [],
+            "quote_zh": "虎鲸文娱集团与HappyHorse联合主办的“HorsePo",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "騰訊視頻は海外AI精品影視プロジェクトの全リンク孵化計画を開始した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "騰訊視頻"
+            ],
+            "numbers": [],
+            "quote_zh": "腾讯视频面向全球创作者，启动海外AI精品影视项目全链路孵化计",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "B站は「AI創作大賽」を、閲文集団は「火種計画」を、LibTVは「Skill超創激励計画」をそれぞれ開催した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "B站",
+              "AI創作大賽",
+              "閲文集団",
+              "火種計画",
+              "LibTV",
+              "Skill超創激励計画"
+            ],
+            "numbers": [],
+            "quote_zh": "B站举办的“AI创作大赛”、阅文集团发布的“火种计划”、Li",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "業界関係者によると、最初にAI超創を囲い込んだのは大規模モデル企業が多く、市場のトップAI超創はすでに独占提携を結んでいる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "大規模モデル企業",
+              "AI超創"
+            ],
+            "numbers": [],
+            "quote_zh": "最早网罗AI超创的大多是大模型公司，市场上的头部AI超创基本",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "AI超創のJohnsonによると、AI超創を惹きつけるのはまずツールの能力の高さであり、大規模モデルの更新時に優先的に内部テストを受けられる権利がある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "Johnson",
+              "AI超創"
+            ],
+            "numbers": [],
+            "quote_zh": "吸引AI超创的首先一定是工具能力要强，“因为一般大模型更新，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "長視頻プラットフォームは自社開発AIツールを持つが、モデル能力の制限によりハードウェア面で人材を引き寄せる効果を発揮しにくい。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "長視頻プラットフォーム"
+            ],
+            "numbers": [],
+            "quote_zh": "虽然长视频平台也有自研AI工具，但受限于模型能力，很难凭借硬",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "QuestMobileのデータによると、ユーザーの動画コンテンツ消費は「短視頻＋短劇」と「長視頻」の直接競争構造に変化している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "界面新闻",
+            "entities": [
+              "QuestMobile",
+              "短視頻",
+              "短劇",
+              "長視頻"
+            ],
+            "numbers": [],
+            "quote_zh": "用户对视频内容的消费正演变为“短视频+短剧”与“长视频”的直",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "AI超创",
+            "gloss_ja": "AIスーパークリエイター",
+            "what_is": "AI作品を制作できるスーパークリエイター",
+            "why_now": "長視頻プラットフォームが人材獲得競争で争奪している",
+            "explain_quote_zh": "行业将这些“新创作者”定义为“AI超创”，即具备AI作品制作",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "分账",
+            "gloss_ja": "収益分配",
+            "what_is": "作品の収益をプラットフォームと創作者で分配する仕組み",
+            "why_now": "愛奇芸が新分賬ルールでAI短劇などの収益分配を統一した",
+            "explain_quote_zh": "独家作品创作者享受100%全额分账，非独家作品分账比例稳定在",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "爆款",
+            "gloss_ja": "大ヒット作品",
+            "what_is": "熱度などの指標で基準を超えた人気作品",
+            "why_now": "2026年夏休み期間中に爆款基準を超えたのは2作品のみだった",
+            "explain_quote_zh": "仅有优酷的《九门》和《翘楚》热度破万，突破爆款踢脚线",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "漫剧",
+            "gloss_ja": "漫画動画",
+            "what_is": "漫画を動画化した短編コンテンツ",
+            "why_now": "AI漫劇が映画・テレビ化の主流方向の一つになっている",
+            "explain_quote_zh": "AI短剧、AI漫剧逐渐成为影视化主流方向",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "AIGC",
+            "gloss_ja": "AI生成コンテンツ",
+            "what_is": "AIが生成したコンテンツ",
+            "why_now": "AIGC長編映画が配信され、AI映画が具体化した",
+            "explain_quote_zh": "“灵魂摆渡”IP的“浮生梦”系列AIGC长片也陆续上线",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "网络剧片发行许可证",
+            "gloss_ja": "ネットドラマ配信許可証",
+            "what_is": "ネット配信作品に必要な発行許可証",
+            "why_now": "初のAI長編映画がこの許可証を取得した",
+            "explain_quote_zh": "获得《网络剧片发行许可证》的首部AI长片《奇谭：纸刃渡荒墟》",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "热度破万",
+            "gloss_ja": "熱度1万超え",
+            "what_is": "プラットフォーム内の人気指標が1万を超えること",
+            "why_now": "爆款の基準として言及された",
+            "explain_quote_zh": "热度破万，突破爆款踢脚线",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "商单",
+            "gloss_ja": "商業案件",
+            "what_is": "企業からの商業依頼",
+            "why_now": "AI超創の収入源として重要だが、差別化要因にはならない",
+            "explain_quote_zh": "现在市场AI商单需求量大，商单并不构成绝对有诱惑力的条件",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "侯明昊演唱会",
+      "ledger": {
+        "topic_key": "侯明昊演唱会",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "侯明昊の「属于我们的...」巡回演唱会が深圳で2日連続公演を行った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "属于我们的...",
+              "深圳"
+            ],
+            "numbers": [
+              "2日"
+            ],
+            "quote_zh": "深圳连唱双场",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "深圳公演中、#侯明昊深圳演唱会新歌首唱#、#侯明昊眼里猕猴桃的十个优点#、#侯明昊神级ending#などの話題が微博で話題となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "深圳",
+              "微博"
+            ],
+            "numbers": [],
+            "quote_zh": "#侯明昊深圳演唱会新歌首唱##侯明昊眼里猕猴桃的十个优点##",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "南京站は侯明昊の10年ぶりの歌手としてのカムバック公演であり、新曲「怎么能」を初披露した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "南京",
+              "怎么能"
+            ],
+            "numbers": [
+              "10年"
+            ],
+            "quote_zh": "南京首站，侯明昊以歌手身份回归舞台，通过新歌《怎么能》翻开全",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "成都站では新曲「Galaxy Far Far Away」を披露し、水火が交わる舞台イメージで表現を広げた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "成都",
+              "Galaxy Far Far Away"
+            ],
+            "numbers": [],
+            "quote_zh": "成都站解锁《Galaxy Far Far Away》，以水火",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "深圳站では新曲「今晚就睡在野火旁」を初披露し、リラックスした自由な曲風でロマンチックなテーマを表現した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "深圳",
+              "今晚就睡在野火旁"
+            ],
+            "numbers": [],
+            "quote_zh": "深圳站首唱《今晚就睡在野火旁》，用松弛自由的曲风铺展出双向依",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "各都市公演ごとに新曲を1曲ずつ披露しており、ツアーが進むにつれて音楽の章が増えていく構成となっている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊"
+            ],
+            "numbers": [
+              "1曲"
+            ],
+            "quote_zh": "每一站解锁一首新歌，也让巡演拥有了不断向前延伸的音乐章节",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "南京站の「怎么能」は侯明昊のデビュー10年間の別れや沈殿、自己和解をテーマにしている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "南京",
+              "怎么能"
+            ],
+            "numbers": [
+              "10年間"
+            ],
+            "quote_zh": "南京站《怎么能》对应侯明昊出道十年路上的离别、沉淀与自我和解",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "成都站の「Galaxy Far Far Away」は「洛希极限」という宇宙のイメージを用いて親密な関係における距離と抑制を探求している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "成都",
+              "Galaxy Far Far Away",
+              "洛希极限"
+            ],
+            "numbers": [],
+            "quote_zh": "成都站《Galaxy Far Far Away》借“洛希极限",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "深圳站の「今晚就睡在野火旁」は「野火」を核心的なイメージとして、親密な関係における相互依存と情熱的なロマンスを描いている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "深圳",
+              "今晚就睡在野火旁",
+              "野火"
+            ],
+            "numbers": [],
+            "quote_zh": "深圳站《今晚就睡在野火旁》以“野火”为核心意境，叙写亲密关系",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "このツアーは従来のツアーとは異なり、音楽作品が完成した後の展示ではなく、作品が生成されていく過程として位置づけられている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊"
+            ],
+            "numbers": [],
+            "quote_zh": "巡演不是音乐作品完成之后的展示，而是音乐作品正在生成的过程",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "genre_contrast",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "ツアーが終了すると、各都市で披露された新曲が「現場限定」から「完全な作品」へと転換される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊"
+            ],
+            "numbers": [],
+            "quote_zh": "一路积累的新歌也将完成从“现场限定”到“完整作品”的转化",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "成都站の開演前から侯明昊の新しい髪色についての議論が盛り上がっていた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "成都"
+            ],
+            "numbers": [],
+            "quote_zh": "早在成都站开演前，关于侯明昊新发色的讨论就已悄然升温",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "深圳站の舞台には広東語の「土味情话」が取り入れられ、現地の親しみやすさが加わった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "深圳",
+              "土味情话"
+            ],
+            "numbers": [],
+            "quote_zh": "深圳站现场，舞台融入粤语“土味情话”，让互动环节多了一份属于",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "深圳站の交流コーナーでは深圳の「必吃榜」の話題が取り上げられ、ファンとグルメの思い出を共有した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "深圳",
+              "必吃榜"
+            ],
+            "numbers": [],
+            "quote_zh": "关于深圳“必吃榜”的讨论也被自然带入现场，和粉丝交流美食心得",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "深圳公演の最終夜、侯明昊は2夜の現場映像をまとめた動画をSNSに投稿し、「我们永远在一起」という言葉で締めくくった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "深圳"
+            ],
+            "numbers": [
+              "2夜"
+            ],
+            "quote_zh": "侯明昊在社交平台发布了一条汇集两晚现场画面的视频，一句“我们",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "深圳大运中心体育館では2夜連続で高い集中度の現場の雰囲気が維持された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "深圳大运中心体育馆"
+            ],
+            "numbers": [
+              "2夜"
+            ],
+            "quote_zh": "两晚连唱之中，深圳大运中心体育馆始终保持着高浓度的现场氛围",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "アンコールでは「唯一」と「多远都要在一起」が歌われ、現場の感情が最高潮に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "唯一",
+              "多远都要在一起"
+            ],
+            "numbers": [],
+            "quote_zh": "当《唯一》《多远都要在一起》的旋律响起，现场情绪随之抵达顶点",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "今後のツアーでは鄭州、北京などの都市で公演が予定されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "郑州",
+              "北京"
+            ],
+            "numbers": [],
+            "quote_zh": "郑州、北京等城市也将陆续成为新的相遇地点",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "大連のファンもこのツアーに大連公演があるかどうかを期待している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "侯明昊",
+              "大连"
+            ],
+            "numbers": [],
+            "quote_zh": "不少大连歌迷也在期待，这一轮会有大连站吗？",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "source_analysis",
+            "text": "半岛晨报は、深圳公演が侯明昊の長期的なツアーにおける自己反復と舞台思考を示したと分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "半岛晨报",
+            "entities": [
+              "侯明昊",
+              "深圳",
+              "半岛晨报"
+            ],
+            "numbers": [],
+            "quote_zh": "深圳站则进一步展露出侯明昊在长线巡演中的自我迭代与舞台思考",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "巡回演唱会",
+            "gloss_ja": "ツアーコンサート",
+            "what_is": "複数の都市を回って行われるコンサートツアー。",
+            "why_now": "侯明昊の「属于我们的...」ツアーが深圳公演を行い、話題となっている。",
+            "explain_quote_zh": "巡回演唱会",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "热搜",
+            "gloss_ja": "微博のトレンド",
+            "what_is": "微博で多くのユーザーが検索・投稿して話題になっていることを示すランキング。",
+            "why_now": "侯明昊のコンサート関連の複数の話題が微博のホットサーチに入った。",
+            "explain_quote_zh": "频上热搜",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "土味情话",
+            "gloss_ja": "ダサい愛の言葉",
+            "what_is": "わざとダサくてクスッと笑えるような愛情表現の言葉。",
+            "why_now": "深圳公演の舞台で広東語の土味情话が使われ、現地の親しみやすさを演出した。",
+            "explain_quote_zh": "舞台融入粤语“土味情话”",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "必吃榜",
+            "gloss_ja": "必食リスト",
+            "what_is": "その土地で必ず食べるべきとされる料理や店のランキング。",
+            "why_now": "深圳公演の交流コーナーで深圳の必吃榜が話題になり、ファンとグルメの思い出を共有した。",
+            "explain_quote_zh": "关于深圳“必吃榜”的讨论",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "洛希极限",
+            "gloss_ja": "ロシュ限界",
+            "what_is": "天体が潮汐力によって破壊されずに近づける限界距離。",
+            "why_now": "成都公演の新曲「Galaxy Far Far Away」で、親密な関係における距離と抑制を探る比喩として使われた。",
+            "explain_quote_zh": "借“洛希极限”的宇宙意象",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
