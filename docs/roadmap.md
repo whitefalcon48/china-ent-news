@@ -1,5 +1,11 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-08-27 Actions定期実行復旧・スケジュール再発防止
+
+- ✅ `generate-news` は有効、Actions許可・既定ブランチ`main`も正常だったが、`0 1 * * *`の8月27日分はrun自体が作成されなかった。GitHub Actions障害の復旧直後かつ毎時0分の高負荷帯と重なったため、ジョブ内エラーではなくschedule dispatchの取りこぼしと診断した。
+- ✅ Actions `33048318438` を`main`・`run_date=2026-08-27`・`provider=deepseek`で手動実行。120記事取得、topic候補110件から複数ソースtopic 2件を選定し、最終2件を保存。レビューIssue #72を作成し、コミット`6475f6d`で日次データをmainへ保存した。`REVIEW_GATE=true`のため本番公開は未実施。
+- ✅ 再発防止として定期実行を`0 1 * * *`から`17 1 * * *`（上海時間09:17）へ変更し、毎時0分の高負荷帯を避けた。`npm run check`と`git diff --check`成功。
+
 ## 2026-08-23 実装・ローカル検証完了（Issue #63 必須再構成の限定修復）
 
 - ✅ PR #67 merge後のreview-apply run `32633725688`、Issue #63コメント、run後commit `9d0e459`、保存記事、限定patch prompt/validatorを照合。runは `a457bb9` をcheckoutし、記事JSONを変更せずfeedbackだけを追加してpendingへ戻し、公開系stepは全skipだった。ログにモデル返却JSONやartifactはないためrefs等の全容は復元不能だが、保存値bind後の `変更前後が同じです: why_it_matters` はモデルのafterが保存済み現在値と同文だったことを確定する。
