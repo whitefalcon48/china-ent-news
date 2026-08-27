@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-27",
+  "status": "pending",
+  "issue_number": 72,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "刘亦菲时尚芭莎封面",
+      "title": "刘亦菲：劉亦菲：劉亦菲、『時尚芭莎』9月号表紙で5年連続の快挙 愛犬と登場",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 2,
+      "topic_key": "梁朝伟刘嘉玲为上山诗钠庆生",
+      "title": "梁朝伟：梁朝偉：梁朝偉＆劉嘉玲、40年来の親友・上山詩鈉の62歳の誕生日を祝福 張学友とのレアな2ショットも",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
+}

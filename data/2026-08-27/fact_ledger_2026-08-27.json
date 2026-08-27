@@ -1,0 +1,959 @@
+{
+  "date": "2026-08-27",
+  "generated_at": "2026-08-27T07:10:07.244Z",
+  "ledgers": [
+    {
+      "topic_key": "刘亦菲时尚芭莎封面",
+      "ledger": {
+        "topic_key": "刘亦菲时尚芭莎封面",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "刘亦菲が2026年9月号の『時尚芭莎』の表紙を飾った。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲",
+              "时尚芭莎"
+            ],
+            "numbers": [
+              "2026年9月"
+            ],
+            "quote_zh": "刘亦菲时尚芭莎九月刊封面大片发布",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "表紙の撮影は2026年8月25日に公開された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "2026年8月25日"
+            ],
+            "quote_zh": "2026年08月25日 11:32",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "劉亦菲は愛犬とともに表紙に登場した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [],
+            "quote_zh": "刘亦菲携爱犬登时尚芭莎九月刊封面",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "劉亦菲は国際的なスーパーモデルとともに表紙に登場した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [],
+            "quote_zh": "携手一位国际超模",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "撮影は写真家の柳宗源が担当した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "柳宗源"
+            ],
+            "numbers": [],
+            "quote_zh": "摄影大师柳宗源亲力打造",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "劉亦菲は主要女性誌の9月号表紙を5年連続で飾った。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [
+              "5年"
+            ],
+            "quote_zh": "连续5年拿下五大女刊金九封",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙を12回飾った。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "刘亦菲",
+              "时尚芭莎"
+            ],
+            "numbers": [
+              "12回"
+            ],
+            "quote_zh": "十二度登封",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "表紙の衣装はBVLGARIとLouis Vuittonが提供した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "BVLGARI",
+              "Louis Vuitton"
+            ],
+            "numbers": [],
+            "quote_zh": "BVLGARI 、Louis Vuitton 两大品牌保驾护",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "この表紙は衛甜が『時尚芭莎』の編集長に就任してから初めての9月号である。",
+            "evidence_refs": [
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "卫甜",
+              "时尚芭莎"
+            ],
+            "numbers": [],
+            "quote_zh": "正式领衔拉开了卫甜代理《时尚芭莎》主编时代的序幕",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "表紙の公開日は劉亦菲の誕生日と同じ日である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [],
+            "quote_zh": "今天还是封面人物生日的意义时刻",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "表紙の予告は2026年8月23日に公開された。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "2026年8月23日"
+            ],
+            "quote_zh": "8月23日率先放出吊足胃口的预告",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "表紙の本編は2026年8月24日に公開された。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "2026年8月24日"
+            ],
+            "quote_zh": "8月24日完整封面大片正式上线",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙に愛犬の「哈哈」とともに登場した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲",
+              "哈哈"
+            ],
+            "numbers": [],
+            "quote_zh": "带着她心爱的爱犬“哈哈”一同出镜",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "この表紙は『時尚芭莎』の9月号史上初めて、犬とスーパーモデルが同時に登場したものである。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "时尚芭莎"
+            ],
+            "numbers": [],
+            "quote_zh": "完成了《芭莎》金九历史上前所未有的暖心同框",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙を飾ったことで、主要女性誌の9月号表紙を5年連続で制覇した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [
+              "5年"
+            ],
+            "quote_zh": "主流女刊金九五连冠",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙を飾ったことで、主要女性誌の9月号表紙を5年連続で制覇した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [
+              "5年"
+            ],
+            "quote_zh": "连续五年，她稳稳地占据了五大女刊里最具分量的九月刊封面",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙を飾ったことで、主要女性誌の9月号表紙を5年連続で制覇した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [
+              "5年"
+            ],
+            "quote_zh": "连续五年稳坐头把交椅",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙を飾ったことで、主要女性誌の9月号表紙を5年連続で制覇した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [
+              "5年"
+            ],
+            "quote_zh": "刘亦菲的金九五连冠",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙を飾ったことで、主要女性誌の9月号表紙を5年連続で制覇した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [
+              "5年"
+            ],
+            "quote_zh": "金九五连冠",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "劉亦菲は『時尚芭莎』の表紙を飾ったことで、主要女性誌の9月号表紙を5年連続で制覇した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "刘亦菲"
+            ],
+            "numbers": [
+              "5年"
+            ],
+            "quote_zh": "连续五年",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "金九",
+            "gloss_ja": "9月号",
+            "what_is": "ファッション誌で最も重要な9月号のこと。",
+            "why_now": "劉亦菲が主要誌の9月号表紙を5年連続で飾ったことが話題。",
+            "explain_quote_zh": "九月刊，在时尚杂志的世界里，就像皇冠上的明珠",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "五大女刊",
+            "gloss_ja": "五大女性誌",
+            "what_is": "中国の主要な女性ファッション誌5誌。",
+            "why_now": "劉亦菲がその9月号表紙を5年連続で制覇した。",
+            "explain_quote_zh": "五大女刊",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "主编",
+            "gloss_ja": "編集長",
+            "what_is": "雑誌の編集責任者。",
+            "why_now": "衛甜が『時尚芭莎』の編集長に就任し、初の9月号に劉亦菲を起用した。",
+            "explain_quote_zh": "卫甜代理《时尚芭莎》主编",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "五大女刊金九封",
+            "gloss_ja": "五大女性誌9月号表紙",
+            "what_is": "中国の主要女性ファッション誌5誌の9月号表紙。",
+            "why_now": "劉亦菲が5年連続で制覇した。",
+            "explain_quote_zh": "五大女刊金九封",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "金九五连冠",
+            "gloss_ja": "9月号5連覇",
+            "what_is": "主要女性誌の9月号表紙を5年連続で飾ること。",
+            "why_now": "劉亦菲が達成した記録。",
+            "explain_quote_zh": "金九五连冠",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "时尚芭莎",
+            "gloss_ja": "ハーパーズ バザー 中国版",
+            "what_is": "中国のファッション雑誌。",
+            "why_now": "劉亦菲が2026年9月号の表紙を飾った。",
+            "explain_quote_zh": "时尚芭莎",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "金九女郎",
+            "gloss_ja": "9月号の顔",
+            "what_is": "9月号の表紙を飾る人物。",
+            "why_now": "劉亦菲が『時尚芭莎』の9月号表紙に選ばれた。",
+            "explain_quote_zh": "金九女郎",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "梁朝伟刘嘉玲为上山诗钠庆生",
+      "ledger": {
+        "topic_key": "梁朝伟刘嘉玲为上山诗钠庆生",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "8月25日、劉嘉玲が梁朝偉を連れて、40年来の親友である上山詩鈉の62歳の誕生日を祝った。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "刘嘉玲",
+              "梁朝伟",
+              "上山诗钠"
+            ],
+            "numbers": [
+              "8月25日",
+              "62岁",
+              "40年"
+            ],
+            "quote_zh": "8月25日，刘嘉玲携梁朝伟为相识四十载的挚友上山诗钠庆祝62",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "誕生日パーティーには張学友、曾志偉、唐鶴徳、呉婉芳らが出席した。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "张学友",
+              "曾志伟",
+              "唐鹤德",
+              "吴婉芳"
+            ],
+            "numbers": [],
+            "quote_zh": "大合照中除了梁朝伟夫妇，还有张学友、曾志伟、吴婉芳以及哥哥张",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "梁朝偉と張学友は1991年のコメディ映画『阿飛與阿基』で共演した。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3"
+            ],
+            "entities": [
+              "梁朝伟",
+              "张学友",
+              "阿飞与阿基"
+            ],
+            "numbers": [
+              "1991年"
+            ],
+            "quote_zh": "尤其是梁朝伟与张学友这对1991年喜剧片《阿飞与阿基》的搭档",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "comic_mechanism",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "劉嘉玲はソーシャルメディアに集合写真を投稿し、「人生で最も幸せなことは、最も理解し合える人と一緒に優雅に老いていくこと。40年の情誼、すべては言葉にしなくても伝わる」と綴った。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "刘嘉玲"
+            ],
+            "numbers": [
+              "40年"
+            ],
+            "quote_zh": "刘嘉玲在社交平台晒出大合照，并感性发文：“人生最幸福的事，莫",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "上山詩鈉は80年代に活躍した香港の女優で、「九龍女」の一人であり、張智霖のいとこである。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "上山诗钠",
+              "九龙女",
+              "张智霖"
+            ],
+            "numbers": [
+              "80年代"
+            ],
+            "quote_zh": "但在80年代的港圈，她可是实打实的当红女星。作为资深演员曹查",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "上山詩鈉は90年代初めに芸能界を引退し、保険業界に転身した。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "上山诗钠"
+            ],
+            "numbers": [
+              "90年代初"
+            ],
+            "quote_zh": "90年代初息影后，她转投保险业",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "王菲は上山詩鈉を通じて娘の竇靖童のために高額の保険を購入した。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "王菲",
+              "上山诗钠",
+              "窦靖童"
+            ],
+            "numbers": [],
+            "quote_zh": "王菲曾通过她为女儿窦靖童购买高额保险",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "上山詩鈉は毎年誕生日に多くの香港芸能界のスターを集めており、「港圈活化石」と呼ばれている。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "上山诗钠"
+            ],
+            "numbers": [],
+            "quote_zh": "每次生日都吸引半个娱乐圈巨星到贺。从这次大合照的阵容来看，她",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "梁朝偉と張学友は『阿飛與阿基』で、それぞれ気弱な阿基と派手な阿飛を演じた。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "梁朝伟",
+              "张学友",
+              "阿飞与阿基"
+            ],
+            "numbers": [],
+            "quote_zh": "梁朝伟演怂包阿基，张学友演浮夸阿飞",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "梁朝偉と張学友は『阿飛與阿基』の後、『喋血街頭』『東邪西毒』でも共演した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "梁朝伟",
+              "张学友",
+              "喋血街头",
+              "东邪西毒"
+            ],
+            "numbers": [],
+            "quote_zh": "后来合作《喋血街头》《东邪西毒》",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2016年に張学友が北京でコンサートを開いた際、梁朝偉は誰にも知らせずに楽屋を訪れた。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "梁朝伟",
+              "张学友"
+            ],
+            "numbers": [
+              "2016年"
+            ],
+            "quote_zh": "2016年张学友北京开唱，梁朝伟悄悄溜后台，连助理都不知道",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "近年、張学友のコンサートツアーには梁朝偉と劉嘉玲がほぼ毎回足を運んでいる。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "梁朝伟",
+              "刘嘉玲",
+              "张学友"
+            ],
+            "numbers": [],
+            "quote_zh": "近年张学友巡演，梁朝伟和刘嘉玲几乎场场不落",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "上山詩鈉は梅艷芳から「詩鈉姐」、劉嘉玲から「Anna」と呼ばれている。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "上山诗钠",
+              "梅艳芳",
+              "刘嘉玲"
+            ],
+            "numbers": [],
+            "quote_zh": "梅艳芳叫她“诗钠姐”，刘嘉玲喊她“Anna”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "上山詩鈉は誕生日パーティーでホテルの個室を予約し、寿桃とケーキを用意して友人を待つ。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "上山诗钠"
+            ],
+            "numbers": [],
+            "quote_zh": "每年生日，她不办秀、不炒话题，就订个酒店包间，摆好寿桃和蛋糕",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "今回の集合写真では上山詩鈉が中央に座り、短い髪にヒョウ柄のパンツ、小麦色の肌だった。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "上山诗钠"
+            ],
+            "numbers": [],
+            "quote_zh": "这次合照里她坐在C位，短发利落、豹纹长裤配小麦肤色",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "張学友は帽子を脱ぎ、髪が乱れたままだった。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "张学友"
+            ],
+            "numbers": [],
+            "quote_zh": "张学友把帽子一摘，头发乱得像刚从录音棚出来",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "梁朝偉はシャツのボタンを一つ掛け違えており、劉嘉玲が笑いながら直してあげた。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "梁朝伟",
+              "刘嘉玲"
+            ],
+            "numbers": [],
+            "quote_zh": "梁朝伟衬衫扣子系错一颗，刘嘉玲笑着伸手帮他理",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "comic_mechanism",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "唐鶴徳は古い折りたたみ式携帯電話でケーキの写真を撮った。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "唐鹤德"
+            ],
+            "numbers": [],
+            "quote_zh": "唐鹤德掏出老式翻盖手机给蛋糕拍照",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "source_analysis",
+            "text": "新浪娯楽は、梁朝偉と張学友の同框が香港映画黄金時代の集団的記憶を呼び起こしたと分析している。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "梁朝伟",
+              "张学友"
+            ],
+            "numbers": [],
+            "quote_zh": "瞬间勾起港片黄金时代的集体回忆",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "source_analysis",
+            "text": "新浪娯楽は、梁朝偉と張学友の同框が香港映画の輝かしい時代の縮図を象徴していると評している。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "梁朝伟",
+              "张学友"
+            ],
+            "numbers": [],
+            "quote_zh": "更象征香港电影辉煌岁月的缩影",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "九龙女",
+            "gloss_ja": "九龍女",
+            "what_is": "80年代の香港で活躍した女性芸能人グループの呼称。",
+            "why_now": "上山詩鈉がその一員であり、彼女の経歴を説明するために言及される。",
+            "explain_quote_zh": "她与刘嘉玲、吴君如、曾华倩等同为“九龙女”成员",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "港圈活化石",
+            "gloss_ja": "香港芸能界の生きた化石",
+            "what_is": "長年にわたり香港芸能界の交友関係の中心にいる人物を指す表現。",
+            "why_now": "上山詩鈉が毎年誕生日に多くのスターを集めることから、この称号で呼ばれる。",
+            "explain_quote_zh": "她这个“港圈活化石”的称号，确实名不虚传",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "阿飞与阿基",
+            "gloss_ja": "『阿飛與阿基』",
+            "what_is": "1991年の香港コメディ映画。梁朝偉と張学友が主演。",
+            "why_now": "今回の誕生日会で二人が同框し、この作品が再び注目された。",
+            "explain_quote_zh": "尤其是梁朝伟与张学友这对1991年喜剧片《阿飞与阿基》的搭档",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
