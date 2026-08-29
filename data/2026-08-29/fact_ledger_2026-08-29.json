@@ -1,0 +1,424 @@
+{
+  "date": "2026-08-29",
+  "generated_at": "2026-08-29T07:57:48.067Z",
+  "ledgers": [
+    {
+      "topic_key": "AIGC长剧《后西游记》开播",
+      "ledger": {
+        "topic_key": "AIGC长剧《后西游记》开播",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国内首部AIGC长剧《后西游记》第一季“花果山篇”将于8月31日起上线芒果TV，并登陆湖南卫视黄金档，“剧好看”大屏点播专区同步首发。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "《后西游记》",
+              "芒果TV",
+              "湖南卫视",
+              "剧好看"
+            ],
+            "numbers": [
+              "8月31日"
+            ],
+            "quote_zh": "将于8月31日起上线芒果TV，并登陆湖南卫视黄金档，“剧好看",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "《后西游记》由芒果TV出品，芒果TV AIGC创新内容中心制作、伯璟文化承制。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "芒果TV",
+              "芒果TV AIGC创新内容中心",
+              "伯璟文化"
+            ],
+            "numbers": [],
+            "quote_zh": "由芒果TV出品，芒果TV AIGC创新内容中心制作、伯璟文化",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "该剧改编自明末清初匿名作者所著的同名神魔小说，第一季共30集，每集40分钟。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "《后西游记》"
+            ],
+            "numbers": [
+              "30集",
+              "40分钟"
+            ],
+            "quote_zh": "改编自明末清初匿名作者所著的同名神魔小说，第一季共30集，每",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "《后西游记》原著讲述了因世间众人误解真经，“西游二代”因缘际会再次集结取经的故事。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "《后西游记》"
+            ],
+            "numbers": [],
+            "quote_zh": "原著讲述了因世间众人误解真经，“西游二代”因缘际会再次集结取",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "剧集将四十回原书框架与《西游记》原著中的相关伏笔与线索深度融合、相互补充，构建出完整的“西游后传”叙事体系。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "《西游记》"
+            ],
+            "numbers": [
+              "四十回"
+            ],
+            "quote_zh": "将四十回原书框架与《西游记》原著中的相关伏笔与线索深度融合、",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "故事始于孙悟空封圣一千零八十年之后，当年取回的真经变得缺失、引人误读，诞生过齐天大圣的仙山再次诞生出一只小石猴（孙小圣）。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "孙悟空",
+              "孙小圣"
+            ],
+            "numbers": [
+              "一千零八十年"
+            ],
+            "quote_zh": "故事始于孙悟空封圣一千零八十年之后",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "曾在“生死簿”上被划掉过名字的“十长老”，竟在庆典上当众消失，花果山迎来重重危机。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "十长老",
+              "花果山"
+            ],
+            "numbers": [],
+            "quote_zh": "曾在“生死簿”上被划掉过名字的“十长老”，竟在庆典上当众消失",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "新一代猴王孙小圣追查“生死簿失效”的真相，历地府天宫诸劫，最终与唐半偈、猪一戒、沙弥等人结缘，踏上补取真经的二次西行之路。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "孙小圣",
+              "唐半偈",
+              "猪一戒",
+              "沙弥"
+            ],
+            "numbers": [],
+            "quote_zh": "追查“生死簿失效”的真相，历地府天宫诸劫，最终与唐半偈、猪一",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "《后西游记》在美术上追求有根脉的东方美学表达，创作团队从传统古画中汲取灵感，同时融合西方绘画的色彩与光影。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "《后西游记》"
+            ],
+            "numbers": [],
+            "quote_zh": "从传统古画中汲取灵感，同时融合西方绘画的色彩与光影",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "大到建筑形制的风格区分，小到人物服装的材质、配色与配饰记忆点，都经过反复打磨，团队还配备了专业历史顾问把关画面产出。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "大到建筑形制的风格区分，小到人物服装的材质、配色与配饰记忆点",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "本剧是“广电21条”发布后全国首部“边审边播”剧集，采取边制作、边审核、边播出的创新模式。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "广电21条"
+            ],
+            "numbers": [],
+            "quote_zh": "“广电21条”发布后全国首部“边审边播”剧集",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "边审边播模式既缩短了内容创作播出周期，也便于创作端根据审核意见、观众反馈，动态优化剧情细节。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "既缩短了内容创作播出周期，也便于创作端根据审核意见、观众反馈",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "依托吸纳观众合理建议的共创机制持续激活IP生命力，实现审查把关、创作迭代、观众共创的有机统一。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "依托吸纳观众合理建议的共创机制持续激活IP生命力",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "与上一辈“英雄远征”“降妖伏魔”的故事有些不同，这一次的《后西游记》更聚焦西游后辈们的成长与突破。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "《后西游记》"
+            ],
+            "numbers": [],
+            "quote_zh": "更聚焦西游后辈们的成长与突破",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "genre_contrast",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "从石头里蹦出来的孙小圣从懵懵懂懂到成为“下一代猴王”，他的成长是第一季“花果山篇”里最燃的主线。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "孙小圣",
+              "花果山篇"
+            ],
+            "numbers": [],
+            "quote_zh": "从懵懵懂懂到成为“下一代猴王”，他的成长无疑是第一季“花果山",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "这与当下隐隐呼应的世界观内核，让《后西游记》的故事本身与东方美学画风碰撞出更深、更重的感染力。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "《后西游记》"
+            ],
+            "numbers": [],
+            "quote_zh": "这与当下隐隐呼应的世界观内核",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "modern_life_bridge",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "从1927年的电影《盘丝洞》到1961年的彩色动画长片《大闹天宫》，再到86版电视剧《西游记》，“西游”IP是全民所爱。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "《盘丝洞》",
+              "《大闹天宫》",
+              "《西游记》"
+            ],
+            "numbers": [
+              "1927年",
+              "1961年",
+              "86版"
+            ],
+            "quote_zh": "从1927年的电影《盘丝洞》到1961年的彩色动画长片《大闹",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "adaptation_context",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "《后西游记》是“西游宇宙”的再更新，依托数百年来备受肯定的续书框架。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "《后西游记》"
+            ],
+            "numbers": [],
+            "quote_zh": "依托数百年来备受肯定的续书框架，对“西游宇宙”进行了再更新",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "AIGC",
+            "gloss_ja": "AI生成コンテンツ",
+            "what_is": "AIが生成するコンテンツ。",
+            "why_now": "本作が国内初のAIGC長編ドラマとされる。",
+            "explain_quote_zh": "国内首部AIGC长剧",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "边审边播",
+            "gloss_ja": "審査しながら放送",
+            "what_is": "制作・審査・放送を同時進行する方式。",
+            "why_now": "「広電21条」後初の採用例。",
+            "explain_quote_zh": "边制作、边审核、边播出",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "广电21条",
+            "gloss_ja": "広電21条",
+            "what_is": "中国の放送関連政策。",
+            "why_now": "本作がこの政策後初の「边审边播」作品。",
+            "explain_quote_zh": "“广电21条”发布后全国首部",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "西游宇宙",
+            "gloss_ja": "西遊記ユニバース",
+            "what_is": "西遊記IPを共有する作品群。",
+            "why_now": "本作がその更新と位置づけられる。",
+            "explain_quote_zh": "对“西游宇宙”进行了再更新",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
