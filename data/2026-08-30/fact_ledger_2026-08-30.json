@@ -1,0 +1,447 @@
+{
+  "date": "2026-08-30",
+  "generated_at": "2026-08-30T06:48:02.357Z",
+  "ledgers": [
+    {
+      "topic_key": "囧徒之预演告别",
+      "ledger": {
+        "topic_key": "囧徒之预演告别",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "电视剧《囧徒之预演告别》于8月31日18:00起在腾讯视频播出。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "囧徒之预演告别",
+              "腾讯视频"
+            ],
+            "numbers": [
+              "8月31日",
+              "18:00"
+            ],
+            "quote_zh": "将于8月31日18：00起在腾讯视频播出",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "该剧讲述了落魄作家方浩文在事业跌落谷底后策划“假自杀”直播骗局企图翻红，却意外遇见狂热书粉别凡搅局，两人开启荒诞冒险之旅的故事。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "方浩文",
+              "别凡"
+            ],
+            "numbers": [],
+            "quote_zh": "落魄作家方浩文（贾冰饰）在事业跌落谷底后，在他人怂恿下策划“",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "田嘉瑞与贾冰首次搭档出演喜剧作品。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "田嘉瑞",
+              "贾冰"
+            ],
+            "numbers": [],
+            "quote_zh": "田嘉瑞与贾冰首次搭档出演的喜剧作品",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "田嘉瑞突破以往角色形象，化身“蘑菇头”别凡。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "田嘉瑞",
+              "别凡"
+            ],
+            "numbers": [],
+            "quote_zh": "田嘉瑞更是突破以往角色形象，化身“蘑菇头”别凡",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "该剧集结了孔令美、闫佩伦等“喜人”阵容。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "孔令美",
+              "闫佩伦"
+            ],
+            "numbers": [],
+            "quote_zh": "该剧还集结了孔令美、闫佩伦等“喜人”阵容",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "孔令美饰演外冷内热的女企业家金芙蓉，闫佩伦饰演怂恿方浩文“用死亡换热度”的经纪人何嘉欢。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "孔令美",
+              "金芙蓉",
+              "闫佩伦",
+              "何嘉欢",
+              "方浩文"
+            ],
+            "numbers": [],
+            "quote_zh": "外冷内热的女企业家金芙蓉（孔令美饰）、怂恿方浩文“用死亡换热",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "剧集在“预演告别”荒诞叙事的背后，照见了都市小人物各自的生活困境与生存百态，并探讨流量与真实、表演与生活的错位和拉扯。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "照见了都市小人物各自的生活困境与生存百态，并进一步探讨流量与",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "该剧由徐峥担任总监制，是其从院线转型剧集的首部作品。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "徐峥"
+            ],
+            "numbers": [],
+            "quote_zh": "该剧由徐峥担任总监制，是其从院线转型剧集的首部作品",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "全剧共12集。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "12集"
+            ],
+            "quote_zh": "全剧12集",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "剧中融入了西游梗、古诗乱入等无厘头元素。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "剧中还融入了西游梗、古诗乱入等无厘头元素",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "该剧预约量破30万。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [
+              "30万"
+            ],
+            "quote_zh": "预约量破30万",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "田嘉瑞家包场1万座。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "田嘉瑞"
+            ],
+            "numbers": [
+              "1万座"
+            ],
+            "quote_zh": "田嘉瑞家包场1w座",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "新浪娱乐分析认为，该剧定档与导演包贝尔的负面舆情形成高度巧合，被网友戏称为“现实比剧情更抓马”。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "包贝尔"
+            ],
+            "numbers": [],
+            "quote_zh": "与现实中“新剧先冲出来挡枪”的操作形成高度巧合，被网友戏称为",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "新浪娱乐指出，多数网友认为这是资本与宣发团队的“止损”策略，定档海报刻意隐去导演名字是明显的“避险”信号。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "多数网友认为这是资本与宣发团队的“止损”策略……定档海报刻意",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "新浪娱乐提到，也有观点认为剧集宣发有固定排期，物料是提前规划好的，不一定是临时操作。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "也有观点认为剧集宣发有固定排期，物料是提前规划好的，不一定是",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "新浪娱乐称，部分观众因导演私德争议决定不买账，但也有不少人表示“作品和私德分开看”。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "部分观众因导演私德争议决定不买账，但也有不少人表示“作品和私",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "新浪娱乐评价该剧实力喜剧阵容，贾冰演活落魄作家的油腻与窘迫，田嘉瑞饰演热血中二的铁粉，两人对手戏笑点密集。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [
+              "贾冰",
+              "田嘉瑞"
+            ],
+            "numbers": [],
+            "quote_zh": "贾冰演活落魄作家的油腻与窘迫，田嘉瑞饰演热血中二的铁粉，两人",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "新浪娱乐认为该剧轻喜剧解压属性，适合作为消遣放松的选择。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "source_name": "新浪娱乐",
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "轻喜剧解压属性……适合作为消遣放松的选择",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "喜人",
+            "gloss_ja": "お笑い芸人",
+            "what_is": "「一年一度喜剧大赛」などに出演したコメディアン",
+            "why_now": "本作に孔令美、闫佩伦ら喜人が出演し、コメディの質を高めている",
+            "explain_quote_zh": "孔令美、闫佩伦等“喜人”阵容",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "一年一度喜剧大赛",
+            "gloss_ja": "年一回のコメディコンテスト",
+            "what_is": "中国のコメディアン発掘オーディション番組",
+            "why_now": "出演者の闫佩伦、孔令美がこの番組出身で、コメディの実力を保証",
+            "explain_quote_zh": "闫佩伦、孔令美等“一年一度喜剧大赛”熟面孔加盟",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "总监制",
+            "gloss_ja": "エグゼクティブプロデューサー",
+            "what_is": "作品全体の制作を統括する役職",
+            "why_now": "徐峥が本作で初めて劇集の总监制を務め、品質保証とされる",
+            "explain_quote_zh": "该剧由徐峥担任总监制，是其从院线转型剧集的首部作品",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "挡枪",
+            "gloss_ja": "盾になる、火消し役",
+            "what_is": "他人の不祥事から注意をそらすために使われること",
+            "why_now": "本作の定档が包贝尔のスキャンダル隠しと見る向きがある",
+            "explain_quote_zh": "新剧先冲出来挡枪",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "定档",
+            "gloss_ja": "公開日決定",
+            "what_is": "映画やドラマの公開・配信日が正式に決まること",
+            "why_now": "本作が8月31日配信と定档されたことがニュースの中心",
+            "explain_quote_zh": "《囧徒之预演告别》定档 8 月 31 日",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "独播",
+            "gloss_ja": "独占配信",
+            "explain_evidence_refs": []
+          },
+          {
+            "term": "预约量",
+            "gloss_ja": "予約数",
+            "what_is": "配信前にユーザーが視聴予約した数",
+            "why_now": "本作の予約数が30万を突破し、期待の高さを示す",
+            "explain_quote_zh": "预约量破30万",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "包场",
+            "gloss_ja": "貸切",
+            "what_is": "ファンが座席を買い占めて応援すること",
+            "why_now": "田嘉瑞のファンが1万席を包场し、応援の規模を示す",
+            "explain_quote_zh": "田嘉瑞家包场1w座",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_or_primary_data_source"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
