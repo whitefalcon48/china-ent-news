@@ -1,0 +1,833 @@
+{
+  "date": "2026-08-31",
+  "generated_at": "2026-08-31T07:08:47.091Z",
+  "ledgers": [
+    {
+      "topic_key": "AIGC赋能新未来产业沙龙",
+      "ledger": {
+        "topic_key": "AIGC赋能新未来产业沙龙",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "「影旅共生・智啓新篇 AIGC賦能新未来産業サロン」が8月26日に長春国際影都金色大庁で開催された。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "影旅共生・智啓新篇 AIGC賦能新未来産業サロン",
+              "長春国際影都金色大庁"
+            ],
+            "numbers": [
+              "8月26日"
+            ],
+            "quote_zh": "8月26日，影旅共生·AIGC赋能新未来产业沙龙在长春国际影",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "サロンは東北師範大学伝媒科学学院（新聞学院）副院長の徐鵬が司会を務めた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "東北師範大学伝媒科学学院（新聞学院）",
+              "徐鵬"
+            ],
+            "numbers": [],
+            "quote_zh": "沙龙由东北师范大学传媒科学学院（新闻学院）副院长徐鹏主持",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "サロンではAIGCによる映像創作、デジタルコンテンツ革新、新型エコシステム視聴産業の育成という核心議題をめぐって議論が行われた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "围绕AIGC赋能影像创作、数字内容创新、新型生态视听产业培育",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "北京師範大学芸術与伝媒学院副院長の楊乗虎は、AIGCが文学・視覚・映画などの産業応用でコスト削減と効率向上をもたらす一方、版権の空白や審美記号のずれといったガバナンス課題も生むと指摘した。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "北京師範大学芸術与伝媒学院",
+              "楊乗虎",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "在文学、视觉和影视等具体产业应用中，AIGC虽能显著降本增效",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "楊乗虎は、創作者が主導権をしっかり握り、AIを訓練・定義し、技術と協力して「良い創作とは何か」を共同定義すべきだと強調した。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "楊乗虎",
+              "AI"
+            ],
+            "numbers": [],
+            "quote_zh": "创作者应该牢牢把握主动权，训练和定义AI，与技术合作共同定义",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "B站AIGC業界協力運営総監の王輝（灰大）は、AIGCが映画創作に入った後、創作者が直面する核心問題は技術力の強化ではなく、創作の主導権がアルゴリズムの「ブラックボックス」に奪われる可能性だと述べた。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "B站",
+              "王輝",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "创作者面临的核心问题并非技术能力的增强，而是创作主动权可能被",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "王輝は、効果的な制御メカニズムがなければ、創作者は「ブラインドボックスを引く」ような創作状態に陥る可能性があると指摘した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "王輝"
+            ],
+            "numbers": [],
+            "quote_zh": "若缺乏有效的控制机制，创作者可能陷入“抽盲盒”式的创作状态",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "王輝は、創作者がレンズ・プロット・表現の主導権を堅持してこそ、AIは真に映像創作に奉仕するツールになると強調した。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "王輝",
+              "AI"
+            ],
+            "numbers": [],
+            "quote_zh": "只有坚持创作者对镜头、剧情与表达的主导，AI才能真正成为服务",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "吉林省東北亜新メディア有限公司の姜程甦は、吉林省AI+視聴企業連盟が省級AIGCエコ視聴産業パークを構築する進展について、実体キャリアと安全保障、IP発掘と東北師大産学研協力、全チェーン協同とプロジェクト着地の3方面から紹介した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "吉林省東北亜新メディア有限公司",
+              "姜程甦",
+              "吉林省AI+視聴企業連盟",
+              "AIGCエコ視聴産業パーク",
+              "東北師大"
+            ],
+            "numbers": [],
+            "quote_zh": "他从实体载体与安全保障、IP发掘与东北师大产学研合作、全链条",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "北京電影学院導演系教授の喬梁、長影集団一級導演の成科、上海大学上海電影学院教授の何小青、中国伝媒大学戯劇影視学院教授の范小青、脚本家・作家の袁子弾、吉林工程技術師範学院現代伝播研究院院長の周剛、長春人文学院高校影視芸術教育研究センター主任の関大我らが、自身の創作実践と映画研究からAIGCの映画創作への応用などについて発言した。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "喬梁",
+              "成科",
+              "何小青",
+              "范小青",
+              "袁子弾",
+              "周剛",
+              "関大我",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "北京电影学院导演系教授乔梁，长影集团一级导演成科，上海大学上",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "東北師範大学伝媒科学学院（新聞学院）院長の史冊は、今回のサロンが学界・業界・創作端の効率的な交流対接プラットフォームを構築し、AIGCデジタル技術と映画文旅産業の融合障壁をさらに打ち破り、地域がデジタル科学技術で映画資源を活性化し新型デジタル文化産業を育成するための理論的支えと実践的指針を提供したと述べた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "東北師範大学伝媒科学学院（新聞学院）",
+              "史冊",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "此次沙龙的成功举办，有效搭建起学界、业界、创作端的高效交流对",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "サロンは「AI+映画+文旅」のクロスオーバーイノベーションに焦点を当て、学界専門家と業界リーダーが集まり、映画産業のデジタル化転換と吉林地域文化IPの革新的発展のために新たな思考と新たな動力を結集した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "AI",
+              "吉林地域文化IP"
+            ],
+            "numbers": [],
+            "quote_zh": "沙龙聚焦“AI+影视+文旅”跨界创新，汇聚学界专家、行业大咖",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "楊乗虎は「AIGC視聴文芸創新の観察と思考」と題した基調講演を行った。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "楊乗虎",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "北京师范大学艺术与传媒学院副院长杨乘虎做了题为《AIGC视听",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "王輝の講演タイトルは「AIはツール、創作は人に帰属：AIGC文脈におけるレンズ表現の主権」だった。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "王輝",
+              "AI",
+              "AIGC"
+            ],
+            "numbers": [],
+            "quote_zh": "B站AIGC行业合作运营总监王辉（灰大）发言题目是《AI是工",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "王輝は、プリセットメカニズムの設計はAIをより「賢く」するためではなく、創作者がAIへの効果的な制御を確立し、人が能動的に技術を選択・駆使できるようにするためだと述べた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "王輝",
+              "AI"
+            ],
+            "numbers": [],
+            "quote_zh": "他认为预设机制的设计不是让AI变得更“聪明”，而是帮助创作者",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "姜程甦の講演タイトルは「産業力を結集し、上流下流のリンクを打通：吉林省AI+視聴企業連盟が省級AIGCエコ視聴産業パークを構築」だった。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "姜程甦",
+              "吉林省AI+視聴企業連盟",
+              "AIGCエコ視聴産業パーク"
+            ],
+            "numbers": [],
+            "quote_zh": "吉林省东北亚新媒体有限公司姜程甦围绕《聚合产业力量，打通上下",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "AIGC",
+            "gloss_ja": "AI生成コンテンツ",
+            "what_is": "AIが生成するコンテンツ。",
+            "why_now": "映画産業との融合が進み、創作の主導権や版権などの課題が議論されている。",
+            "explain_quote_zh": "AIGC技术与影视产业深度融合",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "影旅共生",
+            "gloss_ja": "映画と旅行の共生",
+            "what_is": "映画と旅行産業の融合を指す。",
+            "why_now": "サロンのテーマとして掲げられ、AIGCによる映画文旅産業の融合が目指されている。",
+            "explain_quote_zh": "影旅共生·AIGC赋能新未来产业沙龙",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "抽盲盒",
+            "gloss_ja": "ブラインドボックスを引く",
+            "what_is": "結果が予測できない状態。",
+            "why_now": "AIGCの制御メカニズム欠如による創作状態を表現。",
+            "explain_quote_zh": "创作者可能陷入“抽盲盒”式的创作状态",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "罗密欧+茱丽叶",
+      "ledger": {
+        "topic_key": "罗密欧+茱丽叶",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "芭蕾舞剧《罗密欧+茱丽叶》将故事背景移植到20世纪60年代的香港，罗密欧与茱丽叶是当地两大对立显赫家族的后代。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "罗密欧+茱丽叶",
+              "香港",
+              "罗密欧",
+              "茱丽叶"
+            ],
+            "numbers": [
+              "20世纪60年代"
+            ],
+            "quote_zh": "故事的背景被巧妙地移植到了20世纪60年代的香港",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "原作中的神父形象被改编成罗密欧的武术师傅，将香港功夫融入舞剧，实现芭蕾与武术的融合。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "罗密欧",
+              "香港功夫"
+            ],
+            "numbers": [],
+            "quote_zh": "原作中的神父形象被改编成了罗密欧的武术师傅",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "上流社会的舞会场面设置在金龙装饰盘绕的宴会大厅内，长衫与西装、旗袍与洋装交替登场。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "金龙",
+              "长衫",
+              "西装",
+              "旗袍",
+              "洋装"
+            ],
+            "numbers": [],
+            "quote_zh": "上流社会华丽的舞会场面，被设置在金龙装饰盘绕的宴会大厅内",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "genre_contrast",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "该剧服装多达280余件，舞台布景有21幕。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "280余件",
+              "21幕"
+            ],
+            "quote_zh": "服装在剧中共有多达280余件，配合21幕逼真的舞台布景",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "电影片场里诙谐的摄制过程和打麻将场景以艺术化的舞蹈语汇呈现于舞台之上。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "电影片场",
+              "打麻将"
+            ],
+            "numbers": [],
+            "quote_zh": "电影片场里诙谐的摄制过程、一排排方桌边热闹的打麻将场景",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "comic_mechanism",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "著名的“阳台双人舞”被赋予新魅力，由陈镇威和叶飞飞搭档演绎。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "阳台双人舞",
+              "陈镇威",
+              "叶飞飞"
+            ],
+            "numbers": [],
+            "quote_zh": "故事中最为著名的“阳台双人舞”也在这个版本中被赋予了崭新的魅",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "编舞设计融入中式庭院勾栏和香港特色竹棚架，大量托举、旋转、抛接等技巧被自然融入舞蹈。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "中式庭院",
+              "竹棚架"
+            ],
+            "numbers": [],
+            "quote_zh": "中式庭院的勾栏间，带着香港特色的竹棚架掩映其中",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "寺庙内秘密结婚仪式后家族仇杀再起，逼婚胁迫接踵而至，最终因误会双双殉情。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "寺庙"
+            ],
+            "numbers": [],
+            "quote_zh": "寺庙内秘密的结婚仪式才刚举行，家族间的仇杀又起风波",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "本次演出得到香港特别行政区政府驻北京办事处的大力支持，香港驻京办主任姚继卓出席首演并致辞。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "香港特别行政区政府驻北京办事处",
+              "姚继卓"
+            ],
+            "numbers": [],
+            "quote_zh": "本次演出也得到了香港特别行政区政府驻北京办事处（香港驻京办）",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "source_analysis",
+            "text": "香港驻京办主任姚继卓表示，这部作品最大的亮点在于香港芭蕾舞团的本土化、时代化改编。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "姚继卓",
+              "香港芭蕾舞团"
+            ],
+            "numbers": [],
+            "quote_zh": "这部作品最大的亮点在于香港芭蕾舞团的本土化、时代化改编",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "source_analysis",
+            "text": "港芭总监卫承天表示，香港长期以来是中西文化交汇的重要平台，该剧正是文化交融精神的体现。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "卫承天",
+              "香港"
+            ],
+            "numbers": [],
+            "quote_zh": "香港长期以来都是中西文化交汇的重要平台",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "该剧将于9月11日至12日在成都高新中演大剧院演出，作为“香港周2026@成都”的重点节目之一。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "成都高新中演大剧院",
+              "香港周2026@成都"
+            ],
+            "numbers": [
+              "9月11日至12日"
+            ],
+            "quote_zh": "该剧还将于9月11日至12日在成都高新中演大剧院演出",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "香港芭蕾舞团原创芭蕾舞剧《罗密欧+茱丽叶》于8月30日在国家大剧院落下帷幕。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "香港芭蕾舞团",
+              "罗密欧+茱丽叶",
+              "国家大剧院"
+            ],
+            "numbers": [
+              "8月30日"
+            ],
+            "quote_zh": "8月30日，香港芭蕾舞团原创芭蕾舞剧《罗密欧+茱丽叶》在国家",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "该剧出自港芭艺术总监卫承天之手。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "卫承天"
+            ],
+            "numbers": [],
+            "quote_zh": "该剧出自港芭艺术总监卫承天之手",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "客座主演陈镇威以蓝白相间的网球衫和休闲裤造型登场，展现时髦青年形象。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "陈镇威"
+            ],
+            "numbers": [],
+            "quote_zh": "蓝白相间的网球衫、剪裁合身的休闲裤",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "陈镇威展示轻盈跳跃、稳健旋转等高难舞蹈动作，点燃观众热情。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "陈镇威"
+            ],
+            "numbers": [],
+            "quote_zh": "轻盈的跳跃、稳健的旋转等一连串高难舞蹈动作",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "两大家族街头械斗场面兼具力量与动感，拳脚棍棒比拼中不失舞蹈身韵与律动。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "两大家族几番街头械斗的场面可谓兼具了力量与动感",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "港芭行政总监李易璇感谢香港驻京办、香港文化体育及旅游局和国家大剧院的支持合作。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "李易璇",
+              "香港驻京办",
+              "香港文化体育及旅游局",
+              "国家大剧院"
+            ],
+            "numbers": [],
+            "quote_zh": "衷心感谢香港驻京办、香港文化体育及旅游局的大力支持和国家大剧",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "这是港芭第二次在国家大剧院上演艺术总监卫承天的作品。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "港芭",
+              "国家大剧院",
+              "卫承天"
+            ],
+            "numbers": [
+              "第二次"
+            ],
+            "quote_zh": "让港芭第二次在国家大剧院上演艺术总监卫承天的作品",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "该剧在北京的演出为期两天。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "两天"
+            ],
+            "quote_zh": "在短短两天演出时间里",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "港风",
+            "gloss_ja": "香港風",
+            "what_is": "香港の雰囲気やスタイルを指す言葉。",
+            "why_now": "本作が香港を舞台にした翻案であり、香港らしさが強調されているため。",
+            "explain_quote_zh": "浓郁港风重塑莎翁悲剧",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "港芭",
+            "gloss_ja": "香港バレエ団",
+            "what_is": "香港芭蕾舞团の略称。",
+            "why_now": "本作の制作・上演団体であり、芸術監督の衛承天が編舞を担当。",
+            "explain_quote_zh": "港芭艺术总监卫承天",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "香港周2026@成都",
+            "gloss_ja": "香港ウィーク2026@成都",
+            "what_is": "成都で開催される香港関連の文化イベント。",
+            "why_now": "本作がその重点プログラムの一つとして成都で上演される。",
+            "explain_quote_zh": "作为“香港周2026@成都”的重点节目之一",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}

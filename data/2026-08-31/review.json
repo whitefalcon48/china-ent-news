@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-31",
+  "status": "pending",
+  "issue_number": 77,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "AIGC赋能新未来产业沙龙",
+      "title": "AIGCと映画・文旅の融合を議論 長春で「影旅共生・智啓新篇」サロン開催",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 2,
+      "topic_key": "罗密欧+茱丽叶",
+      "title": "香港バレエ団『ロミオ+ジュリエット』、60年代香港を舞台にした濃厚な香港風リメイクで北京公演が閉幕",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
+}
