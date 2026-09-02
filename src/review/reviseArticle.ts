@@ -6,6 +6,7 @@ import { createLlmCallBudget, hasLlmBudgetRemaining, LlmCallBudgetExceededError,
 import { generateLimitedReviewPatch, reviseTopicFromSavedData } from "../summarizeWithGemini.js";
 import { getToneMode } from "../toneMode.js";
 import { applyLightweightWhyItMattersEdit } from "./lightweightWhyItMattersEdit.js";
+import { rebuildReviewEvidence } from "./reviewEvidence.js";
 import {
   applyValidatedReviewPatch,
   buildFullRewriteTrace,
@@ -16,7 +17,7 @@ import {
   tryApplyDeterministicTerminologyReplacement,
   type ReviewFieldRewriteRepairFeedback
 } from "./revisionPatch.js";
-import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, ReviewPatchDocument, ReviewPatchOperation, ReviewReasonTag, ReviewRevisionIntent, SummarizedArticle, TopicCandidate } from "../types.js";
+import type { ClaimCheckResult, FactLedger, ProcessedArticle, ReviewPatchDocument, ReviewPatchOperation, ReviewReasonTag, ReviewRevisionIntent, SummarizedArticle, TopicCandidate } from "../types.js";
 
 export const LIMITED_REVIEW_MAX_LLM_CALLS = 2;
 
@@ -123,7 +124,7 @@ export async function reviseStoredArticle(directory: string, index: number, comm
     await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
     return articles[index - 1];
   }
-  const evidence = rebuildEvidence(article);
+  const evidence = await rebuildReviewEvidence(article);
   const revised = await reviseTopicFromSavedData(article.topic, evidence, ledger, comment, undefined, undefined, article.summary, false);
   articles[index - 1] = {
     ...article,
@@ -281,22 +282,4 @@ export async function findLedger(directory: string, topicKey: string): Promise<F
   if (!ledgerFile) return null;
   const stored = JSON.parse(await fs.readFile(path.join(directory, ledgerFile), "utf8")) as { ledgers?: Array<{ topic_key: string; ledger: FactLedger | null }> };
   return stored.ledgers?.find((item) => item.topic_key === topicKey)?.ledger || null;
-}
-
-function rebuildEvidence(article: ProcessedArticle): RawArticle[] {
-  const topic = article.topic as TopicCandidate;
-  if (!topic.evidence_articles.length) return [article.raw];
-  return topic.evidence_articles.map((item, position) => position === 0 ? article.raw : ({
-    title: item.title,
-    url: item.url,
-    sourceName: item.source_name,
-    sourceUrl: item.url,
-    category: article.raw.category,
-    reliability: item.reliability,
-    sourceType: item.source_type,
-    publishedDate: item.published_date,
-    freshnessLabel: item.freshness_label,
-    articleType: item.article_type,
-    excerpt: item.key_points.join("。")
-  }));
 }

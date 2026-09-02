@@ -4,8 +4,9 @@ import { extractDocumentSnapshot } from "./evidence/documentSnapshot.js";
 import { normalizeMediaFamily } from "./evidence/mediaFamily.js";
 import { attachExpansionEvidence, isCurrentRelatedAngle } from "./expandSources.js";
 import { enrichArticlesContent } from "./fetchSources.js";
+import { rebuildReviewEvidence } from "./review/reviewEvidence.js";
 import { buildTopicCandidates } from "./topicCandidates.js";
-import type { RawArticle, TopicCandidate } from "./types.js";
+import type { ProcessedArticle, RawArticle, TopicCandidate } from "./types.js";
 
 const delayTopic = topic({
   title_hint: "群星闪耀时撤档延期",
@@ -102,6 +103,38 @@ assert.deepEqual(contentRequests.sort(), [
 ], "代表記事だけでなく、選択済みの全evidence本文を取得する");
 assert.match(hydratedEvidence[1]?.rawContent ?? "", /title-meaning/u, "非代表記事の本文も生成入力へ残す");
 
+const archivedRepresentative = {
+  ...rawArticle("代表媒体", "https://example.com/representative"),
+  rawContent: "保存済みの代表記事本文",
+  rawContentLength: 11
+};
+const reviewArticle: ProcessedArticle = {
+  raw: archivedRepresentative,
+  topic: topic({
+    evidence_articles: [
+      evidenceArticle("https://example.com/data"),
+      evidenceArticle(archivedRepresentative.url),
+      evidenceArticle("https://example.com/title-meaning")
+    ]
+  })
+};
+const reviewFetches: string[] = [];
+const reviewEvidence = await rebuildReviewEvidence(reviewArticle, async (article) => {
+  reviewFetches.push(article.url);
+  return { ...article, rawContent: `review-full:${article.url}`, rawContentLength: article.url.length + 12 };
+});
+assert.deepEqual(reviewEvidence.map((item) => item.url), [
+  "https://example.com/data",
+  "https://example.com/representative",
+  "https://example.com/title-meaning"
+], "review再生成でもtopic evidenceの順序とURL対応を保つ");
+assert.deepEqual(reviewFetches, [
+  "https://example.com/data",
+  "https://example.com/title-meaning"
+], "保存済み本文は保持し、不足している関連記事本文だけを再取得する");
+assert.equal(reviewEvidence[1]?.rawContent, archivedRepresentative.rawContent, "保存済み代表記事をposition 0へ誤配置しない");
+assert.match(reviewEvidence[2]?.rawContent ?? "", /title-meaning/u, "2番だけのreview再生成でも種明かし記事本文を取得する");
+
 console.log("evidence expansion checks passed");
 
 function topic(overrides: Partial<TopicCandidate>): TopicCandidate {
@@ -145,5 +178,19 @@ function rawArticle(sourceName: string, url: string): RawArticle {
     topicKey: "成毅短劇ミーム",
     excerpt: "成毅の短劇ミームがファンの間で話題になっている。",
     newsworthinessScore: 72
+  };
+}
+
+function evidenceArticle(url: string): TopicCandidate["evidence_articles"][number] {
+  return {
+    title: `evidence:${url}`,
+    url,
+    source_name: "fixture",
+    source_type: "media_report",
+    published_date: "2026-09-01",
+    freshness_label: "yesterday",
+    article_type: "unknown",
+    reliability: "B",
+    key_points: [`headline:${url}`]
   };
 }
