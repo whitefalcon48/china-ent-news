@@ -53,13 +53,19 @@ export function buildBingtangHook(value: string | undefined, maxWeight: number) 
   return `${prefix}${truncateToWeight(sentence, contentWeight)}${suffix}`;
 }
 
-export function buildDailyDigest(dateValue: string, articles: ProcessedArticle[], siteUrl: string, basePath = "") {
-  const [, month, day] = dateValue.match(/^\d{4}-(\d{2})-(\d{2})$/) || [];
-  if (!month || !day) throw new Error(`X投稿日が不正です: ${dateValue}`);
+/**
+ * displayDate is the actual release date shown to readers.  archiveDate stays
+ * separate so delayed articles always link to their immutable generation-day
+ * archive.
+ */
+export function buildDailyDigest(displayDate: string, articles: ProcessedArticle[], siteUrl: string, basePath = "", archiveDate = displayDate) {
+  const [, month, day] = displayDate.match(/^\d{4}-(\d{2})-(\d{2})$/) || [];
+  if (!month || !day) throw new Error(`X投稿日が不正です: ${displayDate}`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(archiveDate)) throw new Error(`Xアーカイブ日が不正です: ${archiveDate}`);
   const normalizedSiteUrl = siteUrl.replace(/\/$/u, "");
   const normalizedBasePath = basePath && basePath !== "/" ? `/${basePath.replace(/^\/+|\/+$/gu, "")}` : "";
   const header = `🧊 今日の中国エンタメ｜${Number(month)}/${Number(day)}`;
-  const url = `${normalizedSiteUrl}${normalizedBasePath}/archive/${dateValue}/`;
+  const url = `${normalizedSiteUrl}${normalizedBasePath}/archive/${archiveDate}/`;
   const footer = `ほか全${articles.length}本👇\n${url}`;
   const hook = buildBingtangHook(articles[0]?.summary?.why_it_matters, 76);
   const fixedLength = xWeightedLength(`${header}\n${hook ? `${hook}\n` : ""}\n${footer}`);

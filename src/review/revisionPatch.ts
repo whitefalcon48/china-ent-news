@@ -172,8 +172,7 @@ export function tryApplyDeterministicTerminologyReplacement(
   intent: ReviewRevisionIntent
 ): { summary: SummarizedArticle; trace: ReviewRevisionTrace } | null {
   if (
-    reasonTag !== "用語"
-    || intent.mode !== "limited_patch"
+    intent.mode !== "limited_patch"
     || intent.required_replacements.length === 0
     || intent.required_field_rewrites.length > 0
     || !isOnlyLiteralReplacementInstruction(instruction)
@@ -210,7 +209,14 @@ export function tryApplyDeterministicTerminologyReplacement(
 
 function isOnlyLiteralReplacementInstruction(instruction: string) {
   const remainder = normalizeHtmlEncodedArrows(instruction)
+    // Human-facing labels are not extra edits.  They are common in a natural
+    // numbered request such as "作品名は A → B".
+    .replace(/(?:作品名|タイトル|用語)(?:は|を)?/gu, "")
     .replace(LITERAL_ARROW_REPLACEMENT, "")
+    // These are execution words, not a second creative instruction.  Keep
+    // this list deliberately closed so additions/rephrasing still become a
+    // proposal instead of a silent partial edit.
+    .replace(/(?:に|へ)(?:直して|修正して|変更して|統一して)ください/gu, "")
     .replace(/[\s、。．,，；;！？!?]/gu, "");
   return remainder.length === 0;
 }

@@ -7,6 +7,7 @@ import { generateLimitedReviewPatch, reviseTopicFromSavedData } from "../summari
 import { getToneMode } from "../toneMode.js";
 import { applyLightweightWhyItMattersEdit } from "./lightweightWhyItMattersEdit.js";
 import { rebuildReviewEvidence } from "./reviewEvidence.js";
+import { extractFactLedger } from "../factLedger.js";
 import {
   applyValidatedReviewPatch,
   buildFullRewriteTrace,
@@ -25,6 +26,10 @@ export type LimitedReviewPatchGenerator = (
   budget: LlmCallBudget,
   repairFeedback?: ReviewFieldRewriteRepairFeedback
 ) => Promise<ReviewPatchDocument>;
+
+export type PreparedReviewRevision =
+  | { kind: "immediate"; article: ProcessedArticle; trace: import("../types.js").ReviewRevisionTrace; summary: string; evidenceUrls: string[] }
+  | { kind: "proposal"; article: ProcessedArticle; mode: "limited_patch" | "full_rewrite"; trace: import("../types.js").ReviewRevisionTrace; summary: string; evidenceUrls: string[] };
 
 export async function reviseStoredArticle(directory: string, index: number, comment: string, reasonTag: ReviewReasonTag | string = "その他") {
   const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
@@ -133,6 +138,121 @@ export async function reviseStoredArticle(directory: string, index: number, comm
   };
   await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
   return articles[index - 1];
+}
+
+/**
+ * Build a safe candidate without touching articles JSON.  The caller decides
+ * whether it becomes a proposal or (for a purely explicit terminology
+ * replacement) an immediate reversible edit.
+ */
+export async function prepareStoredArticleRevision(
+  directory: string,
+  index: number,
+  comment: string,
+  reasonTag: ReviewReasonTag | string = "その他"
+): Promise<PreparedReviewRevision> {
+  const loaded = await loadStoredArticle(directory, index);
+  const { article } = loaded;
+  if (!article.topic || !article.summary) throw new ReviewRevisionClarificationRequiredError("元の記事を確認できないため、修正案を作れませんでした");
+  const before = article.summary;
+  const intent = detectReviewRevisionIntent(before, comment, reasonTag);
+  if (intent.mode === "clarification_required") throw new ReviewRevisionClarificationRequiredError(intent.clarification_reason);
+  const savedLedger = await findLedger(directory, article.topic.topic_key);
+  const deterministic = tryApplyDeterministicTerminologyReplacement(before, comment, reasonTag, intent);
+  if (deterministic) {
+    const revised = decorateRevision(article, deterministic.summary, deterministic.trace, savedLedger, "review_deterministic_terminology_edit", false);
+    return { kind: "immediate", article: revised, trace: deterministic.trace, summary: "明示された用語を置換", evidenceUrls: evidenceUrls(revised) };
+  }
+
+  const ledger = savedLedger || await rebuildLedgerForReview(article);
+  if (!ledger) {
+    throw new ReviewRevisionClarificationRequiredError("追加内容の根拠を確認できなかったため、元の記事は変更していません。確認したい資料または正しい内容を教えてください。");
+  }
+  if (intent.mode === "limited_patch") {
+    const lightweight = tryApplyLightweightWhyItMattersEdit(before, article.topic, ledger, comment);
+    if (lightweight) {
+      const patch = minimalWhyItMattersPatch(before.why_it_matters, lightweight.summary.why_it_matters);
+      const trace = buildReviewRevisionTrace(before, lightweight.summary, [patch], intent, comment);
+      const revised = decorateRevision(article, lightweight.summary, trace, ledger, "review_literal_edit", false, lightweight.claimCheck);
+      return { kind: "proposal", article: revised, mode: "limited_patch", trace, summary: "指定された一意の文言を限定編集", evidenceUrls: evidenceUrls(revised) };
+    }
+    const patched = await generateAndApplyLimitedReviewPatch(before, article.topic, ledger, comment, reasonTag, intent);
+    const revised = decorateRevision(article, patched.summary, patched.trace, ledger, patched.generationAttempts > 1 ? "review_limited_patch_repair" : "review_limited_patch", patched.generationAttempts > 1, patched.claimCheck);
+    return { kind: "proposal", article: revised, mode: "limited_patch", trace: patched.trace, summary: "指定された箇所の修正案", evidenceUrls: evidenceUrls(revised) };
+  }
+  const evidence = await rebuildReviewEvidence(article);
+  const rewritten = await reviseTopicFromSavedData(article.topic, evidence, ledger, comment, undefined, undefined, before, false);
+  const trace = buildFullRewriteTrace(before, rewritten.summary);
+  const revised: ProcessedArticle = {
+    ...article,
+    summary: rewritten.summary,
+    generationMeta: { ...rewritten.meta, review_revision: trace }
+  };
+  return { kind: "proposal", article: revised, mode: "full_rewrite", trace, summary: "全面リライトの修正案", evidenceUrls: evidenceUrls(revised) };
+}
+
+async function loadStoredArticle(directory: string, index: number) {
+  const articleFile = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
+  if (!articleFile) throw new Error(`articles JSON not found: ${directory}`);
+  const articlePath = path.join(directory, articleFile);
+  const articles = JSON.parse(await fs.readFile(articlePath, "utf8")) as ProcessedArticle[];
+  const article = articles[index - 1];
+  if (!article) throw new Error(`article not found: ${index}`);
+  return { articlePath, articles, article };
+}
+
+async function rebuildLedgerForReview(article: ProcessedArticle): Promise<FactLedger | null> {
+  if (!article.topic) return null;
+  try {
+    const evidence = await rebuildReviewEvidence(article);
+    const provider = process.env.AI_PROVIDER === "gemini" ? "gemini" : "deepseek";
+    const extracted = await extractFactLedger(article.topic, evidence, provider);
+    return extracted.succeeded ? extracted.ledger || null : null;
+  } catch {
+    return null;
+  }
+}
+
+function decorateRevision(
+  article: ProcessedArticle,
+  summary: SummarizedArticle,
+  trace: import("../types.js").ReviewRevisionTrace,
+  ledger: FactLedger | null,
+  fallbackReason: string,
+  regenerated: boolean,
+  claimCheck?: ClaimCheckResult
+): ProcessedArticle {
+  return {
+    ...article,
+    summary,
+    generationMeta: {
+      ...article.generationMeta,
+      topic_key: article.generationMeta?.topic_key ?? article.topic?.topic_key ?? "",
+      ledger_used: article.generationMeta?.ledger_used ?? Boolean(ledger),
+      ledger_fallback_reason: article.generationMeta?.ledger_fallback_reason ?? (ledger ? "" : "review_saved_ledger_missing"),
+      ...(ledger ? { ledger } : {}),
+      display_normalization: { residues: inspectDisplayKanjiResidues(summary) },
+      ...(claimCheck ? { claim_check: claimCheck } : {}),
+      review_revision: trace,
+      comment_stage: {
+        attempted: fallbackReason.startsWith("review_limited_patch"),
+        used: trace.changed_fields.includes("why_it_matters"),
+        regenerated,
+        fallback_reason: fallbackReason,
+        exclamation_count: (summary.why_it_matters.match(/[！!]/g) ?? []).length
+      }
+    }
+  };
+}
+
+function evidenceUrls(article: ProcessedArticle) {
+  const displayed = article.summary?.source_list.map((source) => source.url).filter((url): url is string => Boolean(url)) ?? [];
+  const topicEvidence = article.topic?.evidence_articles.map((source) => source.url) ?? [];
+  const relatedEvidence = article.topic?.related_evidence_articles?.map((source) => source.url) ?? [];
+  // A saved topic can contain the fact used for a proposal even when the
+  // generated article's display source list omitted it.  Keep those URLs
+  // visible to the editor instead of presenting a groundless proposal.
+  return [...new Set([...displayed, ...topicEvidence, ...relatedEvidence])];
 }
 
 /**

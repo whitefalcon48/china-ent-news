@@ -7,13 +7,14 @@ import { getPublishableArticles } from "../renderMarkdown.js";
 import { isRelevantEvidenceForTopic, isSafePublicationSourceUrl, normalizeSourceHostname } from "../sourceRelevance.js";
 import { resolveSummaryTitle } from "../summaryTitle.js";
 import { manualArticleSlug, manualIntakeRoot, readManualIntakeRecord } from "../review/manualPublication.js";
+import { selectPublicationCandidates } from "../review/publication.js";
 import type { ProcessedArticle, ReviewState, SourceRef, SourceTypeLabel, SummarizedArticle } from "../types.js";
 import { buildArticleTagCatalog, getSearchableArticleTags, type ArticleTagCatalog, type ArticleTagInput } from "./articleTags.js";
 
-type SiteArticle = { article: ProcessedArticle; slug: string };
+type SiteArticle = { article: ProcessedArticle; slug: string; publicationAt?: string };
 type DayData = { date: string; articles: SiteArticle[] };
 type SourceMix = { official: number; media: number; sns: number; data: number };
-type PublishedSiteArticle = { date: string; article: ProcessedArticle; slug: string };
+type PublishedSiteArticle = SiteArticle & { date: string };
 
 const DATA_DIR = path.resolve(process.env.SITE_DATA_DIR || "data");
 const OUTPUT_DIR = path.resolve(process.env.SITE_OUTPUT_DIR || "dist/site");
@@ -25,6 +26,7 @@ const SITE_NAME = "冰糖日报（ビンタンデイリー）";
 const SITE_DESCRIPTION = "冰糖日报（ビンタンデイリー）のニュースフィード。";
 const ABOUT_PROFILE = "中国エンタメニュース収集担当のAI・冰糖（ビンタン）と、冰糖日报の運営・情報の扱いについて。";
 const REVIEW_GATE_ENABLED = process.env.REVIEW_GATE !== "false";
+const INCLUDE_PUBLICATION_QUEUE = process.env.INCLUDE_PUBLICATION_QUEUE === "true";
 const NON_SERIOUS_AVATARS = ["smile-left", "smile-right", "joy-front", "joy-left", "surprise-front", "surprise-right", "thinking-left", "thinking-up"] as const;
 const SERIOUS_AVATARS = ["serious-front", "serious-right"] as const;
 const LOSS_PATTERN = /訃報|死去|逝去|死亡|亡くな|急逝|お別れ|追悼|去世|讣告/;
@@ -39,9 +41,14 @@ async function main() {
   await generateXCardTestImages();
 
   const nonEmptyDays = days.filter((day) => day.articles.length > 0);
-  const newestDate = nonEmptyDays[0]?.date;
-  const latest = nonEmptyDays.flatMap((day) => day.articles.map((item) => ({ date: day.date, ...item }))).slice(0, 10);
-  const allPublished = nonEmptyDays.flatMap((day) => day.articles.map((item) => ({ date: day.date, ...item })));
+  // Archive paths remain keyed by generation date.  The latest feed and
+  // archive search, however, must surface a held article when it is actually
+  // released rather than burying it under its original generation day.
+  const allPublished = nonEmptyDays
+    .flatMap((day) => day.articles.map((item) => ({ date: day.date, ...item })))
+    .sort(comparePublishedSiteArticles);
+  const newestDate = allPublished[0] ? publicationDay(allPublished[0]) : undefined;
+  const latest = allPublished.slice(0, 10);
   const tagCatalog = buildArticleTagCatalog(allPublished.map(articleTagInput));
 
   await writePage("index.html", renderLayout({
@@ -131,17 +138,20 @@ async function loadDays(): Promise<DayData[]> {
     const raw = JSON.parse(await fs.readFile(path.join(directory, files.at(-1)!), "utf8")) as unknown;
     if (!Array.isArray(raw)) throw new Error(`${files.at(-1)}: JSONルートは配列である必要があります`);
     const storedArticles = raw.map((item, index) => normalizeStoredArticle(item, entry.name, index));
-    const reviewedArticles = REVIEW_GATE_ENABLED ? await filterReviewedArticles(directory, storedArticles) : storedArticles;
-    if (reviewedArticles === null) continue;
-    const articles = reviewedArticles === storedArticles
-      ? getPublishableArticles(reviewedArticles)
-      : reviewedArticles.filter((article) => article.summary);
+    const reviewedArticles = REVIEW_GATE_ENABLED ? await filterReviewedArticles(directory, storedArticles) : null;
+    const articlesWithSlugs = reviewedArticles === null
+      ? getPublishableArticles(storedArticles).map((article, index) => ({ article, slug: String(index + 1) }))
+      : reviewedArticles.filter(({ article }) => article.summary);
+    // A day containing only held/draft articles must not acquire a public
+    // archive page merely because its review.json exists.
+    if (REVIEW_GATE_ENABLED && !articlesWithSlugs.length) continue;
+    const articles = articlesWithSlugs.map((item) => item.article);
     validateArticles(articles, entry.name);
-    dayByDate.set(entry.name, { date: entry.name, articles: articles.map((article, index) => ({ article, slug: String(index + 1) })) });
+    dayByDate.set(entry.name, { date: entry.name, articles: articlesWithSlugs });
   }
   for (const manual of await loadPublishedManualArticles()) {
     const day = dayByDate.get(manual.date) ?? { date: manual.date, articles: [] };
-    day.articles.push({ article: manual.article, slug: manual.slug });
+    day.articles.push({ article: manual.article, slug: manual.slug, publicationAt: `${manual.date}T00:00:00+08:00` });
     dayByDate.set(manual.date, day);
   }
   return [...dayByDate.values()].sort((left, right) => right.date.localeCompare(left.date));
@@ -185,19 +195,15 @@ async function loadPublishedManualArticles(): Promise<Array<{ date: string; arti
   return published;
 }
 
-async function filterReviewedArticles(directory: string, articles: ProcessedArticle[]): Promise<ProcessedArticle[] | null> {
-  let review: ReviewState;
-  try {
-    review = JSON.parse(await fs.readFile(path.join(directory, "review.json"), "utf8")) as ReviewState;
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return articles;
-    throw error;
-  }
-  if (review.status !== "completed") return null;
-  return review.articles
-    .filter((item) => item.status === "approved")
-    .map((item) => articles[item.index - 1])
-    .filter((article): article is ProcessedArticle => Boolean(article));
+async function filterReviewedArticles(directory: string, articles: ProcessedArticle[]): Promise<SiteArticle[] | null> {
+  const selected = await selectPublicationCandidates(directory, articles, { includeQueued: INCLUDE_PUBLICATION_QUEUE });
+  // review.json のない旧データは従来どおり公開対象として扱う。
+  if (selected === null) return null;
+  return selected.map(({ article, slug, review }) => ({
+    article,
+    slug,
+    publicationAt: review.publication?.published_at || review.publication?.queued_at
+  }));
 }
 
 function normalizeStoredArticle(value: unknown, date: string, index: number): ProcessedArticle {
@@ -326,9 +332,11 @@ function sourceTypeToMix(type: SourceTypeLabel): SourceMix {
 function renderHome(items: PublishedSiteArticle[], tagCatalog: ArticleTagCatalog) {
   if (!items.length) return `<main class="feed"><section class="empty">この日は記事をお届けできませんでした。収集または生成に失敗したためです。前日までの記事はアーカイブからどうぞ。</section></main>`;
   let lastDate = "";
-  const cards = items.map(({ date, article, slug }) => {
-    const heading = date !== lastDate ? `<h1 class="date-heading"><a href="${href(`/archive/${date}/`)}">${escapeHtml(formatPickupDate(date))}のピックアップ</a></h1>` : "";
-    lastDate = date;
+  const cards = items.map((item) => {
+    const { date, article, slug } = item;
+    const displayDate = publicationDay(item);
+    const heading = displayDate !== lastDate ? `<h1 class="date-heading"><a href="${href(`/archive/${date}/`)}">${escapeHtml(formatPickupDate(displayDate))}のピックアップ</a></h1>` : "";
+    lastDate = displayDate;
     return `${heading}${renderCard(date, slug, article, tagCatalog)}`;
   }).join("");
   return `<main class="feed">${cards}<p class="archive-cta"><a href="${href("/archive/")}">過去の記事はアーカイブへ →</a></p>${renderLegend()}${renderFooterBanner()}</main>`;
@@ -539,11 +547,13 @@ function renderArchive(days: DayData[], articles: PublishedSiteArticle[], tagCat
     : "<li>アーカイブはまだありません。</li>";
   const searchableTags = [...tagCatalog.counts.entries()]
     .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "ja"));
-  const results = articles.map(({ date, article, slug }) => {
+  const results = articles.map((item) => {
+    const { date, article, slug } = item;
+    const displayDate = publicationDay(item);
     const summary = requireSummary(article);
     const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
     const tags = getSearchableArticleTags(articleTagInput({ article }), tagCatalog);
-    return `<li data-archive-tagged-article data-archive-tags="${escapeAttr(JSON.stringify(tags))}" hidden><a href="${href(`/t/${date}/${slug}/`)}"><span><time datetime="${date}">${escapeHtml(formatNumericDate(date))}</time>${escapeHtml(title)}</span><small>${tags.map((tag) => escapeHtml(tag)).join("・")}</small></a></li>`;
+    return `<li data-archive-tagged-article data-archive-tags="${escapeAttr(JSON.stringify(tags))}" hidden><a href="${href(`/t/${date}/${slug}/`)}"><span><time datetime="${displayDate}">${escapeHtml(formatNumericDate(displayDate))}</time>${escapeHtml(title)}</span><small>${tags.map((tag) => escapeHtml(tag)).join("・")}</small></a></li>`;
   }).join("");
   return `<main class="narrow archive" data-archive-tag-search><h1 class="page-title">アーカイブ</h1>
     <label class="archive-tag-query">記事タグで絞り込む<input type="search" data-archive-tag-query list="archive-tags" placeholder="例：ショートドラマ、興行収入" autocomplete="off"></label>
@@ -634,6 +644,17 @@ function formatNumericDate(date: string) {
 function parseDate(date: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error(`不正な日付: ${date}`);
   return new Date(`${date}T12:00:00+08:00`);
+}
+
+function publicationDay(item: PublishedSiteArticle) {
+  const match = item.publicationAt?.match(/^(\d{4}-\d{2}-\d{2})T/u);
+  return match?.[1] || item.date;
+}
+
+function comparePublishedSiteArticles(left: PublishedSiteArticle, right: PublishedSiteArticle) {
+  const leftAt = left.publicationAt || `${left.date}T00:00:00+08:00`;
+  const rightAt = right.publicationAt || `${right.date}T00:00:00+08:00`;
+  return rightAt.localeCompare(leftAt) || right.date.localeCompare(left.date) || right.slug.localeCompare(left.slug);
 }
 
 function normalizeBasePath(value: string) {

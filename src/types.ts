@@ -439,7 +439,7 @@ export type ReviewRevisionTrace = {
 };
 
 export type ReviewStatus = "pending" | "completed";
-export type ReviewArticleStatus = "pending" | "approved" | "rejected" | "revision_requested" | "revised_pending";
+export type ReviewArticleStatus = "pending" | "approved" | "rejected" | "held" | "revision_requested" | "revised_pending" | "proposal_pending";
 export type ReviewReasonTag = "" | "選定" | "口調" | "用語" | "事実" | "構成" | "その他";
 
 export type ReviewArticle = {
@@ -450,6 +450,26 @@ export type ReviewArticle = {
   reason_tag: ReviewReasonTag;
   comment: string;
   revision_count: number;
+  /** Stable identity. It deliberately does not follow the visible article number. */
+  article_id?: string;
+  /** The immutable revision-store version currently reflected in articles JSON. */
+  current_version?: number;
+  /** A proposal has not changed the article until this id is explicitly applied. */
+  pending_proposal_id?: string;
+  publication?: {
+    slug: string;
+    /** First approval timestamp, used to order a delayed first publication before deploy completes. */
+    queued_at?: string;
+    published_at?: string;
+    published_version?: number;
+    updated_at?: string;
+    /** First-publication X queue. It survives a later workflow retry. */
+    x_pending_at?: string;
+    /** Persisted before a live API call; an uncertain call never auto-retries. */
+    x_post_attempt_id?: string;
+    x_post_attempted_at?: string;
+    x_posted_at?: string;
+  };
 };
 
 export type ReviewState = {
@@ -457,6 +477,39 @@ export type ReviewState = {
   status: ReviewStatus;
   issue_number: number;
   articles: ReviewArticle[];
+};
+
+export type StoredReviewVersion = {
+  n: number;
+  parent: number | null;
+  created_at: string;
+  created_by: string;
+  summary: string;
+  article_summary: SummarizedArticle;
+};
+
+export type StoredReviewProposal = {
+  id: string;
+  base_version: number;
+  instruction: string;
+  created_at: string;
+  status: "pending" | "applied" | "discarded";
+  mode: "limited_patch" | "full_rewrite";
+  summary: string;
+  trace?: ReviewRevisionTrace;
+  evidence_urls: string[];
+  previous_status: ReviewArticleStatus;
+  article_summary: SummarizedArticle;
+};
+
+export type ReviewRevisionStore = {
+  version: 1;
+  date: string;
+  articles: Record<string, {
+    current_version: number;
+    versions: StoredReviewVersion[];
+    proposals: StoredReviewProposal[];
+  }>;
 };
 
 export type ReviewFeedback = {

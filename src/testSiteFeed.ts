@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -200,6 +201,7 @@ try {
   if (xCardTestPng.format !== "png" || xCardTestPng.width !== 1200 || xCardTestPng.height !== 630) throw new Error(`Xカード比較PNGは1200x630 PNGのはずですが ${xCardTestPng.format} ${xCardTestPng.width}x${xCardTestPng.height} です`);
 
   await assertPublishedTagRegression();
+  await assertDelayedPublicationOrdering();
   console.log("site feed: ok");
 } finally {
   await fs.rm(tempRoot, { recursive: true, force: true });
@@ -321,6 +323,140 @@ async function assertPublishedTagRegression() {
   assertArrayNotIncludes(getSearchableArticleTags(dragonCases[0], repeatedWeiboCatalog), "微博", "微博を頻度に依存せず除外");
   const singletonCatalog = buildArticleTagCatalog([sourceNamed], 99);
   assertArrayIncludes(getSearchableArticleTags(sourceNamed, singletonCatalog), "台海一九五〇", "テーマ閾値99でも中心作品を維持");
+}
+
+async function assertDelayedPublicationOrdering() {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "china-ent-delayed-publication-"));
+  const delayedDate = "2026-09-02";
+  const regularDate = "2026-09-09";
+  const queuedDate = "2026-09-08";
+  const data = path.join(root, "data");
+  const output = path.join(root, "site");
+  const stagedOutput = path.join(root, "staged-site");
+  try {
+    const delayed = fixtureArticle(1);
+    delayed.summary.title_ja = "保留から公開した記事";
+    const regular = fixtureArticle(2);
+    regular.summary.title_ja = "通常日に公開した記事";
+    await writeReviewedFixture(data, delayedDate, delayed, "a-delayed", "2026-09-10T09:00:00+08:00");
+    await writeReviewedFixture(data, regularDate, regular, "a-regular", "2026-09-09T09:00:00+08:00");
+    execFileSync(process.execPath, ["--import", "tsx", "src/site/build.ts"], {
+      cwd: repoRoot,
+      env: {
+        ...process.env,
+        REVIEW_GATE: "true",
+        SITE_DATA_DIR: data,
+        SITE_OUTPUT_DIR: output,
+        SITE_URL: "https://example.test",
+        SITE_ASSET_DIR: path.join(root, "missing-assets")
+      },
+      stdio: "pipe"
+    });
+    const home = await fs.readFile(path.join(output, "index.html"), "utf8");
+    const feed = home.slice(home.indexOf('<main class="feed">'), home.indexOf('class="archive-cta"'));
+    assert.ok(feed.indexOf("保留から公開した記事") < feed.indexOf("通常日に公開した記事"), "トップは生成日でなく初回公開日時の新しい順に並べる");
+    assertIncludes(home, "最終更新：2026年9月10日", "トップの更新日は実際の公開日を優先する");
+    const archive = await fs.readFile(path.join(output, "archive", "index.html"), "utf8");
+    const searchResults = archive.slice(archive.indexOf("data-archive-tag-results"));
+    assert.ok(searchResults.indexOf("保留から公開した記事") < searchResults.indexOf("通常日に公開した記事"), "検索対象も実際の公開日時の新しい順に並べる");
+    assert.match(searchResults, /2026\/9\/10/u, "検索結果の日付は実際の公開日を示す");
+    await fs.access(path.join(output, "t", delayedDate, "1", "index.html"));
+    await fs.access(path.join(output, "archive", delayedDate, "index.html"));
+
+    const queued = fixtureArticle(3);
+    queued.summary.title_ja = "公開待ちの記事";
+    await writeQueuedFixture(data, queuedDate, queued, "a-queued", "2026-09-11T09:00:00+08:00");
+    execFileSync(process.execPath, ["--import", "tsx", "src/site/build.ts"], {
+      cwd: repoRoot,
+      env: {
+        ...process.env,
+        REVIEW_GATE: "true",
+        SITE_DATA_DIR: data,
+        SITE_OUTPUT_DIR: output,
+        SITE_URL: "https://example.test",
+        SITE_ASSET_DIR: path.join(root, "missing-assets")
+      },
+      stdio: "pipe"
+    });
+    const genericHome = await fs.readFile(path.join(output, "index.html"), "utf8");
+    assertNotIncludes(genericHome, "公開待ちの記事", "通常のmain push buildは公開待ちの記事を含めない");
+    await assertPathMissing(path.join(output, "t", queuedDate, "1", "index.html"), "通常のmain push buildの公開待ち詳細");
+
+    execFileSync(process.execPath, ["--import", "tsx", "src/site/build.ts"], {
+      cwd: repoRoot,
+      env: {
+        ...process.env,
+        REVIEW_GATE: "true",
+        INCLUDE_PUBLICATION_QUEUE: "true",
+        SITE_DATA_DIR: data,
+        SITE_OUTPUT_DIR: stagedOutput,
+        SITE_URL: "https://example.test",
+        SITE_ASSET_DIR: path.join(root, "missing-assets")
+      },
+      stdio: "pipe"
+    });
+    const stagedHome = await fs.readFile(path.join(stagedOutput, "index.html"), "utf8");
+    assertIncludes(stagedHome, "公開待ちの記事", "review-applyのstaged buildは公開待ちの記事を含める");
+    await fs.access(path.join(stagedOutput, "t", queuedDate, "1", "index.html"));
+  } finally {
+    await fs.rm(root, { recursive: true, force: true });
+  }
+}
+
+async function writeReviewedFixture(dataRoot: string, dateValue: string, article: ReturnType<typeof fixtureArticle>, articleId: string, publishedAt: string) {
+  const directory = path.join(dataRoot, dateValue);
+  await fs.mkdir(directory, { recursive: true });
+  await fs.writeFile(path.join(directory, `articles_${dateValue}.json`), JSON.stringify([article]), "utf8");
+  await fs.writeFile(path.join(directory, "review.json"), JSON.stringify({
+    date: dateValue,
+    status: "pending",
+    issue_number: 1,
+    articles: [{
+      index: 1,
+      topic_key: article.summary.topic_key,
+      title: article.summary.title_ja,
+      status: "approved",
+      reason_tag: "",
+      comment: "",
+      revision_count: 0,
+      article_id: articleId,
+      current_version: 1,
+      publication: { slug: "1", published_at: publishedAt, published_version: 1 }
+    }]
+  }), "utf8");
+}
+
+async function writeQueuedFixture(dataRoot: string, dateValue: string, article: ReturnType<typeof fixtureArticle>, articleId: string, queuedAt: string) {
+  const directory = path.join(dataRoot, dateValue);
+  await fs.mkdir(directory, { recursive: true });
+  await fs.writeFile(path.join(directory, `articles_${dateValue}.json`), JSON.stringify([article]), "utf8");
+  await fs.writeFile(path.join(directory, "review.json"), JSON.stringify({
+    date: dateValue,
+    status: "pending",
+    issue_number: 1,
+    articles: [{
+      index: 1,
+      topic_key: article.summary.topic_key,
+      title: article.summary.title_ja,
+      status: "approved",
+      reason_tag: "",
+      comment: "",
+      revision_count: 0,
+      article_id: articleId,
+      current_version: 1,
+      publication: { slug: "1", queued_at: queuedAt }
+    }]
+  }), "utf8");
+}
+
+async function assertPathMissing(filePath: string, label: string) {
+  try {
+    await fs.access(filePath);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+    throw error;
+  }
+  throw new Error(`${label} が残っています: ${filePath}`);
 }
 
 async function readPublishedTagInput(dateValue: string, titleFragment: string): Promise<ArticleTagInput> {

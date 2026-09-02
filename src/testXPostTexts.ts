@@ -18,6 +18,9 @@ assert.match(digest, /^🧊 今日の中国エンタメ｜8\/14\nビンタン「
 assert.ok(digest.includes("原作の関係性"), "日次投稿も注目ポイントの中身を使う");
 assert.ok(digest.includes("https://example.test/archive/2026-08-14/"));
 assert.ok(xWeightedLength(digest) <= MAX_WEIGHTED_LENGTH);
+const delayedDigest = buildDailyDigest("2026-09-10", [article], "https://example.test", "", "2026-09-02");
+assert.match(delayedDigest, /^🧊 今日の中国エンタメ｜9\/10/mu, "遅延公開は実際の公開日を見出しにする");
+assert.match(delayedDigest, /\/archive\/2026-09-02\//u, "遅延公開でも生成日アーカイブへリンクする");
 
 const workflow = await fs.readFile(".github/workflows/review-apply.yml", "utf8");
 for (const expected of [

@@ -70,69 +70,148 @@ jobs:
           fi
 
       - name: Build approved production site
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish_required == 'true'
         run: npm run build:site
         env:
           SITE_URL: https://bingtangnews.0-w-0.net
           SITE_BASE_PATH: ""
           SITE_OUTPUT_DIR: dist/lolipop-site
+          INCLUDE_PUBLICATION_QUEUE: "true"
 
       - name: Validate production artifact
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish_required == 'true'
         run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews --check
 
       - name: Build Pages fallback
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish_required == 'true'
         run: npm run build:site
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
           SITE_BASE_PATH: /${{ github.event.repository.name }}
           SITE_OUTPUT_DIR: dist/site
-
-      - name: Configure GitHub Pages
-        if: steps.review.outputs.completed == 'true'
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        if: steps.review.outputs.completed == 'true'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/site
-
-      - name: Deploy GitHub Pages
-        if: steps.review.outputs.completed == 'true'
-        id: deployment
-        uses: actions/deploy-pages@v4
+          INCLUDE_PUBLICATION_QUEUE: "true"
 
       - name: Deploy production site to Lolipop
-        if: steps.review.outputs.completed == 'true'
+        if: steps.review.outputs.publish_required == 'true'
         run: python3 scripts/deploy_lolipop.py --source dist/lolipop-site --remote-dir bingtangnews
         env:
           LOLIPOP_FTPS_HOST: ${{ secrets.LOLIPOP_FTPS_HOST }}
           LOLIPOP_FTPS_USER: ${{ secrets.LOLIPOP_FTPS_USER }}
           LOLIPOP_FTPS_PASSWORD: ${{ secrets.LOLIPOP_FTPS_PASSWORD }}
 
+      # The public production deployment is the publication boundary.  Do not
+      # expose a queued draft on the Pages fallback if it fails.
+      - name: Configure GitHub Pages
+        if: steps.review.outputs.publish_required == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: steps.review.outputs.publish_required == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+
+      - name: Deploy GitHub Pages
+        if: steps.review.outputs.publish_required == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # The public site is already live at this point.  Only now do we advance
+      # the durable publication marker; a failed deploy therefore cannot make
+      # a draft look published on the next build.
+      - name: Record daily publication
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual != 'true'
+        run: node --import tsx src/review/recordPublication.ts
+        env:
+          POST_DATE: ${{ steps.review.outputs.date }}
+
+      - name: Commit publication record
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No publication record changes."
+          else
+            git commit -m "Record news publication ${{ steps.review.outputs.date }}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || { git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; }
+          fi
+
+      # Persist an attempt marker before a live X API call.  This is committed
+      # separately so an API success followed by a receipt-commit failure can
+      # never cause an automatic duplicate post on the next Action.
+      - name: Prepare live X posting attempt
+        if: (steps.review.outputs.publish_required == 'true' || steps.review.outputs.x_post_required == 'true') && steps.review.outputs.manual != 'true' && vars.X_POSTING_ENABLED == 'true'
+        run: npm run post:x:prepare
+        env:
+          POST_DATE: ${{ steps.review.outputs.date }}
+
+      - name: Commit X posting attempt
+        if: (steps.review.outputs.publish_required == 'true' || steps.review.outputs.x_post_required == 'true') && steps.review.outputs.manual != 'true' && vars.X_POSTING_ENABLED == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No X posting attempt changes."
+          else
+            git commit -m "Prepare X post ${{ steps.review.outputs.date }}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || { git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; }
+          fi
+
       - name: Generate approved X texts
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        if: (steps.review.outputs.publish_required == 'true' || steps.review.outputs.x_post_required == 'true') && steps.review.outputs.manual != 'true'
         run: npm run post:x
         env:
           SITE_URL: https://bingtangnews.0-w-0.net
           SITE_BASE_PATH: ""
           POST_DATE: ${{ steps.review.outputs.date }}
+          X_POST_LIVE: ${{ vars.X_POSTING_ENABLED == 'true' && 'true' || 'false' }}
+          X_POST_ATTEMPT_CONFIRMED: ${{ vars.X_POSTING_ENABLED == 'true' && 'true' || 'false' }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+
+      # Dry-runs leave data untouched.  When a live post is explicitly enabled,
+      # postToX records x_posted_at only after the API accepts the digest.
+      - name: Commit X posting record
+        if: (steps.review.outputs.publish_required == 'true' || steps.review.outputs.x_post_required == 'true') && steps.review.outputs.manual != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No X posting record changes."
+          else
+            git commit -m "Record X post ${{ steps.review.outputs.date }}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || { git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; }
+          fi
+
+      - name: Report uncertain X posting outcome
+        if: steps.review.outputs.x_post_attention == 'true' && steps.review.outputs.manual != 'true'
+        continue-on-error: true
+        run: gh issue comment "${{ github.event.issue.number }}" --body "⚠️ X投稿の成否を自動確認できない記録があります。重複投稿を避けるため自動再試行は停止しています。Xの投稿状況を確認してから、必要な場合だけ明示的に再告知してください。"
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Verify published daily page
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual != 'true'
         run: curl --fail --silent --show-error --retry 5 --retry-delay 3 "https://bingtangnews.0-w-0.net/archive/${{ steps.review.outputs.date }}/" > /dev/null
 
       - name: Reply with daily publication and X texts
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual != 'true'
         continue-on-error: true
         run: gh issue comment "${{ github.event.issue.number }}" --body-file "output/x_posts_${{ steps.review.outputs.date }}.md"
         env:
           GH_TOKEN: ${{ github.token }}
 
       - name: Upload X post texts
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual != 'true'
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: x-post-texts-${{ steps.review.outputs.date }}
@@ -140,7 +219,7 @@ jobs:
           if-no-files-found: error
 
       - name: Generate manual X text
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
         run: node --import tsx src/site/manualXPost.ts
         env:
           SITE_URL: https://bingtangnews.0-w-0.net
@@ -148,11 +227,11 @@ jobs:
           MANUAL_PUBLISHED_DATE: ${{ steps.review.outputs.published_date }}
 
       - name: Verify published manual page
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
         run: curl --fail --silent --show-error --retry 5 --retry-delay 3 "https://bingtangnews.0-w-0.net/t/${{ steps.review.outputs.published_date }}/m-${{ steps.review.outputs.manual_id }}/" > /dev/null
 
       - name: Reply with manual publication and X text
-        if: steps.review.outputs.completed == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
+        if: steps.review.outputs.publish_required == 'true' && steps.review.outputs.manual == 'true' && steps.review.outputs.manual_published == 'true'
         run: gh issue comment "${{ github.event.issue.number }}" --body-file "output/manual_x_post_${{ steps.review.outputs.manual_id }}.md"
         env:
           GH_TOKEN: ${{ github.token }}

@@ -4,6 +4,11 @@ import path from "node:path";
 import { promisify } from "node:util";
 import type { ProcessedArticle, ReviewState } from "../types.js";
 
+/** UIが表示する版情報。旧データでは存在しないため、詳細な型は意図的に緩く保つ。 */
+export type ReviewUiRevisions = {
+  [key: string]: unknown;
+};
+
 const execFileAsync = promisify(execFile);
 
 export type ReviewUiDay = {
@@ -12,6 +17,7 @@ export type ReviewUiDay = {
   issueUrl: string;
   review: ReviewState;
   articles: ProcessedArticle[];
+  revisions?: ReviewUiRevisions;
 };
 
 export type ReviewUiData = {
@@ -33,17 +39,25 @@ export async function fetchReviewData(options: {
 
   try {
     const repository = await resolveRepository(runner);
-    const issues = JSON.parse(await runner("gh", ["issue", "list", "--label", "daily-review", "--state", "open", "--limit", "100", "--json", "number,title,url"])) as Array<{ number: number; title: string; url: string }>;
+    // Completed reviews are normally closed, but a completed day can still
+    // contain held articles.  Query both states independently so a busy open
+    // queue cannot hide the hold shelf behind the CLI's 100-result limit.
+    const [openIssues, closedIssues] = await Promise.all([
+      listReviewIssues("open", runner),
+      listReviewIssues("closed", runner)
+    ]);
+    const issues = [...new Map([...openIssues, ...closedIssues].map((issue) => [issue.number, issue])).values()];
     const days: ReviewUiDay[] = [];
     for (const issue of issues) {
       const date = issue.title.match(/\d{4}-\d{2}-\d{2}/)?.[0];
       if (!date) continue;
-      const [review, articles] = await Promise.all([
+      const [review, articles, revisions] = await Promise.all([
         fetchGithubJson<ReviewState>(repository, `data/${date}/review.json`, runner),
-        fetchGithubJson<ProcessedArticle[]>(repository, `data/${date}/articles_${date}.json`, runner)
+        fetchGithubJson<ProcessedArticle[]>(repository, `data/${date}/articles_${date}.json`, runner),
+        fetchOptionalGithubJson<ReviewUiRevisions>(repository, `data/${date}/revisions.json`, runner)
       ]);
-      if (review.status === "completed") continue;
-      days.push({ date, issueNumber: issue.number, issueUrl: issue.url, review, articles });
+      if (review.status === "completed" && !hasHeldArticle(review)) continue;
+      days.push({ date, issueNumber: issue.number, issueUrl: issue.url, review, articles, revisions });
     }
     return { days: days.sort((left, right) => right.date.localeCompare(left.date)), warning: "", source: "github" };
   } catch (error) {
@@ -70,7 +84,7 @@ export async function loadLocalReviewData(dataDir: string, warning: string, runn
     const directory = path.join(dataDir, entry.name);
     try {
       const review = JSON.parse(await fs.readFile(path.join(directory, "review.json"), "utf8")) as ReviewState;
-      if (review.status === "completed") continue;
+      if (review.status === "completed" && !hasHeldArticle(review)) continue;
       const articleName = (await fs.readdir(directory)).filter((name) => /^articles_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
       if (!articleName) continue;
       const articles = JSON.parse(await fs.readFile(path.join(directory, articleName), "utf8")) as ProcessedArticle[];
@@ -80,7 +94,8 @@ export async function loadLocalReviewData(dataDir: string, warning: string, runn
         issueNumber,
         issueUrl: repository && issueNumber ? `https://github.com/${repository}/issues/${issueNumber}` : "",
         review,
-        articles
+        articles,
+        revisions: await readOptionalJson<ReviewUiRevisions>(path.join(directory, "revisions.json"))
       });
     } catch (error) {
       console.warn(`review UI local warning (${entry.name}): ${error instanceof Error ? error.message : String(error)}`);
@@ -113,6 +128,40 @@ async function fetchGithubJson<T>(repository: string, filePath: string, runner: 
   const response = JSON.parse(await runner("gh", ["api", "--method", "GET", `repos/${repository}/contents/${filePath}`, "-f", "ref=main"])) as { content?: string; encoding?: string };
   if (response.encoding !== "base64" || !response.content) throw new Error(`GitHub content responseが不正です: ${filePath}`);
   return JSON.parse(Buffer.from(response.content.replace(/\s/g, ""), "base64").toString("utf8")) as T;
+}
+
+type ReviewIssue = { number: number; title: string; url: string };
+
+async function listReviewIssues(state: "open" | "closed", runner: ReviewCommandRunner): Promise<ReviewIssue[]> {
+  const parsed = JSON.parse(await runner("gh", ["issue", "list", "--label", "daily-review", "--state", state, "--limit", "100", "--json", "number,title,url"])) as unknown;
+  if (!Array.isArray(parsed)) throw new Error("GitHub review issue listが不正です");
+  return parsed.filter((item): item is ReviewIssue => {
+    if (!item || typeof item !== "object") return false;
+    const value = item as Partial<ReviewIssue>;
+    return Number.isInteger(value.number) && typeof value.title === "string" && typeof value.url === "string";
+  });
+}
+
+async function fetchOptionalGithubJson<T>(repository: string, filePath: string, runner: ReviewCommandRunner): Promise<T | undefined> {
+  try {
+    return await fetchGithubJson<T>(repository, filePath, runner);
+  } catch {
+    return undefined;
+  }
+}
+
+async function readOptionalJson<T>(filePath: string): Promise<T | undefined> {
+  try {
+    return JSON.parse(await fs.readFile(filePath, "utf8")) as T;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return undefined;
+    console.warn(`review UI optional revisions warning (${filePath}): ${error instanceof Error ? error.message : String(error)}`);
+    return undefined;
+  }
+}
+
+function hasHeldArticle(review: ReviewState) {
+  return review.articles.some((article) => (article as ReviewState["articles"][number] & { status?: string }).status === "held");
 }
 
 export async function runCommand(command: string, args: string[]) {

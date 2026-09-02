@@ -151,7 +151,7 @@ try {
     loaded_days: fullHistory.loaded_days.filter((date) => date < "2026-08-17"),
     entries: fullHistory.entries.filter((entry) => entry.date < "2026-08-17")
   };
-  const repeatedTopicKeys = ["龙餐馆偷票房争议", "欢迎来龙餐馆"];
+  const repeatedTopicKeys = ["龙餐馆偷票房争议", "《欢迎来龙餐馆》票房与股价"];
   const comparison = repeatedTopicKeys.map((topicKey) => {
     const topic = savedCandidates.topic_candidates.find((item) => item.topic_key === topicKey);
     assert.ok(topic, `${topicKey} fixture exists`);
@@ -163,7 +163,7 @@ try {
   });
   const remainingAssessments = savedTrace.editorial_value.candidates.filter((item) => !repeatedTopicKeys.includes(item.topic_key));
   const rescue = selectEditorialReviewRescue(remainingAssessments, { enabled: true });
-  assert.deepEqual(rescue.selected_topic_keys, ["影之刃零", "短剧网文IP供给"], "重複映画を除くと異なるtopicの既存EVS-6救済候補が残る");
+  assert.deepEqual(rescue.selected_topic_keys, [], "保存済みtraceには標準基準を満たす別topicがあるため救済を起動しない");
   console.log(JSON.stringify({
     saved_2026_08_17_history: { loaded_days: fullHistory.loaded_days, entry_count: fullHistory.entries.length },
     saved_2026_08_17_comparison: comparison,
