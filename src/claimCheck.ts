@@ -9,6 +9,7 @@ import type {
   TopicCandidate
 } from "./types.js";
 import { isEditorialInsightClaim } from "./editorialInsight.js";
+import { findUnfulfilledHeadlinePromise } from "./headlinePromise.js";
 import { inspectLiteralTranslationResidues, inspectLiteralTranslationText } from "./translationQuality.js";
 
 const SECTION_NAMES = [
@@ -35,6 +36,10 @@ export const BACKGROUND_GROUNDING_THRESHOLD = 0.35;
 
 export function runClaimCheck(summary: SummarizedArticle, ledger: FactLedger): ClaimCheckResult {
   const violations: ClaimCheckViolation[] = [];
+  const headlinePromiseFailure = findUnfulfilledHeadlinePromise(summary);
+  if (headlinePromiseFailure) {
+    violations.push(toViolation("title_ja", "headline_promise_unfulfilled", "gate", headlinePromiseFailure.detail));
+  }
   const evidenceRoles = ledger.evidence_roles ?? {};
   const evidenceQuality = ledger.evidence_quality ?? [];
   if (evidenceQuality.length) {

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { findUnfulfilledHeadlinePromise } from "./headlinePromise.js";
 import { renderMarkdownFile } from "./renderMarkdown.js";
 import { resolveSummaryTitle } from "./summaryTitle.js";
 import type { ProcessedArticle } from "./types.js";
@@ -10,6 +11,24 @@ assert.equal(resolveSummaryTitle("   ", "元記事タイトル"), "元記事タ�
 assert.equal(resolveSummaryTitle("タイトル未設定", "元記事タイトル"), "元記事タイトル");
 assert.equal(resolveSummaryTitle(undefined, "", "topic title"), "topic title");
 assert.equal(resolveSummaryTitle("タイトル未設定"), "");
+
+const missingAnswer = findUnfulfilledHeadlinePromise({
+  title_ja: "『ようこそ龍レストランへ』、タイトルに込めた意味を解説",
+  lead: "主創がタイトルの意味を解説した。",
+  what_happened: "北京大学と清華大学でロードショーが行われ、タイトルに込められた意味が解説された。",
+  detail_sections: []
+});
+assert.equal(
+  missingAnswer?.detail.includes("具体的な説明がありません"),
+  true,
+  "見出しの約束を本文が繰り返すだけの今回型を拒否する"
+);
+assert.equal(findUnfulfilledHeadlinePromise({
+  title_ja: "『ようこそ龍レストランへ』、タイトルに込めた意味を解説",
+  lead: "主創が北京で作品について語った。",
+  what_happened: "文牧野監督は、龍レストランは具体的な地名ではなく、「ちゃんとご飯を食べる」という願いを表すと説明した。",
+  detail_sections: []
+}), null, "意味の答えそのものが本文にあれば合格する");
 
 const renderedPath = await renderMarkdownFile(
   [

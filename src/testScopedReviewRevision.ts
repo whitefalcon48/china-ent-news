@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import {
   extractNormalizedClaimNumberTokens,
   extractNumberTokens,
@@ -10,10 +13,11 @@ import {
   buildLimitedReviewPatchPrompt,
   detectReviewRevisionIntent,
   ReviewRevisionClarificationRequiredError,
-  ReviewRevisionContractError
+  ReviewRevisionContractError,
+  tryApplyDeterministicTerminologyReplacement
 } from "./review/revisionPatch.js";
 import { consumeLlmCall } from "./llmCallBudget.js";
-import { generateAndApplyLimitedReviewPatch, LIMITED_REVIEW_MAX_LLM_CALLS } from "./review/reviseArticle.js";
+import { generateAndApplyLimitedReviewPatch, LIMITED_REVIEW_MAX_LLM_CALLS, reviseStoredArticle } from "./review/reviseArticle.js";
 import type { FactLedger, ReviewPatchDocument, SummarizedArticle, TopicCandidate } from "./types.js";
 
 const ownerInstruction = "2025年12月を2025年6月17日に訂正（上海・范思哲イベント、単価約5600元のネックレス27本を約15万元で購入）。「6万元以上」は「数万元相当」に、「7人のメイクアップアーティスト」は「複数のメイク担当者」に、「純金のスマホスタンド」は「黄金／金製のスマホスタンド」に修正。「中国のエンタメ業界では『逆応援』という文化があります」は「中国のファンダムでは、芸能人側がファンへプレゼントやサービスを返す行為を『逆応援（逆应援）』と呼ぶことがあります」に修正。「娘家人」は「花嫁側の身内・実家側の人々」と補足。確度Bは維持。";
@@ -854,6 +858,71 @@ assert.throws(
 );
 
 assert.equal(detectReviewRevisionIntent(before, "記事全体を書き直してください。", "構成").mode, "full_rewrite");
+
+const missingLedgerTitleBefore: SummarizedArticle = {
+  ...before,
+  title_ja: "『歓迎竜レストランへ』、タイトルに込めた意味を解説",
+  lead: "映画『歓迎竜レストランへ』の主創が大学を訪れた。",
+  what_happened: "『歓迎竜レストランへ』のロードショーが行われた。",
+  why_it_matters: "『歓迎竜レストランへ』の続報が気になります！"
+};
+const missingLedgerInstruction = "歓迎竜レストランへ → ようこそ龍レストランへ";
+const missingLedgerIntent = detectReviewRevisionIntent(missingLedgerTitleBefore, missingLedgerInstruction, "用語");
+assert.equal(
+  runClaimCheck(missingLedgerTitleBefore, ledger).violations.some((violation) => violation.rule === "headline_promise_unfulfilled" && violation.severity === "gate"),
+  true,
+  "台帳生成経路でも見出しの種明かし欠落を再生成gateにする"
+);
+const missingLedgerResult = tryApplyDeterministicTerminologyReplacement(
+  missingLedgerTitleBefore,
+  missingLedgerInstruction,
+  "用語",
+  missingLedgerIntent
+);
+assert.ok(missingLedgerResult, "事実台帳がnullでもOWNERの純粋な用語置換はLLMなしで適用できる");
+for (const value of [
+  missingLedgerResult.summary.title_ja,
+  missingLedgerResult.summary.lead,
+  missingLedgerResult.summary.what_happened,
+  missingLedgerResult.summary.why_it_matters
+]) {
+  assert.doesNotMatch(value, /歓迎竜レストランへ/u);
+  assert.match(value, /ようこそ龍レストランへ/u);
+}
+assert.deepEqual(missingLedgerResult.summary.source_list, missingLedgerTitleBefore.source_list, "台帳なし用語置換でもsource_listを保持する");
+const missingLedgerDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "review-null-ledger-"));
+try {
+  await fs.writeFile(
+    path.join(missingLedgerDirectory, "articles_2026-09-02.json"),
+    JSON.stringify([{
+      raw: { title: "fixture", url: "https://example.com", sourceName: "fixture", category: "映画", reliability: "B" },
+      summary: missingLedgerTitleBefore,
+      topic: { ...topic, topic_key: "歓迎来龍餐館" },
+      generationMeta: { topic_key: "歓迎来龍餐館", ledger_used: false, ledger_fallback_reason: "ledger_extraction_failed:fixture" }
+    }]),
+    "utf8"
+  );
+  await fs.writeFile(
+    path.join(missingLedgerDirectory, "fact_ledger_2026-09-02.json"),
+    JSON.stringify({ ledgers: [{ topic_key: "歓迎来龍餐館", ledger: null, fallback_reason: "fixture" }] }),
+    "utf8"
+  );
+  const storedTermRevision = await reviseStoredArticle(missingLedgerDirectory, 1, missingLedgerInstruction, "用語");
+  assert.match(storedTermRevision.summary?.title_ja ?? "", /ようこそ龍レストランへ/u, "保存済みledger=null記事でも実際のreview経路が用語置換を完了する");
+  assert.equal(storedTermRevision.generationMeta?.ledger_used, false, "用語置換後もledgerを利用したと偽記録しない");
+} finally {
+  await fs.rm(missingLedgerDirectory, { recursive: true, force: true });
+}
+assert.equal(
+  tryApplyDeterministicTerminologyReplacement(
+    missingLedgerTitleBefore,
+    `${missingLedgerInstruction}。本文へタイトルの意味も追加`,
+    "用語",
+    detectReviewRevisionIntent(missingLedgerTitleBefore, `${missingLedgerInstruction}。本文へタイトルの意味も追加`, "用語")
+  ),
+  null,
+  "用語置換以外の依頼を台帳なし経路で黙って無視しない"
+);
 const prompt = buildLimitedReviewPatchPrompt(before, ledger, ownerInstruction, intent);
 assert.match(prompt, /記事全文を再生成してはいけません/u);
 assert.match(prompt, /field.*operation.*before.*after.*evidence_claim_refs/su);

@@ -165,6 +165,60 @@ export function detectReviewRevisionIntent(
   };
 }
 
+export function tryApplyDeterministicTerminologyReplacement(
+  before: SummarizedArticle,
+  instruction: string,
+  reasonTag: ReviewReasonTag | string,
+  intent: ReviewRevisionIntent
+): { summary: SummarizedArticle; trace: ReviewRevisionTrace } | null {
+  if (
+    reasonTag !== "用語"
+    || intent.mode !== "limited_patch"
+    || intent.required_replacements.length === 0
+    || intent.required_field_rewrites.length > 0
+    || !isOnlyLiteralReplacementInstruction(instruction)
+  ) return null;
+
+  let after = structuredClone(before);
+  const patches: ReviewPatchOperation[] = [];
+  for (const field of [...new Set(intent.required_replacements.flatMap((replacement) => replacement.target_fields))]) {
+    const current = readPatchableField(after, field);
+    let next = current;
+    for (const replacement of intent.required_replacements.filter((item) => item.target_fields.includes(field))) {
+      if (!sameNumberTokens(replacement.before, replacement.after)) return null;
+      next = next.split(replacement.before).join(replacement.after);
+      patches.push({
+        field,
+        operation: "replace",
+        before: replacement.before,
+        after: replacement.after,
+        evidence_claim_refs: [],
+        reason: "OWNERが明示した用語を全出現へ限定置換"
+      });
+    }
+    if (next === current) return null;
+    after = writePatchableField(after, field, next);
+  }
+
+  if (patches.length === 0) return null;
+  assertNoNewDisplayResidues(before, after);
+  return {
+    summary: after,
+    trace: buildReviewRevisionTrace(before, after, patches, intent, instruction)
+  };
+}
+
+function isOnlyLiteralReplacementInstruction(instruction: string) {
+  const remainder = normalizeHtmlEncodedArrows(instruction)
+    .replace(LITERAL_ARROW_REPLACEMENT, "")
+    .replace(/[\s、。．,，；;！？!?]/gu, "");
+  return remainder.length === 0;
+}
+
+function sameNumberTokens(before: string, after: string) {
+  return [...normalizedNumberTokens(before)].sort().join("\u0000") === [...normalizedNumberTokens(after)].sort().join("\u0000");
+}
+
 export function buildLimitedReviewPatchPrompt(
   summary: SummarizedArticle,
   ledger: FactLedger,

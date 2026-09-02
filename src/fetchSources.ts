@@ -135,6 +135,16 @@ export async function enrichArticleContent(article: RawArticle): Promise<RawArti
   }
 }
 
+export async function enrichArticlesContent(
+  articles: RawArticle[],
+  enrich: (article: RawArticle) => Promise<RawArticle> = enrichArticleContent
+) {
+  // Topic generation may use a non-representative article for the newest
+  // event detail. Fetch every selected evidence page so a headline-only feed
+  // item cannot promise an explanation whose body was never supplied.
+  return Promise.all(articles.map((article) => enrich(article)));
+}
+
 export async function enrichArticleMetadata(article: RawArticle): Promise<RawArticle> {
   try {
     const response = await fetch(article.url, {

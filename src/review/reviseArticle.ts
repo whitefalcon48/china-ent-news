@@ -13,6 +13,7 @@ import {
   detectReviewRevisionIntent,
   ReviewRevisionClarificationRequiredError,
   ReviewRevisionFieldRewriteRepairableError,
+  tryApplyDeterministicTerminologyReplacement,
   type ReviewFieldRewriteRepairFeedback
 } from "./revisionPatch.js";
 import type { ClaimCheckResult, FactLedger, ProcessedArticle, RawArticle, ReviewPatchDocument, ReviewPatchOperation, ReviewReasonTag, ReviewRevisionIntent, SummarizedArticle, TopicCandidate } from "../types.js";
@@ -35,6 +36,30 @@ export async function reviseStoredArticle(directory: string, index: number, comm
   const ledger = await findLedger(directory, article.topic.topic_key);
   const intent = detectReviewRevisionIntent(article.summary, comment, reasonTag);
   if (intent.mode === "clarification_required") throw new ReviewRevisionClarificationRequiredError(intent.clarification_reason);
+  const deterministicTerminology = tryApplyDeterministicTerminologyReplacement(article.summary, comment, reasonTag, intent);
+  if (intent.mode === "limited_patch" && deterministicTerminology) {
+    articles[index - 1] = {
+      ...article,
+      summary: deterministicTerminology.summary,
+      generationMeta: {
+        ...article.generationMeta,
+        topic_key: article.generationMeta?.topic_key ?? article.topic.topic_key,
+        ledger_used: article.generationMeta?.ledger_used ?? Boolean(ledger),
+        ledger_fallback_reason: article.generationMeta?.ledger_fallback_reason ?? (ledger ? "" : "review_saved_ledger_missing"),
+        display_normalization: { residues: inspectDisplayKanjiResidues(deterministicTerminology.summary) },
+        review_revision: deterministicTerminology.trace,
+        comment_stage: {
+          attempted: false,
+          used: deterministicTerminology.trace.changed_fields.includes("why_it_matters"),
+          regenerated: false,
+          fallback_reason: "review_deterministic_terminology_edit",
+          exclamation_count: (deterministicTerminology.summary.why_it_matters.match(/[！!]/g) ?? []).length
+        }
+      }
+    };
+    await fs.writeFile(articlePath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
+    return articles[index - 1];
+  }
   if (intent.mode === "limited_patch" && !ledger) {
     throw new ReviewRevisionClarificationRequiredError("事実台帳が見つからないため、限定修正の根拠claimを確認できません");
   }

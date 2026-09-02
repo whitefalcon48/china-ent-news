@@ -1,5 +1,12 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-09-02 実装・ローカル検証完了（Issue #79 台帳欠損時の用語修正・見出しの説明約束）
+
+- ✅ Issue #79の2番が `clarification_required` になった原因を、保存済みfact ledgerが `ledger_extraction_failed:Cannot read properties of null (reading 'choices')` で空だったことと特定。OWNERが「用語」理由で `修正前 → 修正後` だけを明示した純粋な全出現置換は、数字を変えず、対象語と置換後の残存を検査できる場合に限り、LLM・fact ledgerなしの決定的限定patchとして適用する。ほかの指示が混在する場合や事実追加は従来どおり台帳なしで推測せず停止する。
+- ✅ 見出し「タイトルに込めた意味を解説」に対し本文が「意味を明かした」としか書かなかった原因を、topic evidence 2件のうち代表記事1件だけを本文取得し、実際の説明を含む8月31日の1905記事を見出しだけでLLMへ渡していたことと特定。選定済みevidenceを全件本文取得するよう共通enrichmentを変更し、1件失敗時のgraceful fallbackは維持する。
+- ✅ 「意味・由来・理由・真相等を解説／明かす」と約束する見出しには、リード・何が起きたか・詳細のいずれかに具体的な答えを必須化。根拠に答えがなければ見出しから約束を外し、台帳あり生成は再試行後に破棄、台帳失敗時のfallback生成も保存前に拒否する。1905記事で確認した監督説明（具体的な地名ではなく「ちゃんとご飯を食べる」という願い、苦難の中で雨風をしのげる場所であってほしい）を回答例として回帰確認した。
+- ✅ `npm run check`、`test:title`、`test:evidence-expansion`、`test:scoped-review-revision`、`test:review-presentation`、`test:evidence-integrity`、`test:editorial-insight`、`test:terminology`、`test:kanji`、`test:related-evidence`、`test:sources`、`test:supplement-claim`、`test:bingtang-comment-tone`、`test:manual-intake`、`test:site-feed`、`git diff --check` 成功。今日の記事再生成・Issue #79への再コメント・公開・main統合・pushは未実施。
+
 ## 2026-08-27 Actions定期実行復旧・スケジュール再発防止
 
 - ✅ `generate-news` は有効、Actions許可・既定ブランチ`main`も正常だったが、`0 1 * * *`の8月27日分はrun自体が作成されなかった。GitHub Actions障害の復旧直後かつ毎時0分の高負荷帯と重なったため、ジョブ内エラーではなくschedule dispatchの取りこぼしと診断した。

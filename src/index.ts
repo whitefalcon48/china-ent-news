@@ -3,7 +3,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { classifyArticle, getArticleDateInfo, isPublishableType, loadFilterConfig } from "./classifyArticle.js";
 import { dedupeArticles } from "./dedupe.js";
-import { enrichArticleContent, enrichArticleMetadata, fetchAllSources, loadSources } from "./fetchSources.js";
+import { enrichArticleContent, enrichArticleMetadata, enrichArticlesContent, fetchAllSources, loadSources } from "./fetchSources.js";
 import { fetchHotSearchArticles } from "./fetchHotSearch.js";
 import { expandTopicSources } from "./expandSources.js";
 import { ClaimCheckDiscardError } from "./claimCheck.js";
@@ -1114,8 +1114,7 @@ async function buildTopicEvidenceBundles(selectedTopics: SelectedTopic[], articl
 
 async function buildTopicEvidenceBundle(selectedTopic: SelectedTopic, articlePool: RawArticle[], existingMap?: Map<string, RawArticle>) {
   const articlesByUrl = existingMap ?? new Map(articlePool.map((article) => [article.url, article]));
-  const evidence = chooseTopicEvidence(selectedTopic, articlesByUrl);
-  evidence[0] = await enrichArticleContent(evidence[0]);
+  const evidence = await enrichArticlesContent(chooseTopicEvidence(selectedTopic, articlesByUrl));
   return { topic: selectedTopic.topic, evidence, selectedTopic };
 }
 

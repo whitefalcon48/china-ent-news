@@ -3,6 +3,7 @@ import { assessClaimCoverage, classifyEvidenceRisk, requiredIndependentEvidence 
 import { extractDocumentSnapshot } from "./evidence/documentSnapshot.js";
 import { normalizeMediaFamily } from "./evidence/mediaFamily.js";
 import { attachExpansionEvidence, isCurrentRelatedAngle } from "./expandSources.js";
+import { enrichArticlesContent } from "./fetchSources.js";
 import { buildTopicCandidates } from "./topicCandidates.js";
 import type { RawArticle, TopicCandidate } from "./types.js";
 
@@ -86,6 +87,20 @@ const cctvShellOnly = extractDocumentSnapshot(`<html><body><div class="content">
 assert.equal(cctvShellOnly.extraction_quality.status, "unusable", "a long share shell is not mistaken for article text");
 assert.equal(isCurrentRelatedAngle({ ...delayTopic, published_date_range: { earliest: "2026-08-13", latest: "2026-08-13" } }, "2026-08-12"), true);
 assert.equal(isCurrentRelatedAngle({ ...delayTopic, published_date_range: { earliest: "2026-08-13", latest: "2026-08-13" } }, "2023-08-18"), false, "old reactions cannot be attached as reception of a current interview");
+
+const contentRequests: string[] = [];
+const hydratedEvidence = await enrichArticlesContent([
+  rawArticle("代表媒体", "https://example.com/representative"),
+  rawArticle("意味解説媒体", "https://example.com/title-meaning")
+], async (article) => {
+  contentRequests.push(article.url);
+  return { ...article, rawContent: `full:${article.url}`, rawContentLength: article.url.length + 5 };
+});
+assert.deepEqual(contentRequests.sort(), [
+  "https://example.com/representative",
+  "https://example.com/title-meaning"
+], "代表記事だけでなく、選択済みの全evidence本文を取得する");
+assert.match(hydratedEvidence[1]?.rawContent ?? "", /title-meaning/u, "非代表記事の本文も生成入力へ残す");
 
 console.log("evidence expansion checks passed");
 

@@ -6,6 +6,7 @@ import { buildDeepSeekJsonRequest } from "./deepSeekRequest.js";
 import { resolveAiModels, resolveStageAi } from "./aiRouting.js";
 import { extractFactLedger, FactLedgerExtractionError } from "./factLedger.js";
 import { assessLedgerAdequacy, LedgerAdequacyGateError } from "./ledgerAdequacy.js";
+import { assertHeadlinePromiseFulfilled } from "./headlinePromise.js";
 import { consumeLlmCall, hasLlmBudgetRemaining, LlmCallBudgetExceededError, type LlmCallBudget } from "./llmCallBudget.js";
 import { resolveSummaryTitle } from "./summaryTitle.js";
 import { createTermExpansionSession, expandTermExplanation, type TermExpansionSession } from "./termExplainExpansion.js";
@@ -886,6 +887,7 @@ ${translationQuality}
   出来事側を主役にして反応・見られ方の材料として使ってよい。
 
 構成ルール:
+- title_ja で「意味・理由・由来・背景・真相を解説／明かす」など答えを約束する場合は、lead または what_happened に答えそのものを必ず書く。「解説された」「明かされた」と報告するだけで終わらせない。evidenceに答えがなければ、その約束をタイトルと本文から外し、確認できる出来事だけを書く。
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: 150〜250字。official/media evidenceの事実だけで、出来事・数字・日付・関係者を整理。
 - reaction_view: SNS evidenceまたは複数媒体の見られ方がある場合のみ150〜250字。根拠がなければ空文字。
@@ -922,6 +924,7 @@ async function finalizeFallbackSummary(topic: TopicCandidate, evidence: RawArtic
   const finalized = applyEvidenceTranslationGuards(clearEditorComment(await applyTerminology(merged)), evidence);
   const residues = inspectLiteralTranslationResidues(finalized);
   if (residues.length) throw new Error(`translation_quality_gate:${residues.map((item) => `${item.field}:${item.term}`).join(",")}`);
+  assertHeadlinePromiseFulfilled(finalized);
   return finalized;
 }
 
@@ -1025,6 +1028,7 @@ ${translationQuality}
 - why_it_matters（見出し「ビンタンの注目ポイント」）と japan_context_note（見出し「ビンタンからの補足」）は、docs/editorial-character.md で定めた公開記事向けの明るく親しみのある編集トーンで書く。
 
 構成ルール:
+- title_ja で「意味・理由・由来・背景・真相を解説／明かす」など答えを約束する場合は、lead または what_happened に答えそのものを必ず書く。「解説された」と報告するだけは禁止。事実台帳に答えがなければ、その約束をタイトルと本文から外す。
 - lead: 2〜3行。トピック全体として何が起きたか。
 - what_happened: ${whatHappenedLength}。verified_fact claimを中心に出来事・数字・日付・関係者を整理。source_analysis claimを使う場合は媒体名を明示する。
 - why_it_matters: 100〜250字。ビンタンの注目ポイント。docs/editorial-character.md で定めた公開記事向けの編集トーンで、短い感想・リアクションを必ず混ぜる。本文の言い換え・要約をしない。本文で未使用のclaimから、作品なら story_premise / genre_contrast / comic_mechanism / modern_life_bridge / adaptation_context、その他の記事ならその記事固有の編集役割を最低1件選び、何と何の組み合わせがなぜ面白いのかを具体化する。数字と「今後を見る」だけで終わらせない。日本語読者向けの背景・公開状況・ファン文化は japan_context_note 専用にし、両方がある場合は同じ事実・角度を繰り返さない。

@@ -300,6 +300,7 @@ export type ClaimCheckRule =
   | "hedged_verified_fact"
   | "long_sentence"
   | "literal_translation_residue"
+  | "headline_promise_unfulfilled"
   | "terminology_avoid";
 
 export type ClaimCheckViolation = {
