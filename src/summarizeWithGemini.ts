@@ -920,7 +920,7 @@ ${evidenceText}`;
 async function finalizeFallbackSummary(topic: TopicCandidate, evidence: RawArticle[], value: Partial<SummarizedArticle>) {
   const normalized = normalizeSummary(value);
   normalized.why_it_matters = sanitizeExclamations(normalized.why_it_matters, getToneMode(topic));
-  const merged = mergeTopicInternalMetadata(normalized, topic, evidence);
+  const merged = mergeTopicInternalMetadata(normalized, topic, evidence, undefined, { includeAllRootEvidence: true });
   const finalized = applyEvidenceTranslationGuards(clearEditorComment(await applyTerminology(merged)), evidence);
   const residues = inspectLiteralTranslationResidues(finalized);
   if (residues.length) throw new Error(`translation_quality_gate:${residues.map((item) => `${item.field}:${item.term}`).join(",")}`);
@@ -1366,7 +1366,13 @@ function mergeInternalMetadata(summary: SummarizedArticle, article: RawArticle):
   };
 }
 
-export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: TopicCandidate, evidence: RawArticle[], ledger?: FactLedger): SummarizedArticle {
+export function mergeTopicInternalMetadata(
+  summary: SummarizedArticle,
+  topic: TopicCandidate,
+  evidence: RawArticle[],
+  ledger?: FactLedger,
+  options: { includeAllRootEvidence?: boolean } = {}
+): SummarizedArticle {
   const rootEvidence = evidence.filter((article) => (article.evidenceRole ?? "root_corroboration") === "root_corroboration");
   const relatedEvidence = evidence.filter((article) => article.evidenceRole === "related_angle");
   const availableRootSources = dedupeEvidenceSources(rootEvidence);
@@ -1385,7 +1391,12 @@ export function mergeTopicInternalMetadata(summary: SummarizedArticle, topic: To
   }));
   // Root sources fall back to the validated root evidence. Related sources do
   // not: absence from model output means the angle was not actually used.
-  const sourceList = requestedRootSources.length ? requestedRootSources : availableRootSources;
+  // A fallback summary has no claim refs to prove which root supplied each
+  // sentence. Expose every validated root source instead of trusting the model
+  // to retain the one page that contains a promised answer.
+  const sourceList = options.includeAllRootEvidence
+    ? availableRootSources
+    : requestedRootSources.length ? requestedRootSources : availableRootSources;
   const relatedSourceList = dedupeSourceRefs([...requestedRelatedSources, ...groundedRelatedSources])
     .filter((related) => !sourceList.some((root) => sameSource(root, related)));
   const representative = evidence[0];

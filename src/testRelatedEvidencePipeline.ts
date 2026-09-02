@@ -92,6 +92,17 @@ assert.deepEqual(sourceSplit.related_sources, [{ name: "港媒", url: "https://e
 assert.equal(sourceSplit.source_count, 1, "summary source_count does not count related evidence");
 assert.equal(sourceSplit.has_multiple_sources, false, "summary has_multiple_sources does not count related evidence");
 
+const fallbackSourceCoverage = mergeTopicInternalMetadata({
+  ...summaryFor(ledger),
+  source_list: [{ name: "界面新闻", url: "https://example.com/jm" }],
+  related_sources: []
+}, expanded, promptEvidence, undefined, { includeAllRootEvidence: true });
+assert.deepEqual(fallbackSourceCoverage.source_list, [
+  { name: "界面新闻", url: "https://example.com/jm" },
+  { name: "新京报", url: "https://example.com/bj" }
+], "claim refsのないfallbackは、本文に使った根拠ページを漏らさないよう全root sourceを表示する");
+assert.deepEqual(fallbackSourceCoverage.related_sources, [], "fallbackでも未使用のrelated angleはrootへ混ぜない");
+
 const invalidRootLedger: FactLedger = {
   ...ledger,
   claims: [{ ...ledger.claims[0]!, evidence_refs: ["E3"], scope: "root_event" }]

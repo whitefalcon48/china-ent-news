@@ -354,7 +354,7 @@
       "japan_gap": "high",
       "context_value": "high",
       "sns_heat": "none",
-      "source_count": 4,
+      "source_count": 5,
       "source_list": [
         {
           "name": "界面新闻 影视产业",
@@ -363,6 +363,10 @@
         {
           "name": "1905电影网 新闻",
           "url": "https://www.1905.com/news/20260827/1765042.shtml"
+        },
+        {
+          "name": "1905电影网 新闻",
+          "url": "https://www.1905.com/news/20260831/1765194.shtml"
         },
         {
           "name": "yangtse.com",
