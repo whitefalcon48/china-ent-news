@@ -7,7 +7,7 @@
       "index": 1,
       "topic_key": "暑期档电影市场",
       "title": "「史上最も混乱した夏休み映画シーズン」に　5年ぶりに30億元超えの大ヒット作が不在、『功夫女足』が首位も",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0
@@ -17,8 +17,8 @@
       "topic_key": "欢迎来龙餐馆",
       "title": "『歓迎竜レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
       "status": "pending",
-      "reason_tag": "",
-      "comment": "",
+      "reason_tag": "用語",
+      "comment": "歓迎竜レストランへ → ようこそ龍レストランへ",
       "revision_count": 0
     }
   ]
