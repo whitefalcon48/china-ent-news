@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-02",
+  "status": "pending",
+  "issue_number": 79,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "暑期档电影市场",
+      "title": "「史上最も混乱した夏休み映画シーズン」に　5年ぶりに30億元超えの大ヒット作が不在、『功夫女足』が首位も",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    },
+    {
+      "index": 2,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "『歓迎竜レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0
+    }
+  ]
+}

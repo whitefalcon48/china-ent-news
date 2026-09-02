@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-02",
+  "generated_at": "2026-09-02T06:04:01.600Z",
+  "ledgers": [
+    {
+      "topic_key": "暑期档电影市场",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:terminated / cause: read ECONNRESET (ECONNRESET)"
+    },
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:Cannot read properties of null (reading 'choices')"
+    }
+  ]
+}
