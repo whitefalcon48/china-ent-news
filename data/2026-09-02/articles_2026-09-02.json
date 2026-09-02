@@ -335,27 +335,31 @@
       "rawContentLength": 7074
     },
     "summary": {
-      "title_ja": "『歓迎竜レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
+      "title_ja": "「ようこそ龍レストランへ」北大・清華で特別試写会 文牧野監督が語る「龍レストラン」の意味",
       "badge": "NEWS",
-      "lead": "映画『歓迎竜レストランへ』（原題：歓迎来龍餐馆）のロードショーが北京大学と清華大学で行われ、タイトルの意味が解説された。作品は戦争下のレストランを舞台に、国境を越えた人々の絆を描く。",
-      "what_happened": "8月27日、映画『歓迎竜レストランへ』（原題：歓迎来龍餐馆）が北京大学と清華大学でロードショーを開催し、タイトルに込められた意味が解説された。本作は文牧野監督、寧浩プロデュース、沈騰（シェン・トン）主演で、戦火の中のレストランを舞台に、中国人シェフの徐福、現地で働く馬俊生、孤児の少年サイフの3人が疑似家族のように絆を深める物語。8月11日に公開され、累計興行収入は17億元を突破、豆瓣スコアは8.4から8.7に上昇し、今年の夏休みシーズンで最高評価を記録している。",
+      "lead": "映画『ようこそ龍レストランへ』（原題：歓迎来龍餐馆）の主創チームが北京大学と清華大学を訪れ、特別試写会と対談を行いました。文牧野監督は「龍レストラン」というタイトルに込めた意味を語り、作品のテーマへの理解を深めました。",
+      "what_happened": "8月下旬、映画『ようこそ龍レストランへ』の主創チームが北京大学と清華大学で特別試写会と対談を行いました。文牧野監督は清華大学での対談で、「龍レストラン」は特定の場所ではなく、「しっかりご飯を食べる」という願いを象徴しており、苦難を経験した人々が雨風をしのげる場所であってほしいという思いを込めたと語りました。また、主演の沈騰が演じる徐福について「英雄的なことをしたが、英雄ではない」と述べ、作品のテーマに関する見解を示しました。",
       "reaction_view": "",
-      "why_it_matters": "この作品、中国でめちゃくちゃ話題になっているんです！ 興行収入17億元超えで、豆瓣スコアも8.7まで上がって、夏休み映画の評価ランキングでトップなんですよ。監督は『薬の神じゃない！（原題：『我不是薬神』）』（薬の神じゃない！）の文牧野さんで、今回も社会派のテーマを娯楽作品に昇華させているみたい。ロードショーでタイトルの意味が解説されたっていうのも気になりますね。戦争と美食っていう組み合わせがどう描かれるのか、続報を追いたいです！",
+      "why_it_matters": "この映画、公開前から注目されていたんですけど、北大・清華での対談で監督自身がタイトルの意味を語ったのが気になります！「龍レストラン」が「しっかりご飯を食べる」という願いの象徴だというのは、戦争や平和を描いた作品のテーマを考える上で大事なポイントです。次は、この発言がSNSでどう広がるか、観客の受け止め方も見てみたいですね！",
       "editor_comment": "",
-      "japan_context_note": "",
+      "japan_context_note": "日本ではまだ公開情報が確認できていませんが、中国では8月11日に公開され、興行収入も好調なようです。",
       "category": "映画",
       "confidence": "B",
-      "source_type": "media_report",
-      "published_date": "2026-08-27",
-      "event_date": "2026-08-27",
+      "source_type": "data",
+      "published_date": "2026-08-31",
+      "event_date": "2026-08-30",
       "freshness_label": "recent",
       "newsworthiness_score": 70,
-      "japan_visibility": "unknown",
-      "japan_gap": "unknown",
+      "japan_visibility": "low",
+      "japan_gap": "high",
       "context_value": "high",
       "sns_heat": "none",
       "source_count": 4,
       "source_list": [
+        {
+          "name": "界面新闻 影视产业",
+          "url": "https://www.jiemian.com/article/14901525.html"
+        },
         {
           "name": "1905电影网 新闻",
           "url": "https://www.1905.com/news/20260827/1765042.shtml"
@@ -363,10 +367,6 @@
         {
           "name": "yangtse.com",
           "url": "https://www.yangtse.com/news/wy/202608/t20260814_382599.html"
-        },
-        {
-          "name": "界面新闻 影视产业",
-          "url": "https://www.jiemian.com/article/14901525.html"
         },
         {
           "name": "sxwbs.com",
@@ -382,14 +382,12 @@
       "topic_key": "欢迎来龙餐馆",
       "main_entities": {
         "people": [
-          "沈腾",
-          "蒋奇明",
-          "奥马尔·谢里夫",
           "文牧野",
-          "宁浩"
+          "沈腾",
+          "蒋奇明"
         ],
         "works": [
-          "欢迎来龙餐馆"
+          "ようこそ龍レストランへ"
         ],
         "organizations": [
           "北京大学",
@@ -398,13 +396,13 @@
       },
       "related_sources": [],
       "tags": [
-        "沈腾",
         "文牧野",
+        "沈腾",
         "興行収入",
-        "映画賞"
+        "映画祭"
       ],
-      "publish_priority": "medium",
-      "publish_reason": "中国で高評価・高興行の作品で、日本では未公開の可能性が高く、現地の話題を伝える価値がある。",
+      "publish_priority": "high",
+      "publish_reason": "中国で高い関心を集める映画の監督によるタイトル解説イベント。日本では未公開の作品であり、中国エンタメの文脈を伝える価値が高い。",
       "claim_refs": {
         "what_happened": [],
         "why_it_matters": [],
@@ -548,13 +546,13 @@
     "generationMeta": {
       "topic_key": "欢迎来龙餐馆",
       "ledger_used": false,
-      "ledger_fallback_reason": "ledger_extraction_failed:Cannot read properties of null (reading 'choices')",
+      "ledger_fallback_reason": "review_saved_ledger_missing",
       "evidence_quality": [
         {
           "evidence_ref": "E1",
-          "classification": "editorial_media",
+          "classification": "primary",
           "usable_for_verified_facts": true,
-          "reason": "editorial_source_without_integrity_markers"
+          "reason": "official_or_primary_data_source"
         },
         {
           "evidence_ref": "E2",
@@ -564,12 +562,18 @@
         },
         {
           "evidence_ref": "E3",
-          "classification": "primary",
+          "classification": "editorial_media",
           "usable_for_verified_facts": true,
-          "reason": "official_or_primary_data_source"
+          "reason": "editorial_source_without_integrity_markers"
         },
         {
           "evidence_ref": "E4",
+          "classification": "editorial_media",
+          "usable_for_verified_facts": true,
+          "reason": "editorial_source_without_integrity_markers"
+        },
+        {
+          "evidence_ref": "E5",
           "classification": "editorial_media",
           "usable_for_verified_facts": true,
           "reason": "editorial_source_without_integrity_markers"
@@ -591,6 +595,85 @@
       },
       "display_normalization": {
         "residues": []
+      },
+      "review_revision": {
+        "mode": "full_rewrite",
+        "changed_fields": [
+          "title_ja",
+          "lead",
+          "what_happened",
+          "why_it_matters",
+          "japan_context_note"
+        ],
+        "changes": [
+          {
+            "field": "title_ja",
+            "before": "『歓迎竜レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
+            "after": "「ようこそ龍レストランへ」北大・清華で特別試写会 文牧野監督が語る「龍レストラン」の意味",
+            "evidence_claim_refs": [],
+            "reason": "明示された全体書き直し"
+          },
+          {
+            "field": "lead",
+            "before": "映画『歓迎竜レストランへ』（原題：歓迎来龍餐馆）のロードショーが北京大学と清華大学で行われ、タイトルの意味が解説された。作品は戦争下のレストランを舞台に、国境を越えた人々の絆を描く。",
+            "after": "映画『ようこそ龍レストランへ』（原題：歓迎来龍餐馆）の主創チームが北京大学と清華大学を訪れ、特別試写会と対談を行いました。文牧野監督は「龍レストラン」というタイトルに込めた意味を語り、作品のテーマへの理解を深めました。",
+            "evidence_claim_refs": [],
+            "reason": "明示された全体書き直し"
+          },
+          {
+            "field": "what_happened",
+            "before": "8月27日、映画『歓迎竜レストランへ』（原題：歓迎来龍餐馆）が北京大学と清華大学でロードショーを開催し、タイトルに込められた意味が解説された。本作は文牧野監督、寧浩プロデュース、沈騰（シェン・トン）主演で、戦火の中のレストランを舞台に、中国人シェフの徐福、現地で働く馬俊生、孤児の少年サイフの3人が疑似家族のように絆を深める物語。8月11日に公開され、累計興行収入は17億元を突破、豆瓣スコアは8.4から8.7に上昇し、今年の夏休みシーズンで最高評価を記録している。",
+            "after": "8月下旬、映画『ようこそ龍レストランへ』の主創チームが北京大学と清華大学で特別試写会と対談を行いました。文牧野監督は清華大学での対談で、「龍レストラン」は特定の場所ではなく、「しっかりご飯を食べる」という願いを象徴しており、苦難を経験した人々が雨風をしのげる場所であってほしいという思いを込めたと語りました。また、主演の沈騰が演じる徐福について「英雄的なことをしたが、英雄ではない」と述べ、作品のテーマに関する見解を示しました。",
+            "evidence_claim_refs": [],
+            "reason": "明示された全体書き直し"
+          },
+          {
+            "field": "why_it_matters",
+            "before": "この作品、中国でめちゃくちゃ話題になっているんです！ 興行収入17億元超えで、豆瓣スコアも8.7まで上がって、夏休み映画の評価ランキングでトップなんですよ。監督は『薬の神じゃない！（原題：『我不是薬神』）』（薬の神じゃない！）の文牧野さんで、今回も社会派のテーマを娯楽作品に昇華させているみたい。ロードショーでタイトルの意味が解説されたっていうのも気になりますね。戦争と美食っていう組み合わせがどう描かれるのか、続報を追いたいです！",
+            "after": "この映画、公開前から注目されていたんですけど、北大・清華での対談で監督自身がタイトルの意味を語ったのが気になります！「龍レストラン」が「しっかりご飯を食べる」という願いの象徴だというのは、戦争や平和を描いた作品のテーマを考える上で大事なポイントです。次は、この発言がSNSでどう広がるか、観客の受け止め方も見てみたいですね！",
+            "evidence_claim_refs": [],
+            "reason": "明示された全体書き直し"
+          },
+          {
+            "field": "japan_context_note",
+            "before": "",
+            "after": "日本ではまだ公開情報が確認できていませんが、中国では8月11日に公開され、興行収入も好調なようです。",
+            "evidence_claim_refs": [],
+            "reason": "明示された全体書き直し"
+          }
+        ],
+        "preservation": {
+          "untouched_fields_exact": true,
+          "source_list_exact": false,
+          "related_sources_exact": true,
+          "reaction_view_preserved_when_untargeted": true,
+          "claim_refs_before": 0,
+          "claim_refs_after": 0,
+          "important_numbers_before": [
+            "8月",
+            "27日",
+            "3人",
+            "11日",
+            "17億元",
+            "8.4",
+            "8.7"
+          ],
+          "important_numbers_after": [
+            "8月",
+            "11日"
+          ],
+          "entities_before": [
+            "文牧野",
+            "北京大学"
+          ],
+          "entities_after": [
+            "文牧野",
+            "ようこそ龍レストランへ",
+            "北京大学"
+          ],
+          "narrative_chars_before": 582,
+          "narrative_chars_after": 584
+        }
       }
     }
   }
