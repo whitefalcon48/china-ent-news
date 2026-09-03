@@ -27,6 +27,26 @@ for (const failure of ["claim C1 is unavailable", "number_not_in_ledger: 2人", 
   const reply = humanRevisionFailure(new Error(failure));
   assert.doesNotMatch(reply, /claim|ledger|field|clarification_required|パッチ/u, "内部語を返信に出さない");
 }
+assert.match(
+  humanRevisionFailure(new Error("限定修正の範囲を超えて本文を置換しようとしています: lead")),
+  /指定された範囲外/u,
+  "範囲逸脱を変更箇所の曖昧さとして誤案内しない"
+);
+assert.match(
+  humanRevisionFailure(new Error("検出済みアンカーを含まない変更です: what_happened")),
+  /指定された範囲外/u,
+  "アンカー外の変更も範囲逸脱として案内する"
+);
+for (const ambiguity of [
+  "修正対象のフィールドまたは元記事内の完全一致箇所を特定できませんでした",
+  "修正対象を特定できるパッチが返りませんでした"
+]) {
+  assert.equal(
+    humanRevisionFailure(new Error(ambiguity)),
+    "変更する箇所を一つに特定できませんでした。",
+    "本当に変更対象が曖昧な場合は従来の案内を維持する"
+  );
+}
 for (const instruction of ["作品名は 初稿 → 修正版 に直してください", "作品名は 初稿 → 修正版 へ修正してください", "作品名は 初稿 → 修正版 に変更してください", "作品名は 初稿 → 修正版 に統一してください"]) {
   const noTagIntent = detectReviewRevisionIntent(summary, instruction, "その他");
   assert.equal(tryApplyDeterministicTerminologyReplacement(summary, instruction, "その他", noTagIntent)?.summary.title_ja, "修正版", `理由タグなしの純粋な明示置換を即時適用できる: ${instruction}`);

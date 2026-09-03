@@ -393,6 +393,12 @@ export type ReviewRevisionIntent = {
     target_fields: ReviewPatchableField[];
   }>;
   required_field_rewrites: ReviewPatchableField[];
+  /** Mixed literal+prose residuals permit additions, not a silent field rewrite. */
+  restrict_full_field_replacement?: boolean;
+  /** Literals produced by the deterministic stage; residual patches may not touch them. */
+  protected_replacements?: Array<{ field: ReviewPatchableField; literal: string }>;
+  /** Factual prose in a mixed residual needs claim refs even when reasonTag is 用語. */
+  require_claim_refs_for_prose?: boolean;
   clarification_reason: string;
 };
 

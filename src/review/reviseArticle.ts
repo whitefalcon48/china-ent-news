@@ -10,9 +10,11 @@ import { rebuildReviewEvidence } from "./reviewEvidence.js";
 import { extractFactLedger } from "../factLedger.js";
 import {
   applyValidatedReviewPatch,
+  assertRequiredLiteralReplacementCoverage,
   buildFullRewriteTrace,
   buildReviewRevisionTrace,
   detectReviewRevisionIntent,
+  planMixedLiteralRevision,
   ReviewRevisionClarificationRequiredError,
   ReviewRevisionFieldRewriteRepairableError,
   tryApplyDeterministicTerminologyReplacement,
@@ -97,14 +99,10 @@ export async function reviseStoredArticle(directory: string, index: number, comm
     return articles[index - 1];
   }
   if (intent.mode === "limited_patch") {
-    const patched = await generateAndApplyLimitedReviewPatch(
-      article.summary,
-      article.topic,
-      ledger!,
-      comment,
-      reasonTag,
-      intent
-    );
+    const mixedPlan = planMixedLiteralRevision(article.summary, comment, reasonTag);
+    const patched = mixedPlan
+      ? await generateAndApplyMixedLiteralReviewPatch(article.summary, article.topic, ledger!, comment, reasonTag)
+      : await generateAndApplyLimitedReviewPatch(article.summary, article.topic, ledger!, comment, reasonTag, intent);
     articles[index - 1] = {
       ...article,
       summary: patched.summary,
@@ -176,7 +174,10 @@ export async function prepareStoredArticleRevision(
       const revised = decorateRevision(article, lightweight.summary, trace, ledger, "review_literal_edit", false, lightweight.claimCheck);
       return { kind: "proposal", article: revised, mode: "limited_patch", trace, summary: "指定された一意の文言を限定編集", evidenceUrls: evidenceUrls(revised) };
     }
-    const patched = await generateAndApplyLimitedReviewPatch(before, article.topic, ledger, comment, reasonTag, intent);
+    const mixedPlan = planMixedLiteralRevision(before, comment, reasonTag);
+    const patched = mixedPlan
+      ? await generateAndApplyMixedLiteralReviewPatch(before, article.topic, ledger, comment, reasonTag)
+      : await generateAndApplyLimitedReviewPatch(before, article.topic, ledger, comment, reasonTag, intent);
     const revised = decorateRevision(article, patched.summary, patched.trace, ledger, patched.generationAttempts > 1 ? "review_limited_patch_repair" : "review_limited_patch", patched.generationAttempts > 1, patched.claimCheck);
     return { kind: "proposal", article: revised, mode: "limited_patch", trace: patched.trace, summary: "指定された箇所の修正案", evidenceUrls: evidenceUrls(revised) };
   }
@@ -268,7 +269,8 @@ export async function generateAndApplyLimitedReviewPatch(
   instruction: string,
   reasonTag: ReviewReasonTag | string,
   intent: ReviewRevisionIntent,
-  generateDocument?: LimitedReviewPatchGenerator
+  generateDocument?: LimitedReviewPatchGenerator,
+  validationBefore: SummarizedArticle = before
 ) {
   const budget = createLlmCallBudget(LIMITED_REVIEW_MAX_LLM_CALLS);
   const generate = generateDocument ?? ((currentBudget, repairFeedback) => (
@@ -291,7 +293,7 @@ export async function generateAndApplyLimitedReviewPatch(
 
     try {
       return {
-        ...applyValidatedReviewPatch(before, topic, ledger, instruction, reasonTag, intent, document),
+        ...applyValidatedReviewPatch(before, topic, ledger, instruction, reasonTag, intent, document, validationBefore),
         generationAttempts,
         llmCallsUsed: budget.used
       };
@@ -313,6 +315,43 @@ export async function generateAndApplyLimitedReviewPatch(
   }
 
   throw new ReviewRevisionClarificationRequiredError("限定修正を安全に完了できなかったため、元記事を維持します");
+}
+
+/**
+ * For a request that combines exact terminology with new prose, deterministic
+ * replacements are staged in-memory first. The model sees only the residual
+ * request and only its direct destination fields. The final candidate is then
+ * revalidated from the immutable original before it can become a proposal.
+ */
+export async function generateAndApplyMixedLiteralReviewPatch(
+  before: SummarizedArticle,
+  topic: TopicCandidate,
+  ledger: FactLedger,
+  instruction: string,
+  reasonTag: ReviewReasonTag | string,
+  generateDocument?: LimitedReviewPatchGenerator
+) {
+  const plan = planMixedLiteralRevision(before, instruction, reasonTag);
+  if (!plan) throw new ReviewRevisionClarificationRequiredError("混在修正を安全に分割できませんでした");
+  const patched = await generateAndApplyLimitedReviewPatch(
+    plan.workingSummary,
+    topic,
+    ledger,
+    plan.residualInstruction,
+    reasonTag,
+    plan.residualIntent,
+    generateDocument,
+    before
+  );
+  assertRequiredLiteralReplacementCoverage(before, patched.summary, plan.originalIntent);
+  const trace = buildReviewRevisionTrace(
+    before,
+    patched.summary,
+    [...plan.deterministicPatches, ...patched.patches],
+    plan.combinedIntent,
+    instruction
+  );
+  return { ...patched, trace, plan };
 }
 
 function minimalWhyItMattersPatch(before: string, after: string): ReviewPatchOperation {

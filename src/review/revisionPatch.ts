@@ -67,6 +67,24 @@ export type ReviewFieldRewriteRepairFeedback = {
   reason: ReviewFieldRewriteRepairReason;
 };
 
+type ReviewIntentOptions = {
+  /**
+   * A mixed instruction has already had its exact A→B operations removed.
+   * In that residual, words such as "タイトルの意味" are facts to add, not a
+   * request to edit the title. Only a grammatical destination is editable.
+   */
+  directDestinationOnly?: boolean;
+};
+
+export type MixedLiteralRevisionPlan = {
+  originalIntent: ReviewRevisionIntent;
+  residualIntent: ReviewRevisionIntent;
+  combinedIntent: ReviewRevisionIntent;
+  workingSummary: SummarizedArticle;
+  deterministicPatches: ReviewPatchOperation[];
+  residualInstruction: string;
+};
+
 /**
  * A required field rewrite reached a safe, evidence-backed scope, but the
  * generated text did not actually rewrite the field. The caller may make one
@@ -87,7 +105,8 @@ export class ReviewRevisionFieldRewriteRepairableError extends ReviewRevisionCla
 export function detectReviewRevisionIntent(
   summary: SummarizedArticle,
   instruction: string,
-  reasonTag: ReviewReasonTag | string = "その他"
+  reasonTag: ReviewReasonTag | string = "その他",
+  options: ReviewIntentOptions = {}
 ): ReviewRevisionIntent {
   if (FULL_REWRITE.test(instruction)) {
     return {
@@ -101,10 +120,9 @@ export function detectReviewRevisionIntent(
     };
   }
 
-  const explicitFields = new Set<ReviewPatchableField>();
-  for (const alias of FIELD_ALIASES) {
-    if (alias.pattern.test(instruction)) alias.fields.forEach((field) => explicitFields.add(field));
-  }
+  const explicitFields = options.directDestinationOnly
+    ? detectDirectDestinationFields(instruction)
+    : detectNamedFields(instruction);
   if (/(?:詳しく見る|詳細セクション|detail_sections)/u.test(instruction)) {
     (summary.detail_sections ?? []).forEach((_section, index) => {
       explicitFields.add(`detail_sections.${index}.heading`);
@@ -114,6 +132,17 @@ export function detectReviewRevisionIntent(
   if (reasonTag === "口調" && explicitFields.size === 0) explicitFields.add("why_it_matters");
 
   const replacementDetection = detectRequiredLiteralReplacements(summary, instruction);
+  if (replacementDetection.unsafe.length > 0) {
+    return {
+      mode: "clarification_required",
+      allowed_fields: [],
+      explicit_fields: [...explicitFields],
+      anchors_by_field: {},
+      required_replacements: replacementDetection.requirements,
+      required_field_rewrites: [],
+      clarification_reason: `明示置換どうしが重なり、適用順で結果が変わります: ${replacementDetection.unsafe.join(", ")}`
+    };
+  }
   if (replacementDetection.unmatched.length > 0) {
     return {
       mode: "clarification_required",
@@ -137,8 +166,12 @@ export function detectReviewRevisionIntent(
     const value = readPatchableField(summary, field);
     const matches = candidateAnchors.filter((anchor) => value.includes(anchor));
     if (matches.length > 0) {
-      anchorsByField[field] = [...new Set(matches)];
-      allowedFields.add(field);
+      if (!options.directDestinationOnly || allowedFields.has(field)) {
+        anchorsByField[field] = [...new Set(matches)];
+      }
+      // In a residual of a mixed instruction, a quoted fact may mention a
+      // title/person/work. It must not silently widen the model's edit scope.
+      if (!options.directDestinationOnly) allowedFields.add(field);
     }
   }
 
@@ -165,6 +198,70 @@ export function detectReviewRevisionIntent(
   };
 }
 
+/**
+ * Split a mixed request into deterministic lexical replacements and the
+ * remaining editorial request. Nothing is persisted here: callers validate
+ * the composed proposal against the immutable original before saving it.
+ */
+export function planMixedLiteralRevision(
+  before: SummarizedArticle,
+  instruction: string,
+  reasonTag: ReviewReasonTag | string = "その他"
+): MixedLiteralRevisionPlan | null {
+  const originalIntent = detectReviewRevisionIntent(before, instruction, reasonTag);
+  if (
+    originalIntent.mode !== "limited_patch"
+    || originalIntent.required_replacements.length === 0
+    || isOnlyLiteralReplacementInstruction(instruction)
+  ) return null;
+
+  const staged = applyRequiredLiteralReplacements(before, originalIntent);
+  if (!staged) return null;
+  const residualInstruction = removeLiteralReplacementSpans(instruction).trim();
+  const residualIntent = {
+    ...detectReviewRevisionIntent(staged.summary, residualInstruction, reasonTag, { directDestinationOnly: true }),
+    // A mixed request is a lexical replacement plus a prose addition, never
+    // an implicit field rewrite. The latter must be a separately explicit
+    // request so it cannot erase the deterministic stage.
+    required_field_rewrites: [],
+    restrict_full_field_replacement: true,
+    require_claim_refs_for_prose: mixedResidualNeedsClaimRefs(residualInstruction, reasonTag),
+    protected_replacements: originalIntent.required_replacements.flatMap((replacement) => (
+      replacement.target_fields.map((field) => ({ field, literal: replacement.after }))
+    ))
+  };
+  if (residualIntent.mode === "clarification_required") {
+    throw new ReviewRevisionClarificationRequiredError(residualIntent.clarification_reason);
+  }
+  const deterministicFields = new Set(staged.patches.map((patch) => patch.field));
+  return {
+    originalIntent,
+    residualIntent,
+    combinedIntent: {
+      ...residualIntent,
+      allowed_fields: [...new Set([...residualIntent.allowed_fields, ...deterministicFields])],
+      explicit_fields: [...new Set([...residualIntent.explicit_fields, ...deterministicFields])],
+      required_replacements: originalIntent.required_replacements
+    },
+    workingSummary: staged.summary,
+    deterministicPatches: staged.patches,
+    residualInstruction
+  };
+}
+
+function mixedResidualNeedsClaimRefs(instruction: string, reasonTag: ReviewReasonTag | string) {
+  const factualDestination = /(?:タイトル|見出し|リード|導入|本文|何が起きた|what_happened|反応・見られ方|reaction_view|SNS反応|微博の反応|ビンタンの注目ポイント|注目ポイント|why_it_matters|ビンタンからの補足|補足|japan_context_note)/u;
+  if (!factualDestination.test(instruction)) return false;
+  const deletionOnly = /(?:削除|消(?:して|す|し)|取り除|外して)/u.test(instruction);
+  const explicitAddition = /(?:追加|追記|補(?:って|い|う|足)|書き加え|入れ|記載)/u;
+  if (deletionOnly && !explicitAddition.test(instruction)) return false;
+  const proseAddition = /(?:追加|追記|補(?:って|い|う|足)|書き加え|入れ|記載|説明|解説|明か|語った|理由|意味|背景)/u;
+  if (!proseAddition.test(instruction)) return false;
+  const explicitlyToneOnly = reasonTag === "口調" && /(?:口調|語尾|言い回し|表現|トーン)/u.test(instruction)
+    && !/(?:事実|根拠|説明|解説|明か|語った|理由|意味|背景)/u.test(instruction);
+  return !explicitlyToneOnly;
+}
+
 export function tryApplyDeterministicTerminologyReplacement(
   before: SummarizedArticle,
   instruction: string,
@@ -178,33 +275,56 @@ export function tryApplyDeterministicTerminologyReplacement(
     || !isOnlyLiteralReplacementInstruction(instruction)
   ) return null;
 
+  const staged = applyRequiredLiteralReplacements(before, intent);
+  if (!staged) return null;
+  assertNoNewDisplayResidues(before, staged.summary);
+  return {
+    summary: staged.summary,
+    trace: buildReviewRevisionTrace(before, staged.summary, staged.patches, intent, instruction)
+  };
+}
+
+function applyRequiredLiteralReplacements(before: SummarizedArticle, intent: ReviewRevisionIntent) {
   let after = structuredClone(before);
   const patches: ReviewPatchOperation[] = [];
   for (const field of [...new Set(intent.required_replacements.flatMap((replacement) => replacement.target_fields))]) {
-    const current = readPatchableField(after, field);
-    let next = current;
+    const original = readPatchableField(after, field);
+    let next = original;
     for (const replacement of intent.required_replacements.filter((item) => item.target_fields.includes(field))) {
       if (!sameNumberTokens(replacement.before, replacement.after)) return null;
       next = next.split(replacement.before).join(replacement.after);
-      patches.push({
-        field,
-        operation: "replace",
-        before: replacement.before,
-        after: replacement.after,
-        evidence_claim_refs: [],
-        reason: "OWNERが明示した用語を全出現へ限定置換"
-      });
     }
-    if (next === current) return null;
+    if (next === original) return null;
+    // One staged patch per field preserves the exact, all-occurrence coverage
+    // even when a term appears more than once in that field.
+    patches.push({
+      field,
+      operation: "replace",
+      before: original,
+      after: next,
+      evidence_claim_refs: [],
+      reason: "OWNERが明示した用語を全出現へ限定置換"
+    });
     after = writePatchableField(after, field, next);
   }
+  return patches.length > 0 ? { summary: after, patches } : null;
+}
 
-  if (patches.length === 0) return null;
-  assertNoNewDisplayResidues(before, after);
-  return {
-    summary: after,
-    trace: buildReviewRevisionTrace(before, after, patches, intent, instruction)
-  };
+function removeLiteralReplacementSpans(instruction: string) {
+  const normalized = normalizeHtmlEncodedArrows(instruction);
+  const matches = [...normalized.matchAll(LITERAL_ARROW_REPLACEMENT)]
+    .filter((match) => firstCaptured(match.slice(1, 6)) && firstCaptured(match.slice(6, 11)));
+  if (matches.length === 0) return normalized;
+  let cursor = 0;
+  let residual = "";
+  for (const match of matches) {
+    const start = match.index ?? 0;
+    residual += normalized.slice(cursor, start);
+    // Keep a boundary so adjacent natural-language clauses never merge.
+    residual += " ";
+    cursor = start + match[0].length;
+  }
+  return residual + normalized.slice(cursor);
 }
 
 function isOnlyLiteralReplacementInstruction(instruction: string) {
@@ -234,6 +354,9 @@ export function buildLimitedReviewPatchPrompt(
 ) {
   const allowedContent = Object.fromEntries(intent.allowed_fields.map((field) => [field, readPatchableField(summary, field)]));
   const usableClaims = ledger.claims.filter(isUsableReviewClaim);
+  const protectedLiteralInstruction = intent.protected_replacements?.length
+    ? `\n決定的置換済みの保護語句（この語句を before に含めて変更・削除してはいけません）:\n${JSON.stringify([...new Set(intent.protected_replacements.map((item) => item.literal))], null, 2)}\n`
+    : "";
   const repairInstruction = repairFeedback ? `
 
 前回案の検証失敗（今回が唯一の修復機会）:
@@ -265,6 +388,7 @@ ${JSON.stringify(intent.required_field_rewrites, null, 2)}
 
 利用可能な事実台帳（claims は evidence_claim_refs に指定できるものだけ）:
 ${JSON.stringify({ claims: usableClaims, terms: ledger.terms }, null, 2)}
+${protectedLiteralInstruction}
 ${repairInstruction}
 
 厳守事項:
@@ -275,6 +399,7 @@ ${repairInstruction}
 - operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。上記の「実質的な再構成が必要な箇所」には必ず replace_field を使い、before は空文字にする。保存記事の実際の現在値はシステムがbindするため、長文をコピー・要約・補正してbeforeへ入れてはいけない。afterにはフィールド全体の書き直し後を入れる。
 - replace_field の after に現在値と同じ文を返してはいけない。同文は修正未実施として拒否される。
 - 通常の置換では、after は修正指示に必要な最小限の変更だけにし、周辺文、別フィールド、文順を変えない。
+- 決定的置換済みの保護語句が示されている場合、その語句を before に含めて変更・削除してはいけない。追記は保護語句を含まない一意の文を before にして行う。
 - 再構成対象フィールドには最小変更ルールを適用しない。既存文の前後へ説明を1文足すだけ、ほぼ同じ文順・表現を残すだけでは不合格。指示された分かりにくさ・浅さを解消するよう、根拠claim同士の因果・対比・仕組み・変化のいずれかを説明する文章へ組み直す。
 - 再構成の evidence_claim_refs には、上の「利用可能な事実台帳」にあるclaim IDから、書き直したフィールドで実際に使ったものをすべて入れる。表示されていないIDやunsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
 - why_it_matters の再構成では、あらすじの追加だけで終わらせず、なぜ再評価・注目が起きるのか、作品や出来事の何が面白い／重要なのかを、事実台帳にある複数事実の関係として説明する。台帳に無い評論を足さない。
@@ -322,8 +447,9 @@ export function applyValidatedReviewPatch(
   instruction: string,
   reasonTag: ReviewReasonTag | string,
   intent: ReviewRevisionIntent,
-  document: ReviewPatchDocument
-): { summary: SummarizedArticle; trace: ReviewRevisionTrace; claimCheck: ClaimCheckResult } {
+  document: ReviewPatchDocument,
+  validationBefore: SummarizedArticle = before
+): { summary: SummarizedArticle; trace: ReviewRevisionTrace; claimCheck: ClaimCheckResult; patches: ReviewPatchOperation[] } {
   if (intent.mode === "clarification_required") {
     throw new ReviewRevisionClarificationRequiredError(intent.clarification_reason);
   }
@@ -351,8 +477,13 @@ export function applyValidatedReviewPatch(
     if (!allowed.has(patch.field)) throw new ReviewRevisionContractError(`許可されていないフィールドです: ${patch.field}`);
     const current = readPatchableField(after, patch.field);
     const original = originalFieldValues.get(patch.field) ?? "";
+    const fullFieldRewriteAllowed = !intent.restrict_full_field_replacement || intent.required_field_rewrites.includes(patch.field);
+    const protectedLiteral = intent.protected_replacements?.find((item) => item.field === patch.field && patch.before.includes(item.literal));
+    if (protectedLiteral) {
+      throw new ReviewRevisionContractError(`決定的置換済みの語句を後段パッチが変更しようとしています: ${patch.field}`);
+    }
     if (patch.operation === "replace_field") {
-      if (!explicit.has(patch.field)) throw new ReviewRevisionContractError(`フィールド全体の置換は明示対象だけに許可されます: ${patch.field}`);
+      if (!explicit.has(patch.field) || !fullFieldRewriteAllowed) throw new ReviewRevisionContractError(`フィールド全体の置換は明示された再構成対象だけに許可されます: ${patch.field}`);
       if (patch.before !== current) throw new ReviewRevisionContractError(`replace_field の before が現在値と一致しません: ${patch.field}`);
     } else {
       if (!patch.before) throw new ReviewRevisionContractError(`replace の before は空にできません: ${patch.field}`);
@@ -366,7 +497,8 @@ export function applyValidatedReviewPatch(
       }
       const total = (replacedChars.get(patch.field) ?? 0) + patch.before.length;
       replacedChars.set(patch.field, total);
-      if (original.length > 0 && total / original.length > 0.65 && !explicit.has(patch.field)) {
+      const pureAddition = patch.after.startsWith(patch.before) || patch.after.endsWith(patch.before);
+      if (original.length > 0 && total / original.length > 0.65 && !fullFieldRewriteAllowed && !pureAddition) {
         throw new ReviewRevisionContractError(`限定修正の範囲を超えて本文を置換しようとしています: ${patch.field}`);
       }
     }
@@ -374,7 +506,8 @@ export function applyValidatedReviewPatch(
       const claim = knownClaims.get(ref);
       if (!claim || !isUsableReviewClaim(claim)) throw new ReviewRevisionContractError(`利用できない根拠claimです: ${ref}`);
     }
-    if (reasonTag === "事実" && patch.evidence_claim_refs.length === 0) {
+    const factualProseField = /^(?:title_ja|lead|what_happened|reaction_view|why_it_matters|japan_context_note)$/u.test(patch.field);
+    if ((reasonTag === "事実" || (intent.require_claim_refs_for_prose && factualProseField)) && patch.evidence_claim_refs.length === 0) {
       throw new ReviewRevisionContractError(`事実訂正に根拠claimがありません: ${patch.field}`);
     }
     assertNewNumbersGrounded(patch, ledger);
@@ -393,15 +526,15 @@ export function applyValidatedReviewPatch(
   assertRequiredInstructionCoverage(before, after, patches, intent, ledger);
   if (reasonTag === "口調") assertToneOnlyRevisionContract(before, after);
   const trace = buildReviewRevisionTrace(before, after, patches, intent, instruction);
-  assertNoNewDisplayResidues(before, after);
-  const beforeClaimCheck = runClaimCheck(before, ledger);
+  assertNoNewDisplayResidues(validationBefore, after);
+  const beforeClaimCheck = runClaimCheck(validationBefore, ledger);
   const afterClaimCheck = runClaimCheck(after, ledger);
   assertNoNewGates(beforeClaimCheck, afterClaimCheck, "記事claim check");
   const toneMode = getToneMode(topic, ledger);
-  const beforeComment = runCommentCheck(before.why_it_matters, "", ledger, topic, toneMode, {
-    bodyText: articleBodyText(before),
-    bodyClaimRefs: articleBodyClaimRefs(before),
-    commentClaimRefs: before.claim_refs.why_it_matters
+  const beforeComment = runCommentCheck(validationBefore.why_it_matters, "", ledger, topic, toneMode, {
+    bodyText: articleBodyText(validationBefore),
+    bodyClaimRefs: articleBodyClaimRefs(validationBefore),
+    commentClaimRefs: validationBefore.claim_refs.why_it_matters
   });
   const afterComment = runCommentCheck(after.why_it_matters, "", ledger, topic, toneMode, {
     bodyText: articleBodyText(after),
@@ -409,7 +542,7 @@ export function applyValidatedReviewPatch(
     commentClaimRefs: after.claim_refs.why_it_matters
   });
   assertNoNewGates({ ...beforeClaimCheck, violations: beforeComment }, { ...afterClaimCheck, violations: afterComment }, "コメントclaim check");
-  return { summary: after, trace, claimCheck: afterClaimCheck };
+  return { summary: after, trace, claimCheck: afterClaimCheck, patches };
 }
 
 function extractInstructionAnchors(summary: SummarizedArticle, instruction: string) {
@@ -418,6 +551,71 @@ function extractInstructionAnchors(summary: SummarizedArticle, instruction: stri
   const originalTokens = values.flatMap((value) => value.match(/\d{4}年\d{1,2}月(?:\d{1,2}日)?|\d+(?:\.\d+)?(?:億|亿|万)?元(?:以上|相当)?|\d+人(?:の[^、。]{0,12})?/gu) ?? []);
   return [...new Set([...quoted, ...originalTokens.filter((token) => instruction.includes(token))])]
     .filter((anchor) => values.some((value) => value.includes(anchor)));
+}
+
+function detectNamedFields(instruction: string) {
+  const fields = new Set<ReviewPatchableField>();
+  for (const alias of FIELD_ALIASES) {
+    if (alias.pattern.test(instruction)) alias.fields.forEach((field) => fields.add(field));
+  }
+  return fields;
+}
+
+function detectDirectDestinationFields(instruction: string) {
+  const fields = new Set<ReviewPatchableField>();
+  const destinationVerb = /(?:追加|追記|補(?:って|い|う|足)|書き加え|入れ|記載|直(?:して|す|し)|修正|変更|置換|削除|消(?:して|す|し)|取り除|外(?:して|す|し))/u;
+  const destinationAction = /(?:追加|追記|補(?:って|い|う|足)|書き加え|入れ|記載|直(?:して|す|し)|修正|変更|置換|削除|消(?:して|す|し)|取り除|外(?:して|す|し))(?:しない|せず|しません|不要|する必要はない|しなくてよい|するな)?/u;
+  for (const clause of splitDestinationClauses(instruction)) {
+    for (const alias of FIELD_ALIASES) {
+      // A field is a destination only when it is followed by a destination
+      // particle. "タイトルの具体的な意味" is content, not title_ja scope.
+      const destination = new RegExp(`(${alias.pattern.source})(?:か)?[」』]?(?:欄)?\\s*(に|へ|を|から)`, "gu");
+      for (const match of clause.matchAll(destination)) {
+        const tail = clause.slice((match.index ?? 0) + match[0].length);
+        // Bind the action to this destination. A following positive action in
+        // another comma clause must not override "タイトルを修正せず".
+        const action = destinationAction.exec(tail)?.[0] ?? "";
+        if (!action || !destinationVerb.test(action)) continue;
+        if (/(?:しない|せず|しません|不要|する必要はない|しなくてよい|するな)$/u.test(action)) continue;
+        const directlyAttached = tail.trimStart().startsWith(action);
+        const particle = match[2] ?? "";
+        const start = match.index ?? 0;
+        const quotedUiLabel = /[「『“"]/u.test(clause.slice(Math.max(0, start - 1), start + match[0].length));
+        const columnLabel = match[0].includes("欄");
+        const safeDistantDestination = alias.fields.includes("what_happened") || quotedUiLabel || columnLabel;
+        // 「タイトルを参考にして、本文に追記」のように、対象を
+        // 説明材料として使うだけの `を` は編集対象にしない。distant
+        // additions are reserved for a body/UI label, never a bare semantic
+        // mention such as「タイトルに込めた意味」.
+        if (!directlyAttached && (particle === "を" || !safeDistantDestination)) continue;
+        alias.fields.forEach((field) => fields.add(field));
+      }
+    }
+    if (/(?:詳しく見る|詳細セクション|detail_sections)\s*(?:に|へ|を)/u.test(clause)) {
+      // Detail sections still require an explicit field/section choice; do
+      // not widen all of them merely because the request says "details".
+    }
+  }
+  return fields;
+}
+
+function splitDestinationClauses(instruction: string) {
+  const closingByOpening: Record<string, string> = { "「": "」", "『": "』", "“": "”", '"': '"' };
+  let closing = "";
+  let protectedInstruction = "";
+  for (const char of instruction) {
+    if (closing) {
+      if (char === closing) closing = "";
+      protectedInstruction += char === "。" ? "\uE000" : char;
+      continue;
+    }
+    closing = closingByOpening[char] ?? "";
+    protectedInstruction += char;
+  }
+  return protectedInstruction
+    .split(/[。．；;！？!?\r\n]+/u)
+    .map((value) => value.replace(/\uE000/gu, "。").trim())
+    .filter(Boolean);
 }
 
 function detectRequiredLiteralReplacements(summary: SummarizedArticle, instruction: string) {
@@ -435,7 +633,28 @@ function detectRequiredLiteralReplacements(summary: SummarizedArticle, instructi
     if (targetFields.length === 0) unmatched.push(`${candidate.before}→${candidate.after}`);
     return { ...candidate, target_fields: targetFields };
   });
-  return { requirements, unmatched };
+  const unsafe = unique.flatMap((candidate, index) => unique.slice(index + 1).flatMap((other) => {
+    if (
+      candidate.after.includes(other.before)
+      || other.after.includes(candidate.before)
+      || hasNonEmptySuffixPrefixOverlap(candidate.before, other.before)
+      || hasNonEmptySuffixPrefixOverlap(other.before, candidate.before)
+      || hasNonEmptySuffixPrefixOverlap(candidate.after, other.before)
+      || hasNonEmptySuffixPrefixOverlap(other.after, candidate.before)
+    ) {
+      return [`${candidate.before}→${candidate.after} / ${other.before}→${other.after}`];
+    }
+    return [];
+  }));
+  return { requirements, unmatched, unsafe: [...new Set(unsafe)] };
+}
+
+function hasNonEmptySuffixPrefixOverlap(left: string, right: string) {
+  const max = Math.min(left.length, right.length);
+  for (let length = 1; length <= max; length += 1) {
+    if (left.slice(-length) === right.slice(0, length)) return true;
+  }
+  return false;
 }
 
 function normalizeHtmlEncodedArrows(instruction: string) {
@@ -564,6 +783,26 @@ function normalizedNumberTokens(text: string) {
   return new Set(extractNumberTokens(text).map(normalizeNumberToken).filter(Boolean));
 }
 
+export function assertRequiredLiteralReplacementCoverage(
+  before: SummarizedArticle,
+  after: SummarizedArticle,
+  intent: ReviewRevisionIntent
+) {
+  for (const replacement of intent.required_replacements) {
+    for (const field of replacement.target_fields) {
+      const originalValue = readPatchableField(before, field);
+      const originalCount = countOccurrences(originalValue, replacement.before);
+      const finalValue = readPatchableField(after, field);
+      const finalReplacementCount = countOccurrences(finalValue, replacement.after);
+      if (originalCount === 0 || finalReplacementCount < originalCount || (!replacement.after.includes(replacement.before) && finalValue.includes(replacement.before))) {
+        throw new ReviewRevisionClarificationRequiredError(
+          `明示置換を全件反映できませんでした: ${field} の ${replacement.before}→${replacement.after}`
+        );
+      }
+    }
+  }
+}
+
 function assertRequiredInstructionCoverage(
   before: SummarizedArticle,
   after: SummarizedArticle,
@@ -587,6 +826,8 @@ function assertRequiredInstructionCoverage(
       }
     }
   }
+
+  assertRequiredLiteralReplacementCoverage(before, after, intent);
 
   const usableClaims = new Set(ledger.claims.filter(isUsableReviewClaim).map((claim) => claim.id));
   for (const field of intent.required_field_rewrites) {

@@ -12,12 +12,13 @@ import {
   applyValidatedReviewPatch,
   buildLimitedReviewPatchPrompt,
   detectReviewRevisionIntent,
+  planMixedLiteralRevision,
   ReviewRevisionClarificationRequiredError,
   ReviewRevisionContractError,
   tryApplyDeterministicTerminologyReplacement
 } from "./review/revisionPatch.js";
 import { consumeLlmCall } from "./llmCallBudget.js";
-import { generateAndApplyLimitedReviewPatch, LIMITED_REVIEW_MAX_LLM_CALLS, reviseStoredArticle } from "./review/reviseArticle.js";
+import { generateAndApplyLimitedReviewPatch, generateAndApplyMixedLiteralReviewPatch, LIMITED_REVIEW_MAX_LLM_CALLS, reviseStoredArticle } from "./review/reviseArticle.js";
 import type { FactLedger, ReviewPatchDocument, SummarizedArticle, TopicCandidate } from "./types.js";
 
 const ownerInstruction = "2025年12月を2025年6月17日に訂正（上海・范思哲イベント、単価約5600元のネックレス27本を約15万元で購入）。「6万元以上」は「数万元相当」に、「7人のメイクアップアーティスト」は「複数のメイク担当者」に、「純金のスマホスタンド」は「黄金／金製のスマホスタンド」に修正。「中国のエンタメ業界では『逆応援』という文化があります」は「中国のファンダムでは、芸能人側がファンへプレゼントやサービスを返す行為を『逆応援（逆应援）』と呼ぶことがあります」に修正。「娘家人」は「花嫁側の身内・実家側の人々」と補足。確度Bは維持。";
@@ -863,7 +864,7 @@ const missingLedgerTitleBefore: SummarizedArticle = {
   ...before,
   title_ja: "『歓迎竜レストランへ』、タイトルに込めた意味を解説",
   lead: "映画『歓迎竜レストランへ』の主創が大学を訪れた。",
-  what_happened: "『歓迎竜レストランへ』のロードショーが行われた。",
+  what_happened: "『歓迎竜レストランへ』のロードショーが行われた。タイトルに込められた意味が解説された。",
   why_it_matters: "『歓迎竜レストランへ』の続報が気になります！"
 };
 const missingLedgerInstruction = "歓迎竜レストランへ → ようこそ龍レストランへ";
@@ -923,6 +924,322 @@ assert.equal(
   null,
   "用語置換以外の依頼を台帳なし経路で黙って無視しない"
 );
+assert.equal(
+  detectReviewRevisionIntent(missingLedgerTitleBefore, "歓迎竜レストランへ→ようこそ龍レストランへ。ようこそ龍レストランへ→龍の食堂へ。", "用語").mode,
+  "clarification_required",
+  "A→BとB→Cの順序依存な置換は安全停止する"
+);
+assert.equal(
+  detectReviewRevisionIntent(missingLedgerTitleBefore, "歓迎竜レストランへ→ようこそ龍レストランへ。ようこそ龍レストランへ→歓迎竜レストランへ。", "用語").mode,
+  "clarification_required",
+  "循環する置換は安全停止する"
+);
+assert.equal(
+  detectReviewRevisionIntent(missingLedgerTitleBefore, "歓迎竜→龍。歓迎竜レストランへ→ようこそ龍レストランへ。", "用語").mode,
+  "clarification_required",
+  "修正元が重なる置換は安全停止する"
+);
+const partialOverlapIntent = detectReviewRevisionIntent(
+  { ...missingLedgerTitleBefore, what_happened: "ABCD" },
+  "ABC→X。BCD→Y。",
+  "用語"
+);
+assert.equal(
+  partialOverlapIntent.mode,
+  "clarification_required",
+  "修正元どうしが部分的にsuffix/prefixで重なる置換は安全停止する"
+);
+assert.match(partialOverlapIntent.clarification_reason, /適用順/u, "部分重複を単なる未発見語ではなく置換衝突として説明する");
+const afterBeforeConflictIntent = detectReviewRevisionIntent(missingLedgerTitleBefore, "歓迎竜→歓迎竜レストラン。レストラン→食堂。", "用語");
+assert.equal(
+  afterBeforeConflictIntent.mode,
+  "clarification_required",
+  "置換後が別の修正元を含む置換は安全停止する"
+);
+assert.match(afterBeforeConflictIntent.clarification_reason, /適用順/u, "after→beforeの衝突を置換衝突として説明する");
+assert.equal(
+  detectReviewRevisionIntent({ ...missingLedgerTitleBefore, what_happened: "ABCとXYZ" }, "ABC→DEF。XYZ→UVW。", "用語").mode,
+  "limited_patch",
+  "重なりのない独立した複数置換は引き続き許可する"
+);
+const afterPrefixConflictIntent = detectReviewRevisionIntent(
+  { ...missingLedgerTitleBefore, what_happened: "AとBC" },
+  "A→B。BC→X。",
+  "用語"
+);
+assert.equal(afterPrefixConflictIntent.mode, "clarification_required", "置換後Bと別の修正元BCのsuffix/prefix衝突は安全停止する");
+assert.match(afterPrefixConflictIntent.clarification_reason, /適用順/u);
+const negatedDestinationIntent = detectReviewRevisionIntent(
+  missingLedgerTitleBefore,
+  "歓迎竜レストランへ→ようこそ龍レストランへ。タイトルを修正せず、何が起きたかに追記してください。",
+  "用語",
+  { directDestinationOnly: true }
+);
+assert.deepEqual(negatedDestinationIntent.allowed_fields, ["what_happened"], "否定されたタイトルは残余編集の宛先にしない");
+const extendedNegatedDestinationIntent = detectReviewRevisionIntent(
+  missingLedgerTitleBefore,
+  "タイトルを変更する必要はないが、何が起きたかに追記してください。",
+  "用語",
+  { directDestinationOnly: true }
+);
+assert.deepEqual(extendedNegatedDestinationIntent.allowed_fields, ["what_happened"], "変更する必要はないという否定されたタイトルは宛先にしない");
+const prohibitionDestinationIntent = detectReviewRevisionIntent(
+  missingLedgerTitleBefore,
+  "タイトルを修正するな。何が起きたかに追記してください。",
+  "用語",
+  { directDestinationOnly: true }
+);
+assert.deepEqual(prohibitionDestinationIntent.allowed_fields, ["what_happened"], "修正するなという禁止されたタイトルは宛先にしない");
+const optionalNegatedDestinationIntent = detectReviewRevisionIntent(
+  missingLedgerTitleBefore,
+  "タイトルを修正しなくてよい。何が起きたかに追記してください。",
+  "用語",
+  { directDestinationOnly: true }
+);
+assert.deepEqual(optionalNegatedDestinationIntent.allowed_fields, ["what_happened"], "修正しなくてよいという否定されたタイトルは宛先にしない");
+const referenceOnlyDestinationIntent = detectReviewRevisionIntent(
+  missingLedgerTitleBefore,
+  "タイトルを参考にして、何が起きたかに追記してください。",
+  "用語",
+  { directDestinationOnly: true }
+);
+assert.deepEqual(referenceOnlyDestinationIntent.allowed_fields, ["what_happened"], "参考にするためのタイトルを編集宛先にしない");
+const titleMeaningDestinationIntent = detectReviewRevisionIntent(
+  missingLedgerTitleBefore,
+  "タイトルに込めた意味を本文に追加してください。",
+  "用語",
+  { directDestinationOnly: true }
+);
+assert.deepEqual(titleMeaningDestinationIntent.allowed_fields, ["what_happened"], "タイトルに込めた意味は本文への追加内容であってtitle_jaの宛先ではない");
+const deletionPlan = planMixedLiteralRevision(
+  missingLedgerTitleBefore,
+  "歓迎竜レストランへ→ようこそ龍レストランへ。何が起きたかから「タイトルに込められた意味が解説された。」を削除してください。",
+  "用語"
+);
+assert.ok(deletionPlan, "用語置換と明示削除の混在も二段階に分割する");
+assert.equal(deletionPlan.residualIntent.require_claim_refs_for_prose, false, "純粋な削除には追加のclaim refsを要求しない");
+const groundedTonePlan = planMixedLiteralRevision(
+  missingLedgerTitleBefore,
+  "歓迎竜レストランへ→ようこそ龍レストランへ。「注目ポイント」に根拠の説明を追加してください。",
+  "口調"
+);
+assert.ok(groundedTonePlan, "口調タグでも根拠説明を追加する混在指示を分割する");
+assert.equal(groundedTonePlan.residualIntent.require_claim_refs_for_prose, true, "口調タグでも根拠ある注目ポイント追記にはclaim refsを要求する");
+const toneOnlyPlan = planMixedLiteralRevision(
+  missingLedgerTitleBefore,
+  "歓迎竜レストランへ→ようこそ龍レストランへ。注目ポイントを修正してください。口調は柔らかくしてください。",
+  "口調"
+);
+assert.ok(toneOnlyPlan, "純粋な口調指示も混在指示として分割する");
+assert.equal(toneOnlyPlan.residualIntent.require_claim_refs_for_prose, false, "純粋な口調変更にはclaim refsを要求しない");
+
+// Issue #79: one exact terminology correction plus one evidence-backed
+// addition. The word "タイトル" describes the fact to add; it must not make
+// title_ja editable in the residual model call.
+const issue79Instruction = "用語 「歓迎竜レストランへ」→「ようこそ龍レストランへ」。初稿の文体・内容・情報量は維持し、「何が起きたか」に、文牧野監督が語ったタイトルの具体的な意味――「龍レストラン」は特定の場所ではなく「しっかりご飯を食べる」という願いを表し、苦難を経験した人が雨風をしのげる場所であってほしいという思い――だけを、保存済みの根拠記事の範囲で追加してください。それ以外は変更しないでください。";
+const issue79Ledger: FactLedger = {
+  ...ledger,
+  topic_key: missingLedgerTitleBefore.topic_key,
+  claims: [
+    ...ledger.claims,
+    {
+      id: "C79",
+      type: "verified_fact",
+      text: "文牧野監督は、「龍レストラン」は特定の場所ではなく、しっかりご飯を食べるという願いを表し、苦難を経験した人が雨風をしのげる場所であってほしいという思いだと説明した。",
+      evidence_refs: ["E79"],
+      entities: ["文牧野"],
+      numbers: [],
+      anchor: true,
+      scope: "root_event",
+      editorial_role: "other"
+    }
+  ]
+};
+const issue79Plan = planMixedLiteralRevision(missingLedgerTitleBefore, issue79Instruction, "用語");
+assert.ok(issue79Plan, "用語置換と追記が混在する指示を二段階に分割する");
+assert.deepEqual(issue79Plan.residualIntent.allowed_fields, ["what_happened"], "残ったモデル編集範囲は明示宛先の何が起きたかだけにする");
+assert.deepEqual(issue79Plan.residualIntent.explicit_fields, ["what_happened"], "タイトルの意味という語でtitle_jaを編集可能にしない");
+assert.doesNotMatch(issue79Plan.workingSummary.title_ja, /歓迎竜レストランへ/u, "モデルは置換済みの作業用初稿だけを見る");
+assert.doesNotMatch(issue79Plan.residualInstruction, /歓迎竜レストランへ|ようこそ龍レストランへ/u, "矢印置換そのものは残余指示から正確に除く");
+const issue79Prompt = buildLimitedReviewPatchPrompt(issue79Plan.workingSummary, issue79Ledger, issue79Plan.residualInstruction, issue79Plan.residualIntent);
+assert.match(issue79Prompt, /"what_happened"/u);
+assert.doesNotMatch(issue79Prompt, /"title_ja"|"lead"|"why_it_matters"/u, "モデルpromptの変更可能フィールドを本文だけへ絞る");
+const issue79BeforeSnapshot = structuredClone(missingLedgerTitleBefore);
+const issue79Success = await generateAndApplyMixedLiteralReviewPatch(
+  missingLedgerTitleBefore,
+  { ...topic, topic_key: missingLedgerTitleBefore.topic_key },
+  issue79Ledger,
+  issue79Instruction,
+  "用語",
+  async (budget) => {
+    consumeLlmCall(budget);
+    return {
+      mode: "limited_patch",
+      clarification_required: false,
+      clarification_reason: "",
+      patches: [{
+        field: "what_happened",
+        operation: "replace",
+        before: "タイトルに込められた意味が解説された。",
+        after: "文牧野監督は、「龍レストラン」は特定の場所ではなく「しっかりご飯を食べる」という願いを表し、苦難を経験した人が雨風をしのげる場所であってほしいという思いだと説明した。",
+        evidence_claim_refs: ["C79"],
+        reason: "タイトルに込めた意味を根拠に沿って追記"
+      }]
+    };
+  }
+);
+assert.deepEqual(missingLedgerTitleBefore, issue79BeforeSnapshot, "成功案も不変の初稿を直接変更しない");
+for (const value of [issue79Success.summary.title_ja, issue79Success.summary.lead, issue79Success.summary.what_happened, issue79Success.summary.why_it_matters]) {
+  assert.doesNotMatch(value, /歓迎竜レストランへ/u, "後段モデルが旧用語を再混入できない");
+}
+assert.match(issue79Success.summary.what_happened, /しっかりご飯を食べる/u, "根拠付きの種明かしだけを本文へ加える");
+assert.match(issue79Prompt, /決定的置換済みの保護語句/u, "残余モデルへ先行置換を触らないよう明示する");
+assert.equal(issue79Success.summary.lead, missingLedgerTitleBefore.lead.replaceAll("歓迎竜レストランへ", "ようこそ龍レストランへ"), "用語置換以外のleadは維持する");
+assert.equal(issue79Success.summary.why_it_matters, missingLedgerTitleBefore.why_it_matters.replaceAll("歓迎竜レストランへ", "ようこそ龍レストランへ"), "用語置換以外の注目ポイントは維持する");
+let issue79RejectedCalls = 0;
+for (const field of ["lead", "title_ja", "why_it_matters"] as const) {
+  await assert.rejects(
+    () => generateAndApplyMixedLiteralReviewPatch(
+      missingLedgerTitleBefore,
+      { ...topic, topic_key: missingLedgerTitleBefore.topic_key },
+      issue79Ledger,
+      issue79Instruction,
+      "用語",
+      async (budget) => {
+        consumeLlmCall(budget);
+        issue79RejectedCalls += 1;
+        return {
+          mode: "limited_patch",
+          clarification_required: false,
+          clarification_reason: "",
+          patches: [{ field, operation: "replace", before: issue79Plan!.workingSummary[field], after: `別の${field}`, evidence_claim_refs: ["C79"], reason: "範囲外" }]
+        };
+      }
+    ),
+    /許可されていないフィールド/u,
+    `残余モデルが${field}を編集する案は拒否する`
+  );
+}
+assert.equal(issue79RejectedCalls, 3, "範囲違反を修復再試行で迂回しない");
+await assert.rejects(
+  () => generateAndApplyMixedLiteralReviewPatch(
+    missingLedgerTitleBefore,
+    { ...topic, topic_key: missingLedgerTitleBefore.topic_key },
+    issue79Ledger,
+    issue79Instruction,
+    "用語",
+    async (budget) => {
+      consumeLlmCall(budget);
+      return {
+        mode: "limited_patch",
+        clarification_required: false,
+        clarification_reason: "",
+        patches: [{
+          field: "what_happened",
+          operation: "replace",
+          before: "タイトルに込められた意味が解説された。",
+          after: "文牧野監督は、タイトルの意味を説明した。",
+          evidence_claim_refs: [],
+          reason: "根拠なしの追記"
+        }]
+      };
+    }
+  ),
+  /根拠claimがありません/u,
+  "用語タグの混在指示でも本文への事実追記はclaim refsなしで通さない"
+);
+await assert.rejects(
+  () => generateAndApplyMixedLiteralReviewPatch(
+    missingLedgerTitleBefore,
+    { ...topic, topic_key: missingLedgerTitleBefore.topic_key },
+    issue79Ledger,
+    "歓迎竜レストランへ→ようこそ龍レストランへ。「注目ポイント」に根拠の説明を追加してください。",
+    "口調",
+    async (budget) => {
+      consumeLlmCall(budget);
+      return {
+        mode: "limited_patch",
+        clarification_required: false,
+        clarification_reason: "",
+        patches: [{
+          field: "why_it_matters",
+          operation: "replace",
+          before: "の続報が気になります！",
+          after: "の根拠説明を追加します。",
+          evidence_claim_refs: [],
+          reason: "根拠なしの注目ポイント追記"
+        }]
+      };
+    }
+  ),
+  /根拠claimがありません/u,
+  "口調タグでも注目ポイントへの根拠説明追加はclaim refsなしで通さない"
+);
+const issue79DuplicateBBefore: SummarizedArticle = {
+  ...missingLedgerTitleBefore,
+  what_happened: "『歓迎竜レストランへ』のロードショーが行われた。『ようこそ龍レストランへ』という表記も既に記事内にある。タイトルに込められた意味が解説された。"
+};
+await assert.rejects(
+  () => generateAndApplyMixedLiteralReviewPatch(
+    issue79DuplicateBBefore,
+    { ...topic, topic_key: issue79DuplicateBBefore.topic_key },
+    issue79Ledger,
+    issue79Instruction,
+    "用語",
+    async (budget) => {
+      consumeLlmCall(budget);
+      return {
+        mode: "limited_patch",
+        clarification_required: false,
+        clarification_reason: "",
+        patches: [{ field: "what_happened", operation: "replace", before: "『ようこそ龍レストランへ』", after: "", evidence_claim_refs: ["C79"], reason: "先行置換を削除" }]
+      };
+    }
+  ),
+  /決定的置換済みの語句/u,
+  "後段モデルは用語置換済みのBを別のBの存在に紛れて削除できない"
+);
+await assert.rejects(
+  () => generateAndApplyMixedLiteralReviewPatch(
+    missingLedgerTitleBefore,
+    { ...topic, topic_key: missingLedgerTitleBefore.topic_key },
+    issue79Ledger,
+    issue79Instruction,
+    "用語",
+    async (budget) => {
+      consumeLlmCall(budget);
+      return {
+        mode: "limited_patch",
+        clarification_required: false,
+        clarification_reason: "",
+        patches: [{ field: "what_happened", operation: "replace", before: issue79Plan!.workingSummary.what_happened, after: "別内容へ全面置換", evidence_claim_refs: ["C79"], reason: "範囲外" }]
+      };
+    }
+  ),
+  /決定的置換済みの語句|範囲を超えて/u,
+  "明示宛先でも追記を全文置換へ広げる案は拒否する"
+);
+await assert.rejects(
+  () => generateAndApplyMixedLiteralReviewPatch(
+    missingLedgerTitleBefore,
+    { ...topic, topic_key: missingLedgerTitleBefore.topic_key },
+    issue79Ledger,
+    issue79Instruction,
+    "用語",
+    async (budget) => {
+      consumeLlmCall(budget);
+      return {
+        mode: "limited_patch",
+        clarification_required: false,
+        clarification_reason: "",
+        patches: [{ field: "what_happened", operation: "replace", before: issue79Plan!.workingSummary.what_happened, after: `${issue79Plan!.workingSummary.what_happened} 根拠のない追記。`, evidence_claim_refs: ["C404"], reason: "根拠不明" }]
+      };
+    }
+  ),
+  /利用できない根拠claim/u,
+  "根拠参照が不正な混在案も保存前に原子的に拒否する"
+);
+assert.deepEqual(missingLedgerTitleBefore, issue79BeforeSnapshot, "範囲違反時も二段階のどちらも保存前初稿を変えない");
 const prompt = buildLimitedReviewPatchPrompt(before, ledger, ownerInstruction, intent);
 assert.match(prompt, /記事全文を再生成してはいけません/u);
 assert.match(prompt, /field.*operation.*before.*after.*evidence_claim_refs/su);
