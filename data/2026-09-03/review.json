@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-03",
+  "status": "pending",
+  "issue_number": 80,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "2026暑期档电影票房",
+      "title": "2026年夏休み映画興行、過去最高の上映回数で124.98億元 前年比4.45%増",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-49050510140515dd",
+      "current_version": 1,
+      "publication": {
+        "slug": "1"
+      }
+    },
+    {
+      "index": 2,
+      "topic_key": "后西游记",
+      "title": "国内初のAIGC長編ドラマ『後西遊記』が上星放送開始、制作費は従来の10分の1以下",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-46a8b1b357997446",
+      "current_version": 1,
+      "publication": {
+        "slug": "2"
+      }
+    },
+    {
+      "index": 3,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "映画『歓迎来龍餐館』番外編公開、沈騰と蒋奇明が異郷で共演",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-e541215688786526",
+      "current_version": 1,
+      "publication": {
+        "slug": "3"
+      }
+    }
+  ]
+}

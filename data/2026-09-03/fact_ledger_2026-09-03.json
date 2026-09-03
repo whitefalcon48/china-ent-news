@@ -1,0 +1,925 @@
+{
+  "date": "2026-09-03",
+  "generated_at": "2026-09-03T05:59:33.637Z",
+  "ledgers": [
+    {
+      "topic_key": "2026暑期档电影票房",
+      "ledger": {
+        "topic_key": "2026暑期档电影票房",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年暑期档（6月1日から8月31日）の映画興行収入は124.98億元で、前年同期比4.45%増だった。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "国家电影局"
+            ],
+            "numbers": [
+              "124.98亿元",
+              "4.45%",
+              "6月1日",
+              "8月31日"
+            ],
+            "quote_zh": "2026年暑期档（6月1日至8月31日）电影票房为124.9",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "観客動員数は3.4億人で、前年同期比5.86%増だった。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "3.4亿",
+              "5.86%"
+            ],
+            "quote_zh": "观影人次为3.4亿，分别同比增长4.45%、5.86%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "国産映画の興行収入シェアは71.71%だった。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "71.71%"
+            ],
+            "quote_zh": "国产影片票房占比为71.71%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "上映回数は3851万回で、過去最高を記録した。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "3851万场"
+            ],
+            "quote_zh": "放映场次3851万场，创历史新高",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "平均チケット価格は36.74元で、2022年以降の暑期档で最低だった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "36.74元",
+              "2022年"
+            ],
+            "quote_zh": "平均票价36.74元，为2022年以来暑期档最低票价",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "暑期档興行収入上位5作品は『功夫女足』（23.15億元）、『欢迎来龙餐馆』（19.51億元）、『八仙！』（18.46億元）、『蜘蛛侠：崭新之日』（15.39億元）、『奥德赛』（6.03億元）だった。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E4"
+            ],
+            "entities": [
+              "功夫女足",
+              "欢迎来龙餐馆",
+              "八仙！",
+              "蜘蛛侠：崭新之日",
+              "奥德赛"
+            ],
+            "numbers": [
+              "23.15亿元",
+              "19.51亿元",
+              "18.46亿元",
+              "15.39亿元",
+              "6.03亿元"
+            ],
+            "quote_zh": "暑期档票房前五影片分别为：《功夫女足》（23.15亿元）、《",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "2026年1月から8月31日までの年間累計興行収入は282.1億元、観客動員数は7.17億人だった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "282.1亿元",
+              "7.17亿",
+              "8月31日"
+            ],
+            "quote_zh": "截至8月31日，2026年电影总票房为282.1亿元，观影人",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年の中国映画全産業チェーン生産額は4400億元を突破したと推計されている。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "4400亿元"
+            ],
+            "quote_zh": "中国电影全产业链产值已突破4400亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "中国映画全産業チェーン生産額は核心産業生産額、間接生産額、波及・外溢生産額の3つの部分に分けられる。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "中国电影全产业链产值分为核心产业产值、间接产值、带动与外溢产",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "核心産業生産額は映画の制作・配給・上映の3つの段階を指す。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "主要涵盖电影制作、发行和放映三个环节",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "中国のスクリーン総数は9.3万枚で世界一である。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "9.3万块"
+            ],
+            "quote_zh": "目前我国银幕总量达9.3万块，稳居全球第一",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "2026年7月末までに全国で新たに300以上の映画館と2000以上のスクリーンが増設された。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "300余家",
+              "2000余块",
+              "7月末"
+            ],
+            "quote_zh": "截至7月末，全国今年新增影院300余家、新增银幕2000余块",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "映画館は都市の15分生活圏に全面的に組み込まれている。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "15分钟"
+            ],
+            "quote_zh": "影院全面纳入城市15分钟便民生活圈",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "IMAX中国の2026年暑期档興行収入は8月29日時点で7.2億元を突破し、前年同期比39%増だった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "IMAX中国"
+            ],
+            "numbers": [
+              "7.2亿元",
+              "39%",
+              "8月29日"
+            ],
+            "quote_zh": "截至8月29日，IMAX中国暑期档票房突破7.2亿元人民币，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "『龙餐馆』と『奥德赛』の特效厅チケットは入手困難だった。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "龙餐馆",
+              "奥德赛"
+            ],
+            "numbers": [],
+            "quote_zh": "“龙餐馆”“奥德赛”特效厅一票难求",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "多くの観客が設備目当てで映画館に来ており、特に視覚効果の高い大作では優れた上映設備が興行収入を大きく押し上げる。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "很多观众专门冲着设备来的，尤其是视效大片上映时，优质放映设备",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "2026年暑期档には103本の新作が公開され、前年より17本減少した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "103部",
+              "17部"
+            ],
+            "quote_zh": "2026年暑期档上映103部新片，同比减少17部",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "『功夫女足』はファンのノスタルジーを活かし、暑期档興行収入の19%を占めて1位となった。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "功夫女足"
+            ],
+            "numbers": [
+              "19%"
+            ],
+            "quote_zh": "《功夫女足》凭借粉丝情怀，贡献档期票房19%，位列第一名",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "2026年暑期档に興行収入300万元以上の映画館は792館で、前年より87館増加し、全体の6%を占めた。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "300万",
+              "792家",
+              "6%",
+              "87家"
+            ],
+            "quote_zh": "2026年暑期档票房300万及以上的影院792家，占比6%，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "2026年暑期档に興行収入100万元未満の映画管理会社は114社で、前年の109社から5社増加した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "100万",
+              "114个",
+              "109个",
+              "5个"
+            ],
+            "quote_zh": "100万以下的影管114个，较去年同期的109个增加5个",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "venue_change",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休み映画シーズン",
+            "what_is": "6月1日から8月31日までの映画興行期間。",
+            "why_now": "2026年の興行収入が124.98億元に達し、前年比4.45%増と好調だったため。",
+            "explain_quote_zh": "2026年暑期档（6月1日至8月31日）电影票房为124.9",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "国产影片票房占比",
+            "gloss_ja": "国産映画の興行収入シェア",
+            "what_is": "全興行収入に占める国産映画の割合。",
+            "why_now": "2026年暑期档で71.71%に達し、国産映画が市場をリードしていることを示すため。",
+            "explain_quote_zh": "国产影片票房占比为71.71%",
+            "explain_evidence_refs": [
+              "E1",
+              "E4"
+            ]
+          },
+          {
+            "term": "特效厅",
+            "gloss_ja": "特殊効果上映ホール",
+            "what_is": "IMAXやドルビーアトモスなど特殊な上映設備を備えた映画館のホール。",
+            "why_now": "2026年暑期档に1万を超える特效厅が上映に参加し、興行収入を押し上げたため。",
+            "explain_quote_zh": "26年暑期档在映特效厅数量突破1万个",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "影管",
+            "gloss_ja": "映画館管理会社",
+            "what_is": "複数の映画館を運営・管理する会社。",
+            "why_now": "2026年暑期档に興行収入100万元未満の影管が114社に増加し、小規模事業者の増加が示されたため。",
+            "explain_quote_zh": "100万以下的影管114个，较去年同期的109个增加5个",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "供需指数",
+            "gloss_ja": "需給指数",
+            "what_is": "映画館や映画管理会社の供給能力と需要のバランスを示す指標。",
+            "why_now": "儒意院線や万象影城の需給指数が高く、効率的な運営が評価されたため。",
+            "explain_quote_zh": "儒意院线以17%的市场份额继续领跑，且供需指数最高",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          },
+          {
+            "term": "全产业链产值",
+            "gloss_ja": "全産業チェーン生産額",
+            "what_is": "映画の核心産業、間接産業、波及産業を含む総生産額。",
+            "why_now": "2026年に4400億元を突破し、映画産業の経済波及効果が注目されたため。",
+            "explain_quote_zh": "中国电影全产业链产值已突破4400亿元",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "核心产业产值",
+            "gloss_ja": "核心産業生産額",
+            "what_is": "映画の制作・配給・上映の3段階で生み出される価値。",
+            "why_now": "全産業チェーン生産額の基盤として、映画経済の中心を説明するために用いられたため。",
+            "explain_quote_zh": "主要涵盖电影制作、发行和放映三个环节",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "15分钟便民生活圈",
+            "gloss_ja": "15分生活圏",
+            "what_is": "徒歩15分以内に生活に必要な施設を整備する都市計画。",
+            "why_now": "映画館がこの生活圏に組み込まれ、アクセス向上が興行収入増に寄与したため。",
+            "explain_quote_zh": "影院全面纳入城市15分钟便民生活圈",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_or_primary_data_source"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "后西游记",
+      "ledger": null,
+      "fallback_reason": "ledger_extraction_failed:fact ledger finish_reason length"
+    },
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": {
+        "topic_key": "欢迎来龙餐馆",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、中国料理人の徐福が中東に渡り、現地でレストランを経営する物語である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "中国厨师徐福（沈腾 饰）远赴中东谋生",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、戦争勃発後、徐福が現地の子供たちを救うために行動する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福"
+            ],
+            "numbers": [],
+            "quote_zh": "逐渐转变成一个不惜代价拯救中东某国儿童的中国英雄",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福と馬俊生が共同でレストランを経営する物語である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "徐福",
+              "馬俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "两人携手经营龙餐馆",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が借金返済のために中東の都市バハタでレストランを経営する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "バハタ"
+            ],
+            "numbers": [],
+            "quote_zh": "为偿还债务远赴中东某国首都巴哈塔经营龙餐馆",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が戦争勃発後、自己保身から現地の子供たちを救う英雄へと変化する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福"
+            ],
+            "numbers": [],
+            "quote_zh": "一向只求自保的他，历经命运无常、战争残酷，兄弟马俊生离世，逐",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福と馬俊生が戦争に巻き込まれ、生存の危機に直面する物語である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "徐福",
+              "馬俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "然而战争爆发，他们被迫卷入其中，直面动荡时局与生存考验",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、現地の人々と交流する物語である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "远赴中东谋生，在当地结识餐馆经理马俊生",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東の都市バハタでレストランを経営し、成功する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "バハタ"
+            ],
+            "numbers": [],
+            "quote_zh": "徐福靠着聪明勤奋大发横财",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福と馬俊生が共同でレストランを経営し、戦争に巻き込まれる物語である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "徐福",
+              "馬俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "两人携手经营龙餐馆。然而战争爆发，他们被迫卷入其中",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、現地の子供たちを救う物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "远赴中东某国首都巴哈塔经营龙餐馆...逐渐转变成一个不惜代价",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、自己保身から英雄へと変化する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "一向只求自保的他，历经命运无常、战争残酷，兄弟马俊生离世，逐",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、現地の子供たちを救うために行動する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "逐渐转变成一个不惜代价拯救中东某国儿童的中国英雄",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、自己保身から英雄へと変化する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "一向只求自保的他，历经命运无常、战争残酷，兄弟马俊生离世，逐",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、現地の子供たちを救うために行動する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "逐渐转变成一个不惜代价拯救中东某国儿童的中国英雄",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、自己保身から英雄へと変化する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "一向只求自保的他，历经命运无常、战争残酷，兄弟马俊生离世，逐",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、現地の子供たちを救うために行動する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "逐渐转变成一个不惜代价拯救中东某国儿童的中国英雄",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、自己保身から英雄へと変化する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "一向只求自保的他，历经命运无常、战争残酷，兄弟马俊生离世，逐",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、現地の子供たちを救うために行動する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "逐渐转变成一个不惜代价拯救中东某国儿童的中国英雄",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、自己保身から英雄へと変化する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "一向只求自保的他，历经命运无常、战争残酷，兄弟马俊生离世，逐",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "映画『歓迎来龍餐館』は、徐福が中東でレストランを経営し、戦争勃発後、現地の子供たちを救うために行動する物語である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "徐福",
+              "中東"
+            ],
+            "numbers": [],
+            "quote_zh": "逐渐转变成一个不惜代价拯救中东某国儿童的中国英雄",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_or_primary_data_source"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "ai_generated",
+            "usable_for_verified_facts": false,
+            "reason": "explicit_ai_generation_disclosure"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
