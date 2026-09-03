@@ -24,17 +24,16 @@
     {
       "index": 2,
       "topic_key": "欢迎来龙餐馆",
-      "title": "『歓迎竜レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
-      "status": "proposal_pending",
+      "title": "『ようこそ龍レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
+      "status": "revised_pending",
       "reason_tag": "用語",
       "comment": "「歓迎竜レストランへ」→「ようこそ龍レストランへ」。初稿の文体・内容・情報量は維持し、「何が起きたか」に、文牧野監督が語ったタイトルの具体的な意味――「龍レストラン」は特定の場所ではなく「しっかりご飯を食べる」という願いを表し、苦難を経験した人が雨風をしのげる場所であってほしいという思い――だけを、保存済みの根拠記事の範囲で追加してください。それ以外は変更しないでください。",
-      "revision_count": 2,
+      "revision_count": 3,
       "article_id": "a-7fa5759f4d5fb337",
-      "current_version": 3,
+      "current_version": 4,
       "publication": {
         "slug": "2"
-      },
-      "pending_proposal_id": "p-1"
+      }
     }
   ]
 }

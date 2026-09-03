@@ -89,7 +89,7 @@
       "proposals": []
     },
     "a-7fa5759f4d5fb337": {
-      "current_version": 3,
+      "current_version": 4,
       "versions": [
         {
           "n": 1,
@@ -350,6 +350,94 @@
             },
             "detail_sections": []
           }
+        },
+        {
+          "n": 4,
+          "parent": 3,
+          "created_at": "2026-09-03T03:02:11.412Z",
+          "created_by": "proposal:p-1",
+          "summary": "指定された箇所の修正案",
+          "article_summary": {
+            "title_ja": "『ようこそ龍レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
+            "badge": "NEWS",
+            "lead": "映画『ようこそ龍レストランへ』（原題：歓迎来龍餐馆）のロードショーが北京大学と清華大学で行われ、タイトルの意味が解説された。作品は戦争下のレストランを舞台に、国境を越えた人々の絆を描く。",
+            "what_happened": "8月27日、映画『ようこそ龍レストランへ』（原題：歓迎来龍餐馆）が北京大学と清華大学でロードショーを開催し、タイトルに込められた意味が解説された。文牧野監督は、『龍レストラン』は特定の場所ではなく「しっかりご飯を食べる」という願いを表し、苦難を経験した人が雨風をしのげる場所であってほしいという思いが込められていると語った。本作は文牧野監督、寧浩プロデュース、沈騰（シェン・トン）主演で、戦火の中のレストランを舞台に、中国人シェフの徐福、現地で働く馬俊生、孤児の少年サイフの3人が疑似家族のように絆を深める物語。8月11日に公開され、累計興行収入は17億元を突破、豆瓣スコアは8.4から8.7に上昇し、今年の夏休みシーズンで最高評価を記録している。",
+            "reaction_view": "",
+            "why_it_matters": "この作品、中国でめちゃくちゃ話題になっているんです！ 興行収入17億元超えで、豆瓣スコアも8.7まで上がって、夏休み映画の評価ランキングでトップなんですよ。監督は『薬の神じゃない！（原題：『我不是薬神』）』（薬の神じゃない！）の文牧野さんで、今回も社会派のテーマを娯楽作品に昇華させているみたい。ロードショーでタイトルの意味が解説されたっていうのも気になりますね。戦争と美食っていう組み合わせがどう描かれるのか、続報を追いたいです！",
+            "editor_comment": "",
+            "japan_context_note": "",
+            "category": "映画",
+            "confidence": "B",
+            "source_type": "media_report",
+            "published_date": "2026-08-27",
+            "event_date": "2026-08-27",
+            "freshness_label": "recent",
+            "newsworthiness_score": 70,
+            "japan_visibility": "unknown",
+            "japan_gap": "unknown",
+            "context_value": "high",
+            "sns_heat": "none",
+            "source_count": 4,
+            "source_list": [
+              {
+                "name": "1905电影网 新闻",
+                "url": "https://www.1905.com/news/20260827/1765042.shtml"
+              },
+              {
+                "name": "yangtse.com",
+                "url": "https://www.yangtse.com/news/wy/202608/t20260814_382599.html"
+              },
+              {
+                "name": "界面新闻 影视产业",
+                "url": "https://www.jiemian.com/article/14901525.html"
+              },
+              {
+                "name": "sxwbs.com",
+                "url": "https://www.sxwbs.com/detail/3ce4f0423e6f4ba289cca710356cd74f?t=MjAyNi0wOC0xNA==&contentType=1"
+              }
+            ],
+            "has_official_source": false,
+            "has_multiple_sources": true,
+            "has_sns_signal": false,
+            "article_type": "data_report",
+            "skip_reason": "",
+            "verification_status": "confirmed",
+            "topic_key": "欢迎来龙餐馆",
+            "main_entities": {
+              "people": [
+                "沈腾",
+                "蒋奇明",
+                "奥马尔·谢里夫",
+                "文牧野",
+                "宁浩"
+              ],
+              "works": [
+                "欢迎来龙餐馆"
+              ],
+              "organizations": [
+                "北京大学",
+                "清华大学"
+              ]
+            },
+            "related_sources": [],
+            "tags": [
+              "沈腾",
+              "文牧野",
+              "興行収入",
+              "映画賞"
+            ],
+            "publish_priority": "medium",
+            "publish_reason": "中国で高評価・高興行の作品で、日本では未公開の可能性が高く、現地の話題を伝える価値がある。",
+            "claim_refs": {
+              "what_happened": [
+                "C2"
+              ],
+              "why_it_matters": [],
+              "reaction_view": [],
+              "japan_context_note": []
+            },
+            "detail_sections": []
+          }
         }
       ],
       "proposals": [
@@ -525,7 +613,7 @@
           "id": "p-1",
           "base_version": 3,
           "created_at": "2026-09-03T02:40:16.608Z",
-          "status": "pending"
+          "status": "applied"
         }
       ]
     }
