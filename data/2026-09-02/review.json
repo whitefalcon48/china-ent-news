@@ -15,7 +15,10 @@
       "current_version": 1,
       "publication": {
         "slug": "1",
-        "queued_at": "2026-09-03T08:57:06+08:00"
+        "queued_at": "2026-09-03T08:57:06+08:00",
+        "published_at": "2026-09-03T09:01:14+08:00",
+        "published_version": 1,
+        "x_pending_at": "2026-09-03T09:01:14+08:00"
       }
     },
     {
