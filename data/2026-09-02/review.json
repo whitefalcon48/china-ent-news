@@ -1,6 +1,6 @@
 {
   "date": "2026-09-02",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 79,
   "articles": [
     {
@@ -14,19 +14,20 @@
       "article_id": "a-c9d5a5c477f2856c",
       "current_version": 1,
       "publication": {
-        "slug": "1"
+        "slug": "1",
+        "queued_at": "2026-09-03T08:57:06+08:00"
       }
     },
     {
       "index": 2,
       "topic_key": "欢迎来龙餐馆",
-      "title": "「ようこそ龍レストランへ」北大・清華で特別試写会 文牧野監督が語る「龍レストラン」の意味",
-      "status": "revised_pending",
-      "reason_tag": "構成",
-      "comment": "記事全体を書き直してください。作品名は「ようこそ龍レストランへ」に統一してください。見出しでタイトルに込めた意味を解説すると書く場合は、本文に文牧野監督が語った具体的な意味を、取得した根拠記事の範囲で明記してください。「意味を解説した」とだけ書いて終わらせないでください。1番は変更しないでください。",
-      "revision_count": 1,
+      "title": "『歓迎竜レストランへ』北大・清華でロードショー、タイトルに込めた意味を解説",
+      "status": "held",
+      "reason_tag": "その他",
+      "comment": "初稿を基準に、必要な箇所だけ直すため",
+      "revision_count": 2,
       "article_id": "a-7fa5759f4d5fb337",
-      "current_version": 2,
+      "current_version": 3,
       "publication": {
         "slug": "2"
       }
