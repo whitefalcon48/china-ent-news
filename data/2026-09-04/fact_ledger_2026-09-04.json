@@ -1,0 +1,537 @@
+{
+  "date": "2026-09-04",
+  "generated_at": "2026-09-04T06:05:54.586Z",
+  "ledgers": [
+    {
+      "topic_key": "2026暑期档电影总票房",
+      "ledger": {
+        "topic_key": "2026暑期档电影总票房",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年暑期档（6月1日至8月31日）の映画総興行収入は124.98億元で、前年比4.45%増だった。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "国家电影局"
+            ],
+            "numbers": [
+              "124.98亿元",
+              "4.45%"
+            ],
+            "quote_zh": "2026年暑期档（6月1日至8月31日）电影票房为124.9",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "2026年暑期档の観客動員数は3.4億人で、前年比5.86%増だった。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "3.4亿",
+              "5.86%"
+            ],
+            "quote_zh": "观影人次为3.4亿，分别同比增长4.45%、5.86%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "2026年暑期档の国産映画の興行収入シェアは71.71%だった。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [
+              "71.71%"
+            ],
+            "quote_zh": "国产影片票房占比为71.71%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "2026年暑期档の上映回数は3851万回で、中国映画史上の暑期档最高記録を更新した。",
+            "evidence_refs": [
+              "E1",
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "3851万场"
+            ],
+            "quote_zh": "放映场次3851万场，创历史新高",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "2026年暑期档の興行収入トップ5は、『功夫女足』（23.15億元）、『欢迎来龙餐馆』（19.51億元）、『八仙！』（18.46億元）、『蜘蛛侠：崭新之日』（15.39億元）、『奥德赛』（6.03億元）だった。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "功夫女足",
+              "欢迎来龙餐馆",
+              "八仙！",
+              "蜘蛛侠：崭新之日",
+              "奥德赛"
+            ],
+            "numbers": [
+              "23.15亿元",
+              "19.51亿元",
+              "18.46亿元",
+              "15.39亿元",
+              "6.03亿元"
+            ],
+            "quote_zh": "暑期档票房前五影片分别为：《功夫女足》（23.15亿元）、《",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "2026年暑期档には興行収入1億元超えの映画が18本あり、10億元超えは4本で、10億元超えの本数は過去3年で最多だった。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [
+              "18部",
+              "4部",
+              "10亿元",
+              "近三年"
+            ],
+            "quote_zh": "18部影片破亿、4部突破10亿元，头部梯队均衡分布",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "2026年暑期档の平均チケット価格は36.74元で、2022年以降の暑期档で最低だった。",
+            "evidence_refs": [
+              "E2",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "36.74元",
+              "2022年以来"
+            ],
+            "quote_zh": "今年暑期档电影平均票价36.74元，为2022年以来暑期档最",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年6月の興行収入は16.45億元で、五一档と端午档は低迷し、『给阿嬷的情书』だけが市場を支えた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "给阿嬷的情书"
+            ],
+            "numbers": [
+              "16.45亿元"
+            ],
+            "quote_zh": "6月票房仅16.45亿元，五一档、端午档接连低迷，只有《给阿",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "2026年暑期档の興行収入3位はアニメ映画『八仙！』で、18.46億元を記録した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "八仙！"
+            ],
+            "numbers": [
+              "18.46亿元"
+            ],
+            "quote_zh": "动画电影《八仙！》收获18.46亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "2026年暑期档の興行収入4位は輸入映画『蜘蛛侠：崭新之日』で、15.39億元を記録した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "蜘蛛侠：崭新之日"
+            ],
+            "numbers": [
+              "15.39亿元"
+            ],
+            "quote_zh": "进口片同样表现出色，档期内票房排名第四位的《蜘蛛侠：崭新之日",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2026年暑期档の興行収入5位はノーラン監督の新作『奥德赛』で、6.03億元を記録した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "奥德赛"
+            ],
+            "numbers": [
+              "6.03亿元"
+            ],
+            "quote_zh": "诺兰新作《奥德赛》在主打IMAX看点的情况下，贡献了6.03",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "中小規模のホラー映画『痴迷』は2.14億元、『后室』は1.84億元の興行収入を記録した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "痴迷",
+              "后室"
+            ],
+            "numbers": [
+              "2.14亿元",
+              "1.84亿元"
+            ],
+            "quote_zh": "中小成本惊悚片《痴迷》2.14亿元、《后室》1.84亿元，合",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "革命歴史映画『四渡』は6月下旬の公開後、連続で単日興行収入1位を維持した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "四渡"
+            ],
+            "numbers": [],
+            "quote_zh": "革命历史题材《四渡》在6月下旬上映后连续保持单日票房冠军",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "犯罪映画『空枪』は4.21億元の興行収入を記録した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "空枪"
+            ],
+            "numbers": [
+              "4.21亿元"
+            ],
+            "quote_zh": "犯罪题材《空枪》斩获4.21亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "公開から4か月経過した『给阿嬷的情书』は、暑期档内で5.8億元の興行収入を記録し、累計興行収入は20億元を突破した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "给阿嬷的情书"
+            ],
+            "numbers": [
+              "5.8亿元",
+              "20亿元"
+            ],
+            "quote_zh": "已经上映了4个月的“老片”《给阿嬷的情书》凭借口碑持续发酵，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "2026年暑期档の興行収入3億～15億元の作品は3本のみで、2025年同期の10本から減少した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [
+              "3亿至15亿元",
+              "3部",
+              "10部"
+            ],
+            "quote_zh": "今年暑期档腰部影片出现了明显断层。票房在3亿至15亿元区间的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "2026年暑期档の興行収入トップ5のうち3作品が豆瓣で8点以上の評価を得た。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [
+              "8分"
+            ],
+            "quote_zh": "票房榜排名前五的电影中，有三部豆瓣评分超过8分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』の豆瓣評価は公開時の8.4点から8.7点に上昇し、沈騰主演映画の最高評価を更新した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "沈腾"
+            ],
+            "numbers": [
+              "8.4分",
+              "8.7分"
+            ],
+            "quote_zh": "《欢迎来龙餐馆》豆瓣评分从开画的8.4分持续攀升至8.7分，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "『奥德赛』の豆瓣評価は8.6点、『八仙！』は8.2点だった。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "奥德赛",
+              "八仙！"
+            ],
+            "numbers": [
+              "8.6分",
+              "8.2分"
+            ],
+            "quote_zh": "《奥德赛》豆瓣评分达8.6分，《八仙！》豆瓣评分达8.2分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "『欢迎来龙餐馆』は初日興行収入0.86億元だったが、公開6日で8億元を突破し、最終的に19億元を超えた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "0.86亿元",
+              "6天",
+              "8亿",
+              "19亿元"
+            ],
+            "quote_zh": "《欢迎来龙餐馆》首日票房0.86亿元，但凭借过硬口碑持续逆跌",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "暑期档",
+            "gloss_ja": "夏休み映画シーズン",
+            "what_is": "6月1日から8月31日までの映画興行期間。",
+            "why_now": "2026年の総興行収入が124.98億元に達し、前年比4.45%増となった。",
+            "explain_quote_zh": "2026年暑期档（6月1日至8月31日）电影票房为124.9",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "国产影片票房占比",
+            "gloss_ja": "国産映画の興行収入シェア",
+            "what_is": "総興行収入に占める国産映画の割合。",
+            "why_now": "2026年暑期档は71.71%で、国産映画が市場を牽引した。",
+            "explain_quote_zh": "国产影片票房占比为71.71%",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "放映场次",
+            "gloss_ja": "上映回数",
+            "what_is": "映画館で映画が上映された回数。",
+            "why_now": "2026年暑期档は3851万回で、中国映画史上の最高記録を更新した。",
+            "explain_quote_zh": "放映场次3851万场，创历史新高",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "观影人次",
+            "gloss_ja": "観客動員数",
+            "what_is": "映画を観た人の延べ人数。",
+            "why_now": "2026年暑期档は3.4億人で、前年比5.86%増となった。",
+            "explain_quote_zh": "观影人次为3.4亿，分别同比增长4.45%、5.86%",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "平均票价",
+            "gloss_ja": "平均チケット価格",
+            "what_is": "映画チケットの平均販売価格。",
+            "why_now": "2026年暑期档は36.74元で、2022年以降の最低価格だった。",
+            "explain_quote_zh": "今年暑期档电影平均票价36.74元，为2022年以来暑期档最",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "豆瓣评分",
+            "gloss_ja": "豆瓣の評価点",
+            "what_is": "中国の映画・書籍レビューサイト「豆瓣」での10点満点評価。",
+            "why_now": "2026年暑期档の上位作品は高評価を獲得し、興行収入に影響を与えた。",
+            "explain_quote_zh": "《欢迎来龙餐馆》豆瓣评分从开画的8.4分持续攀升至8.7分",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "腰部影片",
+            "gloss_ja": "中規模作品",
+            "what_is": "興行収入が中程度の映画。",
+            "why_now": "2026年暑期档は3億～15億元の作品が3本のみで、前年より減少した。",
+            "explain_quote_zh": "今年暑期档腰部影片出现了明显断层。票房在3亿至15亿元区间的",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "长尾效应",
+            "gloss_ja": "ロングテール効果",
+            "what_is": "公開後も長期間にわたり興行収入が続く現象。",
+            "why_now": "『给阿嬷的情书』が公開4か月後も興行収入を伸ばし、累計20億元を突破した。",
+            "explain_quote_zh": "已经上映了4个月的“老片”《给阿嬷的情书》凭借口碑持续发酵，",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_or_primary_data_source"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
