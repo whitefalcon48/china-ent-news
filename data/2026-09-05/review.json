@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-05",
+  "status": "pending",
+  "issue_number": 82,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "映画『歓迎来龍餐館』興行収入20億元突破、9月18日日本公開へ",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-595a7cca1cd736f9",
+      "current_version": 1,
+      "publication": {
+        "slug": "1"
+      }
+    },
+    {
+      "index": 2,
+      "topic_key": "早春晴朗",
+      "title": "中国ドラマ『早春晴朗』がNetflix非英語圏週間2位に 国産ドラマ史上最高位",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-e316b136af3a0bbe",
+      "current_version": 1,
+      "publication": {
+        "slug": "2"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1034 @@
+{
+  "date": "2026-09-05",
+  "generated_at": "2026-09-05T05:53:26.264Z",
+  "ledgers": [
+    {
+      "topic_key": "欢迎来龙餐馆",
+      "ledger": {
+        "topic_key": "欢迎来龙餐馆",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "映画《欢迎来龙餐馆》は上映24日で興行収入が20億元を突破した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "24天",
+              "20亿元"
+            ],
+            "quote_zh": "上映24天，票房超20亿元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》は中国映画史上45本目の興行収入20億元超え作品となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "第45部",
+              "20亿元"
+            ],
+            "quote_zh": "成为中国影史第45部破20亿元影片",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》の累計観客動員数は5510万人に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "5510万"
+            ],
+            "quote_zh": "观看总人次已达5510万",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》の豆瓣スコアは8.7、淘票票の試写会スコアは9.9だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "豆瓣",
+              "淘票票"
+            ],
+            "numbers": [
+              "8.7",
+              "9.9"
+            ],
+            "quote_zh": "影片豆瓣评分8.7，淘票票点映评分高达9.9分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "audience_evidence",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》は9月11日に中国香港・中国マカオ・オーストラリア・ニュージーランド・マレーシアで公開される。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "中国香港",
+              "中国澳门",
+              "澳大利亚",
+              "新西兰",
+              "马来西亚"
+            ],
+            "numbers": [
+              "9月11日"
+            ],
+            "quote_zh": "9月11日在中国香港、中国澳门，澳大利亚、新西兰、马来西亚上",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》は9月17日にシンガポールで公開される。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "新加坡"
+            ],
+            "numbers": [
+              "9月17日"
+            ],
+            "quote_zh": "9月17日在新加坡上映",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》は9月18日に日本で公開される。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "日本"
+            ],
+            "numbers": [
+              "9月18日"
+            ],
+            "quote_zh": "9月18日在日本上映",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》は10月にカンボジア・インドネシア・タイ・ラオス・フィリピンで公開予定である。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "柬埔寨",
+              "印度尼西亚",
+              "泰国",
+              "老挝",
+              "菲律宾"
+            ],
+            "numbers": [
+              "10月"
+            ],
+            "quote_zh": "计划10月与柬埔寨、印度尼西亚、泰国、老挝、菲律宾观众见面",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》は北米・ヨーロッパ・中東・北アフリカなどでも公開予定である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "北美",
+              "欧洲",
+              "中东",
+              "北非"
+            ],
+            "numbers": [],
+            "quote_zh": "北美、欧洲、中东及北非等更多地区解锁中",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》の監督は文牧野、主演は沈騰と蒋奇明である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "文牧野",
+              "沈腾",
+              "蒋奇明"
+            ],
+            "numbers": [],
+            "quote_zh": "由文牧野执导，沈腾、蒋奇明等主演",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "《欢迎来龙餐馆》の配給会社は8月25日に海外配給開始を発表した。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "欢迎来龙餐馆"
+            ],
+            "numbers": [
+              "8月25日"
+            ],
+            "quote_zh": "片方曾在8月25日宣布",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "番外編「最後の約束」では、ジャマルが戦地へ向かう前にサイフへ手編みの目出し帽を渡し、戦争が終わったら龍餐館で食事をする約束を交わす。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "欢迎来龙餐馆",
+              "贾马尔",
+              "赛夫",
+              "龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "贾马尔为赛夫戴上自己手织的面罩",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "番外編では、ジャマルがサイフに「戦争が終わったら君のレストランで食事をする」と約束する。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "贾马尔",
+              "赛夫"
+            ],
+            "numbers": [],
+            "quote_zh": "战争结束之后，我会去你的餐馆吃饭",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "番外編では、サイフがジャマルの去った後、目出し帽に刺繍された「勇士」の文字を繰り返し撫でる。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "赛夫",
+              "贾马尔"
+            ],
+            "numbers": [],
+            "quote_zh": "摘下面罩反复摩挲着上面绣着的“勇士”二字",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "本編ではジャマルがサイフより年上で、常にサイフを弟のように守っている。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "贾马尔",
+              "赛夫"
+            ],
+            "numbers": [],
+            "quote_zh": "贾马尔年长赛夫几岁，始终将赛夫视为弟弟",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "本編でジャマルが最後に見せる振り返りの表情は、多くの観客から「映画史に残る名シーン」と称賛された。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "贾马尔"
+            ],
+            "numbers": [],
+            "quote_zh": "许多观众夸赞正片里贾马尔最后的回眸是“电影里封神的一幕”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "監督はサイフの成長を「振り子」に例え、彼が運命に翻弄されながら光と闇の間を揺れ動くと説明した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "赛夫"
+            ],
+            "numbers": [],
+            "quote_zh": "主创以“摆针”解读赛夫的成长弧线",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "サイフは戦争孤児で、徐福と馬俊生を救うために米軍にナイフを向けたことがある。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "赛夫",
+              "徐福",
+              "马俊生"
+            ],
+            "numbers": [],
+            "quote_zh": "他两次为救徐福（沈腾 饰）、马俊生（蒋奇明 饰）向美军举起刀",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "監督は徐福と馬俊生を、サイフを闇から救い出す「鎖でつながれた包丁」に例えた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "徐福",
+              "马俊生",
+              "赛夫"
+            ],
+            "numbers": [],
+            "quote_zh": "徐福和马俊生就像厨房里那把被铁链拴住的刀",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "龍餐館と外の戦争は壁一枚隔てただけの場所にある。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "龙餐馆"
+            ],
+            "numbers": [],
+            "quote_zh": "龙餐馆和外面的战争只隔着一道墙",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "work_context"
+          }
+        ],
+        "terms": [
+          {
+            "term": "豆瓣",
+            "gloss_ja": "中国の映画・書籍レビューサイト",
+            "what_is": "ユーザーが映画や書籍を評価・レビューするプラットフォーム。",
+            "why_now": "本作の評価を示す指標として8.7点が言及されている。",
+            "explain_quote_zh": "影片豆瓣评分8.7",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "淘票票",
+            "gloss_ja": "中国の映画チケット販売アプリ",
+            "what_is": "映画チケットのオンライン販売と評価機能を提供するアプリ。",
+            "why_now": "本作の試写会スコア9.9点が言及されている。",
+            "explain_quote_zh": "淘票票点映评分高达9.9分",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "灯塔专业版",
+            "gloss_ja": "中国の映画興行データプラットフォーム",
+            "what_is": "映画の興行収入や観客動員数などのデータを提供するサービス。",
+            "why_now": "本作の興行収入20億元突破のデータソースとして引用されている。",
+            "explain_quote_zh": "据灯塔专业版数据",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "番外彩蛋",
+            "gloss_ja": "本編後のボーナス映像",
+            "what_is": "映画本編とは別に公開される短い映像で、本編の補足やおまけ要素を含む。",
+            "why_now": "本作の番外編「最後の約束」が公開され、キャラクターの背景が補完された。",
+            "explain_quote_zh": "释出“最后的约定”番外",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "路演",
+            "gloss_ja": "映画公開前のプロモーションイベント",
+            "what_is": "監督や出演者が各地の劇場を回り、観客と交流するイベント。",
+            "why_now": "本作の路演で主創がキャラクターやテーマについて解説した。",
+            "explain_quote_zh": "路演现场，主创以“摆针”解读赛夫的成长弧线",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "verified",
+          "detail": "《欢迎来龙餐馆》は9月18日に日本で公開される。",
+          "evidence_refs": [
+            "E1",
+            "E3"
+          ]
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_or_primary_data_source"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "早春晴朗",
+      "ledger": {
+        "topic_key": "早春晴朗",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "优酷出品的都市情感剧《早春晴朗》于9月2日登上奈飞全球非英语剧集周榜第二，创国产剧在该榜单的历史最高排名。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "优酷",
+              "早春晴朗",
+              "奈飞"
+            ],
+            "numbers": [
+              "9月2日",
+              "第二"
+            ],
+            "quote_zh": "9月2日，优酷出品的都市情感剧《早春晴朗》登上奈飞（Netf",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "《早春晴朗》是奈飞全球非英语剧集周榜TOP10中唯一的中国剧集。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "早春晴朗",
+              "奈飞"
+            ],
+            "numbers": [
+              "TOP10"
+            ],
+            "quote_zh": "也是TOP10中唯一的中国剧集",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "《早春晴朗》开播两日就跻身奈飞全球日榜第六，并登上奈飞非英语剧集周榜第二。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "早春晴朗",
+              "奈飞"
+            ],
+            "numbers": [
+              "两日",
+              "第六",
+              "第二"
+            ],
+            "quote_zh": "《早春晴朗》开播两日就跻身Netflix全球日榜第六，并登上",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "《早春晴朗》于8月26日在奈飞全球同步播出。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "早春晴朗",
+              "奈飞"
+            ],
+            "numbers": [
+              "8月26日"
+            ],
+            "quote_zh": "自8月26日首播以来",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "《早春晴朗》开播3天站内热度破万，成为2026年最快破万的现偶剧。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "早春晴朗"
+            ],
+            "numbers": [
+              "3天",
+              "破万",
+              "2026年"
+            ],
+            "quote_zh": "开播3天站内热度破万，成为2026年最快破万的现偶剧",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "《早春晴朗》以23.5%的市占率连续第二天登顶云合正片有效播放日榜。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "早春晴朗",
+              "云合"
+            ],
+            "numbers": [
+              "23.5%",
+              "第二天"
+            ],
+            "quote_zh": "以23.5%的市占率连续第二天登顶云合正片有效播放日榜",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "《早春晴朗》进入54个国家和地区日榜TOP10，其中在新加坡、越南、泰国、印度尼西亚、中国香港地区、中国台湾地区登顶日榜。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "早春晴朗",
+              "新加坡",
+              "越南",
+              "泰国",
+              "印度尼西亚",
+              "中国香港地区",
+              "中国台湾地区"
+            ],
+            "numbers": [
+              "54个",
+              "TOP10"
+            ],
+            "quote_zh": "进入54个国家和地区日榜TOP10，其中在新加坡、越南、泰国",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "《早春晴朗》在IMDb、MyDramaList开分均达8.4分。",
+            "evidence_refs": [
+              "E4"
+            ],
+            "entities": [
+              "早春晴朗",
+              "IMDb",
+              "MyDramaList"
+            ],
+            "numbers": [
+              "8.4分"
+            ],
+            "quote_zh": "IMDb、MyDramaList开分均达8.4分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "优酷此前出品的《偷偷藏不住》在奈飞多个国家和地区的周榜累计上榜53周。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "优酷",
+              "偷偷藏不住",
+              "奈飞"
+            ],
+            "numbers": [
+              "53周"
+            ],
+            "quote_zh": "《偷偷藏不住》在Netflix多个国家和地区的周榜累计上榜5",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "优酷出品的《难哄》在奈飞全球日榜最高达到TOP6，登顶中国台湾地区、中国香港地区、新加坡等地奈飞榜单。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "优酷",
+              "难哄",
+              "奈飞",
+              "中国台湾地区",
+              "中国香港地区",
+              "新加坡"
+            ],
+            "numbers": [
+              "TOP6"
+            ],
+            "quote_zh": "《难哄》在Netflix全球日榜最高达到TOP6，登顶中国台",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "优酷后续还有《无可替代》《不为人知的故事》《紫色大丽花》等剧集陆续上线。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "优酷",
+              "无可替代",
+              "不为人知的故事",
+              "紫色大丽花"
+            ],
+            "numbers": [],
+            "quote_zh": "后续，优酷还有《无可替代》《不为人知的故事》《紫色大丽花》等",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "source_analysis",
+            "text": "新京报认为，《早春晴朗》海外热播的背后，是优酷坚持精品化战略，持续打造多部现偶精品。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "新京报",
+              "优酷",
+              "早春晴朗"
+            ],
+            "numbers": [],
+            "quote_zh": "《早春晴朗》海外热播的背后，是优酷坚持精品化战略，持续打造多",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "source_analysis",
+            "text": "新京报称，《早春晴朗》引发多国主流媒体集中热议，成为国产剧出海的又一代表。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京报",
+            "entities": [
+              "新京报",
+              "早春晴朗"
+            ],
+            "numbers": [],
+            "quote_zh": "引发多国主流媒体集中热议，成为国产剧出海的又一代表",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "《早春晴朗》是优酷出品的都市情感剧，由井柏然与孙千主演。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "优酷",
+              "早春晴朗",
+              "井柏然",
+              "孙千"
+            ],
+            "numbers": [],
+            "quote_zh": "优酷出品的都市情感剧《早春晴朗》",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "《早春晴朗》讲述的是中国职场爱情故事。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "早春晴朗"
+            ],
+            "numbers": [],
+            "quote_zh": "这部中国职场爱情剧",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "《早春晴朗》改编自同名小说，原著中尚之桃与栾念始于长达六年不对等的固定亲密关系。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "早春晴朗",
+              "尚之桃",
+              "栾念"
+            ],
+            "numbers": [
+              "六年"
+            ],
+            "quote_zh": "原著中尚之桃与栾念始于长达六年不对等的“固定亲密关系”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "剧版《早春晴朗》将原著中的固定亲密关系改为办公室地下恋情。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "早春晴朗"
+            ],
+            "numbers": [],
+            "quote_zh": "剧版彻底删除这一设定，改为更纯粹的“办公室地下恋情”",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "剧版《早春晴朗》中，尚之桃主动提出地下恋。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "早春晴朗",
+              "尚之桃"
+            ],
+            "numbers": [],
+            "quote_zh": "剧版改为尚之桃主动提出地下恋",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "剧版《早春晴朗》为栾念增加了童年阴影，将其塑造为口嫌体正直的引导型上司。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "早春晴朗",
+              "栾念"
+            ],
+            "numbers": [],
+            "quote_zh": "剧版为其增加童年阴影进行柔化，改为“口嫌体正直”的引导型上司",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "剧版《早春晴朗》新增了尚之桃去山区遇险、两人互相救命的原创桥段。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "早春晴朗",
+              "尚之桃"
+            ],
+            "numbers": [],
+            "quote_zh": "剧版加入尚之桃去山区遇险、两人互相救命的原创桥段",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "奈飞",
+            "gloss_ja": "Netflix",
+            "what_is": "動画配信サービス。",
+            "why_now": "本作が非英語ドラマ週間ランキング2位を獲得した。",
+            "explain_quote_zh": "奈飞（Netflix）全球非英语剧集周榜第二",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "云合",
+            "gloss_ja": "雲合データ",
+            "what_is": "中国の視聴データ分析プラットフォーム。",
+            "why_now": "本作が正片有效播放日榜で1位を獲得した。",
+            "explain_quote_zh": "云合正片有效播放日榜",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "现偶剧",
+            "gloss_ja": "現代恋愛ドラマ",
+            "what_is": "現代を舞台にした恋愛ドラマ。",
+            "why_now": "本作が2026年最速で再生回数1億回を突破した。",
+            "explain_quote_zh": "成为2026年最快破万的现偶剧",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "站内热度破万",
+            "gloss_ja": "プラットフォーム内人気度1万超え",
+            "what_is": "動画プラットフォーム内の人気度指標が1万を超えること。",
+            "why_now": "本作が開幕3日で達成した。",
+            "explain_quote_zh": "开播3天站内热度破万",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "市占率",
+            "gloss_ja": "市場シェア",
+            "what_is": "市場全体に占める割合。",
+            "why_now": "本作が23.5%を記録した。",
+            "explain_quote_zh": "市占率升至23.5%",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "IMDb",
+            "gloss_ja": "IMDb",
+            "what_is": "映画・テレビ番組のデータベースサイト。",
+            "why_now": "本作の評価が8.4点だった。",
+            "explain_quote_zh": "IMDb、MyDramaList开分均达8.4分",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "MyDramaList",
+            "gloss_ja": "MyDramaList",
+            "what_is": "アジアドラマのデータベースサイト。",
+            "why_now": "本作の評価が8.4点だった。",
+            "explain_quote_zh": "IMDb、MyDramaList开分均达8.4分",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          },
+          {
+            "term": "精品化战略",
+            "gloss_ja": "高品質化戦略",
+            "what_is": "質の高い作品を制作する戦略。",
+            "why_now": "優酷がこの戦略で本作を成功させたと分析されている。",
+            "explain_quote_zh": "优酷坚持精品化战略",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_or_primary_data_source"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
