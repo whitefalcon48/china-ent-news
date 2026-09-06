@@ -8,6 +8,7 @@ import {
 } from "../claimCheck.js";
 import { getToneMode } from "../toneMode.js";
 import { assertToneOnlyRevisionContract } from "../toneOnlyRevision.js";
+import { inferUnquotedInstructionAnchor } from "./instructionAnchors.js";
 import type {
   ClaimCheckResult,
   FactLedger,
@@ -172,6 +173,21 @@ export function detectReviewRevisionIntent(
       // In a residual of a mixed instruction, a quoted fact may mention a
       // title/person/work. It must not silently widen the model's edit scope.
       if (!options.directDestinationOnly) allowedFields.add(field);
+    }
+  }
+
+  // Natural-language feedback can name a literal excerpt without quotes or a
+  // UI field label. Infer only one uniquely located, substantial excerpt, and
+  // only when the established explicit/quoted paths found no scope at all.
+  // Mixed residual instructions intentionally never use this widening path.
+  if (!options.directDestinationOnly && explicitFields.size === 0 && candidateAnchors.length === 0) {
+    const inferred = inferUnquotedInstructionAnchor(
+      listPatchableFields(summary).map((field) => ({ field, value: readPatchableField(summary, field) })),
+      instruction
+    );
+    if (inferred) {
+      allowedFields.add(inferred.field);
+      anchorsByField[inferred.field] = [inferred.anchor];
     }
   }
 
@@ -399,6 +415,8 @@ ${repairInstruction}
 - operation="replace_field" は、修正指示がそのフィールド全体を明示した場合だけ使う。上記の「実質的な再構成が必要な箇所」には必ず replace_field を使い、before は空文字にする。保存記事の実際の現在値はシステムがbindするため、長文をコピー・要約・補正してbeforeへ入れてはいけない。afterにはフィールド全体の書き直し後を入れる。
 - replace_field の after に現在値と同じ文を返してはいけない。同文は修正未実施として拒否される。
 - 通常の置換では、after は修正指示に必要な最小限の変更だけにし、周辺文、別フィールド、文順を変えない。
+- 指示に削除と説明追加など複数の要望があれば、全件を満たす案だけ返す。一部だけ黙って処理しない。
+- 用語・組織の名称や関与事実がclaimにあるだけでは、その意味や役割の説明の根拠にはならない。説明そのものが claims/terms で確認できなければ、一般知識で補わず clarification_required=true、patches=[] とし、clarification_reason に不足する用語と必要資料を具体的に書く。
 - 決定的置換済みの保護語句が示されている場合、その語句を before に含めて変更・削除してはいけない。追記は保護語句を含まない一意の文を before にして行う。
 - 再構成対象フィールドには最小変更ルールを適用しない。既存文の前後へ説明を1文足すだけ、ほぼ同じ文順・表現を残すだけでは不合格。指示された分かりにくさ・浅さを解消するよう、根拠claim同士の因果・対比・仕組み・変化のいずれかを説明する文章へ組み直す。
 - 再構成の evidence_claim_refs には、上の「利用可能な事実台帳」にあるclaim IDから、書き直したフィールドで実際に使ったものをすべて入れる。表示されていないIDやunsupported claimは使わない。根拠から実質的な改善を作れない場合は、薄い追記で済ませず clarification_required=true にする。
@@ -477,7 +495,8 @@ export function applyValidatedReviewPatch(
     if (!allowed.has(patch.field)) throw new ReviewRevisionContractError(`許可されていないフィールドです: ${patch.field}`);
     const current = readPatchableField(after, patch.field);
     const original = originalFieldValues.get(patch.field) ?? "";
-    const fullFieldRewriteAllowed = !intent.restrict_full_field_replacement || intent.required_field_rewrites.includes(patch.field);
+    const fullFieldRewriteAllowed = explicit.has(patch.field)
+      && (!intent.restrict_full_field_replacement || intent.required_field_rewrites.includes(patch.field));
     const protectedLiteral = intent.protected_replacements?.find((item) => item.field === patch.field && patch.before.includes(item.literal));
     if (protectedLiteral) {
       throw new ReviewRevisionContractError(`決定的置換済みの語句を後段パッチが変更しようとしています: ${patch.field}`);

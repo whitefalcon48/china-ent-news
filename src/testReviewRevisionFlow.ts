@@ -43,10 +43,45 @@ for (const ambiguity of [
 ]) {
   assert.equal(
     humanRevisionFailure(new Error(ambiguity)),
-    "変更する箇所を一つに特定できませんでした。",
-    "本当に変更対象が曖昧な場合は従来の案内を維持する"
+    "変更する箇所を一つに特定できませんでした。直したい文の一部か、記事の欄名を教えてください。例：何が起きたかの2文目を短く。",
+    "本当に変更対象が曖昧な場合は次に必要な情報を案内する"
   );
 }
+assert.match(
+  humanRevisionFailure(new Error("claim C1 is unavailable"), "国家安全部とはなにかを説明してください"),
+  /「国家安全部」の説明を裏付ける根拠資料の追加確認が必要/u,
+  "用語説明の根拠不足は、安全な用語だけを示して追加確認が必要と案内する"
+);
+assert.match(
+  humanRevisionFailure(new Error("claim C1 is unavailable"), "国家安全部とはなにかを説明し、制作団体の列挙を削除してください"),
+  /説明の追加を外し、削除する文を示した指示/u,
+  "削除を含む指示だけに、対象を再特定できる削除案内を出す"
+);
+assert.match(
+  humanRevisionFailure(new Error("claim C1 is unavailable"), "事実が並んでわかりにくいので、制作団体の列挙はいらない。国家安全部とはなにか説明してください"),
+  /説明の追加を外し、削除する文を示した指示/u,
+  "原#83型の『いらない』も削除要求として案内する"
+);
+assert.doesNotMatch(
+  humanRevisionFailure(new Error("claim C1 is unavailable"), "国家安全部とはなにか分からないので説明してください"),
+  /削除する文を示した指示/u,
+  "『分からない』を削除要求として誤判定しない"
+);
+assert.match(
+  humanRevisionFailure(new Error("claim C1 is unavailable"), "国家安全部とはなにかを説明してください"),
+  /新しい資料URLを送るだけでは反映されません/u,
+  "URLの追記だけで成功するとは案内しない"
+);
+assert.doesNotMatch(
+  humanRevisionFailure(new Error("claim C1 is unavailable"), "https://example.comとはなにか"),
+  /example\.com/u,
+  "URLを用語として返信へ反射しない"
+);
+assert.doesNotMatch(
+  humanRevisionFailure(new Error("claim C1 is unavailable"), "@someoneとはなにか"),
+  /@someone/u,
+  "メンションを用語として返信へ反射しない"
+);
 for (const instruction of ["作品名は 初稿 → 修正版 に直してください", "作品名は 初稿 → 修正版 へ修正してください", "作品名は 初稿 → 修正版 に変更してください", "作品名は 初稿 → 修正版 に統一してください"]) {
   const noTagIntent = detectReviewRevisionIntent(summary, instruction, "その他");
   assert.equal(tryApplyDeterministicTerminologyReplacement(summary, instruction, "その他", noTagIntent)?.summary.title_ja, "修正版", `理由タグなしの純粋な明示置換を即時適用できる: ${instruction}`);

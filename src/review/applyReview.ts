@@ -162,16 +162,16 @@ async function main() {
         } else target.status = previousStatus;
         if (error instanceof ReviewRevisionClarificationRequiredError) {
           console.warn(`review proposal unavailable for ${target.index}:`, error.message);
-          replies.push(`⚠️ ${target.index}番の元の記事は変更していません。${humanRevisionFailure(error)}`);
+          replies.push(`⚠️ ${target.index}番の元の記事は変更していません。${humanRevisionFailure(error, instruction)}`);
           continue;
         }
         if (error instanceof ToneOnlyRevisionContractError) {
           console.warn(`review tone revision unavailable for ${target.index}:`, error.message);
-          replies.push(`⚠️ ${target.index}番は、口調だけの修正として確認できなかったため、元の記事を保持しました。${humanRevisionFailure(error)}`);
+          replies.push(`⚠️ ${target.index}番は、口調だけの修正として確認できなかったため、元の記事を保持しました。${humanRevisionFailure(error, instruction)}`);
           continue;
         }
         console.warn(`review proposal failed for ${target.index}:`, error);
-        replies.push(`⚠️ ${target.index}番の元の記事は変更していません。${humanRevisionFailure(error)}`);
+        replies.push(`⚠️ ${target.index}番の元の記事は変更していません。${humanRevisionFailure(error, instruction)}`);
       }
     }
   }
