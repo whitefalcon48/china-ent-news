@@ -3,7 +3,7 @@
   "date": "2026-09-06",
   "articles": {
     "a-37d06fba5ca20f9c": {
-      "current_version": 1,
+      "current_version": 2,
       "versions": [
         {
           "n": 1,
@@ -711,6 +711,865 @@
                 "regenerated": false,
                 "passed": true,
                 "reasons": []
+              }
+            }
+          }
+        },
+        {
+          "n": 2,
+          "parent": 1,
+          "created_at": "2026-09-06T13:49:22.311Z",
+          "created_by": "proposal:p-1",
+          "summary": "制作団体の列挙を削除し、読者が知らない国家安全部の役割を短く補足する。出典は国家安全部広報担当の回答で、設立説明と続く機能説明を照合した。",
+          "article_summary": {
+            "title_ja": "国安（国家安全）題材ドラマ『交鋒』が9月6日放送開始、王凯＆彭昱畅らが出演",
+            "badge": "NEWS",
+            "lead": "中国の国家安全を題材にしたテレビドラマ『交鋒』が、9月6日からCCTV-8で放送され、配信プラットフォームでも配信されることが発表された。主演は王凯、周依然、欧豪、彭昱畅ら。",
+            "what_happened": "国安（国家安全）題材のテレビドラマ『交鋒』が、9月6日にCCTV-8で独占テレビ放送され、騰讯視頻と咪咕視頻でネット配信されることが決まった。国家安全部が主導して制作された。国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。監督は姚暁峰、脚本は王小枪が担当し、王凯、周依然、欧豪、彭昱畅（いずれも姓の画数順）らが主演する。物語は1990年代末、市国家安全局の師徒（師弟）が、ある機密漏えい事件をきっかけに、20年にわたって海外スパイと対決する姿を描く。",
+            "reaction_view": "",
+            "why_it_matters": "国家安全部が主導するドラマって、どんな風に描くのか気になります！ 20年にわたる師弟の戦いを、どうリアルに見せるのか。まずは初回の反応と、時代をどう再現しているかを確認したいです。",
+            "editor_comment": "",
+            "japan_context_note": "",
+            "category": "ドラマ",
+            "confidence": "B",
+            "source_type": "media_report",
+            "published_date": "2026-09-01",
+            "event_date": "2026-09-01",
+            "freshness_label": "recent",
+            "newsworthiness_score": 64,
+            "japan_visibility": "low",
+            "japan_gap": "high",
+            "context_value": "medium",
+            "sns_heat": "none",
+            "source_count": 4,
+            "source_list": [
+              {
+                "name": "新京报 娱乐",
+                "url": "https://www.bjnews.com.cn/detail/1788235759169733.html"
+              },
+              {
+                "name": "taptap.cn",
+                "url": "https://www.taptap.cn/moment/680707893497957389"
+              },
+              {
+                "name": "xxsb.gz-cmc.com",
+                "url": "https://xxsb.gz-cmc.com/pages/2026/09/02/998c03fdb5804cc0b24338c25d27793f.html"
+              },
+              {
+                "name": "ent.sina.cn",
+                "url": "https://ent.sina.cn/2026-09-01/detail-iniqhwmy4796195.d.html?oid=Xeng2021%20Club%E3%80%9066.cyou%E3%80%91.txmi&vt=4"
+              }
+            ],
+            "has_official_source": false,
+            "has_multiple_sources": true,
+            "has_sns_signal": false,
+            "article_type": "news_event",
+            "skip_reason": "",
+            "verification_status": "verified",
+            "topic_key": "交锋",
+            "main_entities": {
+              "people": [
+                "王凯",
+                "彭昱畅",
+                "周依然",
+                "欧豪",
+                "王小枪",
+                "姚晓峰"
+              ],
+              "works": [
+                "交锋"
+              ],
+              "organizations": [
+                "国家安全部",
+                "中央广播电视总台",
+                "国家安全部国安影视中心",
+                "中国电视剧制作中心",
+                "柠萌影视",
+                "柠萌开新",
+                "腾讯视频",
+                "咪咕视频",
+                "CCTV-8"
+              ]
+            },
+            "related_sources": [
+              {
+                "name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+                "url": "https://swj.zhengzhou.gov.cn/swdt/4671607.jhtml"
+              }
+            ],
+            "tags": [
+              "国安ドラマ",
+              "CCTV",
+              "王凯",
+              "彭昱畅"
+            ],
+            "publish_priority": "medium",
+            "publish_reason": "中国の国安ドラマは日本でほとんど知られておらず、国家主導のエンタメの一例として紹介する価値があるため。",
+            "claim_refs": {
+              "what_happened": [
+                "C1",
+                "C2",
+                "C3",
+                "C4",
+                "C12"
+              ],
+              "why_it_matters": [
+                "C2",
+                "C4",
+                "C5"
+              ],
+              "reaction_view": [],
+              "japan_context_note": []
+            },
+            "detail_sections": []
+          },
+          "article_state": {
+            "summary": {
+              "title_ja": "国安（国家安全）題材ドラマ『交鋒』が9月6日放送開始、王凯＆彭昱畅らが出演",
+              "badge": "NEWS",
+              "lead": "中国の国家安全を題材にしたテレビドラマ『交鋒』が、9月6日からCCTV-8で放送され、配信プラットフォームでも配信されることが発表された。主演は王凯、周依然、欧豪、彭昱畅ら。",
+              "what_happened": "国安（国家安全）題材のテレビドラマ『交鋒』が、9月6日にCCTV-8で独占テレビ放送され、騰讯視頻と咪咕視頻でネット配信されることが決まった。国家安全部が主導して制作された。国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。監督は姚暁峰、脚本は王小枪が担当し、王凯、周依然、欧豪、彭昱畅（いずれも姓の画数順）らが主演する。物語は1990年代末、市国家安全局の師徒（師弟）が、ある機密漏えい事件をきっかけに、20年にわたって海外スパイと対決する姿を描く。",
+              "reaction_view": "",
+              "why_it_matters": "国家安全部が主導するドラマって、どんな風に描くのか気になります！ 20年にわたる師弟の戦いを、どうリアルに見せるのか。まずは初回の反応と、時代をどう再現しているかを確認したいです。",
+              "editor_comment": "",
+              "japan_context_note": "",
+              "category": "ドラマ",
+              "confidence": "B",
+              "source_type": "media_report",
+              "published_date": "2026-09-01",
+              "event_date": "2026-09-01",
+              "freshness_label": "recent",
+              "newsworthiness_score": 64,
+              "japan_visibility": "low",
+              "japan_gap": "high",
+              "context_value": "medium",
+              "sns_heat": "none",
+              "source_count": 4,
+              "source_list": [
+                {
+                  "name": "新京报 娱乐",
+                  "url": "https://www.bjnews.com.cn/detail/1788235759169733.html"
+                },
+                {
+                  "name": "taptap.cn",
+                  "url": "https://www.taptap.cn/moment/680707893497957389"
+                },
+                {
+                  "name": "xxsb.gz-cmc.com",
+                  "url": "https://xxsb.gz-cmc.com/pages/2026/09/02/998c03fdb5804cc0b24338c25d27793f.html"
+                },
+                {
+                  "name": "ent.sina.cn",
+                  "url": "https://ent.sina.cn/2026-09-01/detail-iniqhwmy4796195.d.html?oid=Xeng2021%20Club%E3%80%9066.cyou%E3%80%91.txmi&vt=4"
+                }
+              ],
+              "has_official_source": false,
+              "has_multiple_sources": true,
+              "has_sns_signal": false,
+              "article_type": "news_event",
+              "skip_reason": "",
+              "verification_status": "verified",
+              "topic_key": "交锋",
+              "main_entities": {
+                "people": [
+                  "王凯",
+                  "彭昱畅",
+                  "周依然",
+                  "欧豪",
+                  "王小枪",
+                  "姚晓峰"
+                ],
+                "works": [
+                  "交锋"
+                ],
+                "organizations": [
+                  "国家安全部",
+                  "中央广播电视总台",
+                  "国家安全部国安影视中心",
+                  "中国电视剧制作中心",
+                  "柠萌影视",
+                  "柠萌开新",
+                  "腾讯视频",
+                  "咪咕视频",
+                  "CCTV-8"
+                ]
+              },
+              "related_sources": [
+                {
+                  "name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+                  "url": "https://swj.zhengzhou.gov.cn/swdt/4671607.jhtml"
+                }
+              ],
+              "tags": [
+                "国安ドラマ",
+                "CCTV",
+                "王凯",
+                "彭昱畅"
+              ],
+              "publish_priority": "medium",
+              "publish_reason": "中国の国安ドラマは日本でほとんど知られておらず、国家主導のエンタメの一例として紹介する価値があるため。",
+              "claim_refs": {
+                "what_happened": [
+                  "C1",
+                  "C2",
+                  "C3",
+                  "C4",
+                  "C12"
+                ],
+                "why_it_matters": [
+                  "C2",
+                  "C4",
+                  "C5"
+                ],
+                "reaction_view": [],
+                "japan_context_note": []
+              },
+              "detail_sections": []
+            },
+            "topic": {
+              "topic_key": "交锋",
+              "title_hint": "国安题材电视剧《交锋》9月6日开播，王凯、彭昱畅等主演",
+              "event_sentence": "国安题材电视剧《交锋》将于9月6日开播，王凯、彭昱畅等主演。",
+              "search_queries": [
+                "交锋",
+                "交锋 电视剧 开播",
+                "交锋 王凯 彭昱畅"
+              ],
+              "seed_source": "llm",
+              "seed_confidence": 0.95,
+              "topic_type": "drama_production",
+              "freshness_label": "recent",
+              "published_date_range": {
+                "earliest": "2026-09-01",
+                "latest": "2026-09-01"
+              },
+              "source_count": 3,
+              "source_mix": {
+                "official": 0,
+                "media_report": 5,
+                "sns": 0,
+                "data": 0,
+                "pr_like": 0,
+                "rumor": 0,
+                "mixed": 0
+              },
+              "evidence_articles": [
+                {
+                  "title": "国安题材电视剧《交锋》9月6日开播，王凯、彭昱畅等主演",
+                  "url": "https://www.bjnews.com.cn/detail/1788235759169733.html",
+                  "source_name": "新京报 娱乐",
+                  "source_type": "media_report",
+                  "published_date": "2026-09-01",
+                  "freshness_label": "recent",
+                  "article_type": "news_event",
+                  "reliability": "B",
+                  "key_points": [
+                    "国安题材电视剧《交锋》9月6日开播，王凯、彭昱畅等主演"
+                  ],
+                  "media_family": "xinjingbao"
+                },
+                {
+                  "title": "电视剧《交锋》9月6日央视开播",
+                  "url": "https://xxsb.gz-cmc.com/pages/2026/09/02/998c03fdb5804cc0b24338c25d27793f.html",
+                  "source_name": "xxsb.gz-cmc.com",
+                  "source_type": "media_report",
+                  "published_date": "2026-09-02",
+                  "freshness_label": "recent",
+                  "article_type": "unknown",
+                  "reliability": "C",
+                  "key_points": [
+                    "电视剧《交锋》9月6日央视开播",
+                    "信息时报讯（记者 蔡慕嘉）由国家安全部主导创作，中央广播电视总台、国家安全部国安影视中心、中国电视剧制作中心、柠萌影视及旗下柠萌开新、腾讯视频出品，启蒙影业联合呈现的当代国安题材电视剧《交锋》，近日正式宣布定档，将于9月6日在CCTV-8独家电视播出，腾讯视频、咪咕视频全网首播。《交锋》以世纪之交的一宗泄密大案为起点，讲述了20世纪90年代末，某市国家安全局一对性格迥异的师徒，因机缘巧合的命运安排，为了共同的使命与信仰并肩作战，与境外间谍展开一场横跨二十年的隐蔽战线较量的故事。《交锋》定档9月6日。播出平台供图定档预告中，镜头穿梭于机场、码头、街市等充满时代印记的场景之间，马憩、何春晓、林看山、锦兰、朱应甲等角色渐次出场，剧集从具体角色的命运入手铺陈大局势的风起云涌。预告结尾那句“二十年了，我们等的就是这一天”，更是将整部剧的时间跨度与信仰坚守推向高潮。作为国家安全部主导创作的国安领域现实题材电视剧，《交锋》坚持现实主义创作原则，力求在细节上尽可能还原隐蔽战线斗争的真实质感。剧集以光影叙事展现隐蔽战线斗争的残酷激烈与国安干警的使命担当。镜头之下，没有刀光剑影的炫目，却有步步为营的暗战；没有轰轰烈烈的壮语，却有几十年如一日的默默坚守。国安干警在漫长岁月中与敌手反复博弈，用智慧、胆识乃至生命捍卫国家安全。"
+                  ],
+                  "media_family": "xxsb.gz-cmc.com"
+                },
+                {
+                  "title": "国安题材电视剧《交锋》9月6日开播，王凯、彭昱畅等主演",
+                  "url": "https://ent.sina.cn/2026-09-01/detail-iniqhwmy4796195.d.html?oid=Xeng2021%20Club%E3%80%9066.cyou%E3%80%91.txmi&vt=4",
+                  "source_name": "ent.sina.cn",
+                  "source_type": "media_report",
+                  "published_date": "2026-09-01",
+                  "freshness_label": "recent",
+                  "article_type": "unknown",
+                  "reliability": "C",
+                  "key_points": [
+                    "国安题材电视剧《交锋》9月6日开播，王凯、彭昱畅等主演",
+                    "新浪娱乐 国安题材电视剧《交锋》9月6日开播，王凯、彭昱畅等主演 新京报 新京报官方账号 09.0112:09 关注 新京报讯（记者杨莲洁）由国家安全部主导创作，中央广播电视总台、国家安全部国安影视中心、中国电视剧制作中心、柠萌影视及旗下柠萌开新、腾讯视频出品的当代国安题材电视剧《交锋》今日正式宣布定档，将于9月6日在CCTV-8独家电视播出，腾讯视频、咪咕视频全网首播。《交锋》由王小枪编剧、姚晓峰任总导演，王凯、周依然、欧豪、彭昱畅（按姓氏笔画排序）领衔主演，一众实力派演员倾情集结，共同呈现这场跨越两岸的较量。该剧以世纪之交的一宗国安泄密大案为起点，讲述了上世纪九十年代末，市国家安全局一对性格迥异的师徒，因机缘巧合的命运安排，为了共同的使命与信仰并肩作战，与境外间谍展开一场横跨二十年的隐蔽战线较量的故事。 《交锋》海报 作为国家安全部主导创作的国安领域现实题材电视剧，《交锋》坚持现实主义创作原则，力求在细节上尽可能还原隐蔽战线斗争的真实质感。剧集以光影叙事展现隐蔽战线斗争的残酷激烈与国安干警的使命担当。镜头之下，没有刀光剑影的炫目，却有步步为营的暗战；没有轰轰烈烈的壮语，却有几十年如一日的默默坚守。国安干警在漫长岁月中与敌手反复博弈，用智慧、胆识乃至生命捍卫国家安全。这份“坚定纯洁、让党放心、甘于奉献、能拼善赢”的政治品格，构成了《交锋》最深层的精神内核。编辑 杨莲洁校对 陈荻雁 window.STO=window.STO||{};window.STO.fw=new Date().getTime(); 加载中... 视频 直播 美图 博客 看点 政务 搞笑 八卦 情感 旅游 佛学 众测 首页 导航 反馈 Sina.cn(京ICP证000007) 2026-09-06 14:02 var articleMaskLayer = { ch:'ent', isPV:true } <div class=\"lmt_w\"> <span class=\"lmt_c_w icon_com\"></span> <a href=\"<% content[0].link[0] %>\"> <img class=\"lmt_img\" alt=\"<% content[0].src[1] %>\" src=\"<% content[0].src[0] %>\"> </a> </div> <a href=\"<%"
+                  ],
+                  "media_family": "sina"
+                },
+                {
+                  "title": "中国网络视听节目服务协会 好戏连台 腾讯视频：《交锋》定档9月6日",
+                  "url": "http://www.cnsa.cn/art/2026/9/3/art_1989_49267.html",
+                  "source_name": "cnsa.cn",
+                  "source_type": "media_report",
+                  "published_date": "2026-09-04",
+                  "freshness_label": "recent",
+                  "article_type": "unknown",
+                  "reliability": "C",
+                  "key_points": [
+                    "中国网络视听节目服务协会 好戏连台 腾讯视频：《交锋》定档9月6日",
+                    "当前位置：首页 >精品栏目>好戏连台 腾讯视频：《交锋》定档9月6日 发布日期：2026-09-03 《交锋》是由中央广播电视总台、中国电视剧制作中心、柠萌影视、柠萌开新、腾讯视频出品，姚晓峰总导演，王小枪编剧，张翼芸总制片人，王凯、彭昱畅、欧豪、周依然、邱天、成泰燊、齐欢等主演的当代涉案剧。该剧由一宗世纪之交的泄密大案而起，讲述了二十世纪九十年代末，闽州市国家安全局一对性格迥异的师徒，因机缘巧合的命运安排，为了共同的使命与信仰并肩作战的故事。"
+                  ],
+                  "media_family": "cnsa.cn"
+                },
+                {
+                  "title": "像素江湖，剪刀为笔 🔥🔥伍六七快来呀 - 伍六七：暗影交锋综合讨论 - TapTap 伍六七：暗影交锋论坛",
+                  "url": "https://www.taptap.cn/moment/680707893497957389",
+                  "source_name": "taptap.cn",
+                  "source_type": "media_report",
+                  "published_date": "2025-06-08",
+                  "freshness_label": "recent",
+                  "article_type": "unknown",
+                  "reliability": "C",
+                  "key_points": [
+                    "像素江湖，剪刀为笔 🔥🔥伍六七快来呀 - 伍六七：暗影交锋综合讨论 - TapTap 伍六七：暗影交锋论坛",
+                    "咖喱像素江湖，剪刀为笔 🔥🔥伍六七快来呀投票2025/06/082412 浏览综合游戏状态：预约🦋游戏类型：角色扮演 像素 横版 冒险🎮游戏简介：《伍六七：暗影交锋》是由官方自研出品，融合动画原作和创意玩法的像素风横版动作RPG。玩家可以扮演原作中的多个角色，组建队伍爽快战斗，直面挑战与命运交锋。除了爽快的战斗，当然还可轻松经营自己的发廊与牛杂摊，享受世外桃源的轻松惬意。💡游戏亮点：✅与众不同的像素还原在像素化的小鸡岛，阿七追回记忆的过程中，不断完成任务，结识奇葩友人。与大家一起对抗强大的斯特国和暗影刺客的入侵。在不断成长的过程中，直面记忆深处——关于刺客首席的过去。这过程当中，还有许多隐藏的故事，等着你来挖掘。✅疗愈系小岛经营战斗之外，回归小鸡岛市井生活： ✂️经营发廊：根据顾客需求设计夸张发型，提升店铺人气。🥘摆摊卖牛杂：钻研食材配方与火候，解锁“手打牛丸”等动画名菜！ 又或者是接取各种任务，加入各种变身小游戏大闹一场。✅生动有趣的多人交锋pvp大乱斗。参与“文明切磋”，利用场地内的各种道具增益，上演刺激乱斗。在小鸡岛，你是刺客榜吊车尾的刺客，是理发师，是厨神，更是小鸡岛不可或缺的生活英雄各位宝子们，想不想到小鸡岛体验这美妙的生活呢，快点击下方预约按钮，期待游戏后续消息吧#游戏种草计划 #伍六七暗影交锋 #刺客伍六七暗影交锋 各位在剧情里面最喜欢谁呢 (单选)阿七62.9%十三12.9%鸡大保2.4%梅花十一10.5%大春4.8%可乐3.3%小飞机1.0%江主任2.4% 210 人参与，投票已结束伍六七：暗影交锋9.3角色扮演国漫像素前往论坛 伍六七：暗影交锋9.3角色扮演国漫像素去论坛查看游戏01:54爽！等了8年终于出正版了‼️不坐牢纯整活，解压神器！#游戏安利@界不世夜魂嘛3 赞1 回复【不简单评测】等了这么久，终于可以上小鸡岛看看了~游戏玩下来，我的感觉是，与其说这是一款商业手游，不如说是动画方送给粉丝的一份礼物。游戏完全可以像很多IP改编手游那样，拿个成熟的玩法换皮，在细节上满足下粉丝就可以收割钱包了。但伍六七扎扎实实地做了一个放在市场上很能打的动作玩法，即使抛开IP它也是一款值得体验的动作手游。 在这个基础上它还用心地去还原动画中感动玩家的那些场景，让玩家以不同的形式再次体会到当初看动画时的乐趣，还粉丝带来了新的剧情。即使精华@Kuma6"
+                  ],
+                  "media_family": "taptap.cn"
+                }
+              ],
+              "main_entities": {
+                "people": [
+                  "王凯",
+                  "彭昱畅",
+                  "彭昱畅等"
+                ],
+                "works": [
+                  "交锋"
+                ],
+                "organizations": [],
+                "events": []
+              },
+              "signals": {
+                "has_official_source": false,
+                "has_media_context": true,
+                "has_data_signal": false,
+                "has_hot_search_signal": false,
+                "has_multiple_sources": true
+              },
+              "newsworthiness_score": 64,
+              "japan_gap": "unknown",
+              "context_value": "low",
+              "publish_priority": "medium",
+              "selection_reason": "media_context, topic_type:drama_production, root_evidence:1, expansion_evidence:4",
+              "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+              "related_evidence_articles": [
+                {
+                  "title": "国家安全部新闻办答记者问：忠诚践行领袖训词 坚定履行光荣使命 - 郑州市商务局",
+                  "url": "https://swj.zhengzhou.gov.cn/swdt/4671607.jhtml",
+                  "source_name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+                  "source_type": "official",
+                  "published_date": "2021-01-07",
+                  "freshness_label": "unknown",
+                  "article_type": "unknown",
+                  "reliability": "A",
+                  "key_points": [
+                    "国家安全部是1983年组建的。",
+                    "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构"
+                  ],
+                  "angle_kind": "other"
+                }
+              ]
+            },
+            "generationMeta": {
+              "topic_key": "交锋",
+              "ledger_used": true,
+              "ledger_fallback_reason": "",
+              "ledger": {
+                "topic_key": "交锋",
+                "claims": [
+                  {
+                    "id": "C1",
+                    "type": "verified_fact",
+                    "text": "国安题材电视剧《交锋》将于9月6日在CCTV-8独家电视播出，腾讯视频、咪咕视频全网首播。",
+                    "evidence_refs": [
+                      "E1",
+                      "E3"
+                    ],
+                    "entities": [
+                      "交锋",
+                      "CCTV-8",
+                      "腾讯视频",
+                      "咪咕视频"
+                    ],
+                    "numbers": [
+                      "9月6日"
+                    ],
+                    "quote_zh": "将于9月6日在CCTV-8独家电视播出，腾讯视频、咪咕视频全",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C2",
+                    "type": "verified_fact",
+                    "text": "《交锋》由国家安全部主导创作，中央广播电视总台、国家安全部国安影视中心、中国电视剧制作中心、柠萌影视及旗下柠萌开新、腾讯视频出品。",
+                    "evidence_refs": [
+                      "E1",
+                      "E3"
+                    ],
+                    "entities": [
+                      "国家安全部",
+                      "中央广播电视总台",
+                      "国家安全部国安影视中心",
+                      "中国电视剧制作中心",
+                      "柠萌影视",
+                      "柠萌开新",
+                      "腾讯视频"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "由国家安全部主导创作，中央广播电视总台、国家安全部国安影视中",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C3",
+                    "type": "verified_fact",
+                    "text": "《交锋》由王小枪编剧、姚晓峰任总导演，王凯、周依然、欧豪、彭昱畅（按姓氏笔画排序）领衔主演。",
+                    "evidence_refs": [
+                      "E1"
+                    ],
+                    "entities": [
+                      "王小枪",
+                      "姚晓峰",
+                      "王凯",
+                      "周依然",
+                      "欧豪",
+                      "彭昱畅"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "《交锋》由王小枪编剧、姚晓峰任总导演，王凯、周依然、欧豪、彭",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C4",
+                    "type": "verified_fact",
+                    "text": "《交锋》以世纪之交的一宗国安泄密大案为起点，讲述了上世纪九十年代末，市国家安全局一对性格迥异的师徒，因机缘巧合的命运安排，为了共同的使命与信仰并肩作战，与境外间谍展开一场横跨二十年的隐蔽战线较量的故事。",
+                    "evidence_refs": [
+                      "E1",
+                      "E3"
+                    ],
+                    "entities": [
+                      "交锋"
+                    ],
+                    "numbers": [
+                      "上世纪九十年代末",
+                      "二十年"
+                    ],
+                    "quote_zh": "以世纪之交的一宗国安泄密大案为起点，讲述了上世纪九十年代末，",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "story_premise",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C5",
+                    "type": "verified_fact",
+                    "text": "《交锋》坚持现实主义创作原则，力求在细节上尽可能还原隐蔽战线斗争的真实质感。",
+                    "evidence_refs": [
+                      "E1",
+                      "E3"
+                    ],
+                    "entities": [
+                      "交锋"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "坚持现实主义创作原则，力求在细节上尽可能还原隐蔽战线斗争的真",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C6",
+                    "type": "verified_fact",
+                    "text": "《交锋》以光影叙事展现隐蔽战线斗争的残酷激烈与国安干警的使命担当。",
+                    "evidence_refs": [
+                      "E1",
+                      "E3"
+                    ],
+                    "entities": [
+                      "交锋"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "以光影叙事展现隐蔽战线斗争的残酷激烈与国安干警的使命担当",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C7",
+                    "type": "verified_fact",
+                    "text": "国安干警在漫长岁月中与敌手反复博弈，用智慧、胆识乃至生命捍卫国家安全。",
+                    "evidence_refs": [
+                      "E1",
+                      "E3"
+                    ],
+                    "entities": [],
+                    "numbers": [],
+                    "quote_zh": "国安干警在漫长岁月中与敌手反复博弈，用智慧、胆识乃至生命捍卫",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C8",
+                    "type": "verified_fact",
+                    "text": "《交锋》的精神内核是“坚定纯洁、让党放心、甘于奉献、能拼善赢”的政治品格。",
+                    "evidence_refs": [
+                      "E1"
+                    ],
+                    "entities": [
+                      "交锋"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "这份“坚定纯洁、让党放心、甘于奉献、能拼善赢”的政治品格，构",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C9",
+                    "type": "verified_fact",
+                    "text": "定档预告中，镜头穿梭于机场、码头、街市等充满时代印记的场景之间，马憩、何春晓、林看山、锦兰、朱应甲等角色渐次出场。",
+                    "evidence_refs": [
+                      "E3"
+                    ],
+                    "entities": [
+                      "马憩",
+                      "何春晓",
+                      "林看山",
+                      "锦兰",
+                      "朱应甲"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "镜头穿梭于机场、码头、街市等充满时代印记的场景之间，马憩、何",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C10",
+                    "type": "verified_fact",
+                    "text": "预告结尾台词“二十年了，我们等的就是这一天”将整部剧的时间跨度与信仰坚守推向高潮。",
+                    "evidence_refs": [
+                      "E3"
+                    ],
+                    "entities": [],
+                    "numbers": [
+                      "二十年"
+                    ],
+                    "quote_zh": "预告结尾那句“二十年了，我们等的就是这一天”，更是将整部剧的",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C11",
+                    "type": "verified_fact",
+                    "text": "启蒙影业联合呈现《交锋》。",
+                    "evidence_refs": [
+                      "E3"
+                    ],
+                    "entities": [
+                      "启蒙影业"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "启蒙影业联合呈现",
+                    "anchor": true,
+                    "scope": "root_event",
+                    "editorial_role": "other",
+                    "angle_kind": "other"
+                  },
+                  {
+                    "id": "C12",
+                    "type": "verified_fact",
+                    "text": "国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+                    "evidence_refs": [
+                      "E5"
+                    ],
+                    "source_name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+                    "entities": [
+                      "国家安全部"
+                    ],
+                    "numbers": [],
+                    "quote_zh": "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构",
+                    "anchor": true,
+                    "scope": "related_angle",
+                    "angle_kind": "other",
+                    "editorial_role": "other"
+                  }
+                ],
+                "terms": [
+                  {
+                    "term": "国家安全部",
+                    "gloss_ja": "国家安全部",
+                    "what_is": "国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+                    "why_now": "",
+                    "explain_quote_zh": "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构",
+                    "explain_evidence_refs": [
+                      "E5"
+                    ]
+                  }
+                ],
+                "japan_availability": {
+                  "status": "not_in_evidence",
+                  "detail": "",
+                  "evidence_refs": []
+                },
+                "unresolved": [],
+                "evidence_roles": {
+                  "E1": "root_corroboration",
+                  "E2": "root_corroboration",
+                  "E3": "root_corroboration",
+                  "E4": "root_corroboration",
+                  "E5": "related_angle"
+                },
+                "evidence_quality": [
+                  {
+                    "evidence_ref": "E1",
+                    "classification": "editorial_media",
+                    "usable_for_verified_facts": true,
+                    "reason": "editorial_source_without_integrity_markers"
+                  },
+                  {
+                    "evidence_ref": "E2",
+                    "classification": "editorial_media",
+                    "usable_for_verified_facts": true,
+                    "reason": "editorial_source_without_integrity_markers"
+                  },
+                  {
+                    "evidence_ref": "E3",
+                    "classification": "editorial_media",
+                    "usable_for_verified_facts": true,
+                    "reason": "editorial_source_without_integrity_markers"
+                  },
+                  {
+                    "evidence_ref": "E4",
+                    "classification": "promotional_or_repost",
+                    "usable_for_verified_facts": false,
+                    "reason": "near_duplicate_repost",
+                    "duplicate_of": "E1"
+                  },
+                  {
+                    "evidence_ref": "E5",
+                    "classification": "primary",
+                    "usable_for_verified_facts": true,
+                    "reason": "official_government_domain_operator_reviewed_exact_quotes"
+                  }
+                ]
+              },
+              "evidence_quality": [
+                {
+                  "evidence_ref": "E1",
+                  "classification": "editorial_media",
+                  "usable_for_verified_facts": true,
+                  "reason": "editorial_source_without_integrity_markers"
+                },
+                {
+                  "evidence_ref": "E2",
+                  "classification": "editorial_media",
+                  "usable_for_verified_facts": true,
+                  "reason": "editorial_source_without_integrity_markers"
+                },
+                {
+                  "evidence_ref": "E3",
+                  "classification": "editorial_media",
+                  "usable_for_verified_facts": true,
+                  "reason": "editorial_source_without_integrity_markers"
+                },
+                {
+                  "evidence_ref": "E4",
+                  "classification": "promotional_or_repost",
+                  "usable_for_verified_facts": false,
+                  "reason": "near_duplicate_repost",
+                  "duplicate_of": "E1"
+                },
+                {
+                  "evidence_ref": "E5",
+                  "classification": "primary",
+                  "usable_for_verified_facts": true,
+                  "reason": "official_government_domain_operator_reviewed_exact_quotes"
+                }
+              ],
+              "ai_models": {
+                "base": {
+                  "provider": "deepseek",
+                  "model": "deepseek-v4-flash"
+                },
+                "ledger": {
+                  "provider": "deepseek",
+                  "model": "deepseek-v4-pro"
+                },
+                "comment": {
+                  "provider": "deepseek",
+                  "model": "deepseek-v4-pro"
+                }
+              },
+              "ledger_anchor": {
+                "topic_key": "交锋",
+                "claims_total": 11,
+                "anchor_unverified": 0,
+                "dropped_explanations": []
+              },
+              "term_expansion": {
+                "enabled": true,
+                "attempted": [],
+                "succeeded": [],
+                "failed": []
+              },
+              "display_normalization": {
+                "residues": []
+              },
+              "comment_grounding": {
+                "topic_key": "交锋",
+                "refs": [
+                  "C2",
+                  "C4",
+                  "C5"
+                ],
+                "gated_sentences_removed": [],
+                "unmatched_numbers": []
+              },
+              "claim_check": {
+                "topic_key": "交锋",
+                "violations": [
+                  {
+                    "section": "lead",
+                    "rule": "entity_not_in_ledger",
+                    "severity": "warning",
+                    "detail": "中国の国家安全を題材にしたテレビドラマ『交鋒』が、9月6日からCCTV-8で放送され、配信プラットフォームでも配信されることが発表された。"
+                  },
+                  {
+                    "section": "what_happened",
+                    "rule": "entity_not_in_ledger",
+                    "severity": "warning",
+                    "detail": "国安（国家安全）題材のテレビドラマ『交鋒』が、9月6日にCCTV-8で独占テレビ放送され、騰讯視頻と咪咕視頻でネット配信されることが決まった。"
+                  },
+                  {
+                    "section": "what_happened",
+                    "rule": "number_not_in_ledger",
+                    "severity": "warning",
+                    "detail": "物語は1990年代末、市国家安全局の師徒（師弟）が、ある機密漏えい事件をきっかけに、20年にわたって海外スパイと対決する姿を描く。",
+                    "number_token": "1990年"
+                  }
+                ],
+                "gated_violation_count": 0,
+                "action": "none"
+              },
+              "tone_mode": "normal",
+              "comment_stage": {
+                "attempted": true,
+                "used": true,
+                "regenerated": false,
+                "fallback_reason": "",
+                "exclamation_count": 1,
+                "opening": "国家安全部が主導する",
+                "regenerated_opening": false,
+                "regenerated_paraphrase": false
+              },
+              "article_depth": {
+                "profile": "standard",
+                "eligible_claims": 11,
+                "used_claims": 3,
+                "coverage_ratio": 0.273,
+                "detail_sections": 0,
+                "important_number_claims": 3,
+                "used_number_claims": 1,
+                "regenerated": false,
+                "passed": true,
+                "reasons": []
+              },
+              "review_supplements": [
+                {
+                  "term": "国家安全部",
+                  "definition_ja": "国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+                  "source_url": "https://swj.zhengzhou.gov.cn/swdt/4671607.jhtml",
+                  "source_name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+                  "source_title": "国家安全部新闻办答记者问：忠诚践行领袖训词 坚定履行光荣使命 - 郑州市商务局",
+                  "source_published_date": "2021-01-07",
+                  "fetched_at": "2026-09-06T13:25:46.143Z",
+                  "source_quote": "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构",
+                  "subject_quote": "国家安全部是1983年组建的。",
+                  "body_sha256": "f8ab9ab31c8ef8e86829981bde78f9d26d58490488871d305756e33b33790886",
+                  "evidence_ref": "E5",
+                  "claim_ref": "C12",
+                  "reason": "制作団体の列挙を削除し、読者が知らない国家安全部の役割を短く補足する。出典は国家安全部広報担当の回答で、設立説明と続く機能説明を照合した。",
+                  "reviewed_by": "codex",
+                  "verification": "operator_reviewed_exact_quotes"
+                }
+              ],
+              "review_revision": {
+                "mode": "limited_patch",
+                "changed_fields": [
+                  "what_happened"
+                ],
+                "changes": [
+                  {
+                    "field": "what_happened",
+                    "before": "国家安全部が主導して制作され、中央広播電視総台、国家安全部国安影視中心、中国電視劇制作中心、柠萌影視などが制作に関わる。",
+                    "after": "国家安全部が主導して制作された。国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+                    "evidence_claim_refs": [
+                      "C2",
+                      "C12"
+                    ],
+                    "reason": "運用担当が公式根拠と変更前後を確認した概念補足"
+                  }
+                ],
+                "preservation": {
+                  "untouched_fields_exact": true,
+                  "source_list_exact": true,
+                  "related_sources_exact": false,
+                  "reaction_view_preserved_when_untargeted": true,
+                  "claim_refs_before": 5,
+                  "claim_refs_after": 6,
+                  "important_numbers_before": [
+                    "9月",
+                    "6日",
+                    "8",
+                    "1990年",
+                    "20年"
+                  ],
+                  "important_numbers_after": [
+                    "9月",
+                    "6日",
+                    "8",
+                    "1990年",
+                    "20年"
+                  ],
+                  "entities_before": [
+                    "王凯",
+                    "彭昱畅",
+                    "周依然",
+                    "欧豪",
+                    "王小枪",
+                    "国家安全部",
+                    "CCTV-8"
+                  ],
+                  "entities_after": [
+                    "王凯",
+                    "彭昱畅",
+                    "周依然",
+                    "欧豪",
+                    "王小枪",
+                    "国家安全部",
+                    "CCTV-8"
+                  ],
+                  "narrative_chars_before": 464,
+                  "narrative_chars_after": 455
+                }
               }
             }
           }
@@ -1640,7 +2499,7 @@
           "id": "p-1",
           "base_version": 1,
           "created_at": "2026-09-06T13:25:46.206Z",
-          "status": "pending"
+          "status": "applied"
         }
       ]
     }

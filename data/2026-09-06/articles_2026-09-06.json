@@ -48,7 +48,7 @@
       "title_ja": "国安（国家安全）題材ドラマ『交鋒』が9月6日放送開始、王凯＆彭昱畅らが出演",
       "badge": "NEWS",
       "lead": "中国の国家安全を題材にしたテレビドラマ『交鋒』が、9月6日からCCTV-8で放送され、配信プラットフォームでも配信されることが発表された。主演は王凯、周依然、欧豪、彭昱畅ら。",
-      "what_happened": "国安（国家安全）題材のテレビドラマ『交鋒』が、9月6日にCCTV-8で独占テレビ放送され、騰讯視頻と咪咕視頻でネット配信されることが決まった。国家安全部が主導して制作され、中央広播電視総台、国家安全部国安影視中心、中国電視劇制作中心、柠萌影視などが制作に関わる。監督は姚暁峰、脚本は王小枪が担当し、王凯、周依然、欧豪、彭昱畅（いずれも姓の画数順）らが主演する。物語は1990年代末、市国家安全局の師徒（師弟）が、ある機密漏えい事件をきっかけに、20年にわたって海外スパイと対決する姿を描く。",
+      "what_happened": "国安（国家安全）題材のテレビドラマ『交鋒』が、9月6日にCCTV-8で独占テレビ放送され、騰讯視頻と咪咕視頻でネット配信されることが決まった。国家安全部が主導して制作された。国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。監督は姚暁峰、脚本は王小枪が担当し、王凯、周依然、欧豪、彭昱畅（いずれも姓の画数順）らが主演する。物語は1990年代末、市国家安全局の師徒（師弟）が、ある機密漏えい事件をきっかけに、20年にわたって海外スパイと対決する姿を描く。",
       "reaction_view": "",
       "why_it_matters": "国家安全部が主導するドラマって、どんな風に描くのか気になります！ 20年にわたる師弟の戦いを、どうリアルに見せるのか。まずは初回の反応と、時代をどう再現しているかを確認したいです。",
       "editor_comment": "",
@@ -114,7 +114,12 @@
           "CCTV-8"
         ]
       },
-      "related_sources": [],
+      "related_sources": [
+        {
+          "name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+          "url": "https://swj.zhengzhou.gov.cn/swdt/4671607.jhtml"
+        }
+      ],
       "tags": [
         "国安ドラマ",
         "CCTV",
@@ -128,7 +133,8 @@
           "C1",
           "C2",
           "C3",
-          "C4"
+          "C4",
+          "C12"
         ],
         "why_it_matters": [
           "C2",
@@ -268,7 +274,23 @@
       "publish_priority": "medium",
       "selection_reason": "media_context, topic_type:drama_production, root_evidence:1, expansion_evidence:4",
       "caution_note": "Single-source topic; keep wording cautious until another source appears.",
-      "related_evidence_articles": []
+      "related_evidence_articles": [
+        {
+          "title": "国家安全部新闻办答记者问：忠诚践行领袖训词 坚定履行光荣使命 - 郑州市商务局",
+          "url": "https://swj.zhengzhou.gov.cn/swdt/4671607.jhtml",
+          "source_name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+          "source_type": "official",
+          "published_date": "2021-01-07",
+          "freshness_label": "unknown",
+          "article_type": "unknown",
+          "reliability": "A",
+          "key_points": [
+            "国家安全部是1983年组建的。",
+            "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构"
+          ],
+          "angle_kind": "other"
+        }
+      ]
     },
     "generationMeta": {
       "topic_key": "交锋",
@@ -490,9 +512,38 @@
             "scope": "root_event",
             "editorial_role": "other",
             "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+            "evidence_refs": [
+              "E5"
+            ],
+            "source_name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+            "entities": [
+              "国家安全部"
+            ],
+            "numbers": [],
+            "quote_zh": "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构",
+            "anchor": true,
+            "scope": "related_angle",
+            "angle_kind": "other",
+            "editorial_role": "other"
           }
         ],
-        "terms": [],
+        "terms": [
+          {
+            "term": "国家安全部",
+            "gloss_ja": "国家安全部",
+            "what_is": "国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+            "why_now": "",
+            "explain_quote_zh": "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构",
+            "explain_evidence_refs": [
+              "E5"
+            ]
+          }
+        ],
         "japan_availability": {
           "status": "not_in_evidence",
           "detail": "",
@@ -503,7 +554,8 @@
           "E1": "root_corroboration",
           "E2": "root_corroboration",
           "E3": "root_corroboration",
-          "E4": "root_corroboration"
+          "E4": "root_corroboration",
+          "E5": "related_angle"
         },
         "evidence_quality": [
           {
@@ -530,6 +582,12 @@
             "usable_for_verified_facts": false,
             "reason": "near_duplicate_repost",
             "duplicate_of": "E1"
+          },
+          {
+            "evidence_ref": "E5",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_government_domain_operator_reviewed_exact_quotes"
           }
         ]
       },
@@ -558,6 +616,12 @@
           "usable_for_verified_facts": false,
           "reason": "near_duplicate_repost",
           "duplicate_of": "E1"
+        },
+        {
+          "evidence_ref": "E5",
+          "classification": "primary",
+          "usable_for_verified_facts": true,
+          "reason": "official_government_domain_operator_reviewed_exact_quotes"
         }
       ],
       "ai_models": {
@@ -623,7 +687,7 @@
           }
         ],
         "gated_violation_count": 0,
-        "action": "text_removed"
+        "action": "none"
       },
       "tone_mode": "normal",
       "comment_stage": {
@@ -647,6 +711,85 @@
         "regenerated": false,
         "passed": true,
         "reasons": []
+      },
+      "review_supplements": [
+        {
+          "term": "国家安全部",
+          "definition_ja": "国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+          "source_url": "https://swj.zhengzhou.gov.cn/swdt/4671607.jhtml",
+          "source_name": "鄭州市商務局掲載・国家安全部広報担当の説明（法治日報）",
+          "source_title": "国家安全部新闻办答记者问：忠诚践行领袖训词 坚定履行光荣使命 - 郑州市商务局",
+          "source_published_date": "2021-01-07",
+          "fetched_at": "2026-09-06T13:25:46.143Z",
+          "source_quote": "国家安全机关是反间谍工作的主管机关，是重要的国家情报工作机构",
+          "subject_quote": "国家安全部是1983年组建的。",
+          "body_sha256": "f8ab9ab31c8ef8e86829981bde78f9d26d58490488871d305756e33b33790886",
+          "evidence_ref": "E5",
+          "claim_ref": "C12",
+          "reason": "制作団体の列挙を削除し、読者が知らない国家安全部の役割を短く補足する。出典は国家安全部広報担当の回答で、設立説明と続く機能説明を照合した。",
+          "reviewed_by": "codex",
+          "verification": "operator_reviewed_exact_quotes"
+        }
+      ],
+      "review_revision": {
+        "mode": "limited_patch",
+        "changed_fields": [
+          "what_happened"
+        ],
+        "changes": [
+          {
+            "field": "what_happened",
+            "before": "国家安全部が主導して制作され、中央広播電視総台、国家安全部国安影視中心、中国電視劇制作中心、柠萌影視などが制作に関わる。",
+            "after": "国家安全部が主導して制作された。国家安全部は、中国でスパイ対策や国家安全に関する情報活動を担う機関だ。",
+            "evidence_claim_refs": [
+              "C2",
+              "C12"
+            ],
+            "reason": "運用担当が公式根拠と変更前後を確認した概念補足"
+          }
+        ],
+        "preservation": {
+          "untouched_fields_exact": true,
+          "source_list_exact": true,
+          "related_sources_exact": false,
+          "reaction_view_preserved_when_untargeted": true,
+          "claim_refs_before": 5,
+          "claim_refs_after": 6,
+          "important_numbers_before": [
+            "9月",
+            "6日",
+            "8",
+            "1990年",
+            "20年"
+          ],
+          "important_numbers_after": [
+            "9月",
+            "6日",
+            "8",
+            "1990年",
+            "20年"
+          ],
+          "entities_before": [
+            "王凯",
+            "彭昱畅",
+            "周依然",
+            "欧豪",
+            "王小枪",
+            "国家安全部",
+            "CCTV-8"
+          ],
+          "entities_after": [
+            "王凯",
+            "彭昱畅",
+            "周依然",
+            "欧豪",
+            "王小枪",
+            "国家安全部",
+            "CCTV-8"
+          ],
+          "narrative_chars_before": 464,
+          "narrative_chars_after": 455
+        }
       }
     }
   }

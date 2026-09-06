@@ -1,22 +1,22 @@
 {
   "date": "2026-09-06",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 83,
   "articles": [
     {
       "index": 1,
       "topic_key": "交锋",
       "title": "国安（国家安全）題材ドラマ『交鋒』が9月6日放送開始、王凯＆彭昱畅らが出演",
-      "status": "proposal_pending",
+      "status": "approved",
       "reason_tag": "事実",
       "comment": "何が起きたかの制作団体の列挙を削除し、国家安全部が制作を主導した点を残してください。国家安全部の役割を、確認した出典に基づく短い説明で補ってください。それ以外の文章は変更しないでください。",
-      "revision_count": 0,
+      "revision_count": 1,
       "article_id": "a-37d06fba5ca20f9c",
-      "current_version": 1,
+      "current_version": 2,
       "publication": {
-        "slug": "1"
-      },
-      "pending_proposal_id": "p-1"
+        "slug": "1",
+        "queued_at": "2026-09-06T21:49:22+08:00"
+      }
     }
   ]
 }
