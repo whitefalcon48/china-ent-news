@@ -336,6 +336,8 @@ async function assertDelayedPublicationOrdering() {
   try {
     const delayed = fixtureArticle(1);
     delayed.summary.title_ja = "保留から公開した記事";
+    delayed.summary.published_date = "2026-09-01";
+    delayed.summary.event_date = "2026-06-01";
     const regular = fixtureArticle(2);
     regular.summary.title_ja = "通常日に公開した記事";
     await writeReviewedFixture(data, delayedDate, delayed, "a-delayed", "2026-09-10T09:00:00+08:00");
@@ -354,12 +356,20 @@ async function assertDelayedPublicationOrdering() {
     });
     const home = await fs.readFile(path.join(output, "index.html"), "utf8");
     const feed = home.slice(home.indexOf('<main class="feed">'), home.indexOf('class="archive-cta"'));
-    assert.ok(feed.indexOf("保留から公開した記事") < feed.indexOf("通常日に公開した記事"), "トップは生成日でなく初回公開日時の新しい順に並べる");
-    assertIncludes(home, "最終更新：2026年9月10日", "トップの更新日は実際の公開日を優先する");
+    assert.ok(feed.indexOf("通常日に公開した記事") < feed.indexOf("保留から公開した記事"), "トップはIssue生成日の新しい順に並べる");
+    assertIncludes(home, "最終更新：2026年9月9日", "トップの日付は最新のIssue生成日を示す");
+    assertIncludes(home, '<a href="/archive/2026-09-02/">9月2日のピックアップ</a>', "見出しとアーカイブリンクは同じ生成日を使う");
+    assertNotIncludes(feed, "9月10日のピックアップ", "後日の公開日で見出しを変えない");
+    const detail = await fs.readFile(path.join(output, "t", delayedDate, "1", "index.html"), "utf8");
+    const daily = await fs.readFile(path.join(output, "archive", delayedDate, "index.html"), "utf8");
+    for (const page of [home, detail, daily]) {
+      assertIncludes(page, '<time datetime="2026-09-01">参考記事公開日：2026/9/1</time>', "全表示面で参考記事公開日とdatetimeを一致させる");
+      assertNotIncludes(page, "2026/6/1", "出来事の開始日を記事の日付に流用しない");
+    }
     const archive = await fs.readFile(path.join(output, "archive", "index.html"), "utf8");
     const searchResults = archive.slice(archive.indexOf("data-archive-tag-results"));
-    assert.ok(searchResults.indexOf("保留から公開した記事") < searchResults.indexOf("通常日に公開した記事"), "検索対象も実際の公開日時の新しい順に並べる");
-    assert.match(searchResults, /2026\/9\/10/u, "検索結果の日付は実際の公開日を示す");
+    assert.ok(searchResults.indexOf("通常日に公開した記事") < searchResults.indexOf("保留から公開した記事"), "検索対象もIssue生成日の新しい順に並べる");
+    assert.match(searchResults, /2026\/9\/2/u, "検索結果の日付はIssue生成日を示す");
     await fs.access(path.join(output, "t", delayedDate, "1", "index.html"));
     await fs.access(path.join(output, "archive", delayedDate, "index.html"));
 

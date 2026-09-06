@@ -41,13 +41,12 @@ async function main() {
   await generateXCardTestImages();
 
   const nonEmptyDays = days.filter((day) => day.articles.length > 0);
-  // Archive paths remain keyed by generation date.  The latest feed and
-  // archive search, however, must surface a held article when it is actually
-  // released rather than burying it under its original generation day.
+  // Group, sort and label editions by the review's generation date, matching
+  // their permanent archive paths even when approval happens on a later day.
   const allPublished = nonEmptyDays
     .flatMap((day) => day.articles.map((item) => ({ date: day.date, ...item })))
     .sort(comparePublishedSiteArticles);
-  const newestDate = allPublished[0] ? publicationDay(allPublished[0]) : undefined;
+  const newestDate = allPublished[0]?.date;
   const latest = allPublished.slice(0, 10);
   const tagCatalog = buildArticleTagCatalog(allPublished.map(articleTagInput));
 
@@ -334,7 +333,7 @@ function renderHome(items: PublishedSiteArticle[], tagCatalog: ArticleTagCatalog
   let lastDate = "";
   const cards = items.map((item) => {
     const { date, article, slug } = item;
-    const displayDate = publicationDay(item);
+    const displayDate = date;
     const heading = displayDate !== lastDate ? `<h1 class="date-heading"><a href="${href(`/archive/${date}/`)}">${escapeHtml(formatPickupDate(displayDate))}のピックアップ</a></h1>` : "";
     lastDate = displayDate;
     return `${heading}${renderCard(date, slug, article, tagCatalog)}`;
@@ -353,9 +352,8 @@ function renderCard(date: string, slug: string, article: ProcessedArticle, tagCa
   const summary = requireSummary(article);
   const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
   const currentUrl = absoluteUrl(`/t/${date}/${slug}/`);
-  const referenceArticleDate = summary.published_date || date;
   return `<article class="news-card card-${badgeClass(summary.badge)}">
-    <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(referenceArticleDate)}">参考記事公開日：${escapeHtml(formatNumericDate(referenceArticleDate))}</time></div>
+    <div class="chips">${renderChips(summary)}${renderReferenceArticleDate(summary)}</div>
     <h2>${escapeHtml(title)}</h2>
     <p class="lead">${escapeHtml(summary.lead)}</p>
     ${renderArticleTags(article, tagCatalog)}
@@ -382,12 +380,19 @@ function renderCardTextSection(title: string, text: string) {
   return text ? `<section><h3>${renderSectionIcon(sectionIconFor(title))}${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></section>` : "";
 }
 
+function renderReferenceArticleDate(summary: SummarizedArticle) {
+  const date = summary.published_date;
+  return date
+    ? `<time datetime="${escapeAttr(date)}">参考記事公開日：${escapeHtml(formatNumericDate(date))}</time>`
+    : `<span>参考記事公開日：不明</span>`;
+}
+
 function renderArticlePage(date: string, article: ProcessedArticle, tagCatalog: ArticleTagCatalog) {
   const summary = requireSummary(article);
   const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
   return `<main class="article-page">
     <article class="article-card card-${badgeClass(summary.badge)}">
-      <div class="chips">${renderChips(summary)}<time datetime="${escapeAttr(date)}">${escapeHtml(formatNumericDate(summary.event_date || summary.published_date || date))}</time></div>
+      <div class="chips">${renderChips(summary)}${renderReferenceArticleDate(summary)}</div>
       <h1>${escapeHtml(title)}</h1>
       <p class="article-lead">${escapeHtml(summary.lead)}</p>
       ${renderArticleTags(article, tagCatalog)}
@@ -549,7 +554,7 @@ function renderArchive(days: DayData[], articles: PublishedSiteArticle[], tagCat
     .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "ja"));
   const results = articles.map((item) => {
     const { date, article, slug } = item;
-    const displayDate = publicationDay(item);
+    const displayDate = date;
     const summary = requireSummary(article);
     const title = resolveSummaryTitle(summary.title_ja, article.raw.title);
     const tags = getSearchableArticleTags(articleTagInput({ article }), tagCatalog);
@@ -646,15 +651,8 @@ function parseDate(date: string) {
   return new Date(`${date}T12:00:00+08:00`);
 }
 
-function publicationDay(item: PublishedSiteArticle) {
-  const match = item.publicationAt?.match(/^(\d{4}-\d{2}-\d{2})T/u);
-  return match?.[1] || item.date;
-}
-
 function comparePublishedSiteArticles(left: PublishedSiteArticle, right: PublishedSiteArticle) {
-  const leftAt = left.publicationAt || `${left.date}T00:00:00+08:00`;
-  const rightAt = right.publicationAt || `${right.date}T00:00:00+08:00`;
-  return rightAt.localeCompare(leftAt) || right.date.localeCompare(left.date) || right.slug.localeCompare(left.slug);
+  return right.date.localeCompare(left.date) || right.slug.localeCompare(left.slug);
 }
 
 function normalizeBasePath(value: string) {
