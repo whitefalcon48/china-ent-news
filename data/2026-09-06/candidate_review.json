@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-06",
+  "status": "pending",
+  "created_at": "2026-09-06T06:02:59.733Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "2026暑期档电影总票房",
+      "title": "2026暑期档电影总票房达124.98亿，同比增长4.45%",
+      "event_sentence": "2026暑期档电影总票房达124.98亿，同比增长4.45%。",
+      "topic_type": "box_office",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "非妖哉",
+      "title": "AI短剧《非妖哉》单集成本一万多丨专访",
+      "event_sentence": "AI短剧《非妖哉》单集成本一万多，相关专访发布。",
+      "topic_type": "unknown",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 84,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "欢迎来龙餐馆",
+      "title": "《欢迎来龙餐馆》票房破20亿元，9月11日起将在海外上映",
+      "event_sentence": "电影《欢迎来龙餐馆》票房突破20亿元，将于9月11日起在海外上映。",
+      "topic_type": "box_office",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐",
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "《功夫女足》暑期档开画",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星驰監督作品『功夫女足』が公開半日で興行収入1億元を突破し、夏休みシーズンを盛り上げた。",
+      "topic_type": "box_office",
+      "baseline_rank": 4,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "《欢迎来龙餐馆》票房",
+      "title": "《欢迎来龙餐馆》两家出品方股价涨停，点映及预售票房达1.34亿",
+      "event_sentence": "映画『歓迎来龍餐館』の2つの製作会社の株価がストップ高となり、先行販売と予約販売の興行収入は1.34億元に達した。",
+      "topic_type": "box_office",
+      "baseline_rank": 5,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "龙餐馆",
+      "title": "被周星驰经纪人质疑偷票房，《龙餐馆》：系影院操作失误",
+      "event_sentence": "被周星驰经纪人质疑偷票房，《龙餐馆》回应系影院操作失误。",
+      "topic_type": "box_office",
+      "baseline_rank": 6,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "medium",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "数字影院LED放映发行母版和数据包技术要求",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家映画局は映画業界標準DY/T 15—2026およびDY/T 16—2026を発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "2026暑期档电影市场",
+      "title": "“史上最乱暑期档”：《功夫女足》“闪现”开球，《牛来》“抽象”逆袭",
+      "event_sentence": "「史上最も混乱した夏休みシーズン」と呼ばれ、『功夫女足』が突如公開され、『牛来』が抽象的に逆襲した。",
+      "topic_type": "unknown",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "交锋",
+      "title": "国安题材电视剧《交锋》9月6日开播，王凯、彭昱畅等主演",
+      "event_sentence": "国安题材电视剧《交锋》将于9月6日开播，王凯、彭昱畅等主演。",
+      "topic_type": "drama_production",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "人人影视回归",
+      "title": "人人影视回归！APP已上架，用户称“带着情怀下载”",
+      "event_sentence": "人人影视APPが再登場し、ユーザーは懐かしさを込めてダウンロードしている。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "后西游记",
+      "title": "首部上星AI长剧《后西游记》开播，芒果超媒等多股涨停",
+      "event_sentence": "首部上星AI长剧《后西游记》开播，芒果超媒等多股涨停。",
+      "topic_type": "release",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 2,
+      "source_types": {
+        "official": 0,
+        "media_report": 2,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业",
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "《功夫女足》票房口碑",
+      "title": "《功夫女足》上映三日票房突破5亿，但口碑呈两极分化",
+      "event_sentence": "映画『功夫女足』は公開3日で興行収入が5億元を突破したが、評価は二極化している。",
+      "topic_type": "box_office",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 62,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}

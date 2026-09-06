@@ -1,0 +1,269 @@
+{
+  "date": "2026-09-06",
+  "generated_at": "2026-09-06T06:03:40.875Z",
+  "ledgers": [
+    {
+      "topic_key": "交锋",
+      "ledger": {
+        "topic_key": "交锋",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国安题材电视剧《交锋》将于9月6日在CCTV-8独家电视播出，腾讯视频、咪咕视频全网首播。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "交锋",
+              "CCTV-8",
+              "腾讯视频",
+              "咪咕视频"
+            ],
+            "numbers": [
+              "9月6日"
+            ],
+            "quote_zh": "将于9月6日在CCTV-8独家电视播出，腾讯视频、咪咕视频全",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "《交锋》由国家安全部主导创作，中央广播电视总台、国家安全部国安影视中心、中国电视剧制作中心、柠萌影视及旗下柠萌开新、腾讯视频出品。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "国家安全部",
+              "中央广播电视总台",
+              "国家安全部国安影视中心",
+              "中国电视剧制作中心",
+              "柠萌影视",
+              "柠萌开新",
+              "腾讯视频"
+            ],
+            "numbers": [],
+            "quote_zh": "由国家安全部主导创作，中央广播电视总台、国家安全部国安影视中",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "《交锋》由王小枪编剧、姚晓峰任总导演，王凯、周依然、欧豪、彭昱畅（按姓氏笔画排序）领衔主演。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "王小枪",
+              "姚晓峰",
+              "王凯",
+              "周依然",
+              "欧豪",
+              "彭昱畅"
+            ],
+            "numbers": [],
+            "quote_zh": "《交锋》由王小枪编剧、姚晓峰任总导演，王凯、周依然、欧豪、彭",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "《交锋》以世纪之交的一宗国安泄密大案为起点，讲述了上世纪九十年代末，市国家安全局一对性格迥异的师徒，因机缘巧合的命运安排，为了共同的使命与信仰并肩作战，与境外间谍展开一场横跨二十年的隐蔽战线较量的故事。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "交锋"
+            ],
+            "numbers": [
+              "上世纪九十年代末",
+              "二十年"
+            ],
+            "quote_zh": "以世纪之交的一宗国安泄密大案为起点，讲述了上世纪九十年代末，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "《交锋》坚持现实主义创作原则，力求在细节上尽可能还原隐蔽战线斗争的真实质感。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "交锋"
+            ],
+            "numbers": [],
+            "quote_zh": "坚持现实主义创作原则，力求在细节上尽可能还原隐蔽战线斗争的真",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "《交锋》以光影叙事展现隐蔽战线斗争的残酷激烈与国安干警的使命担当。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "交锋"
+            ],
+            "numbers": [],
+            "quote_zh": "以光影叙事展现隐蔽战线斗争的残酷激烈与国安干警的使命担当",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "国安干警在漫长岁月中与敌手反复博弈，用智慧、胆识乃至生命捍卫国家安全。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "国安干警在漫长岁月中与敌手反复博弈，用智慧、胆识乃至生命捍卫",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "《交锋》的精神内核是“坚定纯洁、让党放心、甘于奉献、能拼善赢”的政治品格。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "交锋"
+            ],
+            "numbers": [],
+            "quote_zh": "这份“坚定纯洁、让党放心、甘于奉献、能拼善赢”的政治品格，构",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "定档预告中，镜头穿梭于机场、码头、街市等充满时代印记的场景之间，马憩、何春晓、林看山、锦兰、朱应甲等角色渐次出场。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "马憩",
+              "何春晓",
+              "林看山",
+              "锦兰",
+              "朱应甲"
+            ],
+            "numbers": [],
+            "quote_zh": "镜头穿梭于机场、码头、街市等充满时代印记的场景之间，马憩、何",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "预告结尾台词“二十年了，我们等的就是这一天”将整部剧的时间跨度与信仰坚守推向高潮。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "二十年"
+            ],
+            "quote_zh": "预告结尾那句“二十年了，我们等的就是这一天”，更是将整部剧的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "启蒙影业联合呈现《交锋》。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "启蒙影业"
+            ],
+            "numbers": [],
+            "quote_zh": "启蒙影业联合呈现",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
