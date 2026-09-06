@@ -86,6 +86,17 @@ assert.match(proposal, /削除情報: なし/u);
 assert.match(proposal, /https:\/\/example\.com\/evidence/u);
 assert.doesNotMatch(proposal, /claim|limited_patch|clarification_required/u);
 
+const ordinaryProposalWithPastSupplement = formatReviewProposalSummary({
+  trace: { changes: [{ field: "lead", before: "旧", after: "新" }] },
+  evidence_urls: ["https://example.com/ordinary"],
+  article_state: { generationMeta: { review_supplements: [{
+    term: "過去の用語", definition_ja: "過去の説明", source_url: "https://example.com/past", source_name: "過去の出典", source_title: "記事",
+    source_published_date: "2026-09-01", fetched_at: "2026-09-06T00:00:00Z", source_quote: "引用", subject_quote: "対象", body_sha256: "a".repeat(64),
+    evidence_ref: "E2", claim_ref: "C2", reason: "過去の補足", reviewed_by: "codex", verification: "operator_reviewed_exact_quotes"
+  }] } }
+});
+assert.doesNotMatch(ordinaryProposalWithPastSupplement, /追加出典あり/u, "過去の補足を今回の追加出典として表示しない");
+
 const withRelatedAngle = article("");
 withRelatedAngle.summary!.related_sources = [
   { name: "関連媒体", url: "https://example.com/angle" },

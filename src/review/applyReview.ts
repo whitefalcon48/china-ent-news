@@ -5,7 +5,7 @@ import { formatReviewArticle, formatReviewProposalSummary, formatReviewRevisionS
 import { parseReviewComment, type ReviewDecision } from "./parseReviewComment.js";
 import { deriveReviewStatus, hasPublishRequired, hasUncertainXPost, hasXPostRequired, queueApprovedArticlesForPublication, readReviewState, today, writeReviewState } from "./reviewState.js";
 import { prepareStoredArticleRevision } from "./reviseArticle.js";
-import { appendAppliedVersion, appendProposalInstruction, applyProposal, beginFileTransaction, discardProposal, ensureInitialVersion, readRevisionStore, restorePendingProposalState, revertToVersion, revisionStorePath, saveProposal, withReviewMutationTransaction } from "./revisionStore.js";
+import { appendAppliedVersion, appendProposalInstruction, applyProposal, beginFileTransaction, discardProposal, ensureInitialVersion, readRevisionStore, restorePendingProposalState, restoreReviewArticleState, revertToVersion, revisionStorePath, saveProposal, snapshotReviewArticle, withReviewMutationTransaction } from "./revisionStore.js";
 import { rescueEmptyReview } from "./rescueEmptyReview.js";
 import { ToneOnlyRevisionContractError } from "../toneOnlyRevision.js";
 import { captureManualPublication, findManualReviewPath, markManualIntakePublished } from "./manualPublication.js";
@@ -115,8 +115,8 @@ async function main() {
           const articlePath = await storedArticlePath(directory);
           let version = target.current_version ?? 1;
           await withReviewMutationTransaction(directory, articlePath, async () => {
-            const initialized = await ensureInitialVersion(directory, state.date, articleId, current.summary!);
-            version = await appendAppliedVersion(directory, state.date, articleId, current.summary!, prepared.article.summary!, "explicit_replacement", prepared.summary);
+            const initialized = await ensureInitialVersion(directory, state.date, articleId, current.summary!, snapshotReviewArticle(current));
+            version = await appendAppliedVersion(directory, state.date, articleId, current.summary!, prepared.article.summary!, "explicit_replacement", prepared.summary, snapshotReviewArticle(current), snapshotReviewArticle(prepared.article));
             await writeStoredArticle(directory, target.index, prepared.article);
             target.current_version = initialized.currentVersion;
           });
@@ -131,7 +131,7 @@ async function main() {
         } else {
           const articlePath = await storedArticlePath(directory);
           const { initialized, proposal } = await withReviewMutationTransaction(directory, articlePath, async () => {
-            const initialized = await ensureInitialVersion(directory, state.date, articleId, current.summary!);
+            const initialized = await ensureInitialVersion(directory, state.date, articleId, current.summary!, snapshotReviewArticle(current));
             const proposal = await saveProposal(directory, state.date, articleId, current.summary!, {
               instruction,
               mode: prepared.mode,
@@ -139,8 +139,9 @@ async function main() {
               trace: prepared.trace,
               evidence_urls: prepared.evidenceUrls,
               previous_status: previousStatus,
-              article_summary: prepared.article.summary!
-            });
+              article_summary: prepared.article.summary!,
+              article_state: snapshotReviewArticle(prepared.article)
+            }, snapshotReviewArticle(current));
             // Do not lose the visible previous proposal unless its replacement
             // is completely stored; transaction rollback restores it on IO error.
             if (pending && target.article_id && target.pending_proposal_id) {
@@ -217,11 +218,10 @@ async function applyPendingProposal(directory: string, state: ReviewState, targe
       const next = await applyProposal(directory, state.date, articleId, proposalId);
       const current = await readStoredArticle(directory, target.index);
       if (!current.summary) throw new Error("元の記事を確認できませんでした");
-      await writeStoredArticle(directory, target.index, {
-        ...current,
-        summary: next.summary,
-        ...(current.generationMeta ? { generationMeta: { ...current.generationMeta, review_revision: next.proposal.trace } } : {})
-      });
+      const restored = restoreReviewArticleState(current, next.articleState, next.summary);
+      await writeStoredArticle(directory, target.index, next.articleState
+        ? restored
+        : { ...restored, ...(current.generationMeta ? { generationMeta: { ...current.generationMeta, review_revision: next.proposal.trace } } : {}) });
       return next;
     });
     target.current_version = applied.version;
@@ -230,6 +230,7 @@ async function applyPendingProposal(directory: string, state: ReviewState, targe
     target.status = approve ? "approved" : "revised_pending";
     target.title = applied.summary.title_ja || target.title;
     replies.push(`✅ ${target.index}番の修正案を適用しました。${approve ? "採用として公開対象にしました。" : "内容を確認して採用・保留・却下を決めてください。"}`);
+    if (applied.evidenceStateUnavailable) replies.push(`⚠️ ${target.index}番は旧版形式のため、出典履歴は復元できず本文のみを適用しました。`);
   } catch (error) {
     replies.push(`⚠️ ${target.index}番の修正案は適用していません。${error instanceof Error ? error.message : String(error)}`);
   }
@@ -262,8 +263,8 @@ async function revertStoredArticle(directory: string, state: ReviewState, target
     if (!current.summary) throw new Error("元の記事を確認できませんでした");
     const articlePath = await storedArticlePath(directory);
     const reverted = await withReviewMutationTransaction(directory, articlePath, async () => {
-      const next = await revertToVersion(directory, state.date, target.article_id!, current.summary!, mode);
-      await writeStoredArticle(directory, target.index, { ...current, summary: next.summary });
+      const next = await revertToVersion(directory, state.date, target.article_id!, current.summary!, mode, snapshotReviewArticle(current));
+      await writeStoredArticle(directory, target.index, restoreReviewArticleState(current, next.articleState, next.summary));
       return next;
     });
     target.current_version = reverted.version;
@@ -272,6 +273,7 @@ async function revertStoredArticle(directory: string, state: ReviewState, target
     target.status = "revised_pending";
     target.title = reverted.summary.title_ja || target.title;
     replies.push(`↩️ ${target.index}番を${mode === "initial" ? "初稿" : "一つ前の版"}へ戻しました。確認後に採用してください。`);
+    if (reverted.evidenceStateUnavailable) replies.push(`⚠️ この旧版は出典履歴がないため、本文のみを復元しました。`);
   } catch (error) {
     replies.push(`⚠️ ${target.index}番を戻せませんでした。${error instanceof Error ? error.message : String(error)}`);
   }

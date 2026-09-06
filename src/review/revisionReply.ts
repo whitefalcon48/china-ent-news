@@ -1,6 +1,9 @@
 /** Convert implementation/safety details into an actionable editor-facing reply. */
 export function humanRevisionFailure(error: unknown, instruction = "") {
   const detail = error instanceof Error ? error.message : String(error);
+  if (/追加出典を含む記事の全文書き直し/u.test(detail)) {
+    return "追加出典を含む記事は、全文書き直しにはまだ対応していません。変更する欄を指定した限定修正を利用してください。";
+  }
   if (/根拠|claim|台帳|ledger|number|数字/u.test(detail)) {
     const term = explanationTerm(instruction);
     const deletionOnly = /(?:削除|消(?:して|す|し)|取り除|外(?:して|す|し)|いらない|要らない)/u.test(instruction);
