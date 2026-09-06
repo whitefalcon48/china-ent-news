@@ -1260,4 +1260,7 @@ const manualTopic = { ...topic, evidence_articles: [{ category: "持ち込みニ
 const manualResult = applyValidatedReviewPatch(before, manualTopic, ledger, ownerInstruction, "事実", intent, patch);
 assert.deepEqual(manualResult.summary, result.summary, "通常日次と持ち込みで同じ限定パッチ契約を使う");
 
+// Keep the natural-language regression cases in the established scoped suite.
+await import("./testNaturalReviewInstruction.js");
+
 console.log("scoped review revision tests passed.");

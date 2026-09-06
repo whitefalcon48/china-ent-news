@@ -1,5 +1,11 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-09-06 Issue #83 ローカル修正・検証完了
+
+- ✅ 自然文の修正指示で対象範囲を特定し、根拠不足時は具体的な返信で停止するよう修正。非明示scopeは65%保護し、#83の原指示はfield 1件へ特定できる。11記事の保存調査ではledger成功8/11、fallback 3件を確認した。
+- ✅ `npm run check`、`test:scoped-review-revision`（#57/#63/#79＋#83）、`test:review-revision-flow`、`test:review-presentation`、`test:publication-flow`、`test:evidence-integrity`、`test:editorial-insight`、`test:site-feed`、`test:x-posts`、`test:publication-history`、`test:lightweight-review-edit` が成功。
+- ⚠️ 国家安全部の役割説明に必要な追加資料の取込み・台帳補強、日次品質ムラの改善、実モデル検証は未実施。push、main統合、本番適用・公開も未反映。
+
 ## 2026-09-06 要所担当を Sol から Astra へ変更
 
 - ✅ ユーザー指定により、品質の原因分析・LLMプロンプトの初版／大幅変更・設計レビュー・アーキテクチャ判断の担当を GPT-6 Astra に統一。AGENTS.mdと本書の現行振り分けを更新し、過去のSol／Fable実績は変更していない。ニュース生成APIのモデル・課金・本番設定は変更しない。
