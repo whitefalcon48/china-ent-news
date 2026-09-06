@@ -369,6 +369,7 @@ export type TopicGenerationMeta = {
     passed: boolean;
     reasons: string[];
   };
+  review_supplements?: ReviewEvidenceSupplement[];
   review_revision?: ReviewRevisionTrace;
 };
 
@@ -444,6 +445,25 @@ export type ReviewRevisionTrace = {
   };
 };
 
+/** Reviewed external evidence retained as quotes plus a body hash, never a copied source document. */
+export type ReviewEvidenceSupplement = {
+  term: string;
+  definition_ja: string;
+  source_url: string;
+  source_name: string;
+  source_title: string;
+  source_published_date: string;
+  fetched_at: string;
+  source_quote: string;
+  subject_quote: string;
+  body_sha256: string;
+  evidence_ref: string;
+  claim_ref: string;
+  reason: string;
+  reviewed_by: string;
+  verification: "operator_reviewed_exact_quotes";
+};
+
 export type ReviewStatus = "pending" | "completed";
 export type ReviewArticleStatus = "pending" | "approved" | "rejected" | "held" | "revision_requested" | "revised_pending" | "proposal_pending";
 export type ReviewReasonTag = "" | "選定" | "口調" | "用語" | "事実" | "構成" | "その他";
@@ -492,6 +512,14 @@ export type StoredReviewVersion = {
   created_by: string;
   summary: string;
   article_summary: SummarizedArticle;
+  /** Complete mutable article state for revisions created after evidence snapshots were introduced. */
+  article_state?: StoredReviewArticleState;
+};
+
+export type StoredReviewArticleState = {
+  summary: SummarizedArticle;
+  topic?: TopicCandidate;
+  generationMeta?: TopicGenerationMeta;
 };
 
 export type StoredReviewProposal = {
@@ -506,6 +534,8 @@ export type StoredReviewProposal = {
   evidence_urls: string[];
   previous_status: ReviewArticleStatus;
   article_summary: SummarizedArticle;
+  /** A pending proposal must carry its evidence/topic state until explicit apply. */
+  article_state?: StoredReviewArticleState;
 };
 
 export type ReviewRevisionStore = {
@@ -569,7 +599,7 @@ export type TopicCandidate = {
     /** Normalized publisher family; optional so saved candidate data remains readable. */
     media_family?: string;
   }>;
-  /** Verified documents on the same canonical person/work but a different angle.
+  /** Verified documents on the same canonical person/work, or an explicitly identified concept already used in the article, but a different angle.
    * They deliberately do not contribute to source_count, source_mix, signals, EVS, or selection. */
   related_evidence_articles?: Array<{
     title: string;

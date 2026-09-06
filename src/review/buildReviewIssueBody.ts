@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { readOrCreateStoredReviewState, writeReviewState } from "./reviewState.js";
-import type { ProcessedArticle, ReviewRevisionTrace, ReviewState, SourceRef } from "../types.js";
+import type { ProcessedArticle, ReviewEvidenceSupplement, ReviewRevisionTrace, ReviewState, SourceRef } from "../types.js";
 
 export function buildReviewIssueBody(state: ReviewState, articles: ProcessedArticle[]) {
   if (!state.articles.length) {
@@ -99,31 +99,50 @@ export type ReviewProposal = {
   summary?: string;
   evidence_urls?: string[];
   status?: string;
-  trace?: { changes?: ReviewProposalChange[] };
+  trace?: { changes?: ReviewProposalChange[]; preservation?: { related_sources_exact?: boolean } };
   changes?: ReviewProposalChange[];
   untouched?: string[];
   deleted_information?: string[];
+  article_state?: {
+    generationMeta?: {
+      review_supplements?: ReviewEvidenceSupplement[];
+    };
+  };
 };
 
 /** 修正案を人向けに表示する。内部のclaim IDや実装方式は表示しない。 */
 export function formatReviewProposalSummary(proposal: ReviewProposal | undefined) {
   if (!proposal) return "";
   const changes = proposal.trace?.changes ?? proposal.changes ?? [];
+  const supplements = proposal.trace?.preservation?.related_sources_exact === false
+    ? (proposal.article_state?.generationMeta?.review_supplements ?? []).filter((item) => proposal.evidence_urls?.includes(item.source_url))
+    : [];
+  const hasSupplement = supplements.length > 0;
   const lines = ["### 修正案", ""];
   if (proposal.instruction?.trim()) lines.push(`指示: ${proposal.instruction.trim()}`, "");
   if (proposal.summary?.trim()) lines.push(proposal.summary.trim(), "");
   lines.push("変更する箇所:");
   if (changes.length) {
     for (const change of changes) {
-      lines.push(`- ${humanField(change.field)}: ${preview(change.before || "")} → ${preview(change.after || "")}${change.reason ? `（${change.reason}）` : ""}`);
+      const before = hasSupplement ? fullValue(change.before || "") : preview(change.before || "");
+      const after = hasSupplement ? fullValue(change.after || "") : preview(change.after || "");
+      lines.push(`- ${humanField(change.field)}: ${before} → ${after}${change.reason ? `（${change.reason}）` : ""}`);
     }
   } else {
     lines.push("- 変更箇所を確認できませんでした。修正案を作り直してください。");
   }
-  lines.push("", `変更しない部分: ${proposal.untouched?.length ? proposal.untouched.join("、") : "上記以外の本文・注目ポイント・ソース"}`);
-  lines.push(`削除情報: ${proposal.deleted_information?.length ? proposal.deleted_information.join("、") : "なし"}`);
+  lines.push("", `変更しない部分: ${proposal.untouched?.length ? proposal.untouched.join("、") : hasSupplement ? "上記以外の本文・注目ポイント・既存ソース（補足の出典1件を追加）" : "上記以外の本文・注目ポイント・ソース"}`);
+  lines.push(`削除情報: ${proposal.deleted_information?.length ? proposal.deleted_information.join("、") : hasSupplement ? "追加根拠に伴う本文置換を含むため、上の変更前後を確認してください" : "なし"}`);
   if (proposal.evidence_urls?.length) {
     lines.push("", "根拠URL:", ...proposal.evidence_urls.map((url) => `- ${url}`));
+  }
+  if (hasSupplement) {
+    lines.push("", "追加出典あり");
+    for (const supplement of supplements) {
+      lines.push(`- ${supplement.source_name}: ${supplement.source_url}`);
+      lines.push(`  確認担当: ${supplement.reviewed_by}。引用の一致と変更範囲を機械検証した未適用の案です。説明の意味は作成担当が原文と照合しています。`);
+    }
+    lines.push("AIが本文の意味を自動判定したものではありません。運用担当が確認してから適用してください。");
   }
   return lines.join("\n");
 }
@@ -178,6 +197,10 @@ function formatSource(source: SourceRef) {
 function preview(value: string) {
   const compact = value.replace(/\s+/g, " ").trim();
   return `「${compact.length > 42 ? `${compact.slice(0, 42)}…` : compact || "空"}」`;
+}
+
+function fullValue(value: string) {
+  return `「${value.replace(/\s+/g, " ").trim() || "空"}」`;
 }
 
 function humanField(field?: string) {

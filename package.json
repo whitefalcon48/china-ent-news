@@ -47,6 +47,8 @@
     "intake:link-review": "tsx src/intake/linkManualReviewIssue.ts",
     "review:issue": "tsx src/review/buildReviewIssueBody.ts",
     "review:apply": "tsx src/review/applyReview.ts",
+    "review:supplement": "tsx src/review/prepareEvidenceSupplement.ts",
+    "test:review-evidence-supplement": "tsx src/testReviewEvidenceSupplement.ts && tsx src/testEvidenceSupplementProposal.ts",
     "review:ui": "tsx src/review/uiServer.ts",
     "preference:prepare": "tsx src/preference/prepareCandidateReview.ts",
     "preference:ui": "tsx src/preference/uiServer.ts",

@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { parseReviewComment } from "./review/parseReviewComment.js";
-import { appendAppliedVersion, appendProposalInstruction, applyProposal, beginFileTransaction, discardProposal, ensureInitialVersion, readRevisionStore, restorePendingProposalState, revertToVersion, revisionStorePath, saveProposal, withReviewMutationTransaction } from "./review/revisionStore.js";
+import { appendAppliedVersion, appendProposalInstruction, applyProposal, beginFileTransaction, discardProposal, ensureInitialVersion, readRevisionStore, restorePendingProposalState, restoreReviewArticleState, revertToVersion, revisionStorePath, saveProposal, snapshotReviewArticle, withReviewMutationTransaction } from "./review/revisionStore.js";
 import { createReviewStateFromStoredArticles, deriveReviewStatus, hasPublishRequired, normalizeReviewState, queueApprovedArticlesForPublication } from "./review/reviewState.js";
 import { detectReviewRevisionIntent, tryApplyDeterministicTerminologyReplacement } from "./review/revisionPatch.js";
 import { humanRevisionFailure } from "./review/revisionReply.js";
@@ -36,6 +36,11 @@ assert.match(
   humanRevisionFailure(new Error("検出済みアンカーを含まない変更です: what_happened")),
   /指定された範囲外/u,
   "アンカー外の変更も範囲逸脱として案内する"
+);
+assert.equal(
+  humanRevisionFailure(new Error("追加出典を含む記事の全文書き直しは未対応です。変更する欄を指定した限定修正を利用してください。")),
+  "追加出典を含む記事は、全文書き直しにはまだ対応していません。変更する欄を指定した限定修正を利用してください。",
+  "補足出典を持つ全文書き直しは固定の編集者向け案内にする"
 );
 for (const ambiguity of [
   "修正対象のフィールドまたは元記事内の完全一致箇所を特定できませんでした",
@@ -193,6 +198,58 @@ try {
   const reverted = await revertToVersion(directory, "2026-09-03", articleId, { ...summary, title_ja: "別の版" }, "initial");
   assert.equal(reverted.summary.title_ja, "初稿");
   assert.equal(reverted.version, 4, "戻す操作も新しい監査可能な版として残す");
+
+  const snapshotArticleId = "a-evidence-snapshot";
+  const initialArticle: ProcessedArticle = {
+    ...stored,
+    summary: { ...summary, title_ja: "根拠付き初稿" },
+    topic: { ...stored.topic!, related_evidence_articles: [] },
+    generationMeta: { topic_key: "fixture", ledger_used: true, ledger_fallback_reason: "", ledger: { topic_key: "fixture", claims: [], terms: [], japan_availability: { status: "not_in_evidence", detail: "", evidence_refs: [] }, unresolved: [] } }
+  };
+  const initialState = snapshotReviewArticle(initialArticle);
+  await ensureInitialVersion(directory, "2026-09-03", snapshotArticleId, initialArticle.summary!, initialState);
+  const proposalArticle: ProcessedArticle = {
+    ...initialArticle,
+    summary: { ...initialArticle.summary!, title_ja: "補足を含む提案" },
+    topic: { ...initialArticle.topic!, related_evidence_articles: [{ title: "補足資料", url: "https://example.com/supplement", source_name: "source", source_type: "media_report", published_date: "2026-09-03", freshness_label: "recent", article_type: "news_event", reliability: "B", key_points: [], angle_kind: "other" }] },
+    generationMeta: { ...initialArticle.generationMeta!, review_supplements: [{ term: "用語", definition_ja: "説明", source_url: "https://example.com/supplement", source_name: "source", source_title: "補足資料", source_published_date: "2026-09-03", fetched_at: "2026-09-03T00:00:00Z", source_quote: "引用", subject_quote: "対象引用", body_sha256: "a".repeat(64), evidence_ref: "E-S", claim_ref: "C-S", reason: "fixture", reviewed_by: "test", verification: "operator_reviewed_exact_quotes" }] }
+  };
+  const evidenceProposal = await saveProposal(directory, "2026-09-03", snapshotArticleId, initialArticle.summary!, {
+    instruction: "補足を追加", mode: "limited_patch", summary: "根拠補足", evidence_urls: ["https://example.com/supplement"], previous_status: "pending", article_summary: proposalArticle.summary!, article_state: snapshotReviewArticle(proposalArticle)
+  }, initialState);
+  const evidenceApplied = await applyProposal(directory, "2026-09-03", snapshotArticleId, evidenceProposal.id);
+  assert.equal(evidenceApplied.evidenceStateUnavailable, false);
+  assert.deepEqual(evidenceApplied.articleState, snapshotReviewArticle(proposalArticle), "提案のtopic・ledger補足を明示適用まで深いコピーで保持する");
+  const visibleApplied = restoreReviewArticleState({ ...initialArticle, aiError: "keep" }, evidenceApplied.articleState, evidenceApplied.summary);
+  assert.equal(visibleApplied.aiError, "keep", "raw/aiErrorなどreview対象外のフィールドを保持する");
+  assert.equal(visibleApplied.topic?.related_evidence_articles?.[0]?.angle_kind, "other", "補足をroot corroborationへ昇格しない");
+  assert.equal(visibleApplied.summary?.source_list[0]?.url, initialArticle.summary?.source_list[0]?.url, "公開source_listを補足で変更しない");
+  evidenceApplied.articleState!.topic!.related_evidence_articles![0]!.title = "mutated";
+  assert.equal((await readRevisionStore(directory, "2026-09-03")).articles[snapshotArticleId].versions.at(-1)?.article_state?.topic?.related_evidence_articles?.[0]?.title, "補足資料", "返却stateの変更が保存済みstateへ漏れない");
+  const nextArticle = { ...proposalArticle, summary: { ...proposalArticle.summary!, title_ja: "次の修正" } };
+  await appendAppliedVersion(directory, "2026-09-03", snapshotArticleId, proposalArticle.summary!, nextArticle.summary!, "explicit_replacement", "次修正", snapshotReviewArticle(proposalArticle), snapshotReviewArticle(nextArticle));
+  const previousEvidence = await revertToVersion(directory, "2026-09-03", snapshotArticleId, nextArticle.summary!, "previous", snapshotReviewArticle(nextArticle));
+  assert.deepEqual(previousEvidence.articleState, snapshotReviewArticle(proposalArticle), "前版へ戻すとその版の追加根拠stateへ戻る");
+  const initialEvidence = await revertToVersion(directory, "2026-09-03", snapshotArticleId, previousEvidence.summary, "initial", previousEvidence.articleState);
+  assert.deepEqual(initialEvidence.articleState, initialState, "初稿へ戻すと将来の追加根拠を混ぜない");
+
+  const legacyArticleId = "a-legacy-summary-only";
+  await ensureInitialVersion(directory, "2026-09-03", legacyArticleId, summary);
+  const legacyProposal = await saveProposal(directory, "2026-09-03", legacyArticleId, summary, { instruction: "旧形式", mode: "limited_patch", summary: "旧形式", evidence_urls: [], previous_status: "pending", article_summary: { ...summary, title_ja: "旧形式提案" } });
+  const legacyApplied = await applyProposal(directory, "2026-09-03", legacyArticleId, legacyProposal.id);
+  assert.equal(legacyApplied.evidenceStateUnavailable, true, "旧summary-only履歴は出典stateを復元できないことを隠さない");
+  await assert.rejects(
+    () => revertToVersion(directory, "2026-09-03", legacyArticleId, legacyApplied.summary, "initial", { ...snapshotReviewArticle(proposalArticle), summary: legacyApplied.summary }),
+    /出典履歴がない/u,
+    "追加根拠を含む現在版からsnapshotなしの旧版へは安全停止する"
+  );
+  await assert.rejects(
+    () => saveProposal(directory, "2026-09-03", "a-mismatch", summary, {
+      instruction: "不整合", mode: "limited_patch", summary: "不整合", evidence_urls: [], previous_status: "pending", article_summary: summary, article_state: { ...snapshotReviewArticle(initialArticle), summary: { ...summary, title_ja: "別本文" } }
+    }),
+    /一致しません/u,
+    "proposalのsummaryとstate不整合を保存前に拒否する"
+  );
 } finally {
   await fs.rm(directory, { recursive: true, force: true });
 }

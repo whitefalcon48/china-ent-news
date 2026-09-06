@@ -41,9 +41,10 @@ export async function reviseStoredArticle(directory: string, index: number, comm
   const article = articles[index - 1];
   if (!article?.topic) throw new Error(`topic data not found for article ${index}`);
   if (!article.summary) throw new ReviewRevisionClarificationRequiredError("元記事が見つからないため、変更箇所を比較できません");
-  const ledger = await findLedger(directory, article.topic.topic_key);
+  const ledger = await findLedger(directory, article.topic.topic_key, article);
   const intent = detectReviewRevisionIntent(article.summary, comment, reasonTag);
   if (intent.mode === "clarification_required") throw new ReviewRevisionClarificationRequiredError(intent.clarification_reason);
+  assertFullRewriteWithSupplementIsSupported(article, intent.mode);
   const deterministicTerminology = tryApplyDeterministicTerminologyReplacement(article.summary, comment, reasonTag, intent);
   if (intent.mode === "limited_patch" && deterministicTerminology) {
     articles[index - 1] = {
@@ -155,7 +156,8 @@ export async function prepareStoredArticleRevision(
   const before = article.summary;
   const intent = detectReviewRevisionIntent(before, comment, reasonTag);
   if (intent.mode === "clarification_required") throw new ReviewRevisionClarificationRequiredError(intent.clarification_reason);
-  const savedLedger = await findLedger(directory, article.topic.topic_key);
+  assertFullRewriteWithSupplementIsSupported(article, intent.mode);
+  const savedLedger = await findLedger(directory, article.topic.topic_key, article);
   const deterministic = tryApplyDeterministicTerminologyReplacement(before, comment, reasonTag, intent);
   if (deterministic) {
     const revised = decorateRevision(article, deterministic.summary, deterministic.trace, savedLedger, "review_deterministic_terminology_edit", false);
@@ -190,6 +192,17 @@ export async function prepareStoredArticleRevision(
     generationMeta: { ...rewritten.meta, review_revision: trace }
   };
   return { kind: "proposal", article: revised, mode: "full_rewrite", trace, summary: "全面リライトの修正案", evidenceUrls: evidenceUrls(revised) };
+}
+
+/**
+ * A stored operator-reviewed supplement includes related evidence that the
+ * root-evidence rebuild path cannot currently preserve.  Never silently
+ * discard it during a full rewrite; limited patches retain the saved state.
+ */
+function assertFullRewriteWithSupplementIsSupported(article: ProcessedArticle, mode: "limited_patch" | "full_rewrite") {
+  if (mode === "full_rewrite" && (article.generationMeta?.review_supplements?.length ?? 0) > 0) {
+    throw new ReviewRevisionClarificationRequiredError("追加出典を含む記事の全文書き直しは未対応です。変更する欄を指定した限定修正を利用してください。");
+  }
 }
 
 async function loadStoredArticle(directory: string, index: number) {
@@ -436,7 +449,9 @@ function gateKeys(result: ClaimCheckResult | ReturnType<typeof runCommentCheck>)
     .map((violation) => `${violation.section}:${violation.rule}:${violation.detail}`));
 }
 
-export async function findLedger(directory: string, topicKey: string): Promise<FactLedger | null> {
+export async function findLedger(directory: string, topicKey: string, current?: ProcessedArticle): Promise<FactLedger | null> {
+  const currentLedger = current?.generationMeta?.ledger;
+  if (currentLedger?.topic_key === topicKey) return currentLedger;
   const ledgerFile = (await fs.readdir(directory)).filter((name) => /^fact_ledger_\d{4}-\d{2}-\d{2}\.json$/.test(name)).sort().at(-1);
   if (!ledgerFile) return null;
   const stored = JSON.parse(await fs.readFile(path.join(directory, ledgerFile), "utf8")) as { ledgers?: Array<{ topic_key: string; ledger: FactLedger | null }> };
