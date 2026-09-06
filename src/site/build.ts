@@ -696,41 +696,56 @@ function normalizeSourceUrl(value: string) {
   }
 }
 
+// One visual system for site, archive, about, and article share images.
+const OGP_LOGO_FONT_PATH = path.resolve("docs/assets/site/bingtang-logo-black.ttf");
+const OGP_WAVE_ASSET = "bingtang-ogp-wave-clean.webp";
+
 async function generateDefaultOgp() {
-  const destination = path.join(OUTPUT_DIR, "assets", "ogp-default.png");
-  await fs.mkdir(path.dirname(destination), { recursive: true });
-  const logo = await readAsset("bingtang-logo-horizontal.png");
-  const hero = await readAsset("bingtang-hero-v2.png");
-  const composites: sharp.OverlayOptions[] = [];
-  if (logo) composites.push({ input: await sharp(logo).resize({ width: 570, height: 145, fit: "inside" }).png().toBuffer(), left: 76, top: 82 });
-  if (hero) composites.push({ input: await sharp(hero).resize({ width: 390, height: 490, fit: "inside" }).png().toBuffer(), left: 760, top: 120 });
-  await sharp(Buffer.from(ogpBackgroundSvg("default")))
-    .composite(composites)
-    .png()
-    .toFile(destination);
+  await generateNotebookOgp("/assets/ogp-default.png", "", "", false);
 }
 
 async function generateSitePageOgps() {
   return {
-    home: await generateSitePageOgp("/og/home.png", "", "", "bingtang-hero-v2.png"),
-    archive: await generateSitePageOgp("/og/archive.png", "アーカイブ", "これまでの記事を、まとめて読む。", "bingtang-hero-v2.png"),
-    about: await generateSitePageOgp("/og/about.png", "このサイトについて", "冰糖日报の情報の扱いと運営について。", "bingtang-about-fullbody.png")
+    home: await generateNotebookOgp("/og/home.png", "", "", false),
+    archive: await generateNotebookOgp("/og/archive.png", "アーカイブ", "これまでの記事を、まとめて読む。", false),
+    about: await generateNotebookOgp("/og/about.png", "このサイトについて", "冰糖日报の情報の扱いと運営について。", false)
   };
 }
 
-async function generateSitePageOgp(sitePath: string, heading: string, description: string, characterAsset: string) {
+async function generateNotebookOgp(sitePath: string, heading: string, description: string, article: boolean, avatarName = "") {
   const destination = path.join(OUTPUT_DIR, sitePath.replace(/^\/+/, ""));
   await fs.mkdir(path.dirname(destination), { recursive: true });
-  const [logo, character] = await Promise.all([readAsset("bingtang-logo-horizontal.png"), readAsset(characterAsset)]);
-  await Promise.all([fs.access(OGP_TITLE_FONT_PATH), fs.access(OGP_FALLBACK_FONT_PATH)]);
-  const logoOnly = !heading && !description;
-  const textMarkup = logoOnly ? "" : `<style>.heading{font-family:'Kosugi Maru','Noto Sans CJK JP';font-size:56px;font-weight:400;fill:#18375F}.description{font-family:'Zen Kaku Gothic New','Noto Sans CJK JP';font-size:28px;font-weight:400;fill:#526F88}</style><text x="78" y="290" class="heading">${xmlEscape(heading)}</text><text x="82" y="354" class="description">${xmlEscape(description)}</text>`;
-  const background = new Resvg(ogpBackgroundSvg("default", textMarkup), {
-    font: { fontFiles: [OGP_TITLE_FONT_PATH, OGP_FALLBACK_FONT_PATH], loadSystemFonts: false, defaultFontFamily: "Kosugi Maru" }
+  const serious = avatarName.startsWith("bingtang-avatar-serious-");
+  const character = await readAsset(serious ? avatarName : OGP_WAVE_ASSET);
+  const { fontSize, lines } = fitOgpTitle(heading);
+  const home = !heading;
+  const titleMarkup = article
+    ? lines.map((line, i) => `<text x="112" y="${260 + i * fontSize * 1.38}" class="title" font-size="${fontSize}">${xmlEscape(line)}</text>`).join("")
+    : home ? "" : `<text x="112" y="334" class="title" font-size="48">${xmlEscape(heading)}</text><text x="112" y="394" class="body" font-size="24">${xmlEscape(description)}</text>`;
+  const logoSize = home ? 114 : article ? 55 : 76;
+  const logoY = home ? 282 : article ? 130 : 188;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+    <style>.logo{font-family:'Noto Sans SC Black';font-weight:900;fill:#293c50}.title{font-family:'Kosugi Maru','Noto Sans CJK JP';fill:#293c50}.body{font-family:'Kosugi Maru','Noto Sans CJK JP';fill:#536f7d}</style>
+    <rect width="1200" height="630" fill="#fff7f6"/>
+    <circle cx="1010" cy="330" r="255" fill="#e6f2f7"/>
+    <path d="M1150 0h50v630h-50z" fill="#c72d35"/>
+    <rect x="45" y="54" width="733" height="510" rx="25" fill="#eedbdd"/>
+    <rect x="35" y="42" width="733" height="510" rx="25" fill="white"/>
+    ${home ? '<path d="M75 97h65" stroke="#c72d35" stroke-width="11" stroke-linecap="round"/><rect x="95" y="391" width="108" height="10" rx="5" fill="#c72d35"/><circle cx="219" cy="396" r="5" fill="#a7cddf"/>' : ''}
+    <text x="110" y="${logoY}" class="logo" font-size="${logoSize}" letter-spacing="2">冰糖日报</text>
+    <text x="112" y="${logoY + (home ? 60 : 42)}" class="body" font-size="${home ? 30 : 22}" style="fill:#536f7d">ビンタンちゃんデイリー</text>
+    ${article ? '<path d="M112 194h580" stroke="#ecd9dd" stroke-width="2"/>' : ""}
+    ${titleMarkup}
+    <text x="73" y="602" class="body" font-size="20" style="fill:#8f7378;letter-spacing:2px">bingtangnews.0-w-0.net</text>
+  </svg>`;
+  const background = new Resvg(svg, {
+    font: { fontFiles: [OGP_LOGO_FONT_PATH, OGP_TITLE_FONT_PATH, OGP_FALLBACK_FONT_PATH], loadSystemFonts: false, defaultFontFamily: "Kosugi Maru" }
   }).render().asPng();
   const composites: sharp.OverlayOptions[] = [];
-  if (logo) composites.push({ input: await sharp(logo).resize({ width: logoOnly ? 680 : 510, height: logoOnly ? 185 : 130, fit: "inside" }).png().toBuffer(), left: 76, top: logoOnly ? 210 : 76 });
-  if (character) composites.push({ input: await sharp(character).resize({ width: 380, height: 480, fit: "inside" }).png().toBuffer(), left: 770, top: 120 });
+  if (character) {
+    const image = await sharp(character).resize({ width: serious ? 370 : 480, height: serious ? 370 : 600, fit: "inside" }).png().toBuffer();
+    composites.push({ input: image, left: serious ? 793 : 720, top: serious ? 142 : 30 });
+  }
   await sharp(background).composite(composites).png().toFile(destination);
   return createHash("sha256").update(await fs.readFile(destination)).digest("hex").slice(0, 12);
 }
@@ -771,50 +786,17 @@ async function writeXCardTestPages() {
 }
 
 async function generateArticleOgp(sitePath: string, title: string, avatarName: string) {
-  const destination = path.join(OUTPUT_DIR, sitePath.replace(/^\/+/, ""));
-  await fs.mkdir(path.dirname(destination), { recursive: true });
-  const logo = await readAsset("bingtang-logo-horizontal.png");
-  const avatar = await readAsset(avatarName);
-  const { fontSize, lines } = fitOgpTitle(title);
-  await Promise.all([fs.access(OGP_TITLE_FONT_PATH), fs.access(OGP_FALLBACK_FONT_PATH)]);
-  const titleMarkup = lines.map((line, index) => `<text x="82" y="${244 + index * (fontSize * 1.43)}" class="title">${xmlEscape(line)}</text>`).join("");
-  const svg = ogpBackgroundSvg("article", `<style>.title{font-family:'Kosugi Maru','Noto Sans CJK JP';font-size:${fontSize}px;font-weight:400;fill:#18375F;letter-spacing:.01em}</style>${titleMarkup}`);
-  const background = new Resvg(svg, {
-    font: {
-      fontFiles: [OGP_TITLE_FONT_PATH, OGP_FALLBACK_FONT_PATH],
-      loadSystemFonts: false,
-      defaultFontFamily: "Kosugi Maru"
-    }
-  }).render().asPng();
-  const composites: sharp.OverlayOptions[] = [];
-  if (logo) composites.push({ input: await sharp(logo).resize({ width: 430, height: 110, fit: "inside" }).png().toBuffer(), left: 70, top: 54 });
-  if (avatar) composites.push({ input: await sharp(avatar).resize({ width: 164, height: 164, fit: "contain" }).png().toBuffer(), left: 982, top: 424 });
-  await sharp(background).composite(composites).png().toFile(destination);
-  const image = await fs.readFile(destination);
-  return createHash("sha256").update(image).digest("hex").slice(0, 12);
-}
-
-function ogpBackgroundSvg(kind: "default" | "article", content = "") {
-  const avatarCircle = kind === "article" ? `<circle cx="1064" cy="506" r="92" fill="#FFFFFF" stroke="#A9D9F2" stroke-width="5"/>` : "";
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-    <defs><linearGradient id="ice" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F8FCFF"/><stop offset="1" stop-color="#EAF7FD"/></linearGradient></defs>
-    <rect width="1200" height="630" fill="url(#ice)"/>
-    <path d="M0 0h310L88 214H0z" fill="#DDF2FB" opacity=".8"/><path d="M1200 0v206L994 0z" fill="#F8DADA" opacity=".55"/>
-    <path d="M0 630V472l176 158z" fill="#EEF8FC"/><path d="M1200 630H884l316-250z" fill="#DDF2FB" opacity=".9"/>
-    <g fill="#6BB9E8" opacity=".34"><circle cx="112" cy="344" r="6"/><circle cx="144" cy="372" r="3"/><path d="M1090 122l5 16 16 5-16 5-5 16-5-16-16-5 16-5z"/></g>
-    <g fill="#D62F2A" opacity=".24"><circle cx="1160" cy="278" r="7"/><circle cx="1127" cy="302" r="4"/></g>
-    ${avatarCircle}${content}
-  </svg>`;
+  return generateNotebookOgp(sitePath, title, "", true, avatarName);
 }
 
 function fitOgpTitle(title: string) {
   const clean = title.replace(/\s+/g, " ").trim();
-  for (const fontSize of [72, 66, 60, 54]) {
-    const maxUnits = 880 / fontSize;
-    const lines = wrapByVisualUnits(clean, maxUnits, 3);
-    if (lines.join("").replace(/…$/, "").length >= Array.from(clean).length || fontSize === 54) return { fontSize, lines };
+  for (const fontSize of [52, 48, 44, 40]) {
+    const maxUnits = 580 / fontSize;
+    const lines = wrapByVisualUnits(clean, maxUnits, 5);
+    if (lines.join("").replace(/…$/, "").length >= Array.from(clean).length || fontSize === 40) return { fontSize, lines };
   }
-  return { fontSize: 54, lines: [clean] };
+  return { fontSize: 40, lines: [clean] };
 }
 
 function wrapByVisualUnits(value: string, maxUnits: number, maxLines: number) {
