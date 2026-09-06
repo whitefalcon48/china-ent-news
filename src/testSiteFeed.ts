@@ -106,8 +106,8 @@ try {
   assertIncludes(archive, '<meta name="twitter:image" content="https://example.test/og/archive.png?v=', "アーカイブのXカード画像の絶対URL");
   assertIncludes(about, '<meta property="og:image" content="https://example.test/og/about.png?v=', "このサイトについて専用OGP画像の絶対URL");
   assertIncludes(about, '<meta name="twitter:image" content="https://example.test/og/about.png?v=', "このサイトについてのXカード画像の絶対URL");
-  assertIncludes(home, "/assets/bingtang-logo-horizontal.png", "本番横長ロゴ");
-  assertIncludes(home, "/assets/bingtang-hero-v2.png", "本番ヘッダーキャラクター");
+  assertIncludes(home, 'class="logo-cn" lang="zh-CN">冰糖日报</span>', "統一書体の本番ロゴ");
+  assertIncludes(home, "/assets/bingtang-header-wave-transparent.webp", "本番ヘッダーキャラクター");
   assertIncludes(home, 'href="/archive/?tag=', "記事カードからアーカイブ絞り込みへのタグリンク");
   assertIncludes(detail, 'class="article-tags"', "記事詳細のタグ表示");
   assertIncludes(home, ">ショートドラマ</a>", "短劇表記を横断タグへ正規化");
@@ -125,7 +125,7 @@ try {
   assertNotIncludes(home, ">タグから探す</a>", "専用タグページへのナビゲーション");
   assertNotIncludes(home, "中国エンタメの現地温度を、日本語で。", "削除したキャッチコピー");
   assertNotIncludes(home, "今日のわたしが気になる", "削除した吹き出し文言");
-  assertNotIncludes(home, "ビンタンちゃんデイリー", "旧サイト読み");
+  assertIncludes(home, "ビンタンちゃんデイリー", "承認済みサイト読み");
   assertNotIncludes(home, "確度B", "確度ラベル");
   assertNotIncludes(home, ">本日<", "鮮度ラベル");
   assertIncludes(home, "family=Kosugi+Maru&family=Zen+Kaku+Gothic+New", "タイトルと本文のWebフォント");
