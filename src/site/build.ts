@@ -36,6 +36,8 @@ async function main() {
   await fs.rm(OUTPUT_DIR, { recursive: true, force: true });
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
   await copySiteAssets();
+  await fs.mkdir(path.join(OUTPUT_DIR, "assets"), { recursive: true });
+  await fs.copyFile(new URL("./notebook.css", import.meta.url), path.join(OUTPUT_DIR, "assets/notebook-v1.css"));
   await generateDefaultOgp();
   const pageOgpVersions = await generateSitePageOgps();
   await generateXCardTestImages();
@@ -594,13 +596,13 @@ function renderAvatar(sizeClass: string, imageName = "bingtang-avatar-smile-left
 function renderLayout(options: { title: string; description: string; canonicalPath: string; currentNav: "latest" | "archive" | "about" | ""; body: string; fullHeader: boolean; headerDate?: string; articleDate?: string; ogImagePath?: string }) {
   const canonicalUrl = absoluteUrl(options.canonicalPath);
   const ogImageUrl = absoluteUrl(options.ogImagePath || "/assets/ogp-default.png");
-  return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(options.title)}</title><meta name="description" content="${escapeAttr(options.description)}"><link rel="canonical" href="${canonicalUrl}"><meta property="og:type" content="${options.fullHeader ? "website" : "article"}"><meta property="og:site_name" content="${SITE_NAME}"><meta property="og:title" content="${escapeAttr(options.title)}"><meta property="og:description" content="${escapeAttr(options.description)}"><meta property="og:url" content="${canonicalUrl}"><meta property="og:image" content="${ogImageUrl}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${SITE_NAME}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeAttr(options.title)}"><meta name="twitter:description" content="${escapeAttr(options.description)}"><meta name="twitter:image" content="${ogImageUrl}"><meta name="twitter:image:alt" content="${SITE_NAME}"><link rel="icon" href="${href("/assets/favicon-32.png")}"><style>${V2_CSS}</style></head><body>
+  return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(options.title)}</title><meta name="description" content="${escapeAttr(options.description)}"><link rel="canonical" href="${canonicalUrl}"><meta property="og:type" content="${options.fullHeader ? "website" : "article"}"><meta property="og:site_name" content="${SITE_NAME}"><meta property="og:title" content="${escapeAttr(options.title)}"><meta property="og:description" content="${escapeAttr(options.description)}"><meta property="og:url" content="${canonicalUrl}"><meta property="og:image" content="${ogImageUrl}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${SITE_NAME}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeAttr(options.title)}"><meta name="twitter:description" content="${escapeAttr(options.description)}"><meta name="twitter:image" content="${ogImageUrl}"><meta name="twitter:image:alt" content="${SITE_NAME}"><link rel="icon" href="${href("/assets/favicon-32.png")}"><style>${V2_CSS}</style><link rel="stylesheet" href="${href("/assets/notebook-v1.css")}"></head><body class="notebook-site page-${options.currentNav || "article"}">
   ${options.fullHeader ? renderHeader(options.currentNav, options.headerDate) : renderArticleHeader(options.articleDate || "")}
   ${options.body}${renderFooter()}</body></html>`;
 }
 
 function renderHeader(current: "latest" | "archive" | "about" | "", date?: string) {
-  return `<header class="hero"><div class="hero-inner"><div class="brand"><a href="${href("/")}" class="logo"><img src="${href("/assets/bingtang-logo-horizontal.png")}" alt="冰糖日报 ビンタンデイリー"></a>${date ? `<time class="date-badge" datetime="${date}">最終更新：${escapeHtml(formatUpdatedDate(date))}</time>` : ""}</div><div class="hero-character"><img src="${href("/assets/bingtang-hero-v2.png")}" alt="片手を上げて挨拶するビンタン"></div></div>${renderNav(current)}</header>`;
+  return `<header class="hero"><div class="hero-inner"><div class="brand"><a href="${href("/")}" class="logo"><span class="logo-cn" lang="zh-CN">冰糖日报</span><span class="subtitle">ビンタンちゃんデイリー</span></a>${date ? `<time class="date-badge" datetime="${date}">最終更新：${escapeHtml(formatUpdatedDate(date))}</time>` : ""}</div></div>${renderNav(current)}<div class="hero-character"><img src="${href("/assets/bingtang-header-wave-transparent.webp")}" width="730" height="912" alt="右手を上げて、見つけた話題をうれしそうに紹介するビンタンちゃん" fetchpriority="high"></div></header>`;
 }
 
 function renderNav(current: "latest" | "archive" | "about" | "") {
@@ -608,7 +610,7 @@ function renderNav(current: "latest" | "archive" | "about" | "") {
 }
 
 function renderArticleHeader(date: string) {
-  return `<header class="article-header"><a href="${href("/")}" class="mini-logo"><img src="${href("/assets/bingtang-logo-compact.png")}" alt="冰糖日报"></a><a href="${href(`/archive/${date}/`)}">← ${escapeHtml(date)} の一覧へ</a></header>`;
+  return `<header class="article-header"><a href="${href("/")}" class="mini-logo"><span class="logo-cn" lang="zh-CN">冰糖日报</span></a><a href="${href(`/archive/${date}/`)}">← ${escapeHtml(date)} の一覧へ</a></header>`;
 }
 
 function renderFooter() {
