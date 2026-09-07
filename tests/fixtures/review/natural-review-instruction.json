@@ -1,0 +1,158 @@
+{
+  "source_commit": "63340710",
+  "summary": {
+    "title_ja": "国安（国家安全）題材ドラマ『交鋒』が9月6日放送開始、王凯＆彭昱畅らが出演",
+    "badge": "NEWS",
+    "lead": "中国の国家安全を題材にしたテレビドラマ『交鋒』が、9月6日からCCTV-8で放送され、配信プラットフォームでも配信されることが発表された。主演は王凯、周依然、欧豪、彭昱畅ら。",
+    "what_happened": "国安（国家安全）題材のテレビドラマ『交鋒』が、9月6日にCCTV-8で独占テレビ放送され、騰讯視頻と咪咕視頻でネット配信されることが決まった。国家安全部が主導して制作され、中央広播電視総台、国家安全部国安影視中心、中国電視劇制作中心、柠萌影視などが制作に関わる。監督は姚暁峰、脚本は王小枪が担当し、王凯、周依然、欧豪、彭昱畅（いずれも姓の画数順）らが主演する。物語は1990年代末、市国家安全局の師徒（師弟）が、ある機密漏えい事件をきっかけに、20年にわたって海外スパイと対決する姿を描く。",
+    "reaction_view": "",
+    "why_it_matters": "国家安全部が主導するドラマって、どんな風に描くのか気になります！ 20年にわたる師弟の戦いを、どうリアルに見せるのか。まずは初回の反応と、時代をどう再現しているかを確認したいです。",
+    "editor_comment": "",
+    "japan_context_note": "",
+    "category": "ドラマ",
+    "confidence": "B",
+    "source_type": "media_report",
+    "published_date": "2026-09-01",
+    "event_date": "2026-09-01",
+    "freshness_label": "recent",
+    "newsworthiness_score": 64,
+    "japan_visibility": "low",
+    "japan_gap": "high",
+    "context_value": "medium",
+    "sns_heat": "none",
+    "source_count": 4,
+    "source_list": [
+      { "name": "新京报 娱乐", "url": "https://www.bjnews.com.cn/detail/1788235759169733.html" },
+      { "name": "taptap.cn", "url": "https://www.taptap.cn/moment/680707893497957389" },
+      { "name": "xxsb.gz-cmc.com", "url": "https://xxsb.gz-cmc.com/pages/2026/09/02/998c03fdb5804cc0b24338c25d27793f.html" },
+      { "name": "ent.sina.cn", "url": "https://ent.sina.cn/2026-09-01/detail-iniqhwmy4796195.d.html?oid=Xeng2021%20Club%E3%80%9066.cyou%E3%80%91.txmi&vt=4" }
+    ],
+    "has_official_source": false,
+    "has_multiple_sources": true,
+    "has_sns_signal": false,
+    "article_type": "news_event",
+    "skip_reason": "",
+    "verification_status": "verified",
+    "topic_key": "交锋",
+    "main_entities": {
+      "people": ["王凯", "彭昱畅", "周依然", "欧豪", "王小枪", "姚晓峰"],
+      "works": ["交锋"],
+      "organizations": ["国家安全部", "中央广播电视总台", "国家安全部国安影视中心", "中国电视剧制作中心", "柠萌影视", "柠萌开新", "腾讯视频", "咪咕视频", "CCTV-8"]
+    },
+    "related_sources": [],
+    "tags": ["国安ドラマ", "CCTV", "王凯", "彭昱畅"],
+    "publish_priority": "medium",
+    "publish_reason": "中国の国安ドラマは日本でほとんど知られておらず、国家主導のエンタメの一例として紹介する価値があるため。",
+    "claim_refs": {
+      "what_happened": ["C1", "C2", "C3", "C4"],
+      "why_it_matters": ["C2", "C4", "C5"],
+      "reaction_view": [],
+      "japan_context_note": []
+    },
+    "detail_sections": []
+  },
+  "topic": {
+    "topic_key": "交锋",
+    "title_hint": "国安題材ドラマ『交鋒』が9月6日放送開始",
+    "event_sentence": "国安題材ドラマ『交鋒』が9月6日に放送を開始する。",
+    "search_queries": ["交锋", "交锋 电视剧 开播"],
+    "seed_source": "llm",
+    "seed_confidence": 0.95,
+    "topic_type": "drama_production",
+    "freshness_label": "recent",
+    "published_date_range": { "earliest": "2026-09-01", "latest": "2026-09-01" },
+    "source_count": 3,
+    "source_mix": { "official": 0, "media_report": 3, "sns": 0, "data": 0, "pr_like": 0, "rumor": 0, "mixed": 0 },
+    "evidence_articles": [],
+    "related_evidence_articles": [],
+    "main_entities": {
+      "people": ["王凯", "彭昱畅", "周依然", "欧豪"],
+      "works": ["交锋"],
+      "organizations": ["国家安全部"],
+      "events": []
+    },
+    "signals": {
+      "has_official_source": false,
+      "has_media_context": true,
+      "has_data_signal": false,
+      "has_hot_search_signal": false,
+      "has_multiple_sources": true
+    },
+    "newsworthiness_score": 64,
+    "japan_gap": "unknown",
+    "context_value": "low",
+    "publish_priority": "medium",
+    "selection_reason": "fixture",
+    "caution_note": "Single-source topic"
+  },
+  "ledger": {
+    "topic_key": "交锋",
+    "claims": [
+      {
+        "id": "C1",
+        "type": "verified_fact",
+        "text": "『交鋒』は9月6日にCCTV-8で放送され、騰訊視頻と咪咕視頻で配信される。",
+        "evidence_refs": ["E1", "E3"],
+        "entities": ["交锋", "CCTV-8", "腾讯视频", "咪咕视频"],
+        "numbers": ["9月6日"],
+        "quote_zh": "将于9月6日在CCTV-8独家电视播出，腾讯视频、咪咕视频全网首播",
+        "anchor": true,
+        "scope": "root_event"
+      },
+      {
+        "id": "C2",
+        "type": "verified_fact",
+        "text": "『交鋒』は国家安全部が主導し、複数の制作団体が関わる。",
+        "evidence_refs": ["E1", "E3"],
+        "entities": ["国家安全部", "中央广播电视总台", "国家安全部国安影视中心", "中国电视剧制作中心", "柠萌影视"],
+        "numbers": [],
+        "quote_zh": "由国家安全部主导创作，中央广播电视总台、国家安全部国安影视中心、中国电视剧制作中心、柠萌影视出品",
+        "anchor": true,
+        "scope": "root_event"
+      },
+      {
+        "id": "C3",
+        "type": "verified_fact",
+        "text": "王小槍が脚本、姚暁峰が監督を担当し、王凱らが主演する。",
+        "evidence_refs": ["E1"],
+        "entities": ["王小枪", "姚晓峰", "王凯", "周依然", "欧豪", "彭昱畅"],
+        "numbers": [],
+        "quote_zh": "王小枪编剧、姚晓峰任总导演，王凯、周依然、欧豪、彭昱畅领衔主演",
+        "anchor": true,
+        "scope": "root_event"
+      },
+      {
+        "id": "C4",
+        "type": "verified_fact",
+        "text": "1990年代末から20年にわたり師弟が海外スパイと対決する物語。",
+        "evidence_refs": ["E1", "E3"],
+        "entities": ["交锋"],
+        "numbers": ["1990年代末", "20年"],
+        "quote_zh": "上世纪九十年代末，一对师徒与境外间谍展开横跨二十年的较量",
+        "anchor": true,
+        "scope": "root_event"
+      },
+      {
+        "id": "C5",
+        "type": "verified_fact",
+        "text": "作品は現実主義を掲げ、隠蔽戦線の質感を再現するとしている。",
+        "evidence_refs": ["E1", "E3"],
+        "entities": ["交锋"],
+        "numbers": [],
+        "quote_zh": "坚持现实主义创作原则，力求还原隐蔽战线斗争的真实质感",
+        "anchor": true,
+        "scope": "root_event"
+      }
+    ],
+    "terms": [],
+    "japan_availability": { "status": "not_in_evidence", "detail": "", "evidence_refs": [] },
+    "unresolved": [],
+    "evidence_roles": { "E1": "root_corroboration", "E2": "root_corroboration", "E3": "root_corroboration", "E4": "root_corroboration" },
+    "evidence_quality": [
+      { "evidence_ref": "E1", "classification": "editorial_media", "usable_for_verified_facts": true, "reason": "fixture" },
+      { "evidence_ref": "E2", "classification": "editorial_media", "usable_for_verified_facts": true, "reason": "fixture" },
+      { "evidence_ref": "E3", "classification": "editorial_media", "usable_for_verified_facts": true, "reason": "fixture" },
+      { "evidence_ref": "E4", "classification": "promotional_or_repost", "usable_for_verified_facts": false, "reason": "fixture" }
+    ]
+  }
+}
