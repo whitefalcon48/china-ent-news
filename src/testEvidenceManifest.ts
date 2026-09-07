@@ -32,6 +32,9 @@ assert.equal(result.manifest.evidence_bindings[0]?.source_index, 0, "E1は実入
 assert.equal(result.manifest.evidence_bindings[1]?.source_index, 1, "E2は実入力の2件目へbindする");
 assert.equal(result.manifest.evidence_bindings[2]?.status, "explicit_legacy_import", "明示mapだけをlegacy importできる");
 assert.equal(result.manifest.evidence_bindings[2]?.imported_claim_ref, "C3");
+assert.equal(result.manifest.evidence_bindings[2]?.validation_origin, "stored_review_supplement");
+assert.equal(result.manifest.documents[2]?.integrity.classification, "editorial_media", "importからprimaryを捏造せず保存ledgerのqualityを継承する");
+assert.equal(result.manifest.documents[2]?.integrity.reason, "saved_operator_reviewed_quality");
 assert.deepEqual(result.manifest.support_spans.map((item) => `${item.claim_ref}/${item.evidence_ref}`), ["C3/E3", "C1/E1"], "検証済み引用と明示importだけをsupport spanに残す");
 assert.equal(result.manifest.support_spans.every((item) => /^[a-f0-9]{64}$/u.test(item.span_sha256)), true);
 assert.equal(result.manifest.documents[0]?.normalized_url, "https://example.com/root", "query/hashを保存しない");
@@ -59,12 +62,73 @@ assert.equal(updatedBody.manifest.documents.length, 2, "同一URLでも本文更
 assert.notEqual(updatedBody.manifest.documents[0]?.document_id, updatedBody.manifest.documents[1]?.document_id);
 
 assert.throws(
-  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, evidence_ref: "E2" }] }),
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, supplement: { ...fixture.import.supplement, evidence_ref: "E2" } }] }),
   (error) => error instanceof EvidenceManifestConflictError && error.diagnostic.code === "evidence_ref_collision"
 );
 assert.throws(
-  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, evidence_ref: "E4" }] }),
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, supplement: { ...fixture.import.supplement, evidence_ref: "E4" } }] }),
   (error) => error instanceof EvidenceManifestConflictError && error.diagnostic.code === "evidence_ref_not_append_only"
+);
+
+const missingMiddle = structuredClone(fixture.evidence);
+missingMiddle.splice(1, 0, { ...fixture.evidence[1]!, url: "https://example.net/missing", rawContent: undefined, excerpt: undefined });
+const shiftedImport = {
+  ...fixture.import,
+  supplement: { ...fixture.import.supplement, evidence_ref: "E4" },
+  ledger: {
+    ...fixture.import.ledger,
+    claims: fixture.import.ledger.claims.map((claim) => ({ ...claim, evidence_refs: ["E4"] })),
+    evidence_roles: { E4: "related_angle" as const },
+    evidence_quality: fixture.import.ledger.evidence_quality?.map((quality) => ({ ...quality, evidence_ref: "E4" }))
+  }
+};
+const missingResult = buildEvidenceManifest(missingMiddle, {
+  provenance: [fixture.provenance[0]!, fixture.provenance[1]!, fixture.provenance[1]!],
+  imports: [shiftedImport, {
+    ...shiftedImport,
+    supplement: { ...shiftedImport.supplement, evidence_ref: "E5", claim_ref: "C4", source_url: "https://agency.example.gov/context-2" },
+    ledger: {
+      ...shiftedImport.ledger,
+      claims: shiftedImport.ledger.claims.map((claim) => ({ ...claim, id: "C4", evidence_refs: ["E5"] })),
+      evidence_roles: { E5: "related_angle" },
+      evidence_quality: shiftedImport.ledger.evidence_quality?.map((quality) => ({ ...quality, evidence_ref: "E5" }))
+    }
+  }]
+});
+assert.deepEqual(missingResult.manifest.evidence_bindings.map((item) => item.evidence_ref), ["E1", "E2", "E3", "E4", "E5"]);
+assert.equal(missingResult.manifest.evidence_bindings[1]?.status, "unresolved_input", "本文欠損でもE2位置を予約する");
+assert.equal(missingResult.manifest.evidence_bindings[1]?.document_id, null);
+
+const invalidFirst = buildEvidenceManifest([{ ...fixture.evidence[0]!, url: "not-a-url" }, fixture.evidence[1]!], {
+  provenance: fixture.provenance,
+  imports: [fixture.import]
+});
+assert.deepEqual(invalidFirst.manifest.evidence_bindings.map((item) => item.evidence_ref), ["E1", "E2", "E3"]);
+assert.equal(invalidFirst.manifest.evidence_bindings[0]?.status, "unresolved_input", "不正URLの先頭E1も予約する");
+
+assert.throws(
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, supplement: { ...fixture.import.supplement, claim_ref: "not-a-claim" } }] }),
+  (error) => error instanceof EvidenceManifestConflictError && error.diagnostic.code === "evidence_ref_invalid"
+);
+assert.throws(
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, ledger: { ...fixture.import.ledger, evidence_quality: undefined } }] }),
+  (error) => error instanceof EvidenceManifestConflictError && /quality/u.test(error.message)
+);
+assert.throws(
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, ledger: { ...fixture.import.ledger, evidence_roles: { E3: "root_corroboration" } } }] }),
+  (error) => error instanceof EvidenceManifestConflictError && /related_angle/u.test(error.message)
+);
+assert.throws(
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, ledger: { ...fixture.import.ledger, claims: fixture.import.ledger.claims.map((claim) => ({ ...claim, quote_zh: "別引用" })) } }] }),
+  (error) => error instanceof EvidenceManifestConflictError && /引用/u.test(error.message)
+);
+assert.throws(
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, supplement: { ...fixture.import.supplement, reviewed_by: "" } }] }),
+  (error) => error instanceof EvidenceManifestConflictError && /確認来歴/u.test(error.message)
+);
+assert.throws(
+  () => buildEvidenceManifest(fixture.evidence, { provenance: fixture.provenance, imports: [{ ...fixture.import, supplement: { ...fixture.import.supplement, body_sha256: "not-a-hash" } }] }),
+  (error) => error instanceof EvidenceManifestConflictError && /body_sha256/u.test(error.message)
 );
 
 const unknownRef = buildEvidenceManifest(fixture.evidence, {

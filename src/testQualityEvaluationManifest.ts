@@ -70,7 +70,7 @@ assert.equal("quality_scores" in manifest, false, "C0では自動採点しない
 
 await assert.rejects(
   writeQualityEvaluationManifest({ data_root: dataRoot, repository_root: repositoryRoot, output: path.join(dataRoot, "forbidden.json") }),
-  /evaluation_output_must_not_be_inside_input_data_root/u
+  /evaluation_output_resolves_inside_input_data_root/u
 );
 
 const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "stage-c-evaluation-"));
@@ -79,6 +79,67 @@ try {
   await writeQualityEvaluationManifest({ data_root: dataRoot, repository_root: repositoryRoot, output });
   const written = JSON.parse(await fs.readFile(output, "utf8")) as { totals: { articles: number } };
   assert.equal(written.totals.articles, 11);
+  await assert.rejects(
+    writeQualityEvaluationManifest({ data_root: dataRoot, repository_root: repositoryRoot, output }),
+    /evaluation_output_already_exists/u
+  );
+
+  const dataAlias = path.join(temporaryDirectory, "data-alias");
+  await fs.symlink(dataRoot, dataAlias, "junction");
+  await assert.rejects(
+    writeQualityEvaluationManifest({ data_root: dataRoot, repository_root: repositoryRoot, output: path.join(dataAlias, "aliased-overwrite.json") }),
+    /evaluation_output_resolves_inside_input_data_root/u
+  );
+
+  const harmlessTarget = path.join(temporaryDirectory, "normal-target.json");
+  await fs.writeFile(harmlessTarget, "unchanged", "utf8");
+  const fileLink = path.join(temporaryDirectory, "existing-output-link.json");
+  await fs.link(harmlessTarget, fileLink);
+  await assert.rejects(
+    writeQualityEvaluationManifest({ data_root: dataRoot, repository_root: repositoryRoot, output: fileLink }),
+    /evaluation_output_already_exists/u
+  );
+  assert.equal(await fs.readFile(harmlessTarget, "utf8"), "unchanged");
+
+  const inconsistentDataRoot = path.join(temporaryDirectory, "inconsistent-data");
+  await fs.mkdir(inconsistentDataRoot);
+  await fs.cp(path.join(dataRoot, "2026-09-06"), path.join(inconsistentDataRoot, "2026-09-06"), { recursive: true });
+  const inconsistentArticlesPath = path.join(inconsistentDataRoot, "2026-09-06/articles_2026-09-06.json");
+  const inconsistentArticles = JSON.parse(await fs.readFile(inconsistentArticlesPath, "utf8")) as Array<{ summary: { title_ja: string } }>;
+  inconsistentArticles[0]!.summary.title_ja += "（実articles差分）";
+  await fs.writeFile(inconsistentArticlesPath, `${JSON.stringify(inconsistentArticles, null, 2)}\n`, "utf8");
+  const inconsistent = await buildQualityEvaluationManifest({
+    data_root: inconsistentDataRoot,
+    repository_root: repositoryRoot,
+    repository_sha: "f".repeat(40),
+    dates: ["2026-09-06"]
+  });
+  assert.match(inconsistent.articles[0]?.versions.current.summary?.title_ja ?? "", /実articles差分/u, "currentはrevisionで置換せず実articlesから取る");
+  assert.equal(inconsistent.articles[0]?.diagnostics.some((item) => item.code === "current_summary_revision_mismatch"), true);
+
+  const inconsistentReviewPath = path.join(inconsistentDataRoot, "2026-09-06/review.json");
+  const inconsistentReview = JSON.parse(await fs.readFile(inconsistentReviewPath, "utf8")) as { articles: Array<{ index: number; article_id?: string; topic_key: string; current_version?: number }> };
+  inconsistentReview.articles[0]!.index = 2;
+  await fs.writeFile(inconsistentReviewPath, `${JSON.stringify(inconsistentReview, null, 2)}\n`, "utf8");
+  const badIndex = await buildQualityEvaluationManifest({ data_root: inconsistentDataRoot, repository_root: repositoryRoot, repository_sha: "f".repeat(40), dates: ["2026-09-06"] });
+  assert.equal(badIndex.articles[0]?.diagnostics.some((item) => item.code === "article_index_mismatch"), true);
+
+  inconsistentReview.articles[0]!.index = 1;
+  inconsistentReview.articles[0]!.current_version = 1;
+  await fs.writeFile(inconsistentReviewPath, `${JSON.stringify(inconsistentReview, null, 2)}\n`, "utf8");
+  const versionMismatch = await buildQualityEvaluationManifest({ data_root: inconsistentDataRoot, repository_root: repositoryRoot, repository_sha: "f".repeat(40), dates: ["2026-09-06"] });
+  assert.equal(versionMismatch.articles[0]?.diagnostics.some((item) => item.code === "review_store_current_version_mismatch"), true);
+
+  inconsistentReview.articles[0]!.article_id = "a-wrong";
+  inconsistentReview.articles[0]!.topic_key = "別topic";
+  inconsistentReview.articles[0]!.current_version = 1;
+  await fs.writeFile(inconsistentReviewPath, `${JSON.stringify(inconsistentReview, null, 2)}\n`, "utf8");
+  const identityMismatch = await buildQualityEvaluationManifest({ data_root: inconsistentDataRoot, repository_root: repositoryRoot, repository_sha: "f".repeat(40), dates: ["2026-09-06"] });
+  const mismatchCodes = identityMismatch.articles[0]!.diagnostics.map((item) => item.code);
+  assert.equal(mismatchCodes.includes("article_id_mismatch"), true);
+  assert.equal(mismatchCodes.includes("topic_identity_mismatch"), true);
+  assert.equal(mismatchCodes.includes("published_snapshot_unverified"), true);
+  assert.equal(identityMismatch.articles[0]?.versions.published.available, false, "整合不能なcurrentをpublished snapshotへ代用しない");
   assert.equal(await hashBaselineInputs(dataRoot, expected.dates.map((item) => item.date)), beforeHash, "CLI出力後もinput dataは不変");
 } finally {
   await fs.rm(temporaryDirectory, { recursive: true, force: true });

@@ -1,6 +1,6 @@
 # 工程C C0 比較基盤レポート
 
-2026-09-07 / 実装担当 / 状態: Astraレビュー待ち
+2026-09-07 / 実装担当 / 状態: Astra差戻しR1〜R4修正後・再レビュー待ち
 
 設計正本はAstra設計commit `00da1aaa896ed7e3e536b1b8159bb8e11643d541` の
 `docs/design-stage-c-reader-context-quality.md` と
@@ -11,8 +11,8 @@
 
 - `EvidenceManifest v1`: 実際に渡された `RawArticle[]` の順でE番号を一度だけbindし、URLと本文SHA-256から文書versionを識別する純粋helper。
 - 文書単位の引用照合: 空白正規化だけを許し、別Eに同じ引用があっても指定Eの文書に存在しなければerror診断にする。
-- append-only明示import: 工程BのようにC/E/URL/hashが明示された補足だけを末尾へ追加し、衝突・飛び番を拒否する。
-- 読取専用比較CLI: 8月31日〜9月6日の固定dataを読み、指定した `output/` にだけmanifestを保存する。`data/` 配下への出力は拒否する。
+- append-only明示import: 本文やURLが欠損した実入力位置もE番号を予約する。保存済み工程BのsupplementとledgerでC/E/role/quality/URL/hash/確認者が一致する補足だけを末尾へ追加し、衝突・飛び番・来歴欠損を拒否する。信頼性はimportから生成せず保存ledgerから継承する。
+- 読取専用比較CLI: 8月31日〜9月6日の固定dataを読み、指定した新規 `output/` にだけmanifestを排他作成する。`realpath` で既存祖先を照合し、`data/` 配下、junction経由、既存symlink/hard link/通常ファイルへの出力を拒否する。
 - 旧記事互換: 旧候補配列からE番号を推測しない。取得時点不明は `null`、候補 `key_points` は全文と見なさず、全旧記事を `comparable=false` とした。
 
 このC0では既存生成prompt、gate、選定、data、review、revisions、公開snapshot、サイト、OGP、X、通知、provider/model/費用設定を変更していない。生成経路への接続、自動品質得点、実LLM、外部取得も実施していない。
@@ -35,6 +35,8 @@ npm run quality:evaluation-manifest -- --output output/stage-c-evaluation-manife
 - 明示済みC/E対応1件（2026-09-06 `C12/E5`）。旧配列から付け替えなかったlegacy未解決evidence記録50件、claim/evidence pair 186件。
 - 新方式で同条件比較可能と判定した旧記事0件。理由は全11記事で生成時の完全な `RawArticle[]` snapshotが欠損しているため。
 - 各入力JSONのGit blob SHA-1と基準repository SHAをmanifestへ記録した。
+- 実articlesをcurrentの正本として保持し、revision storeとのhash、review/storeのcurrent version、index/article_id/topicの不一致を診断する。publishedはrevision storeで独立snapshotを確認できた版だけavailableとした。
+- 公開指定5記事のうち、独立snapshotを確認できたのは9月2日#1と9月6日#1の2記事。9月4日・9月5日の3記事は公開version番号はあるがrevision snapshotがなく、現行本文で代用せず `published_snapshot_unverified` とした。
 
 `raw欠損40件` は51件のevidence保存記録に対する数であり、記事数ではない。各記事には代表rawが1件ずつ残るが、その他の候補は全文ではなく `key_points` またはtitleだけである。
 
@@ -49,9 +51,9 @@ npm run quality:evaluation-manifest -- --output output/stage-c-evaluation-manife
 |2026-09-03|1|a-49050510140515dd|2026年夏休み映画興行、過去最高の上映回数で124.98億元 前年比4.45%増|成功|legacy / 1 / なし|5 / 4|0 / 29|
 |2026-09-03|2|a-46a8b1b357997446|国内初のAIGC長編ドラマ『後西遊記』が上星放送開始、制作費は従来の10分の1以下|fallback|legacy / 1 / なし|6 / 5|0 / 0|
 |2026-09-03|3|a-e541215688786526|映画『歓迎来龍餐館』番外編公開、沈騰と蒋奇明が異郷で共演|成功|legacy / 1 / なし|5 / 4|0 / 20|
-|2026-09-04|1|a-31216abbac0352b4|2026年夏休み映画、総興行収入124.98億元で過去最高の上映回数|成功|legacy / 1 / 1|4 / 3|0 / 32|
-|2026-09-05|1|a-595a7cca1cd736f9|映画『歓迎来龍餐館』興行収入20億元突破、9月18日日本公開へ|成功|legacy / 1 / 1|3 / 2|0 / 25|
-|2026-09-05|2|a-e316b136af3a0bbe|中国ドラマ『早春晴朗』がNetflix非英語圏週間2位に 国産ドラマ史上最高位|成功|legacy / 1 / 1|7 / 6|0 / 21|
+|2026-09-04|1|a-31216abbac0352b4|2026年夏休み映画、総興行収入124.98億元で過去最高の上映回数|成功|legacy / 1 / 確認不能|4 / 3|0 / 32|
+|2026-09-05|1|a-595a7cca1cd736f9|映画『歓迎来龍餐館』興行収入20億元突破、9月18日日本公開へ|成功|legacy / 1 / 確認不能|3 / 2|0 / 25|
+|2026-09-05|2|a-e316b136af3a0bbe|中国ドラマ『早春晴朗』がNetflix非英語圏週間2位に 国産ドラマ史上最高位|成功|legacy / 1 / 確認不能|7 / 6|0 / 21|
 |2026-09-06|1|a-37d06fba5ca20f9c|国安（国家安全）題材ドラマ『交鋒』が9月6日放送開始、王凯＆彭昱畅らが出演|成功|1 / 2 / 2|6 / 5|1 / 17|
 
 `legacy` は現行summaryを読める一方、別の生成時版snapshotとして証明できない状態。9月2日#2は初稿version 1と現行version 4を分離し、公開版なし。9月6日#1は工程B適用前version 1と現行・公開version 2を分離し、補足資料の `fetched_at=2026-09-06T13:25:46.143Z` と `C12/E5` を明示mapとして保持した。
@@ -93,5 +95,7 @@ git diff --check
 
 - 専用suiteは固定fixture/mockのみ。ネットワーク、実LLM、実外部取得なし。
 - `test:quality-evaluation-manifest` は入力dataの前後hash一致、`data/` 内への出力拒否、隔離temp出力を検証。
+- 同suiteはtemp内でdataへのjunction、既存output hard link、既存通常ファイルを拒否し、対象内容が不変であることも確認。Windows権限制約で作れないファイルsymlinkは実装で明示拒否し、権限不要のhard linkで既存別名ファイルを回帰した。
+- 実articles/revision summary、review/store version、index/article_id/topicの不一致fixtureを検出し、現行本文をrevisionや未確認published版で置換しないことを確認。
 - `git diff -- data` は0件。保護data差分0。
 - C1/C2、push、PR、main統合、本番適用・公開は未実施。

@@ -109,10 +109,22 @@ export async function writeQualityEvaluationManifest(
 ) {
   const dataRoot = path.resolve(options.data_root);
   const output = path.resolve(options.output);
-  if (isWithin(dataRoot, output)) throw new Error("evaluation_output_must_not_be_inside_input_data_root");
+  await assertSafeNewOutput(dataRoot, output);
   const manifest = await buildQualityEvaluationManifest(options);
   await fs.mkdir(path.dirname(output), { recursive: true });
-  await fs.writeFile(output, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  await assertRealParentOutsideData(dataRoot, output);
+  let handle: fs.FileHandle;
+  try {
+    handle = await fs.open(output, "wx");
+  } catch (error) {
+    if (isFileExists(error)) throw new Error("evaluation_output_already_exists");
+    throw error;
+  }
+  try {
+    await handle.writeFile(`${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  } finally {
+    await handle.close();
+  }
   return manifest;
 }
 
@@ -127,11 +139,41 @@ function buildArticleRecord(input: {
   inputFiles: EvaluationFileRecord[];
 }): QualityEvaluationArticle {
   const topicKey = input.article.topic?.topic_key ?? input.article.generationMeta?.topic_key ?? input.article.summary?.topic_key ?? "";
-  const reviewArticle = input.review.articles.find((candidate) => candidate.index === input.index);
+  const diagnostics: QualityEvaluationArticle["diagnostics"] = [];
+  const currentTitle = input.article.summary?.title_ja ?? input.article.raw.title;
+  const indexedReviewArticle = input.review.articles.find((candidate) => candidate.index === input.index);
+  const identityReviewArticle = input.review.articles.find((candidate) => candidate.topic_key === topicKey || candidate.title === currentTitle);
+  const reviewArticle = indexedReviewArticle && (indexedReviewArticle.topic_key === topicKey || indexedReviewArticle.title === currentTitle)
+    ? indexedReviewArticle
+    : identityReviewArticle ?? indexedReviewArticle;
+  if (reviewArticle && reviewArticle.index !== input.index) {
+    diagnostics.push({ severity: "error", code: "article_index_mismatch", message: `articles index ${input.index}とreview index ${reviewArticle.index}が一致しません` });
+  }
+  if (reviewArticle && reviewArticle.topic_key !== topicKey) {
+    diagnostics.push({ severity: "error", code: "topic_identity_mismatch", message: `articles topic ${topicKey}とreview topic ${reviewArticle.topic_key}が一致しません` });
+  }
   const articleId = reviewArticle?.article_id ?? null;
   const revisionEntry = articleId ? input.revisions?.articles?.[articleId] : undefined;
+  if (articleId && input.revisions && !revisionEntry) {
+    diagnostics.push({ severity: "error", code: "article_id_mismatch", message: `review article_id ${articleId}に対応するrevision entryがありません` });
+  }
+  if (revisionEntry && reviewArticle?.current_version !== undefined && revisionEntry.current_version !== reviewArticle.current_version) {
+    diagnostics.push({
+      severity: "error",
+      code: "review_store_current_version_mismatch",
+      message: `review current_version ${reviewArticle.current_version}とrevision current_version ${revisionEntry.current_version}が一致しません`
+    });
+  }
   const currentSummary = input.article.summary;
-  const versions = buildVersions(currentSummary, reviewArticle?.current_version, reviewArticle?.publication?.published_version, revisionEntry);
+  const currentNumber = reviewArticle?.current_version ?? revisionEntry?.current_version;
+  const storedCurrent = revisionEntry?.versions.find((item) => item.n === currentNumber)?.article_summary;
+  if (currentSummary && storedCurrent && summaryHash(currentSummary) !== summaryHash(storedCurrent)) {
+    diagnostics.push({ severity: "error", code: "current_summary_revision_mismatch", message: "articlesの現行summaryと同じversion番号のrevision summaryが一致しません" });
+  }
+  if (storedCurrent?.topic_key && storedCurrent.topic_key !== topicKey) {
+    diagnostics.push({ severity: "error", code: "topic_identity_mismatch", message: `articles topic ${topicKey}とrevision topic ${storedCurrent.topic_key}が一致しません` });
+  }
+  const versions = buildVersions(currentSummary, currentNumber, reviewArticle?.publication?.published_version, revisionEntry, diagnostics);
   const generatedLedger = input.ledgerFile.ledgers?.find((entry) => entry.topic_key === topicKey);
   const fallbackReason = generatedLedger?.fallback_reason?.trim() || null;
   const ledgerStatus = generatedLedger?.ledger ? "generated" : fallbackReason ? "fallback" : "missing";
@@ -154,7 +196,7 @@ function buildArticleRecord(input: {
     index: input.index,
     topic_key: topicKey,
     article_id: articleId,
-    title: currentSummary?.title_ja ?? input.article.raw.title,
+    title: currentTitle,
     repository_sha: input.repositorySha,
     input_files: input.inputFiles,
     versions,
@@ -166,6 +208,7 @@ function buildArticleRecord(input: {
     evidence,
     known_claim_evidence_bindings: knownBindings,
     unresolved_claim_evidence_pairs: unresolvedPairs,
+    diagnostics,
     comparable: false,
     missing_reasons: [...missingReasons]
   };
@@ -175,10 +218,10 @@ function buildVersions(
   currentSummary: SummarizedArticle | undefined,
   currentVersion: number | undefined,
   publishedVersion: number | undefined,
-  revisionEntry: ReviewRevisionStore["articles"][string] | undefined
+  revisionEntry: ReviewRevisionStore["articles"][string] | undefined,
+  diagnostics: QualityEvaluationArticle["diagnostics"]
 ) {
   const draftStored = revisionEntry?.versions.find((item) => item.n === 1)?.article_summary;
-  const currentStored = revisionEntry?.versions.find((item) => item.n === (currentVersion ?? revisionEntry.current_version))?.article_summary;
   const publishedStored = publishedVersion === undefined
     ? undefined
     : revisionEntry?.versions.find((item) => item.n === publishedVersion)?.article_summary;
@@ -187,17 +230,19 @@ function buildVersions(
     : currentSummary
       ? versionSnapshot("draft", currentSummary, null, "legacy_current_snapshot", false)
       : unavailableVersion("draft");
-  const current = currentStored
-    ? versionSnapshot("current", currentStored, currentVersion ?? revisionEntry?.current_version ?? null, "revision_store", true)
-    : currentSummary
-      ? versionSnapshot("current", currentSummary, currentVersion ?? null, "current_article", false)
-      : unavailableVersion("current");
+  const current = currentSummary
+    ? versionSnapshot("current", currentSummary, currentVersion ?? null, "current_article", false)
+    : unavailableVersion("current");
   let published = unavailableVersion("published");
   if (publishedVersion !== undefined) {
     if (publishedStored) {
       published = versionSnapshot("published", publishedStored, publishedVersion, "revision_store", true);
-    } else if (currentSummary && publishedVersion === (currentVersion ?? 1)) {
-      published = versionSnapshot("published", currentSummary, publishedVersion, "current_article", false);
+    } else {
+      diagnostics.push({
+        severity: "error",
+        code: "published_snapshot_unverified",
+        message: `published_version ${publishedVersion}の独立snapshotをrevision storeで確認できません`
+      });
     }
   }
   return { draft, current, published };
@@ -214,7 +259,7 @@ function versionSnapshot(
     kind,
     available: true,
     version_number: versionNumber,
-    summary_hash: sha256(JSON.stringify(summary)),
+    summary_hash: summaryHash(summary),
     source,
     separate_snapshot: separateSnapshot,
     summary
@@ -396,13 +441,57 @@ function sha256(value: string) {
   return createHash("sha256").update(value, "utf8").digest("hex");
 }
 
+function summaryHash(summary: SummarizedArticle) {
+  return sha256(JSON.stringify(summary));
+}
+
 function isWithin(root: string, target: string) {
   const relative = path.relative(root, target);
   return relative === "" || (!relative.startsWith(`..${path.sep}`) && relative !== "..");
 }
 
+async function assertSafeNewOutput(dataRoot: string, output: string) {
+  const outputStat = await lstatIfExists(output);
+  if (outputStat?.isSymbolicLink()) throw new Error("evaluation_output_symlink_rejected");
+  if (outputStat) throw new Error("evaluation_output_already_exists");
+  await assertRealParentOutsideData(dataRoot, output);
+}
+
+async function assertRealParentOutsideData(dataRoot: string, output: string) {
+  const dataReal = await fs.realpath(dataRoot);
+  const parent = path.dirname(output);
+  const existingAncestor = await findExistingAncestor(parent);
+  const ancestorReal = await fs.realpath(existingAncestor);
+  const unresolvedSuffix = path.relative(existingAncestor, parent);
+  const candidateRealParent = path.resolve(ancestorReal, unresolvedSuffix);
+  if (isWithin(dataReal, candidateRealParent)) throw new Error("evaluation_output_resolves_inside_input_data_root");
+}
+
+async function findExistingAncestor(value: string): Promise<string> {
+  let current = value;
+  while (!(await lstatIfExists(current))) {
+    const parent = path.dirname(current);
+    if (parent === current) throw new Error("evaluation_output_parent_unresolvable");
+    current = parent;
+  }
+  return current;
+}
+
+async function lstatIfExists(value: string) {
+  try {
+    return await fs.lstat(value);
+  } catch (error) {
+    if (isMissingFile(error)) return null;
+    throw error;
+  }
+}
+
 function isMissingFile(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && "code" in error && error.code === "ENOENT";
+}
+
+function isFileExists(error: unknown): error is NodeJS.ErrnoException {
+  return error instanceof Error && "code" in error && error.code === "EEXIST";
 }
 
 function toPosix(value: string) {

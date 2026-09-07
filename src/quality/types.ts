@@ -11,7 +11,9 @@ export type EvidenceStorageState =
   | "review_supplement_excerpt"
   | "missing";
 
-export type EvidenceBindingStatus = "bound" | "explicit_legacy_import" | "legacy_unresolved";
+export type EvidenceBindingStatus = "bound" | "explicit_legacy_import" | "legacy_unresolved" | "unresolved_input";
+
+export type EvidenceValidationOrigin = "current_input_exact_body" | "stored_review_supplement" | "legacy_unresolved";
 
 export type EvidenceExtractionQuality = {
   status: "usable" | "limited" | "unusable" | "unknown";
@@ -44,11 +46,12 @@ export type EvidenceDocument = {
 
 export type EvidenceBinding = {
   evidence_ref: string;
-  document_id: string;
+  document_id: string | null;
   source_index: number | null;
   role: EvidenceRole;
   purpose: EvidencePurpose;
   status: EvidenceBindingStatus;
+  validation_origin: EvidenceValidationOrigin;
   imported_claim_ref?: string;
 };
 
@@ -59,6 +62,7 @@ export type EvidenceSupportSpan = {
   quote: string;
   subject_quote: string;
   span_sha256: string;
+  validation_origin: Exclude<EvidenceValidationOrigin, "legacy_unresolved">;
 };
 
 export type EvidenceManifest = {
@@ -151,6 +155,17 @@ export type QualityEvaluationArticle = {
     source: "review_supplement";
   }>;
   unresolved_claim_evidence_pairs: number;
+  diagnostics: Array<{
+    severity: "warning" | "error";
+    code:
+      | "article_index_mismatch"
+      | "article_id_mismatch"
+      | "topic_identity_mismatch"
+      | "review_store_current_version_mismatch"
+      | "current_summary_revision_mismatch"
+      | "published_snapshot_unverified";
+    message: string;
+  }>;
   comparable: boolean;
   missing_reasons: string[];
 };

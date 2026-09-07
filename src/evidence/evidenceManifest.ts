@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { assessExtractionQuality, type DocumentExtractionQuality } from "./documentSnapshot.js";
 import { assessEvidenceIntegrity, type EvidenceIntegrityDiagnostic } from "./sourceIntegrity.js";
-import type { EvidenceRole, RawArticle } from "../types.js";
+import type { EvidenceRole, FactLedger, RawArticle, ReviewEvidenceSupplement } from "../types.js";
 import type {
   EvidenceBinding,
   EvidenceDocument,
@@ -33,18 +33,9 @@ export type EvidenceQuoteBinding = {
 };
 
 export type ExplicitEvidenceImport = {
-  evidence_ref: string;
-  claim_ref: string;
-  source_url: string;
-  source_name: string;
-  source_title: string;
-  source_published_date?: string;
-  fetched_at?: string | null;
-  body_sha256: string;
-  source_quote: string;
-  subject_quote: string;
-  role: EvidenceRole;
-  purpose: EvidencePurpose;
+  validation_origin: "stored_review_supplement";
+  supplement: ReviewEvidenceSupplement;
+  ledger: FactLedger;
 };
 
 export type BuildEvidenceManifestOptions = {
@@ -93,6 +84,7 @@ export function buildEvidenceManifest(
     const finalUrl = normalizeEvidenceUrl(provenance.final_url ?? article.url);
     if (!requestedUrl || !finalUrl) {
       diagnostics.push(errorDiagnostic("invalid_url", "evidence URLを正規化できません", expectedRef));
+      bindings.push(unresolvedBinding(expectedRef, sourceIndex, provenance, article));
       return;
     }
     const body = article.rawContent ?? article.excerpt ?? "";
@@ -101,7 +93,10 @@ export function buildEvidenceManifest(
     if (storageState !== "raw_content") {
       diagnostics.push(warningDiagnostic("body_not_full", `保存状態は${storageState}で、全文取得済みとは扱いません`, expectedRef));
     }
-    if (!body) return;
+    if (!body) {
+      bindings.push(unresolvedBinding(expectedRef, sourceIndex, provenance, article));
+      return;
+    }
     const bodyHash = sha256(body);
     const documentId = createDocumentId(finalUrl, bodyHash);
     const fetchedAt = normalizeOptionalTimestamp(provenance.fetched_at);
@@ -129,7 +124,8 @@ export function buildEvidenceManifest(
       source_index: sourceIndex,
       role: provenance.role ?? article.evidenceRole ?? "root_corroboration",
       purpose: provenance.purpose ?? "generation",
-      status: "bound"
+      status: "bound",
+      validation_origin: "current_input_exact_body"
     });
   });
 
@@ -166,61 +162,89 @@ function appendExplicitImport(
   imported: ExplicitEvidenceImport,
   diagnostics: EvidenceManifestDiagnostic[]
 ) {
-  if (!/^E[1-9]\d*$/u.test(imported.evidence_ref)) {
-    throw conflict("evidence_ref_invalid", `明示evidence_refが不正です: ${imported.evidence_ref}`, imported.evidence_ref);
+  const supplement = imported.supplement;
+  if (imported.validation_origin !== "stored_review_supplement") {
+    throw conflict("evidence_ref_invalid", "legacy importのvalidation_originが不正です");
   }
-  if (bindings.some((binding) => binding.evidence_ref === imported.evidence_ref)) {
-    throw conflict("evidence_ref_collision", `${imported.evidence_ref}は既に別の入力へbindされています`, imported.evidence_ref);
+  if (!/^E[1-9]\d*$/u.test(supplement.evidence_ref)) {
+    throw conflict("evidence_ref_invalid", `明示evidence_refが不正です: ${supplement.evidence_ref}`, supplement.evidence_ref);
+  }
+  if (!/^C[1-9]\d*$/u.test(supplement.claim_ref)) {
+    throw conflict("evidence_ref_invalid", `明示claim_refが不正です: ${supplement.claim_ref}`, supplement.evidence_ref);
+  }
+  if (supplement.verification !== "operator_reviewed_exact_quotes" || !supplement.reviewed_by.trim()) {
+    throw conflict("support_span_invalid", "保存済み工程Bの確認来歴がありません", supplement.evidence_ref);
+  }
+  if (bindings.some((binding) => binding.evidence_ref === supplement.evidence_ref)) {
+    throw conflict("evidence_ref_collision", `${supplement.evidence_ref}は既に別の入力へbindされています`, supplement.evidence_ref);
   }
   const nextRef = `E${bindings.length + 1}`;
-  if (imported.evidence_ref !== nextRef) {
-    throw conflict("evidence_ref_not_append_only", `明示根拠は${nextRef}として末尾追加する必要があります`, imported.evidence_ref);
+  if (supplement.evidence_ref !== nextRef) {
+    throw conflict("evidence_ref_not_append_only", `明示根拠は${nextRef}として末尾追加する必要があります`, supplement.evidence_ref);
   }
-  const normalizedUrl = normalizeEvidenceUrl(imported.source_url);
-  if (!normalizedUrl) throw conflict("invalid_url", "明示根拠URLを正規化できません", imported.evidence_ref);
-  if (!/^[a-f0-9]{64}$/u.test(imported.body_sha256)) {
-    throw conflict("body_missing", "明示根拠のbody_sha256が不正です", imported.evidence_ref);
+  const claim = imported.ledger.claims.find((item) => item.id === supplement.claim_ref);
+  const quality = imported.ledger.evidence_quality?.find((item) => item.evidence_ref === supplement.evidence_ref);
+  if (!claim || !claim.evidence_refs.includes(supplement.evidence_ref) || claim.scope !== "related_angle") {
+    throw conflict("evidence_ref_collision", "保存ledgerのclaimとC/E対応が一致しません", supplement.evidence_ref);
   }
-  if (!validSpanText(imported.source_quote) || !validSpanText(imported.subject_quote)) {
-    throw conflict("support_span_invalid", "明示根拠の引用は1〜400字である必要があります", imported.evidence_ref);
+  if (
+    !claim.quote_zh ||
+    normalizeWhitespace(claim.quote_zh) !== normalizeWhitespace(supplement.source_quote) ||
+    (claim.source_name ?? "") !== supplement.source_name
+  ) {
+    throw conflict("quote_document_mismatch", "保存ledgerの引用・出典名とsupplementが一致しません", supplement.evidence_ref);
   }
-  const documentId = createDocumentId(normalizedUrl, imported.body_sha256);
-  const fetchedAt = normalizeOptionalTimestamp(imported.fetched_at);
-  if (!fetchedAt) diagnostics.push(warningDiagnostic("fetched_at_unknown", "明示根拠の取得時点が不明なためnullとして保持します", imported.evidence_ref, documentId));
-  if (!imported.source_published_date) diagnostics.push(warningDiagnostic("published_date_unknown", "明示根拠の公開日が不明です", imported.evidence_ref, documentId));
+  if (imported.ledger.evidence_roles?.[supplement.evidence_ref] !== "related_angle") {
+    throw conflict("evidence_ref_collision", "保存ledgerのevidence roleがrelated_angleではありません", supplement.evidence_ref);
+  }
+  if (!quality) throw conflict("evidence_ref_collision", "保存ledgerのevidence qualityがありません", supplement.evidence_ref);
+  const normalizedUrl = normalizeEvidenceUrl(supplement.source_url);
+  if (!normalizedUrl) throw conflict("invalid_url", "明示根拠URLを正規化できません", supplement.evidence_ref);
+  if (!/^[a-f0-9]{64}$/u.test(supplement.body_sha256)) {
+    throw conflict("body_missing", "明示根拠のbody_sha256が不正です", supplement.evidence_ref);
+  }
+  if (!validSpanText(supplement.source_quote) || !validSpanText(supplement.subject_quote)) {
+    throw conflict("support_span_invalid", "明示根拠の引用は1〜400字である必要があります", supplement.evidence_ref);
+  }
+  const documentId = createDocumentId(normalizedUrl, supplement.body_sha256);
+  const fetchedAt = normalizeOptionalTimestamp(supplement.fetched_at);
+  if (!fetchedAt) diagnostics.push(warningDiagnostic("fetched_at_unknown", "明示根拠の取得時点が不明なためnullとして保持します", supplement.evidence_ref, documentId));
+  if (!supplement.source_published_date) diagnostics.push(warningDiagnostic("published_date_unknown", "明示根拠の公開日が不明です", supplement.evidence_ref, documentId));
   documents.set(documentId, documents.get(documentId) ?? {
     document_id: documentId,
     normalized_url: normalizedUrl,
     requested_url: normalizedUrl,
     final_url: normalizedUrl,
-    source_name: imported.source_name,
-    title: imported.source_title,
-    published_date: imported.source_published_date || null,
+    source_name: supplement.source_name,
+    title: supplement.source_title,
+    published_date: supplement.source_published_date || null,
     fetched_at: fetchedAt,
-    body_sha256: imported.body_sha256,
+    body_sha256: supplement.body_sha256,
     extraction_quality: unknownQuality(),
     integrity: {
-      classification: "primary",
-      usable_for_verified_facts: true,
-      reason: "operator_reviewed_exact_quotes"
+      classification: quality.classification,
+      usable_for_verified_facts: quality.usable_for_verified_facts,
+      reason: quality.reason
     },
     storage_state: "review_supplement_excerpt"
   });
   bindings.push({
-    evidence_ref: imported.evidence_ref,
+    evidence_ref: supplement.evidence_ref,
     document_id: documentId,
     source_index: null,
-    role: imported.role,
-    purpose: imported.purpose,
+    role: "related_angle",
+    purpose: "reader_context",
     status: "explicit_legacy_import",
-    imported_claim_ref: imported.claim_ref
+    validation_origin: "stored_review_supplement",
+    imported_claim_ref: supplement.claim_ref
   });
   supportSpans.push(makeSupportSpan(
-    imported.evidence_ref,
+    supplement.evidence_ref,
     documentId,
-    imported.source_quote,
-    imported.subject_quote,
-    imported.claim_ref
+    supplement.source_quote,
+    supplement.subject_quote,
+    "stored_review_supplement",
+    supplement.claim_ref
   ));
 }
 
@@ -241,6 +265,10 @@ function validateQuotes(
       diagnostics.push(errorDiagnostic("quote_ref_unknown", `${item.evidence_ref}の参照先がありません`, item.evidence_ref, undefined, item.claim_ref));
       continue;
     }
+    if (!binding.document_id) {
+      diagnostics.push(errorDiagnostic("quote_document_mismatch", "evidence_refは欠損入力位置に予約され、参照文書がありません", item.evidence_ref, undefined, item.claim_ref));
+      continue;
+    }
     if (item.document_id && item.document_id !== binding.document_id) {
       diagnostics.push(errorDiagnostic("quote_document_mismatch", "quoteのdocument_idとevidence_refの参照先が一致しません", item.evidence_ref, binding.document_id, item.claim_ref));
       continue;
@@ -252,7 +280,7 @@ function validateQuotes(
       diagnostics.push(errorDiagnostic("quote_not_in_referenced_document", "引用は指定された文書内に存在しません", item.evidence_ref, binding.document_id, item.claim_ref));
       continue;
     }
-    supportSpans.push(makeSupportSpan(item.evidence_ref, binding.document_id, item.quote, item.subject_quote ?? "", item.claim_ref));
+    supportSpans.push(makeSupportSpan(item.evidence_ref, binding.document_id, item.quote, item.subject_quote ?? "", "current_input_exact_body", item.claim_ref));
   }
 }
 
@@ -261,6 +289,7 @@ function makeSupportSpan(
   documentId: string,
   quote: string,
   subjectQuote: string,
+  validationOrigin: EvidenceSupportSpan["validation_origin"],
   claimRef?: string
 ): EvidenceSupportSpan {
   return {
@@ -269,7 +298,25 @@ function makeSupportSpan(
     document_id: documentId,
     quote,
     subject_quote: subjectQuote,
-    span_sha256: sha256(`${documentId}\u0000${quote}\u0000${subjectQuote}`)
+    span_sha256: sha256(`${documentId}\u0000${quote}\u0000${subjectQuote}`),
+    validation_origin: validationOrigin
+  };
+}
+
+function unresolvedBinding(
+  evidenceRef: string,
+  sourceIndex: number,
+  provenance: EvidenceInputProvenance,
+  article: RawArticle
+): EvidenceBinding {
+  return {
+    evidence_ref: evidenceRef,
+    document_id: null,
+    source_index: sourceIndex,
+    role: provenance.role ?? article.evidenceRole ?? "root_corroboration",
+    purpose: provenance.purpose ?? "generation",
+    status: "unresolved_input",
+    validation_origin: "legacy_unresolved"
   };
 }
 
