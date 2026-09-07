@@ -1,0 +1,67 @@
+{
+  "evidence": [
+    {
+      "title": "第一資料",
+      "url": "https://example.com/root?utm_source=test#part",
+      "sourceName": "媒体A",
+      "sourceUrl": "https://example.com/",
+      "category": "映画",
+      "reliability": "B",
+      "sourceType": "media_report",
+      "publishedDate": "2026-09-01",
+      "rawContent": "主体Aは制度を運営する。 引用は第一資料だけにある。",
+      "rawContentLength": 28
+    },
+    {
+      "title": "第二資料",
+      "url": "https://example.net/related",
+      "sourceName": "媒体B",
+      "sourceUrl": "https://example.net/",
+      "category": "映画",
+      "reliability": "B",
+      "sourceType": "media_report",
+      "publishedDate": "2026-09-02",
+      "rawContent": "主体Bは別の制度を説明する。",
+      "rawContentLength": 15,
+      "evidenceRole": "related_angle"
+    }
+  ],
+  "provenance": [
+    {
+      "fetched_at": null,
+      "storage_state": "raw_content",
+      "role": "root_corroboration",
+      "purpose": "generation"
+    },
+    {
+      "fetched_at": "2026-09-02T00:00:00.000Z",
+      "storage_state": "candidate_key_points",
+      "role": "related_angle",
+      "purpose": "generation"
+    }
+  ],
+  "valid_quote": {
+    "claim_ref": "C1",
+    "evidence_ref": "E1",
+    "quote": "主体Aは制度を運営する。"
+  },
+  "wrong_document_quote": {
+    "claim_ref": "C2",
+    "evidence_ref": "E2",
+    "quote": "引用は第一資料だけにある。"
+  },
+  "import": {
+    "evidence_ref": "E3",
+    "claim_ref": "C3",
+    "source_url": "https://agency.example.gov/context?token=redacted",
+    "source_name": "公式資料",
+    "source_title": "制度説明",
+    "source_published_date": "2021-01-07",
+    "fetched_at": "2026-09-06T13:25:46.143Z",
+    "body_sha256": "f8ab9ab31c8ef8e86829981bde78f9d26d58490488871d305756e33b33790886",
+    "source_quote": "制度の主管機関である",
+    "subject_quote": "当該機関は1983年に設立された",
+    "role": "related_angle",
+    "purpose": "reader_context"
+  }
+}

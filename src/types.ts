@@ -1,3 +1,5 @@
+import type { EvidenceManifest, EvidenceManifestDiagnostic } from "./quality/types.js";
+
 export type SourceType = "rss" | "html";
 export type Reliability = "A" | "B" | "C" | "D";
 export type AiProvider = "gemini" | "deepseek";
@@ -371,6 +373,10 @@ export type TopicGenerationMeta = {
   };
   review_supplements?: ReviewEvidenceSupplement[];
   review_revision?: ReviewRevisionTrace;
+  /** Stage C provenance is optional so all legacy article snapshots remain readable. */
+  evidence_manifest?: EvidenceManifest;
+  /** Diagnostics never promote a legacy or incomplete binding to verified. */
+  evidence_manifest_diagnostics?: EvidenceManifestDiagnostic[];
 };
 
 export type ReviewPatchableField =
