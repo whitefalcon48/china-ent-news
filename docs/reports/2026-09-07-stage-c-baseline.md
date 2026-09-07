@@ -1,6 +1,6 @@
 # 工程C C0 比較基盤レポート
 
-2026-09-07 / 実装担当 / 状態: Astra差戻しR1〜R4修正後・再レビュー待ち
+2026-09-07 / 実装担当 / 状態: C0 Astraレビュー合格
 
 設計正本はAstra設計commit `00da1aaa896ed7e3e536b1b8159bb8e11643d541` の
 `docs/design-stage-c-reader-context-quality.md` と
@@ -11,7 +11,7 @@
 
 - `EvidenceManifest v1`: 実際に渡された `RawArticle[]` の順でE番号を一度だけbindし、URLと本文SHA-256から文書versionを識別する純粋helper。
 - 文書単位の引用照合: 空白正規化だけを許し、別Eに同じ引用があっても指定Eの文書に存在しなければerror診断にする。
-- append-only明示import: 本文やURLが欠損した実入力位置もE番号を予約する。保存済み工程BのsupplementとledgerでC/E/role/quality/URL/hash/確認者が一致する補足だけを末尾へ追加し、衝突・飛び番・来歴欠損を拒否する。信頼性はimportから生成せず保存ledgerから継承する。
+- append-only明示import: 本文やURLが欠損した実入力位置もE番号を予約する。保存済み工程BのsupplementとledgerでC/E/role/quality/確認者が一致し、保存recordのURLを正規化でき、hash形式を検査できる補足だけを末尾へ追加する。衝突・飛び番・来歴欠損を拒否し、信頼性はimportから生成せず保存ledgerから継承する。原文全体の今回再取得とbody hash照合はC0では実施していない。
 - 読取専用比較CLI: 8月31日〜9月6日の固定dataを読み、指定した新規 `output/` にだけmanifestを排他作成する。`realpath` で既存祖先を照合し、`data/` 配下、junction経由、既存symlink/hard link/通常ファイルへの出力を拒否する。
 - 旧記事互換: 旧候補配列からE番号を推測しない。取得時点不明は `null`、候補 `key_points` は全文と見なさず、全旧記事を `comparable=false` とした。
 
