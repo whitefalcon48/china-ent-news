@@ -465,6 +465,40 @@ const invalidKindPlan = await buildReaderContextPlan({
 assert.equal(invalidKindPlan.diagnostics[0]?.code, "support_kind_invalid");
 assert.equal(termsEmptyPlan.resolutions[0]?.outcome, "patch_proposed", "正しいC付きtermはterms空でも解決できる");
 
+// R6: an unbound term span is only a fallback; candidate order cannot hide a later valid C.
+const cLessCandidate = support("R6-no-C", "C1", fixture.definitions.organization, { kind: "term", omitClaim: true });
+const validClaimCandidate = support("R6-C1", "C1", fixture.definitions.organization);
+let cLessFirstReviewCalls = 0;
+const cLessFirstPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r6-order", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [cLessCandidate, validClaimCandidate])],
+  summary: fixture.summary,
+  review_semantics: async () => {
+    cLessFirstReviewCalls += 1;
+    return { status: "pass", definition_ja: fixture.definitions.organization, reason_codes: ["meaning_supported"] };
+  }
+});
+let cFirstReviewCalls = 0;
+const cFirstPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r6-order", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [validClaimCandidate, cLessCandidate])],
+  summary: fixture.summary,
+  review_semantics: async () => {
+    cFirstReviewCalls += 1;
+    return { status: "pass", definition_ja: fixture.definitions.organization, reason_codes: ["meaning_supported"] };
+  }
+});
+assert.equal(cLessFirstReviewCalls, 1);
+assert.equal(cFirstReviewCalls, 1);
+assert.deepEqual(cLessFirstPlan.patches, cFirstPlan.patches, "[Cなし,Cあり]と[Cあり,Cなし]で同じ限定案を返す");
+assert.equal(cLessFirstPlan.resolutions[0]?.outcome, "patch_proposed");
+assert.equal(noClaimPlan.resolutions[0]?.reason_codes[0], "claim_binding_required", "Cなしだけならsupport_ready/heldを維持する");
+assert.equal(wrongClaimPlan.resolutions[0]?.outcome, "hold", "無効Cだけなら停止する");
+
 // R2: current evidence bytes and URL provenance must still match the manifest.
 const changedRootEvidence = structuredClone(fixture.evidence);
 changedRootEvidence[0]!.rawContent = "国家安全部の別の記事。旧引用の説明は含まれない。";

@@ -229,11 +229,17 @@ function selectSupport(
     return { ready: false, invalid: false, reason: "context_support_missing", message: "入力内に説明supportがありません" };
   }
   const failures: string[] = [];
+  let claimBindingFallback: ReaderContextSupportCandidate | undefined;
   for (const candidate of request.support_candidates) {
     const failure = validateSupportCandidate(request, candidate, manifest, ledger, evidence);
-    if (!failure) return { ready: true, candidate };
+    if (!failure) {
+      if (candidate.claim_ref) return { ready: true, candidate };
+      claimBindingFallback ??= candidate;
+      continue;
+    }
     failures.push(failure);
   }
+  if (claimBindingFallback) return { ready: true, candidate: claimBindingFallback };
   const researchableReasons = new Set([
     "support_not_current_input",
     "support_document_unusable",
