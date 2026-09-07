@@ -1,5 +1,9 @@
 # ロードマップ & 引継ぎ指針
 
+## 2026-09-07 工程C C1-a Astra合格（未接続）
+
+- ✅ C0 EvidenceManifestと実evidence、注入済み候補・意味審査から、C/E/document/本文versionを検証して初出の限定patch案またはholdを返す純粋helperとfixtureを実装し、Astra再レビュー合格。Cなしterm、候補順、同一anchor競合、後段説明、公開日/取得日/適用時点の混同を安全停止し、`check`、専用C1-a/C0 suite、指定既存回帰一式、`git diff --check` が成功、保護data/site/workflow差分0。既存日次生成・prompt・LLM・外部取得・fallback・mode・保存/公開には未接続で、日次生成の完成ではない。C1-b/C2と本番有効化は次のAstra指示待ち。
+
 ## 2026-09-06 OGP②の画質調整版（承認・実装完了）
 
 - ✅ トップ・アーカイブ・紹介・記事別のOGPを、薄いピンク背景、白いカード、紺ロゴ、控えめな赤、大きな透過ビンタンで共通化。記事見出しは左側で最大5行に調整。訃報等の落ち着いた表情選択と画像ハッシュ付きURLを維持。
