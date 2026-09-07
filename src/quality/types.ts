@@ -236,12 +236,21 @@ export type ReaderContextRequest = {
 export type ReaderContextSemanticReviewInput = {
   request: ReaderContextRequest;
   support: ReaderContextSupportCandidate;
+  first_occurrence: {
+    field: "lead" | "what_happened" | "reaction_view" | "why_it_matters" | "japan_context_note";
+    anchor: string;
+    start: number;
+    end: number;
+  };
   source: {
     source_name: string;
     url: string;
     role: EvidenceRole;
     quote: string;
     subject_quote: string;
+    source_published_at: string | null;
+    fetched_at: string | null;
+    applicable_at: null;
   };
   summary: SummarizedArticle;
 };
@@ -259,6 +268,7 @@ export type ReaderContextPatchProposal = {
   summary_hash: string;
   field: "lead" | "what_happened" | "reaction_view" | "why_it_matters" | "japan_context_note";
   anchor: string;
+  anchor_start: number;
   position: "after_first_occurrence";
   insert_text: string;
   claim_refs: string[];
@@ -275,7 +285,7 @@ export type ReaderContextResolution = {
   necessity: ReaderContextNecessity;
   support_status: "not_checked" | "support_ready" | "needs_research" | "invalid";
   semantic_review_status: "not_run" | "pass" | "revise" | "hold" | "unavailable";
-  outcome: "not_needed" | "patch_proposed" | "already_explained" | "needs_research" | "revise" | "hold";
+  outcome: "not_needed" | "patch_proposed" | "merged" | "already_explained" | "needs_research" | "revise" | "hold";
   definition_ja: string;
   claim_refs: string[];
   evidence_refs: string[];
@@ -287,6 +297,7 @@ export type ReaderContextResolution = {
     subject_quote: string;
   }>;
   applicable_at: string | null;
+  source_published_at: string | null;
   fetched_at: string | null;
   reason_codes: string[];
   patch?: ReaderContextPatchProposal;

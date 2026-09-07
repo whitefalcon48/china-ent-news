@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { createDocumentId, normalizeEvidenceUrl } from "../evidence/evidenceManifest.js";
 import type { FactLedger, RawArticle, SummarizedArticle } from "../types.js";
 import type {
   EvidenceManifest,
@@ -12,7 +13,16 @@ import type {
 } from "./types.js";
 
 const MAX_REQUESTS = 8;
-const SUMMARY_FIELDS = ["lead", "what_happened", "why_it_matters", "reaction_view", "japan_context_note"] as const;
+const SUMMARY_FIELDS = ["lead", "what_happened", "reaction_view", "why_it_matters", "japan_context_note"] as const;
+
+type ProposedPatchRecord = {
+  request: ReaderContextRequest;
+  support: ReaderContextSupportCandidate;
+  definition: string;
+  patch: ReaderContextPatchProposal;
+  resolution_indices: number[];
+  conflicted: boolean;
+};
 
 export type ReaderContextSemanticReviewer = (
   input: ReaderContextSemanticReviewInput
@@ -35,6 +45,7 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
   const summaryHash = sha256(JSON.stringify(input.summary));
   const diagnostics: ReaderContextPlan["diagnostics"] = [];
   const resolutions: ReaderContextResolution[] = [];
+  const proposedPatches: ProposedPatchRecord[] = [];
   const ids = new Set<string>();
 
   if (input.requests.length > MAX_REQUESTS) {
@@ -76,18 +87,25 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
         document_ids: [],
         support_spans: [],
         applicable_at: null,
+        source_published_at: null,
         fetched_at: null,
         reason_codes: []
       });
       continue;
     }
 
-    const support = selectSupport(request, input.manifest, input.ledger);
+    const support = selectSupport(request, input.manifest, input.ledger, input.evidence);
     if (!support.ready) {
       diagnostics.push({ concept_id: request.concept_id, code: support.reason, message: support.message });
       resolutions.push(support.invalid
         ? holdResolution(request, support.reason)
         : researchResolution(request, support.reason));
+      continue;
+    }
+
+    if (!support.candidate.claim_ref) {
+      diagnostics.push({ concept_id: request.concept_id, code: "claim_binding_required", message: "原文spanは確認できましたが、適用可能なC/E対応がありません" });
+      resolutions.push(holdResolution(request, "claim_binding_required", support.candidate, "not_run", input.manifest));
       continue;
     }
 
@@ -105,12 +123,16 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
       review = await input.review_semantics({
         request: structuredClone(request),
         support: structuredClone(support.candidate),
+        first_occurrence: structuredClone(firstOccurrence),
         source: {
           source_name: document.source_name,
           url: document.final_url,
           role: binding.role,
           quote: support.candidate.quote,
-          subject_quote: support.candidate.subject_quote
+          subject_quote: support.candidate.subject_quote,
+          source_published_at: document.published_date,
+          fetched_at: document.fetched_at,
+          applicable_at: null
         },
         summary: structuredClone(input.summary)
       });
@@ -149,9 +171,10 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
     }
     if (review.already_explained) {
       const existingSpan = review.existing_span?.trim() ?? "";
-      if (!existingSpan || !summaryText(input.summary).includes(existingSpan)) {
-        diagnostics.push({ concept_id: request.concept_id, code: "existing_explanation_span_mismatch", message: "説明済みとされたspanが本文にありません" });
-        resolutions.push(holdResolution(request, "existing_explanation_span_mismatch", support.candidate, "hold", input.manifest));
+      const existingError = validateExistingExplanation(input.summary, request, firstOccurrence, existingSpan);
+      if (existingError) {
+        diagnostics.push({ concept_id: request.concept_id, code: existingError, message: "説明済みspanが対象概念の初出位置にありません" });
+        resolutions.push(holdResolution(request, existingError, support.candidate, "hold", input.manifest));
         continue;
       }
       resolutions.push({
@@ -172,6 +195,7 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
       summary_hash: summaryHash,
       field: firstOccurrence.field,
       anchor: firstOccurrence.anchor,
+      anchor_start: firstOccurrence.start,
       position: "after_first_occurrence",
       insert_text: definition,
       claim_refs: support.candidate.claim_ref ? [support.candidate.claim_ref] : [],
@@ -180,7 +204,7 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
       source_urls: [document.final_url],
       scope: binding.role === "root_corroboration" ? "root_event" : "related_angle"
     };
-    resolutions.push({
+    const resolution: ReaderContextResolution = {
       ...baseSupportedResolution(request, support.candidate, input.manifest),
       status: "resolved",
       semantic_review_status: "pass",
@@ -188,7 +212,8 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
       definition_ja: definition,
       reason_codes: review.reason_codes,
       patch
-    });
+    };
+    reconcilePatchProposal(request, support.candidate, definition, patch, resolution, proposedPatches, resolutions, diagnostics, input.manifest);
   }
 
   return finalize(summaryHash, resolutions, diagnostics);
@@ -197,14 +222,15 @@ export async function buildReaderContextPlan(input: BuildReaderContextPlanInput)
 function selectSupport(
   request: ReaderContextRequest,
   manifest: EvidenceManifest,
-  ledger: FactLedger
+  ledger: FactLedger,
+  evidence: RawArticle[]
 ): { ready: true; candidate: ReaderContextSupportCandidate } | { ready: false; invalid: boolean; reason: string; message: string } {
   if (!request.support_candidates.length) {
     return { ready: false, invalid: false, reason: "context_support_missing", message: "入力内に説明supportがありません" };
   }
   const failures: string[] = [];
   for (const candidate of request.support_candidates) {
-    const failure = validateSupportCandidate(request, candidate, manifest, ledger);
+    const failure = validateSupportCandidate(request, candidate, manifest, ledger, evidence);
     if (!failure) return { ready: true, candidate };
     failures.push(failure);
   }
@@ -228,9 +254,11 @@ function validateSupportCandidate(
   request: ReaderContextRequest,
   candidate: ReaderContextSupportCandidate,
   manifest: EvidenceManifest,
-  ledger: FactLedger
+  ledger: FactLedger,
+  evidence: RawArticle[]
 ) {
   if (!candidate.support_id.trim() || !candidate.definition_ja.trim()) return "support_candidate_invalid";
+  if (candidate.support_kind !== "claim" && candidate.support_kind !== "term") return "support_kind_invalid";
   if (
     !candidate.quote.trim() ||
     !candidate.subject_quote.trim() ||
@@ -244,9 +272,19 @@ function validateSupportCandidate(
   const document = manifest.documents.find((item) => item.document_id === candidate.document_id);
   if (!document) return "support_ref_mismatch";
   if (candidate.fetched_at !== undefined && candidate.fetched_at !== document.fetched_at) return "support_fetched_at_mismatch";
-  if (candidate.applicable_at !== undefined && candidate.applicable_at !== document.published_date) return "support_applicable_at_mismatch";
+  if (candidate.applicable_at !== undefined && candidate.applicable_at !== null) return "support_applicable_at_unverified";
+  const inputVersionFailure = validateInputArticleVersion(
+    binding.source_index === null ? undefined : evidence[binding.source_index],
+    document
+  );
+  if (inputVersionFailure) return inputVersionFailure;
   if (document.storage_state !== "raw_content" || document.extraction_quality.status !== "usable") return "support_document_unusable";
   if (!document.integrity.usable_for_verified_facts) return "support_integrity_unusable";
+  const sourceBody = binding.source_index === null ? "" : evidence[binding.source_index]?.rawContent ?? "";
+  if (
+    !normalizeWhitespace(sourceBody).includes(normalizeWhitespace(candidate.quote)) ||
+    !normalizeWhitespace(sourceBody).includes(normalizeWhitespace(candidate.subject_quote))
+  ) return "support_input_span_mismatch";
   const span = manifest.support_spans.find((item) =>
     item.evidence_ref === candidate.evidence_ref &&
     item.document_id === candidate.document_id &&
@@ -255,15 +293,17 @@ function validateSupportCandidate(
     item.validation_origin === "current_input_exact_body"
   );
   if (!span) return "support_span_unverified";
-  if (candidate.support_kind === "claim") {
-    if (!candidate.claim_ref || !/^C[1-9]\d*$/u.test(candidate.claim_ref)) return "support_claim_invalid";
+  if (candidate.support_kind === "claim" && !candidate.claim_ref) return "support_claim_invalid";
+  if (candidate.claim_ref) {
+    if (!/^C[1-9]\d*$/u.test(candidate.claim_ref)) return "support_claim_invalid";
     const claim = ledger.claims.find((item) => item.id === candidate.claim_ref);
     if (!claim || !claim.evidence_refs.includes(candidate.evidence_ref)) return "support_claim_ref_mismatch";
     if (claim.type === "unsupported") return "support_claim_unusable";
     if (normalizeWhitespace(claim.quote_zh ?? "") !== normalizeWhitespace(candidate.quote)) return "support_claim_quote_mismatch";
     const expectedScope = binding.role === "root_corroboration" ? "root_event" : "related_angle";
     if (claim.scope !== expectedScope) return "support_claim_scope_mismatch";
-  } else {
+  }
+  if (candidate.support_kind === "term") {
     const term = ledger.terms.find((item) => [request.term, ...request.aliases].includes(item.term));
     if (term) {
       if (!term.explain_evidence_refs?.includes(candidate.evidence_ref)) return "support_term_ref_mismatch";
@@ -288,10 +328,29 @@ function validateOccurrences(request: ReaderContextRequest, manifest: EvidenceMa
     ) {
       return "source_occurrence_ref_mismatch";
     }
+    const document = manifest.documents.find((item) => item.document_id === occurrence.document_id);
+    if (!document) return "source_occurrence_ref_mismatch";
+    const versionFailure = validateInputArticleVersion(evidence[binding.source_index], document);
+    if (versionFailure) return "source_occurrence_version_mismatch";
     const body = evidence[binding.source_index]?.rawContent ?? "";
     if (!normalizeWhitespace(body).includes(normalizeWhitespace(occurrence.span))) return "source_occurrence_span_mismatch";
     if (![request.term, ...request.aliases].some((term) => term && occurrence.span.includes(term))) return "source_occurrence_term_mismatch";
   }
+  return "";
+}
+
+function validateInputArticleVersion(article: RawArticle | undefined, document: EvidenceManifest["documents"][number]) {
+  if (!article?.rawContent) return "input_body_missing";
+  const bodyHash = sha256(article.rawContent);
+  if (bodyHash !== document.body_sha256) return "input_body_hash_mismatch";
+  if (createDocumentId(document.final_url, bodyHash) !== document.document_id) return "input_document_id_mismatch";
+  const inputUrl = normalizeEvidenceUrl(article.url);
+  const allowedUrls = new Set([
+    document.requested_url,
+    document.final_url,
+    document.normalized_url
+  ].map(normalizeEvidenceUrl).filter(Boolean));
+  if (!inputUrl || !allowedUrls.has(inputUrl)) return "input_url_mismatch";
   return "";
 }
 
@@ -304,9 +363,31 @@ function findFirstSummaryOccurrence(summary: SummarizedArticle, request: ReaderC
       const index = value.indexOf(term);
       if (index >= 0 && (!match || index < match.index)) match = { anchor: term, index };
     }
-    if (match) return { field, anchor: match.anchor };
+    if (match) return { field, anchor: match.anchor, start: match.index, end: match.index + match.anchor.length };
   }
   return null;
+}
+
+function validateExistingExplanation(
+  summary: SummarizedArticle,
+  request: ReaderContextRequest,
+  firstOccurrence: NonNullable<ReturnType<typeof findFirstSummaryOccurrence>>,
+  existingSpan: string
+) {
+  if (!existingSpan) return "existing_explanation_span_mismatch";
+  if (![request.term, ...request.aliases].some((term) => term && existingSpan.includes(term))) {
+    return "existing_explanation_concept_mismatch";
+  }
+  const fieldText = summary[firstOccurrence.field];
+  const spanStart = fieldText.indexOf(existingSpan);
+  if (spanStart < 0) {
+    return SUMMARY_FIELDS.some((field) => summary[field].includes(existingSpan))
+      ? "existing_explanation_not_at_first_occurrence"
+      : "existing_explanation_span_mismatch";
+  }
+  const spanEnd = spanStart + existingSpan.length;
+  if (spanStart > firstOccurrence.start || spanEnd < firstOccurrence.end) return "existing_explanation_not_at_first_occurrence";
+  return "";
 }
 
 function validateRequestId(value: string, ids: Set<string>) {
@@ -324,6 +405,91 @@ function isSemanticReviewResult(value: ReaderContextSemanticReviewResult) {
     (value.existing_span === undefined || typeof value.existing_span === "string") &&
     (value.already_explained === undefined || typeof value.already_explained === "boolean")
   );
+}
+
+function reconcilePatchProposal(
+  request: ReaderContextRequest,
+  support: ReaderContextSupportCandidate,
+  definition: string,
+  patch: ReaderContextPatchProposal,
+  resolution: ReaderContextResolution,
+  records: ProposedPatchRecord[],
+  resolutions: ReaderContextResolution[],
+  diagnostics: ReaderContextPlan["diagnostics"],
+  manifest: EvidenceManifest
+) {
+  const existing = records.find((record) =>
+    conceptsOverlap(record.request, request) &&
+    record.patch.field === patch.field &&
+    record.patch.anchor_start === patch.anchor_start
+  );
+  if (!existing) {
+    const resolutionIndex = resolutions.push(resolution) - 1;
+    records.push({ request, support, definition, patch, resolution_indices: [resolutionIndex], conflicted: false });
+    return;
+  }
+  if (existing.conflicted) {
+    diagnostics.push({ concept_id: request.concept_id, code: "context_patch_conflict", message: "同一概念・初出位置に競合する説明案があります" });
+    resolutions.push({
+      ...baseSupportedResolution(request, support, manifest),
+      semantic_review_status: "pass",
+      outcome: "hold",
+      definition_ja: definition,
+      reason_codes: ["context_patch_conflict"]
+    });
+    return;
+  }
+  if (samePatchSupport(existing, support, definition)) {
+    diagnostics.push({ concept_id: request.concept_id, code: "duplicate_context_patch_merged", message: "同一の説明案を既存patchへ統合しました" });
+    const resolutionIndex = resolutions.push({
+      ...baseSupportedResolution(request, support, manifest),
+      status: "resolved",
+      semantic_review_status: "pass",
+      outcome: "merged",
+      definition_ja: definition,
+      reason_codes: ["duplicate_context_patch_merged"]
+    }) - 1;
+    existing.resolution_indices.push(resolutionIndex);
+    return;
+  }
+
+  diagnostics.push({ concept_id: request.concept_id, code: "context_patch_conflict", message: "同一概念・初出位置に競合する説明案があります" });
+  for (const index of existing.resolution_indices) {
+    const prior = resolutions[index]!;
+    resolutions[index] = {
+      ...prior,
+      status: "held",
+      outcome: "hold",
+      patch: undefined,
+      reason_codes: [...new Set([...prior.reason_codes, "context_patch_conflict"])]
+    };
+  }
+  existing.conflicted = true;
+  resolutions.push({
+    ...baseSupportedResolution(request, support, manifest),
+    semantic_review_status: "pass",
+    outcome: "hold",
+    definition_ja: definition,
+    reason_codes: ["context_patch_conflict"]
+  });
+}
+
+function conceptsOverlap(left: ReaderContextRequest, right: ReaderContextRequest) {
+  const leftTerms = new Set([left.term, ...left.aliases].map(normalizeConcept).filter(Boolean));
+  return [right.term, ...right.aliases].map(normalizeConcept).some((term) => term && leftTerms.has(term));
+}
+
+function samePatchSupport(record: ProposedPatchRecord, support: ReaderContextSupportCandidate, definition: string) {
+  return normalizeWhitespace(record.definition) === normalizeWhitespace(definition) &&
+    record.support.claim_ref === support.claim_ref &&
+    record.support.evidence_ref === support.evidence_ref &&
+    record.support.document_id === support.document_id &&
+    normalizeWhitespace(record.support.quote) === normalizeWhitespace(support.quote) &&
+    normalizeWhitespace(record.support.subject_quote) === normalizeWhitespace(support.subject_quote);
+}
+
+function normalizeConcept(value: string) {
+  return normalizeWhitespace(value).toLocaleLowerCase("ja-JP");
 }
 
 function baseSupportedResolution(
@@ -350,7 +516,8 @@ function baseSupportedResolution(
       quote: support.quote,
       subject_quote: support.subject_quote
     }],
-    applicable_at: document?.published_date ?? null,
+    applicable_at: null,
+    source_published_at: document?.published_date ?? null,
     fetched_at: document?.fetched_at ?? null,
     reason_codes: []
   };
@@ -371,6 +538,7 @@ function researchResolution(request: ReaderContextRequest, reason: string): Read
     document_ids: [],
     support_spans: [],
     applicable_at: null,
+    source_published_at: null,
     fetched_at: null,
     reason_codes: [reason]
   };
@@ -402,7 +570,8 @@ function holdResolution(
       quote: support.quote,
       subject_quote: support.subject_quote
     }] : [],
-    applicable_at: document?.published_date ?? null,
+    applicable_at: null,
+    source_published_at: document?.published_date ?? null,
     fetched_at: document?.fetched_at ?? null,
     reason_codes: [reason]
   };

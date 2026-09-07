@@ -60,7 +60,7 @@ const support = (
   supportId: string,
   claimId: string,
   definition: string,
-  options: { kind?: "claim" | "term"; evidenceRef?: string; document?: string; fetchedAt?: string | null } = {}
+  options: { kind?: "claim" | "term"; evidenceRef?: string; document?: string; fetchedAt?: string | null; omitClaim?: boolean } = {}
 ): ReaderContextSupportCandidate => {
   const sourceClaim = claim(claimId);
   const evidenceRef = options.evidenceRef ?? sourceClaim.evidence_refs[0]!;
@@ -73,7 +73,7 @@ const support = (
     document_id: doc,
     quote: sourceClaim.quote_zh!,
     subject_quote: sourceClaim.quote_zh!,
-    ...(options.kind === "term" ? {} : { claim_ref: claimId }),
+    ...(options.omitClaim ? {} : { claim_ref: claimId }),
     ...(options.fetchedAt === undefined ? {} : { fetched_at: options.fetchedAt })
   };
 };
@@ -112,7 +112,7 @@ const reviewer: ReaderContextSemanticReviewer = async ({ request: item }) => {
       status: "pass",
       definition_ja: fixture.definitions.institution,
       already_explained: true,
-      existing_span: "映画資料の収集・保存・研究を担う国家級のアーカイブ機関",
+      existing_span: "中国電影資料館（映画資料の収集・保存・研究を担う国家級のアーカイブ機関）",
       reason_codes: ["existing_explanation_verified"]
     };
   }
@@ -165,7 +165,8 @@ assert.deepEqual(organization.patch?.claim_refs, ["C1"]);
 assert.deepEqual(organization.patch?.evidence_refs, ["E1"]);
 assert.equal(organization.support_spans[0]?.document_id, documentId("E1"));
 assert.equal(organization.fetched_at, "2026-09-05T10:00:00.000Z");
-assert.equal(organization.applicable_at, "2026-09-05");
+assert.equal(organization.applicable_at, null, "記事公開日を制度の適用時点へ転記しない");
+assert.equal(organization.source_published_at, "2026-09-05");
 assert.deepEqual(organization.patch?.source_urls, ["https://official.example.cn/security/context"]);
 assert.equal(plan.patches.filter((item) => item.concept_id === "organization").length, 1, "重複出現でもpatchを増やさない");
 assert.equal(plan.resolutions.find((item) => item.request_id === "industry")?.outcome, "patch_proposed");
@@ -358,7 +359,7 @@ const duplicatePlan = await buildReaderContextPlan({
     status: "pass",
     definition_ja: fixture.definitions.institution,
     already_explained: true,
-    existing_span: fixture.definitions.institution,
+    existing_span: `中国電影資料館（${fixture.definitions.institution}）`,
     reason_codes: ["existing_explanation_verified"]
   })
 });
@@ -386,5 +387,281 @@ const invalidReviewPlan = await buildReaderContextPlan({
 });
 assert.equal(invalidReviewPlan.resolutions[0]?.outcome, "hold", "不正な意味審査schemaを未審査passにしない");
 assert.equal(invalidReviewPlan.diagnostics[0]?.code, "semantic_review_invalid");
+
+// R1: term support must not bypass the C -> E -> document contract.
+const wrongClaimSupport = support("R1-C999", "C1", fixture.definitions.organization, { kind: "term" });
+wrongClaimSupport.claim_ref = "C999";
+const wrongClaimPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r1-c999", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [wrongClaimSupport])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(wrongClaimPlan.resolutions[0]?.outcome, "hold");
+assert.equal(wrongClaimPlan.diagnostics[0]?.code, "support_claim_ref_mismatch");
+
+const noClaimPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r1-no-c", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [support("R1-no-C", "C1", fixture.definitions.organization, { kind: "term", omitClaim: true })])],
+  summary: fixture.summary,
+  review_semantics: async () => { throw new Error("claim binding前に意味審査を呼ばない"); }
+});
+assert.equal(noClaimPlan.resolutions[0]?.support_status, "support_ready", "原文spanの機械確認結果は保持する");
+assert.equal(noClaimPlan.resolutions[0]?.status, "held");
+assert.equal(noClaimPlan.resolutions[0]?.reason_codes[0], "claim_binding_required");
+assert.equal(noClaimPlan.patches.length, 0);
+
+const wrongEvidenceClaim = support("R1-wrong-E", "C2", fixture.definitions.institution, { kind: "term" });
+wrongEvidenceClaim.claim_ref = "C1";
+const wrongEvidenceClaimPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r1-wrong-e", "中国電影資料館", "institution", "E2", claim("C2").quote_zh!, [wrongEvidenceClaim])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(wrongEvidenceClaimPlan.diagnostics[0]?.code, "support_claim_ref_mismatch");
+
+const unsupportedLedger = structuredClone(fixture.ledger);
+unsupportedLedger.claims.find((item) => item.id === "C4")!.type = "unsupported";
+const unsupportedPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: unsupportedLedger,
+  requests: [request("r1-unsupported", "星河中心", "institution", "E4", claim("C4").quote_zh!, [support("R1-unsupported", "C4", "上海の撮影支援施設。", { kind: "term" })])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(unsupportedPlan.resolutions[0]?.outcome, "needs_research");
+assert.equal(unsupportedPlan.diagnostics[0]?.code, "support_claim_unusable");
+
+const wrongScopeLedger = structuredClone(fixture.ledger);
+wrongScopeLedger.claims.find((item) => item.id === "C1")!.scope = "related_angle";
+const wrongScopePlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: wrongScopeLedger,
+  requests: [request("r1-scope", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [support("R1-scope", "C1", fixture.definitions.organization, { kind: "term" })])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(wrongScopePlan.diagnostics[0]?.code, "support_claim_scope_mismatch");
+
+const invalidKindSupport = support("R1-kind", "C1", fixture.definitions.organization);
+invalidKindSupport.support_kind = "other" as ReaderContextSupportCandidate["support_kind"];
+const invalidKindPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r1-kind", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [invalidKindSupport])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(invalidKindPlan.diagnostics[0]?.code, "support_kind_invalid");
+assert.equal(termsEmptyPlan.resolutions[0]?.outcome, "patch_proposed", "正しいC付きtermはterms空でも解決できる");
+
+// R2: current evidence bytes and URL provenance must still match the manifest.
+const changedRootEvidence = structuredClone(fixture.evidence);
+changedRootEvidence[0]!.rawContent = "国家安全部の別の記事。旧引用の説明は含まれない。";
+const staleRootPlan = await buildReaderContextPlan({
+  evidence: changedRootEvidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r2-root", "国家安全部", "organization", "E1", "国家安全部", [support("R2-root", "C1", fixture.definitions.organization)])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(staleRootPlan.resolutions[0]?.outcome, "hold");
+assert.equal(staleRootPlan.diagnostics[0]?.code, "source_occurrence_version_mismatch");
+
+const changedSupportEvidence = structuredClone(fixture.evidence);
+changedSupportEvidence[1]!.rawContent = "中国電影資料館についての別版本文。旧引用はない。";
+const staleRelatedPlan = await buildReaderContextPlan({
+  evidence: changedSupportEvidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r2-related", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [support("R2-related", "C2", fixture.definitions.institution)])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(staleRelatedPlan.resolutions[0]?.outcome, "hold");
+assert.equal(staleRelatedPlan.diagnostics[0]?.code, "input_body_hash_mismatch");
+
+const redirectProvenance = structuredClone(provenance);
+redirectProvenance[0] = {
+  ...redirectProvenance[0]!,
+  requested_url: fixture.evidence[0]!.url,
+  final_url: "https://cdn.official.example.cn/security/context"
+};
+const redirectManifest = buildEvidenceManifest(fixture.evidence, { provenance: redirectProvenance, quote_bindings: quotes }).manifest;
+const redirectDoc = redirectManifest.evidence_bindings[0]!.document_id!;
+const redirectCandidate = support("R2-redirect", "C1", fixture.definitions.organization);
+redirectCandidate.document_id = redirectDoc;
+const redirectPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest: redirectManifest,
+  ledger: fixture.ledger,
+  requests: [request("r2-redirect", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [redirectCandidate], "required", redirectDoc)],
+  summary: fixture.summary,
+  review_semantics: async () => ({ status: "pass", definition_ja: fixture.definitions.organization, reason_codes: ["meaning_supported"] })
+});
+assert.equal(redirectPlan.resolutions[0]?.outcome, "patch_proposed", "requested URLとfinal URLの正当なredirectを許容する");
+assert.deepEqual(redirectPlan.resolutions[0]?.patch?.source_urls, ["https://cdn.official.example.cn/security/context"]);
+
+// R3: duplicate concept patches merge, while conflicting definitions hold all proposals.
+const duplicateRequests = ["one", "two"].map((id) => request(
+  `r3-${id}`,
+  "国家安全部",
+  "organization",
+  "E1",
+  claim("C1").quote_zh!,
+  [support(`R3-${id}`, "C1", fixture.definitions.organization)]
+));
+const duplicateRequestPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: duplicateRequests,
+  summary: fixture.summary,
+  review_semantics: async () => ({ status: "pass", definition_ja: fixture.definitions.organization, reason_codes: ["meaning_supported"] })
+});
+assert.equal(duplicateRequestPlan.patches.length, 1, "同語別IDから同じanchorへ2patchを出さない");
+assert.deepEqual(duplicateRequestPlan.resolutions.map((item) => item.outcome), ["patch_proposed", "merged"]);
+
+const aliasRequest = request("r3-alias", "同部門", "organization", "E1", "同部門は2026年9月5日", [support("R3-alias", "C1", fixture.definitions.organization)]);
+aliasRequest.aliases = ["国家安全部"];
+const aliasMergePlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [duplicateRequests[0]!, aliasRequest],
+  summary: fixture.summary,
+  review_semantics: async () => ({ status: "pass", definition_ja: fixture.definitions.organization, reason_codes: ["meaning_supported"] })
+});
+assert.equal(aliasMergePlan.patches.length, 1, "aliasが重なる同一概念も1patchへ統合する");
+
+const conflictPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: duplicateRequests,
+  summary: fixture.summary,
+  review_semantics: async ({ request: item }) => ({
+    status: "pass",
+    definition_ja: item.concept_id.endsWith("one") ? fixture.definitions.organization : "中国の映像制作会社。",
+    reason_codes: ["meaning_supported"]
+  })
+});
+assert.equal(conflictPlan.patches.length, 0, "同一初出へ矛盾する説明を残さない");
+assert.deepEqual(conflictPlan.resolutions.map((item) => item.outcome), ["hold", "hold"]);
+assert.equal(conflictPlan.diagnostics.some((item) => item.code === "context_patch_conflict"), true);
+
+// R4: use canonical C1-a order and bind an existing explanation to the first occurrence itself.
+const orderSummary = structuredClone(fixture.summary);
+orderSummary.lead = "映像制作現場への注意事項が公表された。";
+orderSummary.what_happened = "関係機関が資料を公開した。";
+orderSummary.reaction_view = "短劇の制作会社からの反応は確認されていない。";
+orderSummary.why_it_matters = "短劇の配信動向にも関係する。";
+let reviewedFirstField = "";
+const orderPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r4-order", "短劇", "industry_concept", "E3", claim("C3").quote_zh!, [support("R4-order", "C3", fixture.definitions.industry)])],
+  summary: orderSummary,
+  review_semantics: async ({ first_occurrence }) => {
+    reviewedFirstField = first_occurrence.field;
+    return { status: "pass", definition_ja: fixture.definitions.industry, reason_codes: ["meaning_supported"] };
+  }
+});
+assert.equal(orderPlan.patches[0]?.field, "reaction_view");
+assert.equal(reviewedFirstField, "reaction_view", "意味審査へ初出fieldと位置を渡す");
+
+const laterExplanationSummary = structuredClone(fixture.summary);
+laterExplanationSummary.lead = "国家安全部が注意事項を公表した。";
+laterExplanationSummary.what_happened = `国家安全部（${fixture.definitions.organization}）が確認手順を説明した。`;
+const laterExplanationPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r4-later-field", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [support("R4-later-field", "C1", fixture.definitions.organization)])],
+  summary: laterExplanationSummary,
+  review_semantics: async () => ({
+    status: "pass",
+    definition_ja: fixture.definitions.organization,
+    already_explained: true,
+    existing_span: `国家安全部（${fixture.definitions.organization}）`,
+    reason_codes: ["existing_explanation_verified"]
+  })
+});
+assert.equal(laterExplanationPlan.resolutions[0]?.outcome, "hold", "後段欄の説明で裸の初出をresolvedにしない");
+assert.equal(laterExplanationPlan.diagnostics[0]?.code, "existing_explanation_not_at_first_occurrence");
+
+const farExplanationSummary = structuredClone(fixture.summary);
+farExplanationSummary.lead = `国家安全部が公表した。${"別の説明。".repeat(20)}国家安全部（${fixture.definitions.organization}）が確認手順を示した。`;
+const farExplanationPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r4-far", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [support("R4-far", "C1", fixture.definitions.organization)])],
+  summary: farExplanationSummary,
+  review_semantics: async () => ({ status: "pass", definition_ja: fixture.definitions.organization, already_explained: true, existing_span: `国家安全部（${fixture.definitions.organization}）`, reason_codes: [] })
+});
+assert.equal(farExplanationPlan.diagnostics[0]?.code, "existing_explanation_not_at_first_occurrence");
+
+const otherConceptSummary = structuredClone(fixture.summary);
+otherConceptSummary.lead = `国家安全部が公表した。中国電影資料館（${fixture.definitions.institution}）も資料を公開した。`;
+const otherConceptPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r4-other", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [support("R4-other", "C1", fixture.definitions.organization)])],
+  summary: otherConceptSummary,
+  review_semantics: async () => ({ status: "pass", definition_ja: fixture.definitions.organization, already_explained: true, existing_span: `中国電影資料館（${fixture.definitions.institution}）`, reason_codes: [] })
+});
+assert.equal(otherConceptPlan.diagnostics[0]?.code, "existing_explanation_concept_mismatch");
+
+// R5: publication/fetch timestamps stay separate from an unverified applicability date.
+const applicabilitySupport = support("R5-applicable", "C1", fixture.definitions.organization);
+applicabilitySupport.applicable_at = "2026-10-01";
+const applicabilityPlan = await buildReaderContextPlan({
+  evidence: fixture.evidence,
+  manifest,
+  ledger: fixture.ledger,
+  requests: [request("r5-applicable", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [applicabilitySupport])],
+  summary: fixture.summary,
+  review_semantics: reviewer
+});
+assert.equal(applicabilityPlan.resolutions[0]?.outcome, "hold");
+assert.equal(applicabilityPlan.diagnostics[0]?.code, "support_applicable_at_unverified");
+assert.equal(applicabilityPlan.resolutions[0]?.applicable_at, null);
+
+const noPublishedEvidence = structuredClone(fixture.evidence);
+delete noPublishedEvidence[0]!.publishedDate;
+const noPublishedManifest = buildEvidenceManifest(noPublishedEvidence, { provenance, quote_bindings: quotes }).manifest;
+const noPublishedDoc = noPublishedManifest.evidence_bindings[0]!.document_id!;
+const noPublishedSupport = support("R5-no-published", "C1", fixture.definitions.organization);
+noPublishedSupport.document_id = noPublishedDoc;
+let reviewedSourceTime: { source_published_at: string | null; fetched_at: string | null; applicable_at: null } | undefined;
+const noPublishedPlan = await buildReaderContextPlan({
+  evidence: noPublishedEvidence,
+  manifest: noPublishedManifest,
+  ledger: fixture.ledger,
+  requests: [request("r5-no-published", "国家安全部", "organization", "E1", claim("C1").quote_zh!, [noPublishedSupport], "required", noPublishedDoc)],
+  summary: fixture.summary,
+  review_semantics: async ({ source }) => {
+    reviewedSourceTime = { source_published_at: source.source_published_at, fetched_at: source.fetched_at, applicable_at: source.applicable_at };
+    return { status: "pass", definition_ja: fixture.definitions.organization, reason_codes: ["meaning_supported"] };
+  }
+});
+assert.deepEqual(reviewedSourceTime, { source_published_at: null, fetched_at: "2026-09-05T10:00:00.000Z", applicable_at: null });
+assert.equal(noPublishedPlan.resolutions[0]?.source_published_at, null);
+assert.equal(noPublishedPlan.resolutions[0]?.fetched_at, "2026-09-05T10:00:00.000Z");
+assert.equal(noPublishedPlan.resolutions[0]?.applicable_at, null);
 
 console.log("ReaderContext C1-a: candidate, document support, semantic review, limited patch and safe holds passed");
