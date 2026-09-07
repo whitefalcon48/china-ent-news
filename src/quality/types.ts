@@ -198,3 +198,120 @@ export type QualityEvaluationManifest = {
     comparable_articles: number;
   };
 };
+
+export type ReaderContextKind = "organization" | "institution" | "industry_concept";
+export type ReaderContextNecessity = "required" | "optional" | "not_needed";
+
+export type ReaderContextSourceOccurrence = {
+  evidence_ref: string;
+  document_id: string;
+  span: string;
+};
+
+export type ReaderContextSupportCandidate = {
+  support_id: string;
+  support_kind: "claim" | "term";
+  definition_ja: string;
+  evidence_ref: string;
+  document_id: string;
+  quote: string;
+  subject_quote: string;
+  claim_ref?: string;
+  applicable_at?: string | null;
+  fetched_at?: string | null;
+};
+
+export type ReaderContextRequest = {
+  concept_id: string;
+  term: string;
+  aliases: string[];
+  kind: ReaderContextKind;
+  source_occurrences: ReaderContextSourceOccurrence[];
+  necessity: ReaderContextNecessity;
+  reason_ja: string;
+  missing_understanding: string;
+  support_candidates: ReaderContextSupportCandidate[];
+};
+
+export type ReaderContextSemanticReviewInput = {
+  request: ReaderContextRequest;
+  support: ReaderContextSupportCandidate;
+  first_occurrence: {
+    field: "lead" | "what_happened" | "reaction_view" | "why_it_matters" | "japan_context_note";
+    anchor: string;
+    start: number;
+    end: number;
+  };
+  source: {
+    source_name: string;
+    url: string;
+    role: EvidenceRole;
+    quote: string;
+    subject_quote: string;
+    source_published_at: string | null;
+    fetched_at: string | null;
+    applicable_at: null;
+  };
+  summary: SummarizedArticle;
+};
+
+export type ReaderContextSemanticReviewResult = {
+  status: "pass" | "revise" | "hold";
+  definition_ja?: string;
+  already_explained?: boolean;
+  existing_span?: string;
+  reason_codes: string[];
+};
+
+export type ReaderContextPatchProposal = {
+  concept_id: string;
+  summary_hash: string;
+  field: "lead" | "what_happened" | "reaction_view" | "why_it_matters" | "japan_context_note";
+  anchor: string;
+  anchor_start: number;
+  position: "after_first_occurrence";
+  insert_text: string;
+  claim_refs: string[];
+  evidence_refs: string[];
+  document_ids: string[];
+  source_urls: string[];
+  scope: "root_event" | "related_angle";
+};
+
+export type ReaderContextResolution = {
+  request_id: string;
+  status: "not_needed" | "resolved" | "held";
+  origin: "input" | "reused" | "searched";
+  necessity: ReaderContextNecessity;
+  support_status: "not_checked" | "support_ready" | "needs_research" | "invalid";
+  semantic_review_status: "not_run" | "pass" | "revise" | "hold" | "unavailable";
+  outcome: "not_needed" | "patch_proposed" | "merged" | "already_explained" | "needs_research" | "revise" | "hold";
+  definition_ja: string;
+  claim_refs: string[];
+  evidence_refs: string[];
+  document_ids: string[];
+  support_spans: Array<{
+    evidence_ref: string;
+    document_id: string;
+    quote: string;
+    subject_quote: string;
+  }>;
+  applicable_at: string | null;
+  source_published_at: string | null;
+  fetched_at: string | null;
+  reason_codes: string[];
+  patch?: ReaderContextPatchProposal;
+};
+
+export type ReaderContextPlan = {
+  summary_hash: string;
+  resolutions: ReaderContextResolution[];
+  patches: ReaderContextPatchProposal[];
+  needs_research: string[];
+  holds: string[];
+  diagnostics: Array<{
+    concept_id?: string;
+    code: string;
+    message: string;
+  }>;
+};

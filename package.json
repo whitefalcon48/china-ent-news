@@ -51,6 +51,7 @@
     "test:review-evidence-supplement": "tsx src/testReviewEvidenceSupplement.ts && tsx src/testEvidenceSupplementProposal.ts",
     "test:evidence-manifest": "tsx src/testEvidenceManifest.ts",
     "test:quality-evaluation-manifest": "tsx src/testQualityEvaluationManifest.ts",
+    "test:reader-context": "tsx src/testReaderContext.ts",
     "quality:evaluation-manifest": "tsx src/quality/buildEvaluationManifest.ts",
     "review:ui": "tsx src/review/uiServer.ts",
     "preference:prepare": "tsx src/preference/prepareCandidateReview.ts",

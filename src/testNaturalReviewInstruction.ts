@@ -10,15 +10,16 @@ import {
   detectReviewRevisionIntent
 } from "./review/revisionPatch.js";
 import { generateAndApplyLimitedReviewPatch } from "./review/reviseArticle.js";
-import type { FactLedger, ProcessedArticle, SummarizedArticle } from "./types.js";
+import type { FactLedger, SummarizedArticle, TopicCandidate } from "./types.js";
 
-const fixtureDirectory = path.resolve("data/2026-09-06");
-const articles = JSON.parse(await fs.readFile(path.join(fixtureDirectory, "articles_2026-09-06.json"), "utf8")) as ProcessedArticle[];
-const first = articles[0];
-const before = first.summary!;
+type NaturalReviewFixture = { source_commit: string; summary: SummarizedArticle; topic: TopicCandidate; ledger: FactLedger };
+const fixturePath = path.resolve("tests/fixtures/review/natural-review-instruction.json");
+const fixture = JSON.parse(await fs.readFile(fixturePath, "utf8")) as NaturalReviewFixture;
+assert.equal(fixture.source_commit, "63340710", "自然文指示testは修正前の固定版を使う");
+const before = fixture.summary;
+const topic = fixture.topic;
 const frozenBefore = structuredClone(before);
-const ledgers = JSON.parse(await fs.readFile(path.join(fixtureDirectory, "fact_ledger_2026-09-06.json"), "utf8")) as { ledgers: Array<{ topic_key: string; ledger: FactLedger }> };
-const ledger = ledgers.ledgers.find((item) => item.topic_key === first.topic?.topic_key)?.ledger;
+const ledger = fixture.ledger;
 assert.ok(ledger, "#83 fixture の fact ledger を読み込める");
 
 const originalOwnerInstruction = "1 修正 事実がただ並べられているだけでわかりにくい。中央広播電視総台、国家安全部国安影視中心、中国電視劇制作中心、柠萌影視など列挙している部分はいらないので、国家安全部とはなにか普通の人は知らない前提で。";
@@ -61,7 +62,7 @@ const practicalDeletionDocument = {
     after: "国家安全部が主導して制作された。"
   }]
 };
-const deletionResult = applyValidatedReviewPatch(before, first.topic!, ledger!, deletionInstruction, "その他", deletionIntent, deletionDocument);
+const deletionResult = applyValidatedReviewPatch(before, topic, ledger, deletionInstruction, "その他", deletionIntent, deletionDocument);
 assert.deepEqual(
   deletionResult.summary,
   { ...before, what_happened: before.what_happened.replace(removedList, "国家安全部が主導して制作された。") },
@@ -74,12 +75,12 @@ assert.equal(deletionResult.summary.lead, before.lead);
 assert.deepEqual(deletionResult.summary.source_list, before.source_list);
 assert.deepEqual(deletionResult.summary.claim_refs, before.claim_refs);
 assert.equal(deletionResult.summary.reaction_view, "", "空の反応欄を追加しない");
-const practicalDeletionResult = applyValidatedReviewPatch(before, first.topic!, ledger!, practicalDeletionInstruction, "その他", practicalDeletionIntent, practicalDeletionDocument);
+const practicalDeletionResult = applyValidatedReviewPatch(before, topic, ledger, practicalDeletionInstruction, "その他", practicalDeletionIntent, practicalDeletionDocument);
 assert.equal(practicalDeletionResult.summary.what_happened.includes("国家安全部が主導して制作され"), true, "制作主導の事実を残す");
 assert.equal(practicalDeletionResult.summary.what_happened.includes("中央広播電視総台"), false, "列挙だけを除くfixture patchを検証する");
 
 assert.throws(
-  () => applyValidatedReviewPatch(before, first.topic!, ledger!, deletionInstruction, "その他", deletionIntent, {
+  () => applyValidatedReviewPatch(before, topic, ledger, deletionInstruction, "その他", deletionIntent, {
     ...deletionDocument,
     patches: [{ ...deletionDocument.patches[0], before: before.what_happened.slice(0, Math.ceil(before.what_happened.length * 0.7)), after: "短縮文" }]
   }),
@@ -87,7 +88,7 @@ assert.throws(
   "明示されない65%超のreplaceを拒否する"
 );
 assert.throws(
-  () => applyValidatedReviewPatch(before, first.topic!, ledger!, deletionInstruction, "その他", deletionIntent, {
+  () => applyValidatedReviewPatch(before, topic, ledger, deletionInstruction, "その他", deletionIntent, {
     ...deletionDocument,
     patches: [{ ...deletionDocument.patches[0], operation: "replace_field", before: before.what_happened, after: "全置換" }]
   }),
@@ -118,7 +119,7 @@ assert.equal(detectReviewRevisionIntent(before, originalComment, "その他", { 
 // The injected generator exercises the model clarification route without an API call.
 let generatorCalls = 0;
 await assert.rejects(
-  generateAndApplyLimitedReviewPatch(before, first.topic!, ledger!, originalComment, "その他", originalIntent, async () => {
+  generateAndApplyLimitedReviewPatch(before, topic, ledger, originalComment, "その他", originalIntent, async () => {
     generatorCalls += 1;
     return { mode: "limited_patch", clarification_required: true, clarification_reason: "用語説明の根拠がない", patches: [] };
   }),
@@ -131,12 +132,12 @@ assert.deepEqual(before, frozenBefore, "失敗時に原稿fixtureを変更しな
 // Synthetic fixture: organization names and roles are fictional. Unlike #83's
 // ledger, this fixture deliberately has an anchored role-description claim.
 const synthetic = { ...before, what_happened: "架空制作協会、架空配給協会などの団体名が列挙されている。甲社は制作を、乙社は配給を担当した。", claim_refs: { ...before.claim_refs, what_happened: ["C_ROLE"] } } as SummarizedArticle;
-const syntheticLedger: FactLedger = { ...ledger!, claims: [...ledger!.claims, { id: "C_ROLE", type: "verified_fact", text: "甲社は制作を担当し、乙社は配給を担当した。", evidence_refs: ["E1"], entities: ["甲社", "乙社"], numbers: [], anchor: true }], terms: [] };
+const syntheticLedger: FactLedger = { ...ledger, claims: [...ledger.claims, { id: "C_ROLE", type: "verified_fact", text: "甲社は制作を担当し、乙社は配給を担当した。", evidence_refs: ["E1"], entities: ["甲社", "乙社"], numbers: [], anchor: true }], terms: [] };
 const syntheticInstruction = "本文の架空制作協会、架空配給協会などの団体名の列挙を削除し、甲社は制作、乙社は配給という役割を説明してください。";
 const syntheticIntent = detectReviewRevisionIntent(synthetic, syntheticInstruction, "その他");
 assert.equal(syntheticIntent.mode, "limited_patch", "複合指示の成功例は実記事と分離したsynthetic fixtureで扱う");
 if (syntheticIntent.mode === "limited_patch") {
-  const syntheticResult = applyValidatedReviewPatch(synthetic, first.topic!, syntheticLedger, syntheticInstruction, "その他", syntheticIntent, {
+  const syntheticResult = applyValidatedReviewPatch(synthetic, topic, syntheticLedger, syntheticInstruction, "その他", syntheticIntent, {
     mode: "limited_patch", clarification_required: false, clarification_reason: "",
     patches: [{ field: "what_happened", operation: "replace", before: synthetic.what_happened, after: "甲社は制作を、乙社は配給を担当した。", evidence_claim_refs: ["C_ROLE"], reason: "synthetic role explanation" }]
   });
@@ -144,7 +145,7 @@ if (syntheticIntent.mode === "limited_patch") {
   assert.deepEqual(syntheticResult.summary.lead, synthetic.lead, "非対象欄を完全一致で保持する");
 }
 
-const prompt = buildLimitedReviewPatchPrompt(before, ledger!, originalComment, originalIntent);
+const prompt = buildLimitedReviewPatchPrompt(before, ledger, originalComment, originalIntent);
 assert.match(prompt, /複数の要望.*全件/u, "promptが複数要求の全件充足を要求する");
 assert.match(prompt, /名称や関与事実.*意味や役割の説明の根拠/u, "promptが名称と役割説明の根拠を区別する");
 
