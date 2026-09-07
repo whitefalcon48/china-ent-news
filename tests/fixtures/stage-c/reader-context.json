@@ -1,0 +1,132 @@
+{
+  "evidence": [
+    {
+      "title": "国家安全部の注意喚起",
+      "url": "https://official.example.cn/security/context?from=fixture",
+      "sourceName": "国家安全部",
+      "sourceUrl": "https://official.example.cn/",
+      "category": "公式発表",
+      "reliability": "A",
+      "sourceType": "official",
+      "publishedDate": "2026-09-05",
+      "rawContent": "国家安全部は中国の国家安全を担当する国務院の部門である。同部門は2026年9月5日、映像制作の現場に向けて注意事項を公表した。対象となる制作会社には確認手順の徹底を求めた。発表は制度の目的と相談窓口も説明している。"
+    },
+    {
+      "title": "中国電影資料館の保存事業",
+      "url": "https://archive.example.cn/about",
+      "sourceName": "中国電影資料館",
+      "sourceUrl": "https://archive.example.cn/",
+      "category": "映画",
+      "reliability": "A",
+      "sourceType": "official",
+      "publishedDate": "2026-09-04",
+      "rawContent": "中国電影資料館は映画資料の収集、保存、研究を担う国家級の映画アーカイブ機関である。同館は2026年9月4日、修復作品の上映計画を発表した。計画には教育機関との共同研究も含まれる。公開資料は保存事業の対象と手順を説明している。"
+    },
+    {
+      "title": "短劇市場の解説",
+      "url": "https://media.example.cn/industry/short-drama",
+      "sourceName": "文化産業報",
+      "sourceUrl": "https://media.example.cn/",
+      "category": "業界動向",
+      "reliability": "B",
+      "sourceType": "media_report",
+      "publishedDate": "2026-09-03",
+      "rawContent": "短劇はスマートフォンでの視聴を主に想定した、1話が短い連続映像作品の市場区分である。文化産業報は2026年9月3日、制作会社への取材をもとに配信動向を報じた。記事は制作期間と配信経路の違いを整理している。市場規模の将来予測は確定値ではないとも説明した。"
+    },
+    {
+      "title": "星河中心の施設紹介",
+      "url": "https://media.example.cn/local/xinghe-a",
+      "sourceName": "地域文化報",
+      "sourceUrl": "https://media.example.cn/",
+      "category": "業界動向",
+      "reliability": "B",
+      "sourceType": "media_report",
+      "publishedDate": "2026-09-02",
+      "rawContent": "星河中心は上海にある撮影支援施設で、スタジオと編集設備を提供する。地域文化報は2026年9月2日、運営団体への取材内容を掲載した。施設は若手制作者向けの講座も開いている。同名施設が別都市にもあるため、所在地の確認が必要だ。"
+    },
+    {
+      "title": "AI生成の優酷解説",
+      "url": "https://portal.example.cn/ai-youku",
+      "sourceName": "投稿ポータル",
+      "sourceUrl": "https://portal.example.cn/",
+      "category": "ドラマ・配信",
+      "reliability": "C",
+      "sourceType": "media_report",
+      "publishedDate": "2026-09-01",
+      "rawContent": "優酷は中国の動画配信サービスである。本文内容由AI生成。この記事は2026年9月1日の配信情報を紹介する。作品一覧と公開予定をまとめている。記載内容は公式発表を参照するよう案内している。"
+    },
+    {
+      "title": "本文欠損資料",
+      "url": "https://missing.example.cn/context",
+      "sourceName": "欠損媒体",
+      "sourceUrl": "https://missing.example.cn/",
+      "category": "業界動向",
+      "reliability": "B",
+      "sourceType": "media_report",
+      "publishedDate": "2026-09-01"
+    }
+  ],
+  "provenance": [
+    { "fetched_at": "2026-09-05T10:00:00.000Z", "role": "root_corroboration", "purpose": "generation", "storage_state": "raw_content" },
+    { "fetched_at": "2026-09-05T10:01:00.000Z", "role": "related_angle", "purpose": "reader_context", "storage_state": "raw_content" },
+    { "fetched_at": "2026-09-05T10:02:00.000Z", "role": "related_angle", "purpose": "reader_context", "storage_state": "raw_content" },
+    { "fetched_at": "2026-09-05T10:03:00.000Z", "role": "related_angle", "purpose": "reader_context", "storage_state": "raw_content" },
+    { "fetched_at": "2026-09-05T10:04:00.000Z", "role": "related_angle", "purpose": "reader_context", "storage_state": "raw_content" },
+    { "fetched_at": "2026-09-05T10:05:00.000Z", "role": "related_angle", "purpose": "reader_context", "storage_state": "missing" }
+  ],
+  "summary": {
+    "title_ja": "映像制作現場への注意喚起",
+    "badge": "OFFICIAL",
+    "lead": "国家安全部が映像制作の現場に注意を呼びかけた。国家安全部の発表は確認手順にも触れた。",
+    "what_happened": "中国電影資料館（映画資料の収集・保存・研究を担う国家級のアーカイブ機関）と優酷（中国の動画配信サービス）も関連情報を公開した。映画関係者の確認が続く。",
+    "why_it_matters": "短劇の制作現場にも関係する注意事項だ。",
+    "reaction_view": "星河中心からの反応は確認されていない。",
+    "editor_comment": "制度の対象を分けて読む必要がある。",
+    "japan_context_note": "日本での適用状況は根拠内で確認できない。",
+    "category": "公式発表",
+    "confidence": "A",
+    "source_type": "official",
+    "published_date": "2026-09-05",
+    "event_date": "2026-09-05",
+    "freshness_label": "today",
+    "newsworthiness_score": 8,
+    "japan_visibility": "low",
+    "japan_gap": "high",
+    "context_value": "high",
+    "sns_heat": "none",
+    "source_count": 1,
+    "source_list": [{ "name": "国家安全部", "url": "https://official.example.cn/security/context" }],
+    "has_official_source": true,
+    "has_multiple_sources": false,
+    "has_sns_signal": false,
+    "article_type": "official_announcement",
+    "skip_reason": "",
+    "verification_status": "verified",
+    "topic_key": "security-film-fixture",
+    "main_entities": { "people": [], "works": [], "organizations": ["国家安全部"] },
+    "related_sources": [],
+    "tags": ["映画", "注意喚起"],
+    "publish_priority": "high",
+    "publish_reason": "公式発表",
+    "claim_refs": { "what_happened": ["C1"], "why_it_matters": [], "reaction_view": [], "japan_context_note": [] }
+  },
+  "ledger": {
+    "topic_key": "security-film-fixture",
+    "claims": [
+      { "id": "C1", "type": "verified_fact", "text": "国家安全部は中国の国家安全を担当する国務院の部門である。", "evidence_refs": ["E1"], "source_name": "国家安全部", "entities": ["国家安全部"], "numbers": [], "quote_zh": "国家安全部は中国の国家安全を担当する国務院の部門である。", "scope": "root_event" },
+      { "id": "C2", "type": "verified_fact", "text": "中国電影資料館は国家級の映画アーカイブ機関である。", "evidence_refs": ["E2"], "source_name": "中国電影資料館", "entities": ["中国電影資料館"], "numbers": [], "quote_zh": "中国電影資料館は映画資料の収集、保存、研究を担う国家級の映画アーカイブ機関である。", "scope": "related_angle" },
+      { "id": "C3", "type": "source_analysis", "text": "短劇は1話が短い連続映像作品の市場区分である。", "evidence_refs": ["E3"], "source_name": "文化産業報", "entities": ["短劇"], "numbers": [], "quote_zh": "短劇はスマートフォンでの視聴を主に想定した、1話が短い連続映像作品の市場区分である。", "scope": "related_angle" },
+      { "id": "C4", "type": "verified_fact", "text": "星河中心は上海の撮影支援施設である。", "evidence_refs": ["E4"], "source_name": "地域文化報", "entities": ["星河中心"], "numbers": [], "quote_zh": "星河中心は上海にある撮影支援施設で、スタジオと編集設備を提供する。", "scope": "related_angle" },
+      { "id": "C5", "type": "unsupported", "text": "優酷は中国の動画配信サービスである。", "evidence_refs": ["E5"], "source_name": "投稿ポータル", "entities": ["優酷"], "numbers": [], "quote_zh": "優酷は中国の動画配信サービスである。", "scope": "related_angle" }
+    ],
+    "terms": [],
+    "japan_availability": { "status": "not_in_evidence", "detail": "", "evidence_refs": [] },
+    "unresolved": [],
+    "evidence_roles": { "E1": "root_corroboration", "E2": "related_angle", "E3": "related_angle", "E4": "related_angle", "E5": "related_angle", "E6": "related_angle" }
+  },
+  "definitions": {
+    "organization": "中国で国家安全に関する業務を担う国務院の部門。",
+    "institution": "映画資料の収集・保存・研究を担う国家級のアーカイブ機関。",
+    "industry": "スマートフォン視聴を主に想定した、1話が短い連続映像作品の市場区分。"
+  }
+}
