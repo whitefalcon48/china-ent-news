@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-09",
+  "status": "pending",
+  "created_at": "2026-09-09T06:08:47.647Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "收视综合评价系统数据采集通用技术要求",
+      "title": "国家广播电视总局科技司关于对《收视综合评价系统数据采集通用技术要求》广播电视和网络视听行业标准报批稿进行公示的通知",
+      "event_sentence": "国家广播电视总局科技司公示了《收视综合评价系统数据采集通用技术要求》行业标准报批稿。",
+      "topic_type": "policy",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 100,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "欢迎来龙餐馆票房破20亿",
+      "title": "《欢迎来龙餐馆》票房破20亿元，9月11日起将在海外上映",
+      "event_sentence": "电影《欢迎来龙餐馆》票房突破20亿元，将于9月11日起在海外上映。",
+      "topic_type": "box_office",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "红果短剧日活数据",
+      "title": "红果短剧日活1.68亿超“爱优腾芒”总和，人均每天看125分钟",
+      "event_sentence": "紅果短劇のデイリーアクティブユーザー数が1.68億人に達し、愛優騰芒の合計を超えた。",
+      "topic_type": "unknown",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 86,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "AI短剧人脸授权",
+      "title": "AI短剧带火“人脸授权”生意：普通人“卖脸”一次100元",
+      "event_sentence": "AI短劇が「顔認証授権」ビジネスを活性化させ、一般人が顔を売って一回100元を得る。",
+      "topic_type": "unknown",
+      "baseline_rank": 4,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "AI短剧制作价格下降",
+      "title": "从5000元到几百元！AI短剧制作价格半年暴跌90%",
+      "event_sentence": "AI短劇の制作価格が半年で90%下落し、5000元から数百元になった。",
+      "topic_type": "industry_context",
+      "baseline_rank": 5,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "早春晴朗奈飞排名",
+      "title": "优酷《早春晴朗》创国产剧奈飞历史最高排名",
+      "event_sentence": "优酷的《早春晴朗》创下了国产剧在奈飞的历史最高排名。",
+      "topic_type": "platform_trend",
+      "baseline_rank": 6,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "title": "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个一批工程’”第二批拟扶持项目的通知",
+      "event_sentence": "国家广播电视总局办公厅公示了“微短剧精品创作传播计划‘五个一批工程’”第二批拟扶持项目。",
+      "topic_type": "policy",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 73,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "功夫女足上映",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星馳監督映画『功夫女足』が公開半日で興行収入1億元を突破し、夏休みシーズンを盛り上げた。",
+      "topic_type": "box_office",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "龙餐馆偷票房争议",
+      "title": "被周星驰经纪人质疑偷票房，《龙餐馆》：系影院操作失误",
+      "event_sentence": "映画『龍餐館』が周星馳のマネージャーから興行収入の横領を疑われたが、映画側は映画館の操作ミスと説明した。",
+      "topic_type": "box_office",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "活色生香",
+      "title": "《活色生香》10月1日上映，闫妮叶童倪虹洁上演老年婚恋喜剧",
+      "event_sentence": "电影《活色生香》将于10月1日上映，由闫妮、叶童、倪虹洁主演，是一部老年婚恋喜剧。",
+      "topic_type": "release",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "水手计划特展斗转星移",
+      "title": "让陌生经验回到公共生活，第五届水手计划特展“斗转星移”开幕",
+      "event_sentence": "第五届水手计划特展「斗转星移」が開幕した。",
+      "topic_type": "unknown",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "张真源密室解谜",
+      "title": "张真源面对密室场景会胆怯，却拥有超强观察力，凭借脑力持续输出解谜思路",
+      "event_sentence": "张真源面对密室场景会胆怯，但凭借超强观察力和脑力持续输出解谜思路。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}

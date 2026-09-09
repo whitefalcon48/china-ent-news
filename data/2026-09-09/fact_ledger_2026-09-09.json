@@ -1,0 +1,1633 @@
+{
+  "date": "2026-09-09",
+  "generated_at": "2026-09-09T06:12:18.345Z",
+  "ledgers": [
+    {
+      "topic_key": "AI短剧制作价格下降",
+      "ledger": {
+        "topic_key": "AI短剧制作价格下降",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年に入り、標準化されたAI短劇の制作見積もりは1分あたり5000元から数百元へと半年で90%以上下落した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [
+              "5000元",
+              "数百元",
+              "90%",
+              "半年"
+            ],
+            "quote_zh": "标准化AI短剧的制作报价从每分钟5000元一路跌至几百元，降",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "デジタルヒューマンのカスタマイズ価格は30万元から60万元だったのが、現在は数万元から数千元にまで下落した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "数字人"
+            ],
+            "numbers": [
+              "30万元",
+              "60万元",
+              "几万元",
+              "几千元"
+            ],
+            "quote_zh": "从30万元到60万元的数字人定制，如今几万元、几千元就能落地",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "AI短劇の制作効率は従来の映像制作の常識を覆し、従来1か月かかっていたTVC（テレビCM）が7日で完成するようになった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "TVC"
+            ],
+            "numbers": [
+              "一个月",
+              "7天"
+            ],
+            "quote_zh": "原本需要打磨一个月的TVC（电视广告），现在7天就能完成",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "AI短劇はライン生産方式で量産され、チームは1日あたり十数本から二十数本の完成品を生産でき、1人で1日に60分の完全なAI短劇を完成できる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [
+              "十几至二十几条",
+              "60分钟",
+              "1日"
+            ],
+            "quote_zh": "团队单日可产出十几至二十几条成片，单人单日就能完成一部60分",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "短劇業界の全リンクコストのうち、最大のコスト項目はトラフィック投下で約70%を占める。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "短剧行业"
+            ],
+            "numbers": [
+              "70%"
+            ],
+            "quote_zh": "最大的成本项是流量投放，约占70%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "2026年上半期、全ネットワークで新たにリリースされたAI短劇は22.19万部を超えたが、再生回数が1億回を突破したのはわずか1055部で、その割合は約0.47%だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [
+              "22.19万部",
+              "1055部",
+              "0.47%",
+              "2026年上半年"
+            ],
+            "quote_zh": "2026年上半年，全网新上线AI短剧超过22.19万部，但播",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "中泰証券は、国内AI短劇の生産量が2025年の6万部から2026年には100万部へと大幅に増加すると予測している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "中泰证券",
+              "AI短剧"
+            ],
+            "numbers": [
+              "2025年",
+              "6万部",
+              "2026年",
+              "100万部"
+            ],
+            "quote_zh": "国内AI短剧产量将从2025年的6万部大幅提升至2026年的",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年の国内AIドラマ・漫画ドラマ市場規模は400億元を超え、前年比138%増、海外市場は40億ドルを突破し、海外ミニドラマ全体の約70%を占めると予測されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI剧",
+              "漫剧"
+            ],
+            "numbers": [
+              "400亿元",
+              "138%",
+              "40亿美元",
+              "70%",
+              "2026年"
+            ],
+            "quote_zh": "预计2026年国内AI剧、漫剧市场规模有望超400亿元，同比",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "2026年第1四半期に全業界でリリースされたミニドラマは約12.8万部で、そのうちAIミニドラマの割合は95%を超え、第2四半期は23.9万部のうちAI短劇が15.3万部で64%を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "微短剧",
+              "AI微短剧",
+              "AI短剧"
+            ],
+            "numbers": [
+              "12.8万部",
+              "95%",
+              "23.9万部",
+              "15.3万部",
+              "64%",
+              "2026年一季度",
+              "二季度"
+            ],
+            "quote_zh": "2026年一季度全行业上线微短剧约12.8万部，其中AI微短",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "AI短劇の制作コストは従来の実写短劇と比べて70%から80%削減できる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧",
+              "传统实拍短剧"
+            ],
+            "numbers": [
+              "70%",
+              "80%"
+            ],
+            "quote_zh": "相较于传统实拍短剧，AI短剧的制作成本能直接降低70%至80",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2026年第1四半期、全業界でリリースされた短劇は約12.8万部で、そのうちAIミニドラマは約12.2万部、割合は95%を超えた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "短剧",
+              "AI微短剧"
+            ],
+            "numbers": [
+              "12.8万部",
+              "12.2万部",
+              "95%",
+              "2026年第一季度"
+            ],
+            "quote_zh": "2026年第一季度，全行业上线短剧约12.8万部，其中AI微",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "2026年上半期、抖音で新たにリリースされたAIドラマ・漫画ドラマは22.19万部で、業界のヒット率はわずか0.47%だった。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "抖音",
+              "AI剧",
+              "漫剧"
+            ],
+            "numbers": [
+              "22.19万部",
+              "0.47%",
+              "2026年上半年"
+            ],
+            "quote_zh": "2026年上半年抖音新增AI剧、漫剧22.19万部，行业爆款",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "AI漫劇のヒット率はさらに低く、新たにリリースされたAI漫劇1000本のうち1本しか成功せず、ヒット率は0.1%未満である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "AI漫剧"
+            ],
+            "numbers": [
+              "1000部",
+              "1部",
+              "0.1%"
+            ],
+            "quote_zh": "每1000部新上线AI漫剧中，只有1部能跑出来，爆款率不足0",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "DataEye研究院の試算によると、実写の有料プレミアム短劇の平均制作コストは約150万元だが、縦型情報流AI擬似真人短劇は20万元以内に抑えられ、制作コストは約90%削減された。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "DataEye研究院",
+              "真人付费精品短剧",
+              "竖屏信息流AI拟真人短剧"
+            ],
+            "numbers": [
+              "150万元",
+              "20万元",
+              "90%"
+            ],
+            "quote_zh": "一部真人付费精品短剧平均制作成本约150万元，竖屏信息流AI",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "AI短劇の1000回再生あたりの収益は2025年下半期の約60元から2026年には15元から30元へとほぼ半減した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [
+              "60元",
+              "15元",
+              "30元",
+              "2025年下半年",
+              "2026年"
+            ],
+            "quote_zh": "AI短剧的千次播放收益已从2025年下半年的60元左右，下降",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "2026年上半期、各プラットフォームでリリースされたミニドラマは合計36.7万部で、そのうちAIコンテンツの割合は74%を超えた。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "微短剧",
+              "AI内容"
+            ],
+            "numbers": [
+              "36.7万部",
+              "74%",
+              "上半年"
+            ],
+            "quote_zh": "上半年各平台共上线微短剧36.7万部，其中AI内容占比超过7",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "2026年上半期、抖音のネイティブ新規AI短劇は22.19万部を超え、再生回数が1億回を突破したのは1055部で、その割合は0.47%だった。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "抖音",
+              "AI短剧"
+            ],
+            "numbers": [
+              "22.19万部",
+              "1055部",
+              "0.47%",
+              "2026年上半年"
+            ],
+            "quote_zh": "仅抖音端原生新上线的AI短剧就超过22.19万部...播放量",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "AI短劇の1万回再生あたりの収益は昨年のピーク時の30〜100元から今年は5〜10元にまで下落した。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [
+              "30-100元",
+              "5-10元"
+            ],
+            "quote_zh": "万次播放收益从去年的30—100元，跌至今年的5—10元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "5000万回再生の損益分岐点で試算すると、回収できるのは1.3%未満で、約77本に1本しかトントンにならない。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [
+              "5000万播放量",
+              "1.3%",
+              "77部"
+            ],
+            "quote_zh": "按5000万播放量的盈亏平衡线测算，能回本的不足1.3%——",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "AI漫劇のヒット率は0.1%未満で、約1000分の1の確率である。",
+            "evidence_refs": [
+              "E3"
+            ],
+            "entities": [
+              "AI漫剧"
+            ],
+            "numbers": [
+              "0.1%",
+              "千分之一"
+            ],
+            "quote_zh": "AI漫剧更甚，爆款率不足0.1%，约等于千分之一的中奖概率",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "AI短剧",
+            "gloss_ja": "AI短編ドラマ",
+            "what_is": "AI技術で制作される短編ドラマ。",
+            "why_now": "制作価格が半年で90%下落し、業界で価格競争が起きている。",
+            "explain_quote_zh": "AI短剧制作价格半年暴跌90%",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "OPC（一人公司）",
+            "gloss_ja": "一人会社",
+            "what_is": "一人で運営する会社形態。",
+            "why_now": "AI短劇市場に参入した一人会社が価格下落の影響を受けている。",
+            "explain_quote_zh": "赛博娜娜的公司是一家典型的OPC（一人公司）",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "TVC（电视广告）",
+            "gloss_ja": "テレビCM",
+            "what_is": "テレビで放送される広告。",
+            "why_now": "AIにより制作期間が1か月から7日に短縮された。",
+            "explain_quote_zh": "原本需要打磨一个月的TVC（电视广告），现在7天就能完成",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "爆款率",
+            "gloss_ja": "ヒット率",
+            "what_is": "ヒット作品の割合。",
+            "why_now": "AI短劇のヒット率が極めて低く、収益化が困難。",
+            "explain_quote_zh": "行业爆款率仅0.47%",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "投流",
+            "gloss_ja": "トラフィック投下",
+            "what_is": "広告などでトラフィックを購入すること。",
+            "why_now": "短劇のコストの約70%を占め、制作コスト削減の恩恵を相殺している。",
+            "explain_quote_zh": "最大的成本项是流量投放，约占70%",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "ROI",
+            "gloss_ja": "投資収益率",
+            "what_is": "投資に対する収益の割合。",
+            "why_now": "AI短劇の投流ROIが微利にとどまり、収益性が低い。",
+            "explain_quote_zh": "成熟投流团队常规ROI稳定在1.03至1.07的微利区间",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "算力",
+            "gloss_ja": "計算能力",
+            "what_is": "AI処理に必要な計算資源。",
+            "why_now": "AI短劇制作の主要コストの一つで、価格が上昇している。",
+            "explain_quote_zh": "4月国内云厂商AI算力涨价最高达34%",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "微短剧",
+            "gloss_ja": "ミニドラマ",
+            "what_is": "短尺のドラマ形式。",
+            "why_now": "AI技術により大量生産され、市場が飽和状態にある。",
+            "explain_quote_zh": "上半年各平台共上线微短剧36.7万部",
+            "explain_evidence_refs": [
+              "E3"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "微短剧精品创作传播计划五个一批工程",
+      "ledger": {
+        "topic_key": "微短剧精品创作传播计划五个一批工程",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "国家广播电视总局办公厅は2026年9月4日、「微短剧精品创作传播计划‘五个一批工程’」第二批拟扶持项目を公示した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "国家广播电视总局办公厅",
+              "微短剧精品创作传播计划‘五个一批工程’"
+            ],
+            "numbers": [
+              "2026-09-04"
+            ],
+            "quote_zh": "国家广播电视总局办公厅关于公示“微短剧精品创作传播计划‘五个",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "第二批拟扶持项目には《资治通鉴》（第一季）、《北归之向北》など12作品が選ばれた。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "《资治通鉴》（第一季）",
+              "《北归之向北》"
+            ],
+            "numbers": [
+              "12"
+            ],
+            "quote_zh": "确定《资治通鉴》（第一季）、《北归之向北》等12部作品作为第",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "公示に対する異議は2026年9月11日までに書面で国家广播电视总局网络视听节目管理司へ提出する必要がある。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "国家广播电视总局网络视听节目管理司"
+            ],
+            "numbers": [
+              "2026-09-11"
+            ],
+            "quote_zh": "请于2026年9月11日前以书面形式（加盖单位公章）向广电总",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "問い合わせ先の電話番号は010-86096119と010-86096124である。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [],
+            "numbers": [
+              "010-86096119",
+              "010-86096124"
+            ],
+            "quote_zh": "联系电话：010-86096119，86096124",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "「微短剧精品创作传播计划‘五个一批工程’」は微短剧の精品創作を継続的に導き、精品の模範的・先導的役割を十分に発揮することを目的としている。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "微短剧精品创作传播计划‘五个一批工程’"
+            ],
+            "numbers": [],
+            "quote_zh": "为持续引导微短剧精品创作，充分发挥精品示范引领作用",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "同プロジェクトは3回に分けて作品を募集する。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "微短剧精品创作传播计划‘五个一批工程’"
+            ],
+            "numbers": [
+              "3"
+            ],
+            "quote_zh": "分三批征集“微短剧精品创作传播计划‘五个一批工程’”项目",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "第二批の選考は、各省级广播电视行政部门と中央直属单位の推薦を受け、广电总局が専門家を組織して審査した。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "省级广播电视行政部门",
+              "中央直属单位",
+              "广电总局"
+            ],
+            "numbers": [],
+            "quote_zh": "经各省级广播电视行政部门和中央直属单位推荐，广电总局组织专家",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年4月、第13回中国网络视听大会で广电总局主導の「微短剧精品创作传播计划」が正式に始動した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "中国网络视听大会",
+              "广电总局",
+              "微短剧精品创作传播计划"
+            ],
+            "numbers": [
+              "2026-04",
+              "13"
+            ],
+            "quote_zh": "今年4月，在第十三届中国网络视听大会上，广电总局牵头实施的“",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "2026年5月14日、广电总局は工作部署推進会を開き、「微短剧精品创作传播计划」実施方案を通知した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "广电总局",
+              "微短剧精品创作传播计划"
+            ],
+            "numbers": [
+              "2026-05-14"
+            ],
+            "quote_zh": "5月14日，广电总局召开工作部署推进会，通报了《“微短剧精品",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "実施方案は「总局・省・平台」の三位一体の協同推進メカニズムを健全化し、有効な市場と有為な政府の役割をより良く発揮することを明確にした。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "总局",
+              "省",
+              "平台"
+            ],
+            "numbers": [],
+            "quote_zh": "健全完善“总局、省、平台”三位一体的协同推进机制，更好发挥有",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "2026年、广电总局は「自上而下」と「自下而上」を組み合わせ、主動出題と征集選抜方式を統一的に採用し、専用資金を投入し、関連政策措置を打ち出した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "广电总局"
+            ],
+            "numbers": [
+              "2026"
+            ],
+            "quote_zh": "2026年，广电总局坚持“自上而下”与“自下而上”相结合，统",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "北京、辽宁、上海、江苏、浙江、福建、江西、河南、湖南、广西、陕西の11省が専用扶持資金を手配し、関連政策措置を打ち出した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "北京",
+              "辽宁",
+              "上海",
+              "江苏",
+              "浙江",
+              "福建",
+              "江西",
+              "河南",
+              "湖南",
+              "广西",
+              "陕西"
+            ],
+            "numbers": [
+              "11"
+            ],
+            "quote_zh": "北京、辽宁、上海、江苏、浙江、福建、江西、河南、湖南、广西、",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "6つの重点プラットフォームが優秀な実写微短剧の創作・伝播を支援するために少なくとも60億元の資金を投入した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [
+              "6",
+              "60亿元"
+            ],
+            "quote_zh": "6家重点平台投入至少60亿元资金支持优秀真人微短剧创作传播",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "广电总局党組成員・副局長の何飚は会議で、習近平文化思想を深く貫徹し、社会主義核心価値観を導きとし、人民を中心とした創作導向を堅持することを強調した。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "何飚",
+              "广电总局"
+            ],
+            "numbers": [],
+            "quote_zh": "广电总局党组成员、副局长何飚在会上强调，要深入贯彻习近平文化",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "「微短剧精品创作传播‘五个一批工程’」は年間1000本の優秀な微短剧を制作することを目指している。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "微短剧精品创作传播‘五个一批工程’"
+            ],
+            "numbers": [
+              "1000"
+            ],
+            "quote_zh": "全年打造千部优秀微短剧",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "「五个一批」には、培根铸魂・主流価値の弘揚、時代の新気象の反映・人民の新創造の謳歌、鮮明な地域特色・文化標識、人間の煙火・美好な新生活、世界に向けた中国の物語、の5つの精品カテゴリーが含まれる。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "五个一批"
+            ],
+            "numbers": [
+              "5"
+            ],
+            "quote_zh": "推出一批培根铸魂、弘扬主流价值的精品；推出一批反映时代新气象",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "第一批拟扶持项目には《开标之战》《扁担银行》など16作品が選ばれた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "《开标之战》",
+              "《扁担银行》"
+            ],
+            "numbers": [
+              "16"
+            ],
+            "quote_zh": "对《开标之战》《扁担银行》等16部作品予以公示",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "第一批入選作品は廉潔題材、長征題材、両岸親情、都市情感、先進人物、普法教育、基層治理、民族団結、非遺文化、社会公益、改革開放、中露友誼、援疆助農、革命戦争など多分野をカバーしている。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "入选作品涵盖廉洁题材、长征题材、两岸亲情、都市情感、先进人物",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "source_analysis",
+            "text": "澎湃新闻は、微短剧がインターネット時代の新たな大衆文芸の重要な形態として、主流の舞台へ加速的に進出していると分析している。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "澎湃新闻",
+            "entities": [
+              "微短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "微短剧作为互联网时代新大众文艺的重要形态，正加速走上主流舞台",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "source_analysis",
+            "text": "澎湃新闻は、扶持政策の継続的な実施と創作方向の継続的なリードにより、微短剧業界が「流量駆動」から「精品引領」の高品質発展の新段階へ加速していると分析している。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "source_name": "澎湃新闻",
+            "entities": [
+              "微短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "微短剧行业正加速从“流量驱动”转向“精品引领”的高质量发展新",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "ショートドラマ",
+            "what_is": "インターネット時代の新たな大衆文芸の重要な形態。",
+            "why_now": "国家广播电视总局が精品創作を推進し、業界が量から質への転換を図る中で注目される。",
+            "explain_quote_zh": "微短剧作为互联网时代新大众文艺的重要形态",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "五个一批工程",
+            "gloss_ja": "五つの一批プロジェクト",
+            "what_is": "微短剧精品創作伝播計画の一環で、5つのカテゴリーの精品を育成する工程。",
+            "why_now": "国家广播电视总局が年間1000本の優秀な微短剧を制作する目標を掲げて推進している。",
+            "explain_quote_zh": "实施“微短剧精品创作传播‘五个一批工程’”，全年打造千部优秀",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "精品创作",
+            "gloss_ja": "精品創作",
+            "what_is": "質の高い作品を創作すること。",
+            "why_now": "微短剧業界が「流量駆動」から「精品引領」へ転換する中で重要な概念。",
+            "explain_quote_zh": "持续引导微短剧精品创作",
+            "explain_evidence_refs": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "term": "拟扶持项目",
+            "gloss_ja": "支援候補プロジェクト",
+            "what_is": "公示され、異議がなければ正式に支援される予定のプロジェクト。",
+            "why_now": "国家广播电视总局が専門家の審査を経て選定した作品を公示している。",
+            "explain_quote_zh": "确定《资治通鉴》（第一季）、《北归之向北》等12部作品作为第",
+            "explain_evidence_refs": [
+              "E1",
+              "E3"
+            ]
+          },
+          {
+            "term": "网络视听节目管理司",
+            "gloss_ja": "ネット視聴番組管理司",
+            "what_is": "国家广播电视总局の内部部局で、ネット視聴番組を管理する部署。",
+            "why_now": "公示に対する異議の提出先として指定されている。",
+            "explain_quote_zh": "向广电总局网络视听节目管理司反映",
+            "explain_evidence_refs": [
+              "E1",
+              "E3"
+            ]
+          },
+          {
+            "term": "省级广播电视行政部门",
+            "gloss_ja": "省級ラジオテレビ行政部門",
+            "what_is": "各省のラジオテレビを管轄する行政機関。",
+            "why_now": "プロジェクトの推薦機関として選考プロセスに関与している。",
+            "explain_quote_zh": "经各省级广播电视行政部门和中央直属单位推荐",
+            "explain_evidence_refs": [
+              "E1",
+              "E3"
+            ]
+          },
+          {
+            "term": "中央直属单位",
+            "gloss_ja": "中央直属機関",
+            "what_is": "中央政府に直属する機関。",
+            "why_now": "プロジェクトの推薦機関として選考プロセスに関与している。",
+            "explain_quote_zh": "经各省级广播电视行政部门和中央直属单位推荐",
+            "explain_evidence_refs": [
+              "E1",
+              "E3"
+            ]
+          },
+          {
+            "term": "中国网络视听大会",
+            "gloss_ja": "中国ネット視聴大会",
+            "what_is": "中国のネット視聴業界の年次大会。",
+            "why_now": "「微短剧精品创作传播计划」がこの大会で正式に始動した。",
+            "explain_quote_zh": "在第十三届中国网络视听大会上，广电总局牵头实施的“微短剧精品",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "primary",
+            "usable_for_verified_facts": true,
+            "reason": "official_or_primary_data_source"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "红果短剧日活数据",
+      "ledger": {
+        "topic_key": "红果短剧日活数据",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "紅果短劇のデイリーアクティブユーザー数は2026年7月時点で1.68億人に達し、前年同期比107%増となった。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "红果短剧",
+              "QuestMobile",
+              "野村证券"
+            ],
+            "numbers": [
+              "1.68亿",
+              "107%",
+              "2026年7月"
+            ],
+            "quote_zh": "日活跃用户（DAU）已达到1.68亿，同比增长高达107%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "紅果短劇のDAU1.68億人は、四大長編動画プラットフォーム「愛優騰芒」のDAU合計約1.55億人を上回る。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "红果短剧",
+              "爱优腾芒",
+              "腾讯视频",
+              "爱奇艺",
+              "优酷",
+              "芒果TV"
+            ],
+            "numbers": [
+              "1.68亿",
+              "1.55亿"
+            ],
+            "quote_zh": "这一数字已经超过了四大传统长视频平台“爱优腾芒”的日活用户之",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "2026年7月時点の各長編動画プラットフォームのDAUは、テンセントビデオ約5000万、愛奇芸約4500万、優酷と芒果TVが各約3000万である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "腾讯视频",
+              "爱奇艺",
+              "优酷",
+              "芒果TV"
+            ],
+            "numbers": [
+              "5000万",
+              "4500万",
+              "3000万"
+            ],
+            "quote_zh": "腾讯视频日活约5000万，爱奇艺约4500万，优酷和芒果TV",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "紅果短劇は2023年8月の正式リリースから3年足らずでDAU1.68億人に到達した。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "2023年8月",
+              "1.68亿"
+            ],
+            "quote_zh": "从2023年8月正式上线到日活突破1.68亿，红果短剧仅用三",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "紅果短劇の月間アクティブユーザー数は2025年6月に2億人を突破して優酷を初めて上回り、同年11月に2.57億人で芒果TVを超え、2026年2月に3億人を突破、2026年5月には3.56億人に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧",
+              "优酷",
+              "芒果TV"
+            ],
+            "numbers": [
+              "2亿",
+              "2.57亿",
+              "3亿",
+              "3.56亿",
+              "2025年6月",
+              "2025年11月",
+              "2026年2月",
+              "2026年5月"
+            ],
+            "quote_zh": "月活跃用户（MAU）在2025年6月突破2亿时首次超越优酷视",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "紅果短劇のDAUは2026年1月に1億人を突破し、バイトダンス系で5番目のDAU1億人超え独立アプリとなった。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "红果短剧",
+              "字节跳动",
+              "今日头条",
+              "抖音",
+              "豆包",
+              "番茄小说"
+            ],
+            "numbers": [
+              "1亿",
+              "2026年1月"
+            ],
+            "quote_zh": "红果短剧在2026年1月刚刚突破1亿，成为字节跳动旗下继今日",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "紅果短劇の2026年2月の月間一人当たり単日使用時間は125分で、四大長編動画プラットフォームを大きく上回る。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "125分钟",
+              "2026年2月"
+            ],
+            "quote_zh": "月人均单日使用时长已达到125分钟",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "「愛優騰芒」の月間使用時間は過去1年で24%から47%の前年同期比減少となり、優酷が最大の47%減、芒果TVが最小の24%減だった。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "爱优腾芒",
+              "优酷",
+              "芒果TV"
+            ],
+            "numbers": [
+              "24%",
+              "47%"
+            ],
+            "quote_zh": "“爱优腾芒”的月度使用时长在过去一年中出现了24%至47%不",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "紅果短劇は「無料視聴+広告収入分配」モデルを採用し、ユーザーは全コンテンツを無料で視聴できる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "红果短剧采用的是“免费观看+广告分账”的模式",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "無料短劇の市場シェアは2024年初めの約11%から同年末には50%超に上昇し、紅果短劇は独立短劇アプリ市場で約90%のシェアを占める。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "11%",
+              "50%",
+              "90%",
+              "2024年初",
+              "2024年末"
+            ],
+            "quote_zh": "免费短剧的市场占有率已从2024年初的约11%快速攀升至年底",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "紅果短劇は抖音と基盤の推薦アルゴリズムを共有し、視聴履歴や滞在時間などのデータに基づいてコンテンツを個別に推薦する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧",
+              "抖音"
+            ],
+            "numbers": [],
+            "quote_zh": "红果短剧与抖音共享底层推荐算法，能够根据用户的观看历史、停留",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "抖音のメインアプリは紅果短劇へのトラフィック入口を提供し、ユーザーは抖音で短劇の断片を視聴後、ワンクリックで紅果アプリに遷移して全編を視聴できる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "抖音",
+              "红果短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "抖音主站为红果短剧提供了源源不断的流量入口，用户在抖音刷到短",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "紅果短劇は1日平均200本以上の新作を配信し、都市情感や逆襲爽文など数十のジャンルをカバーする。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "200部"
+            ],
+            "quote_zh": "红果短剧平台日均上新剧集超过200部",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "AI短劇の制作コストは従来の実写短劇より70%から90%低く、制作期間は1～2か月から数日に短縮される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "70%",
+              "90%"
+            ],
+            "quote_zh": "AI短剧的制作成本较传统真人短剧降低70%至90%，生产周期",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "QuestMobileのDAU統計は「当日アプリを開いたユーザー」を基準としており、紅果短劇にはサインインタスクや広告視聴でコインを稼ぐ目的のユーザーも含まれる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "QuestMobile",
+              "红果短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "QuestMobile的DAU统计口径为“当天打开过应用”，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "source_caution",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "2026年第1四半期に業界全体で約12.8万本のミニ短劇が配信され、そのうちAI作品が95%超を占め、ヒット率は0.1%未満だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "12.8万部",
+              "95%",
+              "0.1%",
+              "2026年第一季度"
+            ],
+            "quote_zh": "2026年第一季度全行业上线微短剧约12.8万部，其中AI类",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "source_caution",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "7月27日に国家広播電視総局が「ミニ短劇発展管理弁法」を審議通過し、9月1日から施行され、届出・分级・全チェーン懲戒が常態化される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "广电总局"
+            ],
+            "numbers": [
+              "7月27日",
+              "9月1日"
+            ],
+            "quote_zh": "7月27日广电总局审议通过《微短剧发展管理办法》，9月1日起",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "紅果短劇は一部の主要AI漫画劇の最終話末尾に「本劇平行世界」機能を追加し、ユーザーが最大3人のキャラクターを選んで10秒程度の続編動画を生成できる。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "3位",
+              "10秒"
+            ],
+            "quote_zh": "新增了名为“本剧平行世界”的功能入口。进入功能页后，用户可从",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "「平行世界」機能は現在、『万妖図録伝』『予你深情浸入余生』など検証済みの主要AI漫画劇のみに限定して提供されている。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "万妖图录传",
+              "予你深情浸入余生"
+            ],
+            "numbers": [],
+            "quote_zh": "目前，该功能尚未全面开放，仅覆盖《万妖图录传》《予你深情浸入",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "「平行世界」は元のドラマのキャラクター設定・世界観・ストーリーを生成コンテキストとして直接利用し、ユーザーが背景情報を追加しなくても元のストーリーに接続した内容を出力する。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "“平行世界”可直接调用对应剧集的完整人设、世界观与剧情脉络作",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "红果短剧",
+            "gloss_ja": "紅果短劇",
+            "what_is": "バイトダンス傘下の無料短劇アプリ。",
+            "why_now": "DAUが1.68億人に達し、長編動画プラットフォームを超えた。",
+            "explain_quote_zh": "字节跳动旗下红果短剧的日活跃用户（DAU）已达到1.68亿",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "爱优腾芒",
+            "gloss_ja": "愛優騰芒",
+            "what_is": "中国四大長編動画プラットフォームの総称。",
+            "why_now": "紅果短劇のDAUがこれら4つの合計を上回った。",
+            "explain_quote_zh": "四大传统长视频平台“爱优腾芒”的日活用户之和",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "DAU",
+            "gloss_ja": "デイリーアクティブユーザー",
+            "what_is": "1日にアプリを開いたユーザー数。",
+            "why_now": "紅果短劇の成長を示す主要指標として用いられる。",
+            "explain_quote_zh": "日活跃用户（DAU）",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "MAU",
+            "gloss_ja": "月間アクティブユーザー",
+            "what_is": "1か月にアプリを開いたユーザー数。",
+            "why_now": "紅果短劇の月次成長の推移を示す。",
+            "explain_quote_zh": "月活跃用户（MAU）",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "微短剧",
+            "gloss_ja": "ミニ短劇",
+            "what_is": "1話が数分程度の短いドラマ形式。",
+            "why_now": "紅果短劇が配信する主要コンテンツであり、市場が急成長している。",
+            "explain_quote_zh": "微短剧",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "AI短剧",
+            "gloss_ja": "AI短劇",
+            "what_is": "AI技術を用いて制作された短劇。",
+            "why_now": "制作コストが低く、紅果短劇のコンテンツ供給を加速している。",
+            "explain_quote_zh": "AI短剧的制作成本较传统真人短剧降低70%至90%",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "平行世界",
+            "gloss_ja": "平行世界",
+            "what_is": "紅果短劇が提供するAIによる続編生成機能。",
+            "why_now": "ユーザーがドラマの続きを生成でき、IPの維持に寄与する。",
+            "explain_quote_zh": "名为“本剧平行世界”的功能入口",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "IAA",
+            "gloss_ja": "IAA（広告収入モデル）",
+            "what_is": "無料提供+広告収入による収益モデル。",
+            "why_now": "紅果短劇が採用し、長編プラットフォームのIAPモデルと対比される。",
+            "explain_quote_zh": "IAA（免费+广告）与IAP（会员+广告）",
+            "explain_evidence_refs": [
+              "E4"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
