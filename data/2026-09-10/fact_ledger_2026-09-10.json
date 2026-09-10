@@ -1,0 +1,508 @@
+{
+  "date": "2026-09-10",
+  "generated_at": "2026-09-10T06:05:00.887Z",
+  "ledgers": [
+    {
+      "topic_key": "AI短剧人脸授权生意",
+      "ledger": {
+        "topic_key": "AI短剧人脸授权生意",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "普通人肖像按每部短视频约100元付费使用，专业演员则按使用范围和剧集长度定价，从500元到数千元不等。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "100元",
+              "500元",
+              "数千元"
+            ],
+            "quote_zh": "普通人肖像按每部短视频约100元付费使用，专业演员则按使用范",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "四川一家人脸数字交易平台上线仅两个月，已撮合一百多笔订单，交易总额近7万元。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "两个月",
+              "一百多笔",
+              "7万元"
+            ],
+            "quote_zh": "该平台上线仅两个月，已撮合一百多笔订单，交易总额近7万元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "该平台人像库中演员和网红占80%，素人占20%，价格由市场供需决定。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "80%",
+              "20%"
+            ],
+            "quote_zh": "目前人像库中演员和网红占80%，素人占20%，价格由市场供需",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "行业研究机构DataEye估算数据显示，今年前5个月，AI短剧市场规模已突破220亿元，全年有望冲击400亿元大关。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "source_name": "DataEye",
+            "entities": [
+              "DataEye"
+            ],
+            "numbers": [
+              "220亿元",
+              "400亿元",
+              "前5个月"
+            ],
+            "quote_zh": "今年前5个月，AI短剧市场规模已突破220亿元，全年有望冲击",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "一季度全行业上线的微短剧中，AI微短剧占比超过95%。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "95%",
+              "一季度"
+            ],
+            "quote_zh": "一季度全行业上线的微短剧中，AI微短剧占比超过95%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "中国网络视听协会的报告显示，今年前三个月国内AI短剧数量超过12万部。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "source_name": "中国网络视听协会",
+            "entities": [
+              "中国网络视听协会"
+            ],
+            "numbers": [
+              "12万部",
+              "前三个月"
+            ],
+            "quote_zh": "今年前三个月国内AI短剧数量超过12万部",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "DataEye数据显示，2026年海外AI剧漫剧市场规模预计突破40亿美元，同比增长390%。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "source_name": "DataEye",
+            "entities": [
+              "DataEye"
+            ],
+            "numbers": [
+              "40亿美元",
+              "390%",
+              "2026年"
+            ],
+            "quote_zh": "2026年海外AI剧漫剧市场规模预计突破40亿美元，同比增长",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年4月出台的《数字虚拟人信息服务管理办法（征求意见稿）》明确，凡利用自然人人脸、声音等敏感个人信息开展建模、形象生成、场景构建，原则上均需取得当事人单独同意。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [
+              "《数字虚拟人信息服务管理办法（征求意见稿）》"
+            ],
+            "numbers": [
+              "2026年4月"
+            ],
+            "quote_zh": "2026年4月出台的《数字虚拟人信息服务管理办法（征求意见稿",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "一部短剧通常需要五六个主演加上十几个配角，数十个角色的人脸需求，催生了规模化的肖像采购市场。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "五六个",
+              "十几个",
+              "数十个"
+            ],
+            "quote_zh": "一部短剧通常需要五六个主演加上十几个配角，数十个角色的人脸需",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "AI随机生成的面部往往存在辨识度低、表情僵硬、观众接受度差等问题，而使用真人肖像训练生成的数字角色，在面部自然度、观众共情力上都有显著优势。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "AI随机生成的面部往往存在辨识度低、表情僵硬、观众接受度差等",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "传统影视拍摄需要演员档期、场地与制作周期，而AI短剧借助数字人脸素材，可以在短时间内批量生成角色形象，大幅压缩制作成本与时间，但唯独人脸素材无法完全凭空生成。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "传统影视拍摄需要演员档期、场地与制作周期，而AI短剧借助数字",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "国内制作的AI短剧经过本地化改编后大量输出海外，对不同种族、不同年龄的外国人脸素材需求快速增长。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "国内制作的AI短剧经过本地化改编后大量输出海外，对不同种族、",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "不少招募流程要求申请人先发送素颜照片供“审核定级”，此时尚未签署任何协议，个人照片的流向和使用完全没有保障。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "不少招募流程要求申请人先发送素颜照片供 “审核定级”，此时尚",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "部分平台采集的照片数量远超正常使用需求，包括正面、侧面、多角度照片及动态视频，这些生物数据如果被用于模型训练或其他商业用途，将严重侵害个人信息权益。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "部分平台采集的照片数量远超正常使用需求，包括正面、侧面、多角",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "肖像价格通常是按单次作品使用权计费，并非买断；授权范围往往还涉及使用期限、发布平台、发行地区、角色类型、能否二次加工以及是否允许训练新的数字形象等维度。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "肖像价格通常是按单次作品使用权计费，并非买断；授权范围往往还",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "平台会对原始素材做标准化处理，根据面部特征生成适配不同题材的数字形象素材包。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "采集完成后，平台会对原始素材做标准化处理，根据面部特征生成适",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "一名肖像授权人挂出了500元一次的授权，合同约定他分得70%，即500元中他能拿350元。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [
+              "500元",
+              "70%",
+              "350元"
+            ],
+            "quote_zh": "他抱着试一试的心态挂出了500元一次的授权，合同约定他分得7",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "据央视财经报道，记者走访四川一家人脸数字交易平台发现，不少兼职演员和普通市民前来采集人像，提交资料、审核通过，整个过程不超过30分钟，肖像即可挂牌交易。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "source_name": "央视财经",
+            "entities": [
+              "央视财经"
+            ],
+            "numbers": [
+              "30分钟"
+            ],
+            "quote_zh": "据央视财经报道，记者走访四川一家人脸数字交易平台发现，不少兼",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "人脸信息属于敏感个人信息，也是唯一的生物识别信息，一旦泄露或滥用，可能造成长期影响。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "人脸信息属于敏感个人信息，也是唯一的生物识别信息，一旦泄露或",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "随着AI短剧、数字广告产业的快速扩张，数字人脸素材采购需求持续高涨，一门名为“人脸授权”的新兴生意随之兴起。",
+            "evidence_refs": [
+              "E1",
+              "E4"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "随着AI短剧、数字广告产业的快速扩张，数字人脸素材采购需求持",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "人脸授权",
+            "gloss_ja": "顔面使用許諾",
+            "what_is": "個人が自分の顔写真や動画を提供し、AI短劇などで使用する権利を有償で許諾する仕組",
+            "why_now": "AI短劇の急成長でデジタル顔素材の需要が高まり、一般人でも収入を得られる新ビジネスとして注目されている。",
+            "explain_quote_zh": "一门名为“人脸授权”的新兴生意随之兴起",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "AI短剧",
+            "gloss_ja": "AI短編ドラマ",
+            "what_is": "AI技術を活用して制作される短編ドラマ。",
+            "why_now": "市場規模が急拡大し、顔素材の大量需要を生み出している。",
+            "explain_quote_zh": "AI短剧、数字广告产业的快速扩张",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "数字虚拟人",
+            "gloss_ja": "デジタル仮想人間",
+            "what_is": "実在の人物の顔や声などの情報を基にAIで生成される仮想の人物。",
+            "why_now": "2026年4月に管理弁法が公布され、個人情報保護の観点から規制が始まった。",
+            "explain_quote_zh": "《数字虚拟人信息服务管理办法（征求意见稿）》",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "素人",
+            "gloss_ja": "一般人",
+            "what_is": "芸能活動をしていない一般の人。",
+            "why_now": "顔面許諾ビジネスでは素人が供給者の2割を占め、新たな収入源として注目される。",
+            "explain_quote_zh": "素人占20%",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "肖像授权",
+            "gloss_ja": "肖像権許諾",
+            "what_is": "自分の肖像を他者が使用することを許諾する契約。",
+            "why_now": "AI短劇で使用する顔素材の取引が増え、契約条件が重要になっている。",
+            "explain_quote_zh": "肖像价格通常是按单次作品使用权计费",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "生物识别信息",
+            "gloss_ja": "生体認証情報",
+            "what_is": "顔や指紋など個人を特定できる身体的特徴の情報。",
+            "why_now": "顔情報の悪用リスクが指摘され、規制の対象となっている。",
+            "explain_quote_zh": "人脸信息属于敏感个人信息，也是唯一的生物识别信息",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "微短剧",
+            "gloss_ja": "ミニ短編ドラマ",
+            "what_is": "1話が数分程度の超短編ドラマ。",
+            "why_now": "AI微短劇が全体の95%を占め、顔素材需要の主因となっている。",
+            "explain_quote_zh": "一季度全行业上线的微短剧中，AI微短剧占比超过95%",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "数字形象素材包",
+            "gloss_ja": "デジタル形象素材パック",
+            "what_is": "顔の特徴から生成された様々な題材に対応するデジタルキャラクター素材のセット。",
+            "why_now": "プラットフォームが収集した顔データを加工して販売する際の商品形態。",
+            "explain_quote_zh": "根据面部特征生成适配不同题材的数字形象素材包",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
