@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-11",
+  "status": "pending",
+  "issue_number": 92,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "红果短剧日活超爱优腾芒",
+      "title": "紅果短劇の日活1.68億、長編動画4社合計を超える",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-56bf5544f053bfa4",
+      "current_version": 1,
+      "publication": {
+        "slug": "1"
+      }
+    },
+    {
+      "index": 2,
+      "topic_key": "WEGO联名辱华动漫",
+      "title": "WEGO、9月18日に『僕のヒーローアカデミア』コラボ 九一八事変の日に重なり中国で批判",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-edb2b05fdc0faf72",
+      "current_version": 1,
+      "publication": {
+        "slug": "2"
+      }
+    },
+    {
+      "index": 3,
+      "topic_key": "AI短剧人脸授权",
+      "title": "AIショートドラマが「顔ライセンス」市場を拡大、一般人は1本100元で顔を提供",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-01fce73694f19362",
+      "current_version": 1,
+      "publication": {
+        "slug": "3"
+      }
+    }
+  ]
+}

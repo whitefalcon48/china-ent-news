@@ -1,0 +1,1459 @@
+{
+  "date": "2026-09-11",
+  "generated_at": "2026-09-11T06:09:38.895Z",
+  "ledgers": [
+    {
+      "topic_key": "红果短剧日活超爱优腾芒",
+      "ledger": {
+        "topic_key": "红果短剧日活超爱优腾芒",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "红果短剧の日活跃用户（DAU）は2026年7月時点で1.68億に達し、前年同期比107%増となった。",
+            "evidence_refs": [
+              "E1",
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "红果短剧",
+              "QuestMobile"
+            ],
+            "numbers": [
+              "1.68亿",
+              "107%",
+              "2026年7月"
+            ],
+            "quote_zh": "日活跃用户（DAU）已达到1.68亿，同比增长高达107%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "红果短剧のDAU1.68億は、四大長編動画プラットフォーム「爱优腾芒」のDAU合計約1.55億を上回った。",
+            "evidence_refs": [
+              "E1",
+              "E3",
+              "E4"
+            ],
+            "entities": [
+              "红果短剧",
+              "爱优腾芒",
+              "腾讯视频",
+              "爱奇艺",
+              "优酷",
+              "芒果TV"
+            ],
+            "numbers": [
+              "1.68亿",
+              "1.55亿"
+            ],
+            "quote_zh": "这一数字已经超过了四大传统长视频平台“爱优腾芒”的日活用户之",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "2026年7月時点で、腾讯视频のDAUは約5000万、爱奇艺は約4500万、优酷と芒果TVは各約3000万だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "腾讯视频",
+              "爱奇艺",
+              "优酷",
+              "芒果TV"
+            ],
+            "numbers": [
+              "5000万",
+              "4500万",
+              "3000万",
+              "2026年7月"
+            ],
+            "quote_zh": "腾讯视频日活约5000万，爱奇艺约4500万，优酷和芒果TV",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "红果短剧の月人均単日使用時間は2026年2月時点で125分に達し、四大長編動画プラットフォームを大きく上回った。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "125分钟",
+              "2026年2月"
+            ],
+            "quote_zh": "月人均单日使用时长已达到125分钟",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "「爱优腾芒」の月間使用時間は過去1年で24%から47%の前年同期比減少となり、优酷が47%減で最大、芒果TVが24%減で最小だった。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "爱优腾芒",
+              "优酷",
+              "芒果TV"
+            ],
+            "numbers": [
+              "24%",
+              "47%"
+            ],
+            "quote_zh": "“爱优腾芒”的月度使用时长在过去一年中出现了24%至47%不",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "红果短剧は2023年8月の正式リリースから3年でDAU1.68億に達し、従来の長編動画プラットフォームが10年以上かけたユーザー蓄積を実現した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "2023年8月",
+              "3年",
+              "1.68亿"
+            ],
+            "quote_zh": "从2023年8月正式上线到日活突破1.68亿，红果短剧仅用三",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "红果短剧の月活跃用户（MAU）は2025年6月に2億を突破して优酷视频を初めて上回り、同年11月に2.57億で芒果TVを超え、2026年2月に3億を突破、2026年5月には3.56億に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧",
+              "优酷视频",
+              "芒果TV"
+            ],
+            "numbers": [
+              "2025年6月",
+              "2亿",
+              "2025年11月",
+              "2.57亿",
+              "2026年2月",
+              "3亿",
+              "2026年5月",
+              "3.56亿"
+            ],
+            "quote_zh": "月活跃用户（MAU）在2025年6月突破2亿时首次超越优酷视",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "红果短剧は2026年1月にDAU1億を突破し、字节跳动傘下で今日头条、抖音、豆包、番茄小说に次ぐ5番目のDAU1億超え独立Appとなった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧",
+              "字节跳动",
+              "今日头条",
+              "抖音",
+              "豆包",
+              "番茄小说"
+            ],
+            "numbers": [
+              "2026年1月",
+              "1亿",
+              "5番目"
+            ],
+            "quote_zh": "红果短剧在2026年1月刚刚突破1亿，成为字节跳动旗下继今日",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "红果短剧は「無料視聴+広告収益分配」モデルを採用し、ユーザーは全コンテンツを無料で視聴でき、プラットフォームは広告主にユーザー注意力を販売して収益化する。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "红果短剧采用的是“免费观看+广告分账”的模式",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "無料短劇の市場シェアは2024年初めの約11%から年末には50%超に上昇し、红果短剧は独立短劇App市場で約90%のシェアを占めた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "2024年初",
+              "11%",
+              "50%",
+              "90%"
+            ],
+            "quote_zh": "免费短剧的市场占有率已从2024年初的约11%快速攀升至年底",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "红果短剧は抖音と基盤の推薦アルゴリズムを共有し、ユーザーの視聴履歴や滞在時間、インタラクション行動などのデータに基づいてコンテンツを精密に推薦する。",
+            "evidence_refs": [
+              "E1",
+              "E3"
+            ],
+            "entities": [
+              "红果短剧",
+              "抖音"
+            ],
+            "numbers": [],
+            "quote_zh": "红果短剧与抖音共享底层推荐算法，能够根据用户的观看历史、停留",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "抖音のメインサイトは红果短剧に継続的なトラフィック入口を提供し、ユーザーは抖音で短劇の断片を視聴後、ワンクリックで红果Appにジャンプして全編を視聴できる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "抖音",
+              "红果短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "抖音主站为红果短剧提供了源源不断的流量入口，用户在抖音刷到短",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "红果短剧プラットフォームは1日平均200本以上の新作を配信し、都市情感、豪門恩怨、逆襲爽文、古装穿越、乡村生活など数十のジャンルをカバーする。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "200部"
+            ],
+            "quote_zh": "红果短剧平台日均上新剧集超过200部，题材覆盖都市情感、豪门",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "AI短劇の制作コストは従来の実写短劇より70%から90%低く、制作期間は1～2か月から数日に短縮された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [
+              "70%",
+              "90%",
+              "1～2か月",
+              "数日"
+            ],
+            "quote_zh": "AI短剧的制作成本较传统真人短剧降低70%至90%，生产周期",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "QuestMobileのDAU統計は「当日アプリを開いた」ことを基準としており、红果短剧のユーザーにはサインインタスクや広告視聴でコインを獲得し現金化を目指すユーザーが相当数含まれる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "QuestMobile",
+              "红果短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "QuestMobile的DAU统计口径为“当天打开过应用”，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "source_caution",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "2026年第1四半期に業界全体で約12.8万本のミニ短劇がリリースされ、そのうちAI作品が95%以上を占め、逆襲復讐や嫁姑問題、豪門虐恋などの固定テーマが繰り返し制作され、ヒット率は0.1%未満だった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "2026年第1四半期",
+              "12.8万部",
+              "95%",
+              "0.1%"
+            ],
+            "quote_zh": "2026年第一季度全行业上线微短剧约12.8万部，其中AI类",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "7月27日に广电总局が「微短劇発展管理弁法」を審議通過し、9月1日から施行され、届出、分级、全チェーン懲戒が常態化される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "广电总局"
+            ],
+            "numbers": [
+              "7月27日",
+              "9月1日"
+            ],
+            "quote_zh": "7月27日广电总局审议通过《微短剧发展管理办法》，9月1日起",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "2026年2月時点で红果短剧のMAUは3.04億に達し、前年同期比84.6%増だった。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "2026年2月",
+              "3.04亿",
+              "84.6%"
+            ],
+            "quote_zh": "月活跃用户规模突破3亿大关，达到3.04亿，同比增长84.6",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "红果短剧のVIP機能は2023年8月のプラットフォーム開始当初から存在し、映画『少年往事』は6分間の試聴後にVIP会員（7日8元、1か月30元、1年260元）が必要となる。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "红果短剧",
+              "少年往事"
+            ],
+            "numbers": [
+              "2023年8月",
+              "6分钟",
+              "7天8元",
+              "一个月30元",
+              "一年260元"
+            ],
+            "quote_zh": "VIP功能自2023年8月平台上线之初就已存在，电影《少年往",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "2024年2月に更新された「红果短剧会員サービス協議」では、VIP権益として広告なし視聴、読書広告なし、オーディオブック広告なし、VIPコンテンツ無料視聴が明記された。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "红果短剧"
+            ],
+            "numbers": [
+              "2024年2月"
+            ],
+            "quote_zh": "2024年2月，《红果短剧会员服务协议》更新生效，明确列出V",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "红果短剧",
+            "gloss_ja": "紅果短劇",
+            "what_is": "字节跳动傘下の無料短劇アプリ。2023年8月にリリース。",
+            "why_now": "DAUが1.68億に達し、長編動画プラットフォームを超えた。",
+            "explain_quote_zh": "字节跳动旗下红果短剧的日活跃用户（DAU）已达到1.68亿",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "爱优腾芒",
+            "gloss_ja": "愛優騰芒",
+            "what_is": "中国の四大長編動画プラットフォーム（爱奇艺、优酷、腾讯视频、芒果TV）の総称。",
+            "why_now": "红果短剧のDAUがこれら4つの合計を上回った。",
+            "explain_quote_zh": "四大传统长视频平台“爱优腾芒”的日活用户之和",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "DAU",
+            "gloss_ja": "日間アクティブユーザー数",
+            "what_is": "1日にアプリを開いたユーザー数。",
+            "why_now": "红果短剧の成長を示す主要指標。",
+            "explain_quote_zh": "日活跃用户（DAU）",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "MAU",
+            "gloss_ja": "月間アクティブユーザー数",
+            "what_is": "1か月にアプリを開いたユーザー数。",
+            "why_now": "红果短剧のユーザー規模の推移を示す。",
+            "explain_quote_zh": "月活跃用户（MAU）",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "微短剧",
+            "gloss_ja": "ミニ短劇",
+            "what_is": "1話数分の短いドラマ形式。",
+            "why_now": "红果短剧が配信する主要コンテンツ。",
+            "explain_quote_zh": "微短剧",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "免费观看+广告分账",
+            "gloss_ja": "無料視聴＋広告収益分配",
+            "what_is": "ユーザーは無料で視聴し、プラットフォームは広告収入で収益化するモデル。",
+            "why_now": "红果短剧の成長を支えたビジネスモデル。",
+            "explain_quote_zh": "“免费观看+广告分账”的模式",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "QuestMobile",
+            "gloss_ja": "クエストモバイル",
+            "what_is": "中国のモバイルインターネットデータ調査会社。",
+            "why_now": "红果短剧のDAUデータの出所。",
+            "explain_quote_zh": "据国内互联网大数据公司QuestMobile的最新监测数据",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "广电总局",
+            "gloss_ja": "国家ラジオテレビ総局",
+            "what_is": "中国の放送・映像コンテンツを管轄する行政機関。",
+            "why_now": "微短劇の管理弁法を制定し、業界規制を強化。",
+            "explain_quote_zh": "广电总局审议通过《微短剧发展管理办法》",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "WEGO联名辱华动漫",
+      "ledger": {
+        "topic_key": "WEGO联名辱华动漫",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "WEGOは2026年9月7日に、9月18日からアニメ『僕のヒーローアカデミア』とのコラボ商品を発売すると発表した。",
+            "evidence_refs": [
+              "E1",
+              "E2"
+            ],
+            "entities": [
+              "WEGO",
+              "僕のヒーローアカデミア"
+            ],
+            "numbers": [
+              "2026年9月7日",
+              "9月18日"
+            ],
+            "quote_zh": "9月7日，日本知名痛包（指挂满动漫角色徽章、玩偶等周边的包包",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "adaptation_context",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "WEGOは2026年9月4日に、9月29日に上海淮海中路にコンセプト旗艦店をオープンすると発表した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "WEGO",
+              "上海淮海中路"
+            ],
+            "numbers": [
+              "2026年9月4日",
+              "9月29日"
+            ],
+            "quote_zh": "9月4日他们宣布将于9月29日在上海淮海中路开出其“概念旗舰",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "2026年9月18日は九一八事変勃発95周年にあたる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "九一八事変"
+            ],
+            "numbers": [
+              "2026年9月18日",
+              "95周年"
+            ],
+            "quote_zh": "2026年9月18日，是九一八事变爆发95周年。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "1931年9月18日、日本関東軍が柳条湖事件を起こし北大営を砲撃したことで九一八事変が勃発し、中国人民の十四年にわたる抗日戦争の起点となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "日本関東軍",
+              "柳条湖事件",
+              "北大営",
+              "九一八事変"
+            ],
+            "numbers": [
+              "1931年9月18日",
+              "十四年"
+            ],
+            "quote_zh": "1931年9月18日，日本关东军制造柳条湖事件、炮轰北大营，",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "『僕のヒーローアカデミア』は中国で辱華の疑いにより深刻な論争を引き起こした作品である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "僕のヒーローアカデミア"
+            ],
+            "numbers": [],
+            "quote_zh": "是一部曾因涉嫌辱华在中国引发严重争议的作品",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "2026年9月10日に世論が沸騰し、外部サイトのコラボ投稿に100件近い批判が寄せられ、淘宝のライブ配信でもユーザーから疑問や批判が続出した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "淘宝"
+            ],
+            "numbers": [
+              "2026年9月10日",
+              "100件近い"
+            ],
+            "quote_zh": "舆论在9月10日发酵，外网合作内容下涌入近百条批评，在其淘宝",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "中国のソーシャルプラットフォームでは、過去にWEGO製品を購入した消費者が相次いで反対の投稿をした。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "WEGO"
+            ],
+            "numbers": [],
+            "quote_zh": "中国的社交平台上也炸了锅，不少曾经购买过该品牌产品的消费者纷",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "2026年9月10日夜、WEGOは外部サイトのコラボ投稿を削除したが、転載投稿は残っている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "WEGO"
+            ],
+            "numbers": [
+              "2026年9月10日"
+            ],
+            "quote_zh": "9月10日晚间，该品牌外网删掉了联动帖子，但转发帖仍在。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "WEGOは天猫、淘宝、小紅書、抖音など中国の主要プラットフォームに進出しており、2つの淘宝店のフォロワー総数は40万人を超え、年間販売数は30万件を超える。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "WEGO",
+              "天猫",
+              "淘宝",
+              "小紅書",
+              "抖音"
+            ],
+            "numbers": [
+              "40万人",
+              "30万件"
+            ],
+            "quote_zh": "WEGO已经进入天猫、淘宝、小红书、抖音等中国主要平台，其两",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "2024年10月に上海静安大悦城で開催された痛バッグテーマのポップアップイベントでは、6日間の売上が1億円（約434万元）に達したと外媒が報じた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上海静安大悦城"
+            ],
+            "numbers": [
+              "2024年10月",
+              "6日間",
+              "1億円",
+              "434万元"
+            ],
+            "quote_zh": "2024年10月在上海静安大悦城举办的痛包主题快闪活动，6天",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "開業予定の上海旗艦店は痛バッグなどを重要な売り物とし、中国市場でのブランドの方向性を示す機能を担う。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "上海旗艦店"
+            ],
+            "numbers": [],
+            "quote_zh": "即将开业的上海旗舰店，还将痛包等商品作为重要卖点，承担展示品",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "2026年初めに『名探偵コナン』が『僕のヒーローアカデミア』とコラボした際、中国で再び強い反発が起きた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "名探偵コナン",
+              "僕のヒーローアカデミア"
+            ],
+            "numbers": [
+              "2026年初め"
+            ],
+            "quote_zh": "今年年初，《名侦探柯南》与其开展联动，便再次引发中国舆论的强",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "中国本土の版権代理側はその後、「平和を支持し、中国文化を尊重し愛する」と説明した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "中国本土の版権代理側"
+            ],
+            "numbers": [],
+            "quote_zh": "中国大陆版权代理方随后作出说明，表示“支持和平、尊重并热爱中",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "source_analysis",
+            "text": "新京報は、WEGOが中国市場の消費潜在力しか見ておらず、その市場の歴史を真に尊重していないと分析している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "WEGO",
+              "新京報"
+            ],
+            "numbers": [],
+            "quote_zh": "很难说中国市场对WEGO不重要，但其只看见了中国市场的消费潜",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "source_analysis",
+            "text": "新京報は、真のローカライズとは消費者の歴史的記憶を尊重し、触れてはならない一線に敏感であることだと主張している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "新京報"
+            ],
+            "numbers": [],
+            "quote_zh": "真正的本土化，意味着尊重消费者的历史记忆，并对可能触碰的底线",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "source_analysis",
+            "text": "新京報は、WEGOが「不知情」と説明するのは難しいと指摘している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "WEGO",
+              "新京報"
+            ],
+            "numbers": [],
+            "quote_zh": "WEGO很难以“不知情”解释此次决策。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "source_analysis",
+            "text": "新京報は、企業の責任を追及することはオンライン店舗の従業員や購入者を非難することではないと述べている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "新京報"
+            ],
+            "numbers": [],
+            "quote_zh": "当然，追问企业责任，也不意味着应当把矛头指向线上店员工或者曾",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "source_analysis",
+            "text": "新京報は、消費者は企業の選択に基づいて今後の消費判断をする権利があり、企業は自らの選択の代償を負うべきだと述べている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "新京報",
+            "entities": [
+              "新京報"
+            ],
+            "numbers": [],
+            "quote_zh": "消费者有权根据企业的选择作出自己接下来的消费判断，企业也必须",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "網易の動画ページでは、このニュースが「日本品牌WEGO选9·18联名辱华动漫，媒体评：要尊重中国市场，就不能触碰历史红线！」というタイトルで配信された。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "網易",
+              "WEGO"
+            ],
+            "numbers": [
+              "9·18"
+            ],
+            "quote_zh": "日本品牌WEGO选9·18联名辱华动漫，媒体评：要尊重中国市",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "痛包",
+            "gloss_ja": "痛バッグ",
+            "what_is": "アニメキャラクターの徽章やぬいぐるみなどを大量に付けたバッグ。",
+            "why_now": "WEGOが痛包を主力商品として中国市場に進出しており、今回のコラボも痛包文化を利用したものだから。",
+            "explain_quote_zh": "日本知名痛包（指挂满动漫角色徽章、玩偶等周边的包包 ）及服饰",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "辱华",
+            "gloss_ja": "中国侮辱",
+            "what_is": "中国の国家・民族・文化などを侮辱する行為や表現。",
+            "why_now": "『僕のヒーローアカデミア』が辱華の疑いで中国で論争を起こした作品であり、WEGOのコラボが問題視された。",
+            "explain_quote_zh": "是一部曾因涉嫌辱华在中国引发严重争议的作品",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "九一八事变",
+            "gloss_ja": "九一八事変",
+            "what_is": "1931年9月18日に日本関東軍が柳条湖事件を起こし北大営を砲撃したことで勃発し",
+            "why_now": "WEGOがコラボ開始日とした2026年9月18日が九一八事変勃発95周年にあたり、歴史的配慮を欠くと批判された。",
+            "explain_quote_zh": "2026年9月18日，是九一八事变爆发95周年。1931年9",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "本土化",
+            "gloss_ja": "ローカライズ",
+            "what_is": "海外ブランドが現地市場に合わせて商品やサービスを適応させること。",
+            "why_now": "新京報が、真の本土化には歴史的記憶への配慮が必要だと指摘し、WEGOの姿勢を批判した。",
+            "explain_quote_zh": "跨国品牌所说的“本土化”，不能只是把商品页面翻译成中文、在小",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    },
+    {
+      "topic_key": "AI短剧人脸授权",
+      "ledger": {
+        "topic_key": "AI短剧人脸授权",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "AI短剧とデジタル広告産業の急速な拡大に伴い、デジタル顔素材の調達需要が高まり、「人脸授权」と呼ばれる新ビジネスが生まれた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧",
+              "数字广告产业",
+              "人脸授权"
+            ],
+            "numbers": [],
+            "quote_zh": "随着AI短剧、数字广告产业的快速扩张，数字人脸素材采购需求持",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "一般人は実際に出演やオーディションを受ける必要がなく、数枚の個人写真を提供して授权契約に署名するだけで、自分の顔のイメージで収益を得られる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "无需真人出镜拍戏、无需线下试镜，仅需提供几张个人照片并签署授",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "四川のある人脸デジタル取引プラットフォームでは、資料提出から審査通過まで30分以内で肖像を取引に出品できる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "四川"
+            ],
+            "numbers": [
+              "30分钟"
+            ],
+            "quote_zh": "提交资料、审核通过，整个过程不超过30分钟，肖像即可挂牌交易",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "プラットフォームは収集した元素材を標準化処理し、顔の特徴に基づいて異なる題材に適したデジタル形象素材パックを生成する。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "采集完成后，平台会对原始素材做标准化处理，根据面部特征生成适",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "肖像の価格は通常、単一作品の使用権ごとに課金され、買い取りではない。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "肖像价格通常是按单次作品使用权计费，并非买断",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "授权範囲には使用期間、公開プラットフォーム、配信地域、役柄タイプ、二次加工の可否、新しいデジタル形象の訓練許可などが含まれる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "授权范围往往还涉及使用期限、发布平台、发行地区、角色类型、能",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "一般人肖像は1本のショート動画あたり約100元で使用され、プロ俳優は使用範囲とドラマの長さに応じて500元から数千元で価格設定される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "100元",
+              "500元",
+              "数千元"
+            ],
+            "quote_zh": "普通人肖像按每部短视频约100元付费使用，专业演员则按使用范",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "成約後、プラットフォームは授权料から手数料を差し引く。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "成交后，平台从授权费中抽成。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "ある肖像授权者は500元の授权を試しに出品し、契約で70%の取り分を約束され、500元の場合350元を受け取れると語った。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "500元",
+              "70%",
+              "350元"
+            ],
+            "quote_zh": "他抱着试一试的心态挂出了500元一次的授权，合同约定他分得7",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "personal_condition",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "そのプラットフォームは上线からわずか2ヶ月で100件以上の注文を成立させ、取引総額は約7万元に達した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "两个月",
+              "一百多笔",
+              "近7万元"
+            ],
+            "quote_zh": "该平台上线仅两个月，已撮合一百多笔订单，交易总额近7万元",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "現在、人像ライブラリでは俳優とインフルエンサーが80%、一般人が20%を占め、価格は市場の需給で決まる。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "80%",
+              "20%"
+            ],
+            "quote_zh": "目前人像库中演员和网红占80%，素人占20%，价格由市场供需",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "AI短剧はデジタル顔素材を活用することで、短期間に大量のキャラクター形象を生成でき、制作コストと時間を大幅に削減できるが、顔素材だけは完全にゼロから生成できない。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "AI短剧借助数字人脸素材，可以在短时间内批量生成角色形象，大",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "AIがランダムに生成した顔は識別性が低く、表情が硬く、視聴者の受け入れが悪い問題があるが、実在の人物の肖像で訓練したデジタルキャラクターは顔の自然さと視聴者の共感力で優位性がある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "AI随机生成的面部往往存在辨识度低、表情僵硬、观众接受度差等",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "1本の短剧には通常、主演5～6人と脇役十数人が必要で、数十人分の顔の需要が大規模な肖像調達市場を生み出している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "五六个",
+              "十几个",
+              "数十个"
+            ],
+            "quote_zh": "一部短剧通常需要五六个主演加上十几个配角，数十个角色的人脸需",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "DataEyeの推計データによると、今年最初の5ヶ月でAI短剧市場規模は220億元を突破し、通年では400億元に達する可能性がある。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "DataEye",
+            "entities": [
+              "DataEye",
+              "AI短剧"
+            ],
+            "numbers": [
+              "220亿元",
+              "400亿元"
+            ],
+            "quote_zh": "今年前5个月，AI短剧市场规模已突破220亿元，全年有望冲击",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "第1四半期に全業界で配信されたミニ短剧のうち、AIミニ短剧の割合は95%を超え、ほぼ主流の制作形態となった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI微短剧"
+            ],
+            "numbers": [
+              "95%"
+            ],
+            "quote_zh": "一季度全行业上线的微短剧中，AI微短剧占比超过95%",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "中国网络视听协会の報告によると、今年最初の3ヶ月で国内のAI短剧数は12万本を超えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "中国网络视听协会",
+            "entities": [
+              "中国网络视听协会",
+              "AI短剧"
+            ],
+            "numbers": [
+              "12万部"
+            ],
+            "quote_zh": "今年前三个月国内AI短剧数量超过12万部",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "key_numbers",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "作品数が指数関数的に増加する中、制作側の実在の顔素材への需要は散発的な調達から標準化された供給が必要なコンテンツサプライチェーンへと変化している。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [],
+            "quote_zh": "当作品数量以指数级扩容，制作方对真实人脸素材的需求便不再是零",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "DataEyeのデータによると、2026年の海外AI劇漫劇市場規模は40億ドルを突破し、前年比390%増加すると予測されている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "source_name": "DataEye",
+            "entities": [
+              "DataEye",
+              "AI剧漫剧"
+            ],
+            "numbers": [
+              "40亿美元",
+              "390%"
+            ],
+            "quote_zh": "2026年海外AI剧漫剧市场规模预计突破40亿美元，同比增长",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "国内制作のAI短剧はローカライズ改编後に大量に海外へ輸出され、異なる人種・年齢の外国人顔素材への需要が急速に高まっている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "AI短剧"
+            ],
+            "numbers": [],
+            "quote_zh": "国内制作的AI短剧经过本地化改编后大量输出海外，对不同种族、",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "人脸授权",
+            "gloss_ja": "顔ライセンス",
+            "what_is": "個人の顔写真を提供し、AI短剧などでの使用を許可して報酬を得る仕組み。",
+            "why_now": "AI短剧の急成長でデジタル顔素材の需要が高まり、新たなビジネスとして注目されている。",
+            "explain_quote_zh": "一门名为“人脸授权”的新兴生意随之兴起",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "AI短剧",
+            "gloss_ja": "AIショートドラマ",
+            "what_is": "AI技術を活用して制作される短編ドラマ。",
+            "why_now": "市場規模が急拡大し、顔素材の主要な需要先となっている。",
+            "explain_quote_zh": "AI短剧、数字广告产业的快速扩张",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "数字虚拟人信息服务管理办法",
+            "gloss_ja": "デジタル仮想人間情報サービス管理弁法",
+            "what_is": "デジタル仮想人間の制作・使用・伝播を規制するための意見募集稿。",
+            "why_now": "顔情報の悪用を防ぐため、2026年4月に公布され、個別同意を義務付けた。",
+            "explain_quote_zh": "2026年4月出台的《数字虚拟人信息服务管理办法（征求意见稿",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration",
+          "E3": "root_corroboration",
+          "E4": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E3",
+            "classification": "promotional_or_repost",
+            "usable_for_verified_facts": false,
+            "reason": "near_duplicate_repost",
+            "duplicate_of": "E1"
+          },
+          {
+            "evidence_ref": "E4",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}
