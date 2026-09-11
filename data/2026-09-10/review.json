@@ -1,20 +1,21 @@
 {
   "date": "2026-09-10",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 91,
   "articles": [
     {
       "index": 1,
       "topic_key": "AI短剧人脸授权生意",
       "title": "AI短劇が「顔の貸し出し」市場を拡大、一般人は1本約100元",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0,
       "article_id": "a-5b699a404be0b7ea",
       "current_version": 1,
       "publication": {
-        "slug": "1"
+        "slug": "1",
+        "queued_at": "2026-09-11T14:24:51+08:00"
       }
     }
   ]
