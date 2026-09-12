@@ -29,7 +29,10 @@
       "current_version": 1,
       "publication": {
         "slug": "2",
-        "queued_at": "2026-09-12T10:42:25+08:00"
+        "queued_at": "2026-09-12T10:42:25+08:00",
+        "published_at": "2026-09-12T10:48:05+08:00",
+        "published_version": 1,
+        "x_pending_at": "2026-09-12T10:48:05+08:00"
       }
     },
     {
@@ -44,7 +47,10 @@
       "current_version": 1,
       "publication": {
         "slug": "3",
-        "queued_at": "2026-09-12T10:42:25+08:00"
+        "queued_at": "2026-09-12T10:42:25+08:00",
+        "published_at": "2026-09-12T10:48:05+08:00",
+        "published_version": 1,
+        "x_pending_at": "2026-09-12T10:48:05+08:00"
       }
     }
   ]
