@@ -1,14 +1,14 @@
 {
   "date": "2026-09-09",
-  "status": "pending",
+  "status": "completed",
   "issue_number": 90,
   "articles": [
     {
       "index": 1,
       "topic_key": "红果短剧日活数据",
       "title": "紅果短劇のDAUが1.68億人に到達、愛優騰芒の合計を突破",
-      "status": "pending",
-      "reason_tag": "",
+      "status": "rejected",
+      "reason_tag": "その他",
       "comment": "",
       "revision_count": 0,
       "article_id": "a-5ee27a78acf4f3f6",
@@ -21,28 +21,30 @@
       "index": 2,
       "topic_key": "AI短剧制作价格下降",
       "title": "AI短劇の制作費が半年で90%下落、1分あたり数百元に",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0,
       "article_id": "a-c9763d58870c07e2",
       "current_version": 1,
       "publication": {
-        "slug": "2"
+        "slug": "2",
+        "queued_at": "2026-09-12T10:42:25+08:00"
       }
     },
     {
       "index": 3,
       "topic_key": "微短剧精品创作传播计划五个一批工程",
       "title": "広電局（国家広播電視总局）（国家広播電視总局）、微短劇（ショートドラマ）の支援候補12作品を公示",
-      "status": "pending",
+      "status": "approved",
       "reason_tag": "",
       "comment": "",
       "revision_count": 0,
       "article_id": "a-c91160f04916bcbe",
       "current_version": 1,
       "publication": {
-        "slug": "3"
+        "slug": "3",
+        "queued_at": "2026-09-12T10:42:25+08:00"
       }
     }
   ]
