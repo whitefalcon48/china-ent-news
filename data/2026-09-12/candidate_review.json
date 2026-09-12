@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-12",
+  "status": "pending",
+  "created_at": "2026-09-12T05:54:45.051Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "收视综合评价系统数据采集通用技术要求",
+      "title": "国家广播电视总局科技司关于对《收视综合评价系统数据采集通用技术要求》广播电视和网络视听行业标准报批稿进行公示的通知",
+      "event_sentence": "国家広播電視総局科技司が「視聴率総合評価システムデータ収集通用技術要求」の業界標準報批稿を公示した。",
+      "topic_type": "policy",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 94,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "嘉庆君游台湾首映",
+      "title": "北京微短剧备案“001号”！《嘉庆君游台湾》首映，聚焦两岸情",
+      "event_sentence": "北京の微短劇備案「001号」である「嘉慶君遊台湾」が初上映され、両岸の情に焦点を当てた。",
+      "topic_type": "policy",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 88,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "8月娱乐月报",
+      "title": "暑期档收官：脱口秀打擂，AI短剧抢滩丨8月娱乐月报",
+      "event_sentence": "8月の娯楽月報で、夏休みシーズンの締めくくりとしてトークショーの競演やAI短編ドラマの参入が報じられた。",
+      "topic_type": "unknown",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "AI短剧人脸授权",
+      "title": "AI短剧带火“人脸授权”生意：普通人“卖脸”一次100元",
+      "event_sentence": "AI短剧が「顔面ライセンス」ビジネスを活性化させ、一般人が1回100元で顔を売っている。",
+      "topic_type": "unknown",
+      "baseline_rank": 4,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "AI短剧制作价格暴跌",
+      "title": "从5000元到几百元！AI短剧制作价格半年暴跌90%",
+      "event_sentence": "AI短剧の制作価格が半年で90%下落し、5000元から数百元になった。",
+      "topic_type": "industry_context",
+      "baseline_rank": 5,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "红果短剧日活",
+      "title": "红果短剧日活1.68亿超“爱优腾芒”总和，人均每天看125分钟",
+      "event_sentence": "红果短剧の日活が1.68億で「爱优腾芒」の合計を超え、1人あたり1日125分視聴されている。",
+      "topic_type": "unknown",
+      "baseline_rank": 6,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "交锋走进北大",
+      "title": "电视剧《交锋》走进北大，专家主创与青年学子共话国家安全",
+      "event_sentence": "テレビドラマ「交鋒」が北京大学で専門家と制作陣、若い学生たちと国家安全について語り合った。",
+      "topic_type": "drama_production",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 74,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "WEGO联名辱华动漫事件",
+      "title": "WEGO联名辱华动漫：尊重中国市场必须敬畏历史丨新京报娱论",
+      "event_sentence": "WEGOが辱華アニメとのコラボを行い、中国市場を尊重するには歴史を畏敬すべきだと批判された。",
+      "topic_type": "industry_context",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "云雀叫天录看片会",
+      "title": "匠心绘梨园戏韵启新章，电视剧《云雀叫天录》看片会在北京举行",
+      "event_sentence": "テレビドラマ「雲雀叫天録」の試写会が北京で開催された。",
+      "topic_type": "drama_production",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 70,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "密档",
+      "title": "暗流涌动！电影《密档》发布石库门群像主海报",
+      "event_sentence": "映画『密档』が石庫門の群像メインポスターを公開した。",
+      "topic_type": "release",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "电影行业标准DY/T",
+      "title": "国家电影局关于发布电影行业标准DY/T 15—2026 《数字影院LED放映发行母版和数据包技术要求》DY/T 16—2026 《数字影院沉浸式音频处理器技术要求和测量方法》的通知",
+      "event_sentence": "国家映画局が映画業界標準DY/T 15—2026とDY/T 16—2026を発表した。",
+      "topic_type": "policy",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "2026服贸会文旅板块",
+      "title": "文创好物集中上新，2026服贸会文旅板块解锁文化消费新活力",
+      "event_sentence": "2026年服貿会の文化観光セクションで文創グッズが集中して新商品を発表し、文化消費の新たな活力を解き放った。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 64,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}

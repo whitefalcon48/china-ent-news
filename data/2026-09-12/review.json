@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-12",
+  "status": "pending",
+  "issue_number": 93,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "红果短剧日活",
+      "title": "紅果短劇の日活1.68億人、長尺動画4社合計を超える 1日125分視聴の無料短劇アプリ",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-833028f9b940cf46",
+      "current_version": 1,
+      "publication": {
+        "slug": "1"
+      }
+    },
+    {
+      "index": 2,
+      "topic_key": "AI短剧制作价格暴跌",
+      "title": "AI短劇の制作価格が半年で90%下落、1分5000元から数百元へ",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-066cd5227e64f504",
+      "current_version": 1,
+      "publication": {
+        "slug": "2"
+      }
+    },
+    {
+      "index": 3,
+      "topic_key": "WEGO联名辱华动漫事件",
+      "title": "WEGO、「僕のヒーローアカデミア」コラボ発表 発売日が九一八事変95周年と重なり中国で批判",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-b4a89d7b79ef8284",
+      "current_version": 1,
+      "publication": {
+        "slug": "3"
+      }
+    }
+  ]
+}
