@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-14",
+  "status": "pending",
+  "issue_number": 95,
+  "articles": [
+    {
+      "index": 1,
+      "topic_key": "红果短剧日活超爱优腾芒总和",
+      "title": "紅果短劇の日活1.68億、長視頻4社合計を上回る 無料短劇が視聴時間でも逆転",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-57b4620f33d8ed71",
+      "current_version": 1,
+      "publication": {
+        "slug": "1"
+      }
+    },
+    {
+      "index": 2,
+      "topic_key": "人人影视回归后再度下架",
+      "title": "人人影視が復帰10日で再びアプリストアから消える　正規版として再出発も急展開",
+      "status": "pending",
+      "reason_tag": "",
+      "comment": "",
+      "revision_count": 0,
+      "article_id": "a-ccec5c0307808be6",
+      "current_version": 1,
+      "publication": {
+        "slug": "2"
+      }
+    }
+  ]
+}
