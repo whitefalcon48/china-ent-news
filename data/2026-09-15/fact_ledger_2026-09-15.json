@@ -1,0 +1,506 @@
+{
+  "date": "2026-09-15",
+  "generated_at": "2026-09-15T06:15:08.216Z",
+  "ledgers": [
+    {
+      "topic_key": "嘉庆君游台湾",
+      "ledger": {
+        "topic_key": "嘉庆君游台湾",
+        "claims": [
+          {
+            "id": "C1",
+            "type": "verified_fact",
+            "text": "2026年9月11日、古装微短剧《嘉庆君游台湾》の线下首映式が中国传媒大学で開催された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "中国传媒大学"
+            ],
+            "numbers": [
+              "2026年9月11日"
+            ],
+            "quote_zh": "9月11日，由北京市台办政务新媒体“京彩台湾”出品的古装微短",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C2",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は北京市广电局から备案号「（京）微短剧备字（2026）第001号」を取得した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "北京市广电局"
+            ],
+            "numbers": [
+              "（京）微短剧备字（2026）第001号"
+            ],
+            "quote_zh": "《嘉庆君游台湾》随后获得北京市广电局核发的备案号“（京）微短",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C3",
+            "type": "verified_fact",
+            "text": "中国初のマイクロドラマ専門管理弁法が2026年9月1日に正式施行された。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [],
+            "numbers": [
+              "2026年9月1日"
+            ],
+            "quote_zh": "我国首部专门针对微短剧发展的管理办法已于9月1日正式施行。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C4",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は「北京大视听」がマイクロドラマの规范化・精品化を推進した具体的成果と位置づけられている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "北京大视听"
+            ],
+            "numbers": [],
+            "quote_zh": "这是“北京大视听”推动微短剧规范化、精品化发展的具体成果",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C5",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は台湾で百年以上伝わる民間伝説を原作とし、即位前の皇子永琰が高世国と名乗って台湾を旅し、神童夏雷鸣と共に民情を視察し困窮者を助ける物語である。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "永琰",
+              "高世国",
+              "夏雷鸣"
+            ],
+            "numbers": [],
+            "quote_zh": "以台湾流传百年的民间传说为蓝本，讲述即位前的皇子永琰化名高世",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C6",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は閩南方言、媽祖信仰、打城戯などの地域文化や特色ある劇種を物語に取り入れている。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "閩南方言",
+              "媽祖信仰",
+              "打城戯"
+            ],
+            "numbers": [],
+            "quote_zh": "将闽南方言、妈祖信仰、打城戏等地域文化和特色剧种融入故事",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C7",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は首映式後、まず「京彩台湾」视频号で配信され、その後国内外の主要プラットフォームで全ネット配信される。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "京彩台湾"
+            ],
+            "numbers": [],
+            "quote_zh": "将率先在“京彩台湾”视频号上线，随后登陆境内外主流平台全网播",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C8",
+            "type": "verified_fact",
+            "text": "監督の庄灿杰は、若者が受け入れやすい新しい文脈と語り方を見つけるため、マイクロドラマ形式を選び、34稿の脚本を練り、100以上の作業ファイルを蓄積した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "庄灿杰"
+            ],
+            "numbers": [
+              "34稿",
+              "100以上"
+            ],
+            "quote_zh": "团队选择以微短剧的形式来呈现，前后打磨了34稿剧本，积累了上",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C9",
+            "type": "verified_fact",
+            "text": "閩南語の方言とアクセントを再現するため、俳優は主に自分の地声を使用し、布袋戯は台湾の声優が担当し、吹き替えだけで約2か月かかった。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "布袋戯"
+            ],
+            "numbers": [
+              "約2か月"
+            ],
+            "quote_zh": "演员多用自己的原声，布袋戏也请台湾配音演员完成，仅配音就花了",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C10",
+            "type": "verified_fact",
+            "text": "脚本家の陈湃涌は、初期に古今「双拼」形式を構想したが、最終的に純古装版を採用し、語り手が物語に入り込む設定を加えた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "陈湃涌"
+            ],
+            "numbers": [],
+            "quote_zh": "剧本早期曾设想过采用古今“双拼”的形式，后来决定采用纯古装版",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "working_method",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C11",
+            "type": "verified_fact",
+            "text": "福建省百崎影视産業有限公司のCEO潘融融は、泉州台商区に海峡両岸マイクロドラマ産業園を建設し、《嘉庆君游台湾》は同園区でクランクインしたと述べた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "福建省百崎影视産業有限公司",
+              "潘融融",
+              "泉州台商区",
+              "海峡両岸マイクロドラマ産業園",
+              "《嘉庆君游台湾》"
+            ],
+            "numbers": [],
+            "quote_zh": "公司在泉州台商区打造海峡两岸微短剧产业园，《嘉庆君游台湾》就",
+            "anchor": false,
+            "scope": "root_event",
+            "editorial_role": "industry_spillover",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C12",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は台湾の有名俳優李志希を和珅役に、台湾の若手俳優蔡宣萱を出演者に迎え、島内俳優が閩南語吹き替えを担当した。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "李志希",
+              "和珅",
+              "蔡宣萱"
+            ],
+            "numbers": [],
+            "quote_zh": "特邀台湾著名演员李志希饰演和珅，台湾青年演员蔡宣萱参演，岛内",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C13",
+            "type": "verified_fact",
+            "text": "2026年4月12日、中共中央台办が発表した両岸交流協力促進の10項目の政策措置には、台湾業者が多様な形で大陸のマイクロドラマ創作に参加できることが盛り込まれた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "中共中央台办"
+            ],
+            "numbers": [
+              "2026年4月12日",
+              "10項目"
+            ],
+            "quote_zh": "4月12日，中共中央台办受权发布的十项促进两岸交流合作的政策",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "policy_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C14",
+            "type": "verified_fact",
+            "text": "「京彩台湾」は2025年以降、この両岸共通の文化題材をIP化開発し、図書、評書、閩南語・客家語オーディオブック、マイクロドラマ、漫画、ボードゲーム、扇子などの作品や文创派生品を続々と発表してきた。",
+            "evidence_refs": [
+              "E1"
+            ],
+            "entities": [
+              "京彩台湾"
+            ],
+            "numbers": [
+              "2025年"
+            ],
+            "quote_zh": "“京彩台湾”自2025年以来持续致力于将这一两岸共同的文化题",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "adaptation_context",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C15",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は2026年3月14日にクランクインし、泉州・漳州などでロケ撮影された。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "泉州",
+              "漳州"
+            ],
+            "numbers": [
+              "2026年3月14日"
+            ],
+            "quote_zh": "于3月14日开机，在泉州、漳州等地取景拍摄。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C16",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は「穿書」設定を革新的に加え、語り手が「嘉庆君游台湾」の物語に「穿書」し、嘉庆と共に冒険し成長する物語である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "嘉庆"
+            ],
+            "numbers": [],
+            "quote_zh": "创新加入“穿书”设定，讲述了一位说书人“穿书”进入“嘉庆君游",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C17",
+            "type": "verified_fact",
+            "text": "漳州での撮影中、《嘉庆君游台湾》の劇組は主に漳州市布袋木偶伝承保護センターでロケし、劇中の多くの布袋木偶戯の演技は同センターが協力して完成させた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "漳州市布袋木偶伝承保護センター"
+            ],
+            "numbers": [],
+            "quote_zh": "剧组主要在漳州市布袋木偶传承保护中心取景，剧中大量的布袋木偶",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "production_support",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C18",
+            "type": "verified_fact",
+            "text": "監督の庄灿杰は、布袋木偶戯の演技が重要な手がかりとして各物語をつなぎ、観客の理解を助ける役割を果たすと述べた。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "庄灿杰",
+              "布袋木偶戯"
+            ],
+            "numbers": [],
+            "quote_zh": "布袋木偶戏表演将作为重要线索，串联各个故事情节，帮助观众更好",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "comic_mechanism",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C19",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は全7話の物語ユニット、計100話で、各話の長さは1～2分である。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》"
+            ],
+            "numbers": [
+              "7話",
+              "100話",
+              "1～2分"
+            ],
+            "quote_zh": "共有7个故事单元，共计100集，每集时长1—2分钟。",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "story_premise",
+            "angle_kind": "other"
+          },
+          {
+            "id": "C20",
+            "type": "verified_fact",
+            "text": "《嘉庆君游台湾》は2026年3月23日午後、漳州市布袋木偶伝承保護センターでクランクアップ式が開催された。",
+            "evidence_refs": [
+              "E2"
+            ],
+            "entities": [
+              "《嘉庆君游台湾》",
+              "漳州市布袋木偶伝承保護センター"
+            ],
+            "numbers": [
+              "2026年3月23日"
+            ],
+            "quote_zh": "3月23日下午，微短剧《嘉庆君游台湾》杀青仪式在漳州市布袋木",
+            "anchor": true,
+            "scope": "root_event",
+            "editorial_role": "other",
+            "angle_kind": "other"
+          }
+        ],
+        "terms": [
+          {
+            "term": "微短剧",
+            "gloss_ja": "マイクロドラマ",
+            "what_is": "1話1～2分程度の超短編ドラマ形式。",
+            "why_now": "中国で初の管理弁法が施行され、規範化が進む中で注目される。",
+            "explain_quote_zh": "我国首部专门针对微短剧发展的管理办法已于9月1日正式施行",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "备案号",
+            "gloss_ja": "届出番号",
+            "what_is": "ドラマ配信前に当局へ届け出て取得する番号。",
+            "why_now": "本作が北京市のマイクロドラマ备案第1号を取得した。",
+            "explain_quote_zh": "获得北京市广电局核发的备案号“（京）微短剧备字（2026）第",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "北京大视听",
+            "gloss_ja": "北京大視聴",
+            "what_is": "北京市の視聴覚コンテンツ振興政策・ブランド。",
+            "why_now": "本作がその具体的成果と位置づけられている。",
+            "explain_quote_zh": "这是“北京大视听”推动微短剧规范化、精品化发展的具体成果",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "京彩台湾",
+            "gloss_ja": "京彩台湾",
+            "what_is": "北京市台弁の政务新媒体プラットフォーム。",
+            "why_now": "本作の制作元であり、配信も行う。",
+            "explain_quote_zh": "由北京市台办政务新媒体“京彩台湾”出品",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          },
+          {
+            "term": "布袋戏",
+            "gloss_ja": "布袋劇（人形劇）",
+            "what_is": "手袋型の人形を使う伝統的な人形劇。",
+            "why_now": "本作の重要な要素として物語をつなぐ役割を果たす。",
+            "explain_quote_zh": "布袋木偶戏表演将作为重要线索，串联各个故事情节",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "穿书",
+            "gloss_ja": "本の中へ入り込む",
+            "what_is": "登場人物が物語世界に入り込む創作設定。",
+            "why_now": "本作に革新的に取り入れられた設定。",
+            "explain_quote_zh": "创新加入“穿书”设定",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "杀青",
+            "gloss_ja": "クランクアップ",
+            "what_is": "撮影が完了すること。",
+            "why_now": "本作の撮影完了が報じられた。",
+            "explain_quote_zh": "微短剧《嘉庆君游台湾》杀青仪式",
+            "explain_evidence_refs": [
+              "E2"
+            ]
+          },
+          {
+            "term": "闽南语",
+            "gloss_ja": "閩南語",
+            "what_is": "福建省南部や台湾で話される中国語方言。",
+            "why_now": "本作で方言や吹き替えに使用され、文化の共通性を示す。",
+            "explain_quote_zh": "将闽南方言、妈祖信仰、打城戏等地域文化和特色剧种融入故事",
+            "explain_evidence_refs": [
+              "E1"
+            ]
+          }
+        ],
+        "japan_availability": {
+          "status": "not_in_evidence",
+          "detail": "",
+          "evidence_refs": []
+        },
+        "unresolved": [],
+        "evidence_roles": {
+          "E1": "root_corroboration",
+          "E2": "root_corroboration"
+        },
+        "evidence_quality": [
+          {
+            "evidence_ref": "E1",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          },
+          {
+            "evidence_ref": "E2",
+            "classification": "editorial_media",
+            "usable_for_verified_facts": true,
+            "reason": "editorial_source_without_integrity_markers"
+          }
+        ]
+      },
+      "fallback_reason": ""
+    }
+  ]
+}

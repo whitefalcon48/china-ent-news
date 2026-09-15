@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-15",
+  "status": "pending",
+  "created_at": "2026-09-15T06:13:42.903Z",
+  "completed_at": "",
+  "candidates": [
+    {
+      "index": 1,
+      "topic_key": "收视综合评价系统数据采集通用技术要求公示",
+      "title": "国家广播电视总局科技司关于对《收视综合评价系统数据采集通用技术要求》广播电视和网络视听行业标准报批稿进行公示的通知",
+      "event_sentence": "「視聴率総合評価システムデータ収集通用技術要求」の業界標準報批稿が公示された。",
+      "topic_type": "policy",
+      "baseline_rank": 1,
+      "baseline_priority": "high",
+      "baseline_score": 94,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家广播电视总局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 2,
+      "topic_key": "嘉庆君游台湾",
+      "title": "北京微短剧备案“001号”！《嘉庆君游台湾》首映，聚焦两岸情",
+      "event_sentence": "北京マイクロドラマ備案「001号」の『嘉慶君遊台湾』が初上映され、両岸の情に焦点を当てた。",
+      "topic_type": "policy",
+      "baseline_rank": 2,
+      "baseline_priority": "high",
+      "baseline_score": 82,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 3,
+      "topic_key": "声音演出行业观察",
+      "title": "声音演出，从“圈内热”到“大众看”还有多远丨行业观察",
+      "event_sentence": "音声演出が「業界内の熱」から「大衆の鑑賞」へと移行するまでの距離について業界観察が報じられた。",
+      "topic_type": "industry_context",
+      "baseline_rank": 3,
+      "baseline_priority": "high",
+      "baseline_score": 78,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 4,
+      "topic_key": "8月娱乐月报",
+      "title": "暑期档收官：脱口秀打擂，AI短剧抢滩丨8月娱乐月报",
+      "event_sentence": "暑期档が終了し、脱口秀が打擂し、AI短剧が市場に参入した。",
+      "topic_type": "unknown",
+      "baseline_rank": 4,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 5,
+      "topic_key": "女星流量变现",
+      "title": "接广告上封面，她们的流量真能赚钱吗？",
+      "event_sentence": "広告を受け表紙に登場する彼女たちの流量が本当にお金を稼げるのかが問われている。",
+      "topic_type": "unknown",
+      "baseline_rank": 5,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新浪娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 6,
+      "topic_key": "红果短剧日活超爱优腾芒",
+      "title": "红果短剧日活1.68亿超“爱优腾芒”总和，人均每天看125分钟",
+      "event_sentence": "紅果短劇の日活が1.68億に達し、「愛優騰芒」の合計を超え、1人あたり1日125分視聴されている。",
+      "topic_type": "unknown",
+      "baseline_rank": 6,
+      "baseline_priority": "high",
+      "baseline_score": 76,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 7,
+      "topic_key": "功夫女足上映",
+      "title": "上映半日票房破亿！周星驰导演作品《功夫女足》引爆暑期档",
+      "event_sentence": "周星馳監督作品《功夫女足》が上映半日で興行収入1億を突破し、暑期档を引爆した。",
+      "topic_type": "box_office",
+      "baseline_rank": 7,
+      "baseline_priority": "medium",
+      "baseline_score": 72,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 0,
+        "sns": 0,
+        "data": 1,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "界面新闻 影视产业"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 8,
+      "topic_key": "2026塞舌尔中国电影节",
+      "title": "2026塞舌尔第三届“中国电影节”隆重开幕",
+      "event_sentence": "2026年セーシェル第3回「中国映画祭」が盛大に開幕した。",
+      "topic_type": "cultural_export",
+      "baseline_rank": 8,
+      "baseline_priority": "medium",
+      "baseline_score": 71,
+      "source_count": 1,
+      "source_types": {
+        "official": 1,
+        "media_report": 0,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "国家电影局"
+      ],
+      "risk_class": "low",
+      "caution_note": "Official-only topic; no media/SNS/data reaction found, so local temperature is unverified.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 9,
+      "topic_key": "交锋",
+      "title": "电视剧《交锋》走进北大，专家主创与青年学子共话国家安全",
+      "event_sentence": "テレビドラマ『交鋒』が北京大学で上映され、専門家と主創が青年学生と国家安全について語り合った。",
+      "topic_type": "drama_production",
+      "baseline_rank": 9,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 10,
+      "topic_key": "婚恋类网络综艺节目研讨会",
+      "title": "婚恋类网络综艺节目研讨会举行：不能只造梦幻，要扎根现实",
+      "event_sentence": "婚恋系ネットバラエティ番組に関する研討会が開催され、夢だけを描かず現実に根ざすべきだと議論された。",
+      "topic_type": "unknown",
+      "baseline_rank": 10,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 11,
+      "topic_key": "少年书",
+      "title": "深化青少年国防教育 微电影《少年书》上线发布",
+      "event_sentence": "青少年の国防教育を深化させるため、マイクロ映画『少年書』が公開された。",
+      "topic_type": "release",
+      "baseline_rank": 11,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "1905电影网 新闻"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    },
+    {
+      "index": 12,
+      "topic_key": "擅自温柔",
+      "title": "郭红新书《擅自温柔》分享会在京举行：温柔是自己给自己的",
+      "event_sentence": "郭紅の新書『擅自温柔』の分享会が北京で行われた。",
+      "topic_type": "unknown",
+      "baseline_rank": 12,
+      "baseline_priority": "medium",
+      "baseline_score": 68,
+      "source_count": 1,
+      "source_types": {
+        "official": 0,
+        "media_report": 1,
+        "sns": 0,
+        "data": 0,
+        "pr_like": 0,
+        "rumor": 0,
+        "mixed": 0
+      },
+      "source_names": [
+        "新京报 娱乐"
+      ],
+      "risk_class": "low",
+      "caution_note": "Single-source topic; keep wording cautious until another source appears.",
+      "interest_features": [],
+      "human_rating": null,
+      "human_reason_tags": [],
+      "human_note": "",
+      "similar_topics": []
+    }
+  ]
+}
